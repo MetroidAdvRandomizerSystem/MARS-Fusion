@@ -1,0 +1,40 @@
+; Copyright (c) 2022 Callie "AntyMew" LeFave and contributors
+; This Source Code Form is subject to the terms of the Mozilla Public
+; License, v. 2.0. If a copy of the MPL was not distributed with this
+; file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Sfx_Play equ 0800270Ch
+Music_Play equ 08003538h
+Music_FadeOut equ 080036F0h
+
+LockHatches equ 08063070h
+ChangeSuit equ 08063190h
+SetEventEffect equ 0806342Ch
+
+SpawnParticleEffect equ 080730E4h
+SetEvent equ 08074890h
+
+CheckProjectiles equ 0808116Ch
+SpawnProjectile equ 080811BCh
+SpawnSecondaryProjectile equ 0808125Ch
+LoadBeamGfx equ 08081E5Ch
+LoadMissileGfx equ 08082010h
+
+Projectile_Move equ 08082120h
+Projectile_UpdateClipdata equ 0808222Ch
+Projectile_DamageEnemy equ 080835F8h
+Beam_MoveParts equ 08082464h
+Beam_SetTrail equ 080827E0h
+WaveBeam_MoveParts equ 0808252Ch
+WaveBeam_UpdateClipdata equ 080821ECh
+IceBeam_DamageEnemy equ 08083A4Ch
+
+Enemy_GetWeakness equ 08083044h
+Enemy_StartOnHitTimer equ 08083B78h
+Enemy_MakesDebrisWhenHit equ 08082FECh
+Enemy_CreateDebris equ 08083090h
+Enemy_CreatePlasmaDebris equ 080831C4h
+
+Divide equ 080A3468h
+memcpy equ 080A4EF0h
+memset equ 080A4F50h

@@ -1,0 +1,2 @@
+Metroid Fusion Alternative Randomizer
+=====================================

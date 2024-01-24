@@ -1,0 +1,1305 @@
+; Copyright (c) 2022 Callie "AntyMew" LeFave and contributors
+; This Source Code Form is subject to the terms of the Mozilla Public
+; License, v. 2.0. If a copy of the MPL was not distributed with this
+; file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+; Changes all combinations of beam upgrades to function in an intuitive way.
+; Vanilla behavior expects all previous beam upgrades to have been obtained,
+; causing behavior such as Plasma, Wave, and Ice firing three projectiles even
+; without Wide Beam obtained.
+
+; TODO: test SA-X boss
+
+.defineregion 08085E44h, 280h, 0	; wide beam update/init functions
+.defineregion 08083BACh, 988h, 0	; beam hit enemy functions
+
+.org LoadBeamGfx
+.region 1B4h, 0
+	push	{ r4 }
+	ldr		r1, =SamusUpgrades
+	ldrb	r1, [r1, SamusUpgrades_BeamUpgrades]
+	lsr		r0, r1, BeamUpgrade_ChargeBeam + 1
+	bne		@@gfxLookup
+	mov		r0, r1
+	b		@@dmaGfx
+@@gfxLookup:
+	add		r2, =@@BeamGfxLookup
+	lsl		r0, r1, 1Fh - BeamUpgrade_IceBeam
+	lsr		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsl		r0, #1
+	add		r2, r0
+	ldrb	r0, [r2]
+	ldrb	r1, [r2, #1]
+@@dmaGfx:
+	mov		r2, r0
+	mov		r3, r1
+	ldr		r4, =DMA3
+	lsl		r0, r2, #8
+	lsl		r1, r0, #2
+	add		r0, r1
+	ldr		r1, =0858B524h
+	add		r1, r0
+	str		r1, [r4, DMA_SAD]
+	ldr		r0, =06011000h
+	str		r0, [r4, DMA_DAD]
+	ldr		r0, =80000140h
+	str		r0, [r4, DMA_CNT]
+	ldr		r0, [r4, DMA_CNT]
+	mov		r0, #28h
+	lsl		r0, #4
+	add		r0, r1
+	str		r0, [r4, DMA_SAD]
+	ldr		r0, =06011400h
+	str		r0, [r4, DMA_DAD]
+	ldr		r0, =80000140h
+	str		r0, [r4, DMA_CNT]
+	ldr		r0, [r4, DMA_CNT]
+	lsl		r0, r3, #5
+	ldr		r1, =0858B464h
+	add		r0, r1
+	str		r0, [r4, DMA_SAD]
+	ldr		r0, =05000240h
+	str		r0, [r4, DMA_DAD]
+	ldr		r0, =80000005h
+	str		r0, [r4, DMA_CNT]
+	ldr		r0, [r4, DMA_CNT]
+	pop		{ r4 }
+	bx		lr
+	.align 4
+@@BeamGfxLookup:
+	; sprite and palette indices for every non-basic beam combination
+	.db		2, 2	; pure wide
+	.db		3, 3	; pure plasma
+	.db		2, 2	; pure wave
+	.db		4, 4	; wave + plasma
+	.db		5, 5	; pure ice
+	.db		3, 5	; ice + plasma
+	.db		5, 5	; ice + wave
+	.db		4, 5	; ice + wave + plasma
+	.pool
+.endregion
+
+.org 080860C4h
+.region 14Ch, 0
+.func ChargedPlasmaBeam_Initialize
+	push	{ lr }
+	ldr		r3, =CurrentProjectile
+	mov		r0, #0
+	strh	r0, [r3, Projectile_AnimFrame]
+	strb	r0, [r3, Projectile_AnimCounter]
+	mov		r0, #10h
+	strb	r0, [r3, Projectile_VertOffscreenRange]
+	strb	r0, [r3, Projectile_HorizOffscreenRange]
+	ldrb	r0, [r3, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_Exploding
+	bic		r0, r1
+	mov		r1, 1 << ProjectileStatus_AffectsClipdata
+	orr		r0, r1
+	ldrb	r1, [r3, Projectile_Direction]
+	cmp		r1, #0
+	beq		@@setStatus
+	lsr		r1, #1
+	bcc		@@setStatus
+	mov		r1, 1 << ProjectileStatus_VerticalFlip
+	orr		r0, r1
+@@setStatus:
+	strb	r0, [r3, Projectile_Status]
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r2, 1Fh - BeamUpgrade_IceBeam
+	lsr		r2, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r0, =@BeamGfxIndex
+	ldrb	r1, [r0, r2]
+	ldr		r0, =@ChargedBeamBboxOffsets
+	ldrb	r0, [r0, r1]
+	strh	r0, [r3, Projectile_BboxBottom]
+	strh	r0, [r3, Projectile_BboxRight]
+	neg		r0, r0
+	strh	r0, [r3, Projectile_BboxTop]
+	strh	r0, [r3, Projectile_BboxLeft]
+	lsl		r0, r1, #2
+	lsl		r1, r0, #1
+	add		r0, r1
+	ldrb	r1, [r4, Projectile_Direction]
+	cmp		r1, #5
+	ble		@@lookupOamPtr
+	mov		r1, #0
+@@lookupOamPtr:
+	lsr		r1, #1
+	lsl		r1, #2
+	add		r0, r1
+	ldr		r1, =@ChargedBeamOamPointers
+	ldr		r0, [r1, r0]
+	str		r0, [r4, Projectile_OamPointer]
+	ldr		r0, =@ChargedBeamSfx
+	ldrb	r0, [r0, r2]
+	bl		Sfx_Play
+	pop		{ pc }
+	.pool
+.endfunc
+.func ChargedPlasmaBeam_Update
+	push	{ r4, lr }
+	ldr		r4, =CurrentProjectile
+	ldrb	r0, [r4, Projectile_Part]
+	cmp		r0, #0
+	beq		@@skipWideLogic
+	ldrb	r0, [r4, Projectile_Stage]
+	cmp		r0, #8
+	bhi		@@skipWideLogic
+	bl		Beam_MoveParts
+@@skipWideLogic:
+	ldr		r1, =CurrentClipdataAction
+	mov		r0, ClipdataAction_Beam
+	strb	r0, [r1]
+	bl		Projectile_UpdateClipdata
+	cmp		r0, #0
+	beq		@@noCollision
+	mov		r0, #0
+	strb	r0, [r4, Projectile_Status]
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Fh
+	add		r2, r0, #5
+	ldrh	r0, [r4, Projectile_PosY]
+	ldrh	r1, [r4, Projectile_PosX]
+	bl		SpawnParticleEffect
+	b		@@return
+@@noCollision:
+	ldrb	r0, [r4, Projectile_Stage]
+	lsr		r1, r0, #1
+	bne		@@stageOver1
+	bcs		@@stageEquals1
+	bl		ChargedPlasmaBeam_Initialize
+	b		@@incrementStage
+@@stageOver1:
+	cmp		r0, #8
+	bhi		@@maxedStage
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@maxedStage:
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Dh
+	add		r0, #18h
+	bl		Projectile_Move
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_IceBeam
+	lsr		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r1, =@BeamGfxIndex
+	ldrb	r0, [r1, r0]
+	add		r0, #11h
+	mov		r1, #3
+	bl		Beam_SetTrail
+	b		@@incrementTimer
+@@stageEquals1:
+	mov		r0, #10h
+	bl		Projectile_Move
+@@incrementStage:
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@incrementTimer:
+	ldrb	r0, [r4, Projectile_Timer]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Timer]
+@@return:
+	pop		{ r4, pc }
+	.pool
+.endfunc
+.endregion
+
+.org 08086210h
+.region 140h, 0
+.func PlasmaBeam_Initialize
+	push	{ lr }
+	ldr		r3, =CurrentProjectile
+	mov		r0, #0
+	strh	r0, [r3, Projectile_AnimFrame]
+	strb	r0, [r3, Projectile_AnimCounter]
+	mov		r0, #10h
+	strb	r0, [r3, Projectile_VertOffscreenRange]
+	strb	r0, [r3, Projectile_HorizOffscreenRange]
+	ldrb	r0, [r3, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_Exploding
+	bic		r0, r1
+	mov		r1, 1 << ProjectileStatus_AffectsClipdata
+	orr		r0, r1
+	ldrb	r1, [r3, Projectile_Direction]
+	cmp		r1, #0
+	beq		@@setStatus
+	lsr		r1, #1
+	bcc		@@setStatus
+	mov		r1, 1 << ProjectileStatus_VerticalFlip
+	orr		r0, r1
+@@setStatus:
+	strb	r0, [r3, Projectile_Status]
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r2, 1Fh - BeamUpgrade_IceBeam
+	lsr		r2, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r0, =@BeamGfxIndex
+	ldrb	r1, [r0, r2]
+	ldr		r0, =@BeamBboxOffsets
+	ldrb	r0, [r0, r1]
+	strh	r0, [r3, Projectile_BboxBottom]
+	strh	r0, [r3, Projectile_BboxRight]
+	neg		r0, r0
+	strh	r0, [r3, Projectile_BboxTop]
+	strh	r0, [r3, Projectile_BboxLeft]
+	lsl		r0, r1, #2
+	lsl		r1, r0, #1
+	add		r0, r1
+	ldrb	r1, [r4, Projectile_Direction]
+	cmp		r1, #5
+	ble		@@lookupOamPtr
+	mov		r1, #0
+@@lookupOamPtr:
+	lsr		r1, #1
+	lsl		r1, #2
+	add		r0, r1
+	ldr		r1, =@BeamOamPointers
+	ldr		r0, [r1, r0]
+	str		r0, [r4, Projectile_OamPointer]
+	ldr		r0, =@BeamSfx
+	ldrb	r0, [r0, r2]
+	bl		Sfx_Play
+	pop		{ pc }
+	.pool
+.endfunc
+.func PlasmaBeam_Update
+	push	{ r4, lr }
+	ldr		r4, =CurrentProjectile
+	ldrb	r0, [r4, Projectile_Part]
+	cmp		r0, #0
+	beq		@@skipWideLogic
+	ldrb	r0, [r4, Projectile_Stage]
+	cmp		r0, #8
+	bhi		@@skipWideLogic
+	bl		Beam_MoveParts
+@@skipWideLogic:
+	ldr		r1, =CurrentClipdataAction
+	mov		r0, ClipdataAction_Beam
+	strb	r0, [r1]
+	bl		Projectile_UpdateClipdata
+	cmp		r0, #0
+	beq		@@noCollision
+	mov		r0, #0
+	strb	r0, [r4, Projectile_Status]
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Fh
+	add		r2, r0, #5
+	ldrh	r0, [r4, Projectile_PosY]
+	ldrh	r1, [r4, Projectile_PosX]
+	bl		SpawnParticleEffect
+	b		@@return
+@@noCollision:
+	ldrb	r0, [r4, Projectile_Stage]
+	lsr		r1, r0, #1
+	bne		@@stageOver1
+	bcs		@@stageEquals1
+	bl		PlasmaBeam_Initialize
+	b		@@incrementStage
+@@stageOver1:
+	cmp		r0, #8
+	bhi		@@maxedStage
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@maxedStage:
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Dh
+	add		r0, #18h
+	bl		Projectile_Move
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsr		r1, r0, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@incrementTimer
+	lsr		r1, r0, BeamUpgrade_IceBeam + 1
+	bcc		@@incrementTimer
+	mov		r0, #0Eh
+	mov		r1, #3
+	bl		Beam_SetTrail
+	b		@@incrementTimer
+@@stageEquals1:
+	mov		r0, #10h
+	bl		Projectile_Move
+@@incrementStage:
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@incrementTimer:
+	ldrb	r0, [r4, Projectile_Timer]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Timer]
+@@return:
+	pop		{ r4, pc }
+	.pool
+.endfunc
+.endregion
+
+.org 08086350h
+.region 184h, 0
+.func ChargedWaveBeam_Initialize
+	push	{ lr }
+	ldr		r3, =CurrentProjectile
+	mov		r0, #0
+	strh	r0, [r3, Projectile_AnimFrame]
+	strb	r0, [r3, Projectile_AnimCounter]
+	mov		r0, #10h
+	strb	r0, [r3, Projectile_VertOffscreenRange]
+	strb	r0, [r3, Projectile_HorizOffscreenRange]
+	ldrb	r0, [r3, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_Exploding
+	bic		r0, r1
+	mov		r1, (1 << ProjectileStatus_IgnoreCollision) \
+		| (1 << ProjectileStatus_AffectsClipdata)
+	orr		r0, r1
+	ldrb	r1, [r3, Projectile_Direction]
+	cmp		r1, #0
+	beq		@@setStatus
+	lsr		r1, #1
+	bcc		@@setStatus
+	mov		r1, 1 << ProjectileStatus_VerticalFlip
+	orr		r0, r1
+@@setStatus:
+	strb	r0, [r3, Projectile_Status]
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r2, 1Fh - BeamUpgrade_IceBeam
+	lsr		r2, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r0, =@BeamGfxIndex
+	ldrb	r1, [r0, r2]
+	ldr		r0, =@ChargedBeamBboxOffsets
+	ldrb	r0, [r0, r1]
+	strh	r0, [r3, Projectile_BboxBottom]
+	strh	r0, [r3, Projectile_BboxRight]
+	neg		r0, r0
+	strh	r0, [r3, Projectile_BboxTop]
+	strh	r0, [r3, Projectile_BboxLeft]
+	lsl		r0, r1, #2
+	lsl		r1, r0, #1
+	add		r0, r1
+	ldrb	r1, [r4, Projectile_Direction]
+	cmp		r1, #5
+	ble		@@lookupOamPtr
+	mov		r1, #0
+@@lookupOamPtr:
+	lsr		r1, #1
+	lsl		r1, #2
+	add		r0, r1
+	ldr		r1, =@ChargedBeamOamPointers
+	ldr		r0, [r1, r0]
+	str		r0, [r4, Projectile_OamPointer]
+	ldr		r0, =@ChargedBeamSfx
+	ldrb	r0, [r0, r2]
+	bl		Sfx_Play
+	pop		{ pc }
+	.pool
+.endfunc
+.func ChargedWaveBeam_Update
+	push	{ r4, lr }
+	ldr		r4, =CurrentProjectile
+	ldrb	r0, [r4, Projectile_Part]
+	cmp		r0, #0
+	beq		@@skipWideLogic
+	ldrb	r0, [r4, Projectile_Stage]
+	cmp		r0, #8
+	bhi		@@skipWideLogic
+	bl		WaveBeam_MoveParts
+@@skipWideLogic:
+	ldr		r1, =CurrentClipdataAction
+	mov		r0, ClipdataAction_Beam
+	strb	r0, [r1]
+	bl		WaveBeam_UpdateClipdata
+	ldrb	r0, [r4, Projectile_Stage]
+	lsr		r1, r0, #1
+	bne		@@stageOver1
+	bcs		@@stageEquals1
+	bl		ChargedWaveBeam_Initialize
+	b		@@incrementStage
+@@stageOver1:
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Dh
+	add		r0, #18h
+	bl		Projectile_Move
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_IceBeam
+	lsr		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r1, =@BeamGfxIndex
+	ldrb	r0, [r1, r0]
+	add		r0, #11h
+	mov		r1, #3
+	bl		Beam_SetTrail
+	b		@@incrementTimer
+@@stageEquals1:
+	mov		r0, #10h
+	bl		Projectile_Move
+@@incrementStage:
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@incrementTimer:
+	ldrb	r0, [r4, Projectile_Timer]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Timer]
+@@return:
+	pop		{ r4, pc }
+	.pool
+.endfunc
+.endregion
+
+.org WaveBeam_MoveParts
+.area 3Ch, 0
+	push	{ r4, r5, r6, lr }
+	ldr		r5, =CurrentProjectile
+	ldrb	r0, [r5, Projectile_Timer]
+	mov		r4, #0Fh
+	and		r4, r0
+	ldr		r1, =0858B3CCh
+	lsl		r0, r4, #1
+	ldrsh	r6, [r1, r0]
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, BeamUpgrade_WideBeam + 1
+	bcs		@@wideWave
+	lsr		r6, #1
+@@wideWave:
+	mov		r0, 0CDh
+	mul		r0, r6
+	lsr		r0, #9
+	add		r3, r0, r6
+	ldrb	r2, [r5, Projectile_Part]
+	b		0808257Ah
+	.pool
+.endarea
+
+.org 0858B3CCh
+	.dh		24, 16, 8, 4, -4, -8, -16, -24, -24, -16, -8, -4, 4, 8, 16, 24
+
+.org 080864D4h
+.region 178h, 0
+.func WaveBeam_Initialize
+	push	{ lr }
+	ldr		r3, =CurrentProjectile
+	mov		r0, #0
+	strh	r0, [r3, Projectile_AnimFrame]
+	strb	r0, [r3, Projectile_AnimCounter]
+	mov		r0, #10h
+	strb	r0, [r3, Projectile_VertOffscreenRange]
+	strb	r0, [r3, Projectile_HorizOffscreenRange]
+	ldrb	r0, [r3, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_Exploding
+	bic		r0, r1
+	mov		r1, (1 << ProjectileStatus_IgnoreCollision) \
+		| (1 << ProjectileStatus_AffectsClipdata)
+	orr		r0, r1
+	ldrb	r1, [r3, Projectile_Direction]
+	cmp		r1, #0
+	beq		@@setStatus
+	lsr		r1, #1
+	bcc		@@setStatus
+	mov		r1, 1 << ProjectileStatus_VerticalFlip
+	orr		r0, r1
+@@setStatus:
+	strb	r0, [r3, Projectile_Status]
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r2, 1Fh - BeamUpgrade_IceBeam
+	lsr		r2, 1Fh - BeamUpgrade_PlasmaBeam
+	ldr		r0, =@BeamGfxIndex
+	ldrb	r1, [r0, r2]
+	ldr		r0, =@BeamBboxOffsets
+	ldrb	r0, [r0, r1]
+	strh	r0, [r3, Projectile_BboxBottom]
+	strh	r0, [r3, Projectile_BboxRight]
+	neg		r0, r0
+	strh	r0, [r3, Projectile_BboxTop]
+	strh	r0, [r3, Projectile_BboxLeft]
+	lsl		r0, r1, #2
+	lsl		r1, r0, #1
+	add		r0, r1
+	ldrb	r1, [r4, Projectile_Direction]
+	cmp		r1, #5
+	ble		@@lookupOamPtr
+	mov		r1, #0
+@@lookupOamPtr:
+	lsr		r1, #1
+	lsl		r1, #2
+	add		r0, r1
+	ldr		r1, =@BeamOamPointers
+	ldr		r0, [r1, r0]
+	str		r0, [r4, Projectile_OamPointer]
+	ldr		r0, =@BeamSfx
+	ldrb	r0, [r0, r2]
+	bl		Sfx_Play
+	pop		{ pc }
+	.pool
+.endfunc
+.func WaveBeam_Update
+	push	{ r4, lr }
+	ldr		r4, =CurrentProjectile
+	ldrb	r0, [r4, Projectile_Part]
+	cmp		r0, #0
+	beq		@@skipWideLogic
+	ldrb	r0, [r4, Projectile_Stage]
+	cmp		r0, #8
+	bhi		@@skipWideLogic
+	bl		WaveBeam_MoveParts
+@@skipWideLogic:
+	ldr		r1, =CurrentClipdataAction
+	mov		r0, ClipdataAction_Beam
+	strb	r0, [r1]
+	bl		WaveBeam_UpdateClipdata
+	ldrb	r0, [r4, Projectile_Stage]
+	lsr		r1, r0, #1
+	bne		@@stageOver1
+	bcs		@@stageEquals1
+	bl		WaveBeam_Initialize
+	b		@@incrementStage
+@@stageOver1:
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsl		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, #1Dh
+	add		r0, #18h
+	bl		Projectile_Move
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_BeamUpgrades]
+	lsr		r1, r0, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@incrementTimer
+	lsr		r1, r0, BeamUpgrade_IceBeam + 1
+	bcc		@@incrementTimer
+	mov		r0, #0Eh
+	mov		r1, #3
+	bl		Beam_SetTrail
+	b		@@incrementTimer
+@@stageEquals1:
+	mov		r0, #10h
+	bl		Projectile_Move
+@@incrementStage:
+	ldrb	r0, [r4, Projectile_Stage]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Stage]
+@@incrementTimer:
+	ldrb	r0, [r4, Projectile_Timer]
+	add		r0, #1
+	strb	r0, [r4, Projectile_Timer]
+@@return:
+	pop		{ r4, pc }
+	.pool
+.endfunc
+.endregion
+
+.org 08006412h
+.fill 0Ah, 0
+
+.org 0807453Ch
+.fill 0Ah, 0
+
+.org 08081404h
+.region 1B4h, 0
+	; Uncharged beam firing
+	ldr		r4, =ArmCannonPos
+	ldr		r1, =SamusUpgrades
+	ldrb	r2, [r1, SamusUpgrades_BeamUpgrades]
+	mov		r1, r2
+	lsr		r0, r1, #1
+	beq		@@basicBeam
+	lsl		r1, 1Fh - BeamUpgrade_WaveBeam
+	lsr		r1, 1Fh
+	add		r1, #2
+@@basicBeam:
+	mov		r5, r1
+	mov		r6, #1
+	mov		r7, #0
+	; jump to special case for pure charge beam
+	lsr		r0, r2, BeamUpgrade_ChargeBeam + 1
+	bcc		@@wideCheck
+	beq		@@spawnPureCharge
+@@wideCheck:
+	; fire three projectiles with wide beam
+	lsr		r0, r2, BeamUpgrade_WideBeam + 1
+	bcc		@@waveCheck
+	mov		r6, #3
+	b		@@spawnProjectiles
+@@waveCheck:
+	; fire two projectiles with wave beam
+	lsr		r0, r2, BeamUpgrade_WaveBeam + 1
+	bcc		@@spawnProjectiles
+	ldr		r2, =SamusState
+	ldrb	r0, [r2, SamusState_SoloWaveDirection]
+	sub		r1, r0, #1
+	cmp		r1, #1
+	bhi		@@normalizeSoloWave
+	mov		r1, #3
+	eor		r0, r1
+	b		@@setWaveOptions
+@@normalizeSoloWave:
+	mov		r0, #1
+@@setWaveOptions:
+	strb	r0, [r2, SamusState_SoloWaveDirection]
+	mov		r6, r0
+	mov		r7, r0
+	b		@@spawnProjectiles
+@@spawnPureCharge:
+	; spawn center charge projectile
+	mov		r0, r5
+	mov		r1, #7
+	bl		CheckProjectiles
+	cmp		r0, #0
+	beq		@@end
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #0
+	bl		SpawnProjectile
+	; spawn secondary charge projectiles
+	str		r0, [sp, #8]
+	ldr		r1, =ProjectileList
+	lsl		r0, #5
+	add		r1, r0
+	ldrb	r0, [r1, Projectile_Direction]
+	str		r0, [sp, #4]
+	ldrb	r0, [r1, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_HorizontalFlip
+	and		r0, r1
+	str		r0, [sp, #0]
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #1
+	bl		SpawnSecondaryProjectile
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #2
+	bl		SpawnSecondaryProjectile
+	b		@@cleanup
+@@spawnProjectiles:
+	mov		r0, r5
+	lsl		r1, r6, #1
+	add		r1, #1
+	bl		CheckProjectiles
+	cmp		r0, #0
+	beq		@@end
+	sub		r6, #1
+@@spawnLoop:
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	add		r3, r6, r7
+	bl		SpawnProjectile
+	sub		r6, #1
+	bpl		@@spawnLoop
+@@cleanup:
+	ldr		r1, =SamusState
+	mov		r0, #7
+	strb	r0, [r1, SamusState_ProjectileCooldown]
+	ldrh	r0, [r4, ArmCannonPos_X]
+	ldrh	r1, [r4, ArmCannonPos_Y]
+	mov		r2, #2Bh
+	bl		SpawnParticleEffect
+@@end:
+	b		080818E4h
+	.pool
+.endregion
+
+.org 08081740h
+.region 1A4h, 0
+	; Charged beam firing
+	ldr		r4, =ArmCannonPos
+	ldr		r1, =SamusUpgrades
+	ldrb	r2, [r1, SamusUpgrades_BeamUpgrades]
+	mov		r1, r2
+	lsr		r0, r1, #1
+	beq		@@basicBeam
+	lsl		r1, 1Fh - BeamUpgrade_WaveBeam
+	lsr		r1, 1Fh
+	add		r1, #2
+@@basicBeam:
+	add		r5, r1, Projectile_ChargedNormalBeam
+	mov		r6, #1
+	mov		r7, #0
+	; jump to special case for pure charge beam
+	lsr		r0, r2, BeamUpgrade_ChargeBeam + 1
+	bcc		@@wideCheck
+	beq		@@spawnPureCharge
+@@wideCheck:
+	; fire three projectiles with wide beam
+	lsr		r0, r2, BeamUpgrade_WideBeam + 1
+	bcc		@@waveCheck
+	mov		r6, #3
+	b		@@spawnProjectiles
+@@waveCheck:
+	; fire two projectiles with wave beam
+	lsr		r0, r2, BeamUpgrade_WaveBeam + 1
+	bcc		@@spawnProjectiles
+	mov		r6, #2
+	mov		r7, #1
+	b		@@spawnProjectiles
+@@spawnPureCharge:
+	; spawn center charge projectile
+	mov		r0, r5
+	mov		r1, #7
+	bl		CheckProjectiles
+	cmp		r0, #0
+	beq		@@end
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #0
+	bl		SpawnProjectile
+	; spawn secondary charge projectiles
+	str		r0, [sp, #8]
+	ldr		r1, =ProjectileList
+	lsl		r0, #5
+	add		r1, r0
+	ldrb	r0, [r1, Projectile_Direction]
+	str		r0, [sp, #4]
+	ldrb	r0, [r1, Projectile_Status]
+	mov		r1, 1 << ProjectileStatus_HorizontalFlip
+	and		r0, r1
+	str		r0, [sp, #0]
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #1
+	bl		SpawnSecondaryProjectile
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #2
+	bl		SpawnSecondaryProjectile
+	b		@@cleanup
+@@spawnProjectiles:
+	mov		r0, r5
+	lsl		r1, r6, #1
+	add		r1, #1
+	bl		CheckProjectiles
+	cmp		r0, #0
+	beq		@@end
+	sub		r6, #1
+@@spawnLoop:
+	mov		r0, r5
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	add		r3, r6, r7
+	bl		SpawnProjectile
+	sub		r6, #1	
+	bpl		@@spawnLoop
+@@cleanup:
+	ldr		r1, =SamusState
+	mov		r0, #3
+	strb	r0, [r1, SamusState_ProjectileCooldown]
+	mov		r0, Projectile_BeamFlare
+	ldrh	r1, [r4, ArmCannonPos_X]
+	ldrh	r2, [r4, ArmCannonPos_Y]
+	mov		r3, #0
+	bl		SpawnProjectile
+@@end:
+	b		080818E4h
+	.pool
+.endregion
+
+.autoregion
+.func Beam_CalculateDamage
+	ldr		r0, =SamusUpgrades
+	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
+	mov		r3, r1
+	mov		r0, #2
+	cmp		r1, #0
+	beq		@@checkChargeWide
+@@countUpgrades:
+	add		r0, #1
+	sub		r2, r1, #1
+	and		r1, r2
+	bne		@@countUpgrades
+@@checkChargeWide:
+	; subtract 1 if charge or wide
+	lsl		r1, r3, 1Fh - BeamUpgrade_WideBeam
+	lsr		r1, #1Eh
+	beq		@@return
+	sub		r0, #1
+@@return:
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.autoregion
+.func Beam_HitEnemy
+	push	{ r4-r7, lr }
+	mov		r5, r8
+	mov		r6, r9
+	mov		r7, r10
+	push	{ r5-r7 }
+	mov		r7, r0
+	mov		r8, r1
+	mov		r9, r2
+	mov		r10, r3
+	ldr		r1, =SamusUpgrades
+	ldrb	r6, [r1, SamusUpgrades_BeamUpgrades]
+	ldr		r2, =EnemyList
+	add		r2, Enemy_Properties
+	mov		r1, #38h
+	mul		r1, r0
+	ldrb	r1, [r2, r1]
+	lsr		r3, r1, EnemyProps_SolidForProjectiles + 1
+	bcs		@@collideWithSolid
+	lsr		r3, r1, EnemyProps_ImmuneToProjectiles + 1
+	bcs		@@hitInvulnEnemy
+	bl		Enemy_GetWeakness
+	lsr		r1, r0, EnemyWeakness_BeamOrBombs + 1
+	bcs		@@hitEnemy
+	lsr		r1, r0, EnemyWeakness_Freezable + 1
+	bcc		@@hitImmuneEnemy
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@hitImmuneEnemy
+@@hitEnemy:
+	bl		Beam_CalculateDamage
+	mov		r1, r0
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@hitWithoutIce
+	mov		r2, r1
+	mov		r0, r7
+	mov		r1, r8
+	bl		IceBeam_DamageEnemy
+	mov		r1, #2
+	mov		r4, r1
+	mov		r5, r0
+	b		@@checkDebris
+@@hitWithoutIce:
+	mov		r0, r7
+	bl		Projectile_DamageEnemy
+	mov		r1, #1
+	mov		r4, r1
+	mov		r5, r0
+@@checkDebris:
+	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@plasmaDebris
+	mov		r0, r7
+	bl		Enemy_MakesDebrisWhenHit
+	cmp		r0, #0
+	beq		@@despawnWithHitParticle
+	mov		r0, r4
+	mov		r1, r5
+	mov		r2, r9
+	mov		r3, r10
+	bl		Enemy_CreateDebris
+	b		@@despawnWithHitParticle
+@@plasmaDebris:
+	mov		r0, r7
+	bl		Enemy_MakesDebrisWhenHit
+	cmp		r0, #0
+	beq		@@return
+	mov		r0, r4
+	mov		r1, r5
+	mov		r2, r9
+	mov		r3, r10
+	bl		Enemy_CreatePlasmaDebris
+	b		@@return
+@@hitImmuneEnemy:
+	mov		r0, r7
+	bl		Enemy_StartOnHitTimer
+	mov		r0, r9
+	mov		r1, r10
+	mov		r2, #7
+	bl		SpawnParticleEffect
+	b		@@despawnIfNoPlasma
+@@hitInvulnEnemy:
+	mov		r0, r9
+	mov		r1, r10
+	mov		r2, #7
+	bl		SpawnParticleEffect
+	b		@@despawn
+@@collideWithSolid:
+	mov		r0, r7
+	bl		Enemy_StartOnHitTimer
+	mov		r0, r7
+	bl		Enemy_GetWeakness
+	lsr		r0, EnemyWeakness_Freezable + 1
+	bcc		@@checkWave
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@checkWave
+	ldr		r2, =EnemyList
+	mov		r1, #38h
+	mul		r1, r7
+	add		r2, r1
+	mov		r3, r2
+	add		r3, #20h
+	ldrb	r0, [r3, Enemy_FreezeTimer - 20h]
+	cmp		r0, #0
+	bne		@@checkWave
+	mov		r0, #240
+	strb	r0, [r3, Enemy_FreezeTimer - 20h]
+	mov		r0, #0
+	strb	r0, [r3, Enemy_StandingOnFlag - 20h]
+	mov		r0, #15
+	ldrb	r1, [r3, Enemy_FreezePaletteOffset - 20h]
+	sub		r0, r1
+	ldrb	r1, [r2, Enemy_SpritesetGfxSlot]
+	sub		r0, r1
+	strb	r0, [r3, Enemy_Palette - 20h]
+@@checkWave:
+	lsr		r0, r6, BeamUpgrade_WaveBeam + 1
+	bcs		@@return
+@@despawnWithHitParticle:
+	lsl		r0, r6, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r1, r6, BeamUpgrade_IceBeam
+	lsl		r1, BeamUpgrade_WideBeam
+	orr		r0, r1
+	ldr		r1, =@BeamImpactParticle
+	ldrb	r2, [r1, r0]
+	mov		r0, r9
+	mov		r1, r10
+	bl		SpawnParticleEffect
+	b		@@despawn
+@@despawnIfNoPlasma:
+	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@return
+@@despawn:
+	ldr		r2, =ProjectileList
+	mov		r0, r8
+	lsl		r0, #5
+	add		r1, r2, r0
+	cmp		r6, 1 << BeamUpgrade_ChargeBeam
+	bne		@@despawnNotCharge
+	ldrb	r0, [r1, Projectile_Status]
+	lsr		r0, ProjectileStatus_Exploding + 1
+	bcc		@@despawnNotCharge
+	ldrb	r0, [r1, Projectile_ParentSlot]
+	lsl		r0, #5
+	add		r2, r0
+	ldrb	r0, [r2, Projectile_Stage]
+	cmp		r0, #4
+	bge		@@despawnNotCharge
+	mov		r0, #4
+	strb	r0, [r2, Projectile_Stage]
+@@despawnNotCharge:
+	mov		r0, #0
+	strb	r0, [r1, Projectile_Status]
+@@return:
+	pop		{ r5-r7 }
+	mov		r8, r5
+	mov		r9, r6
+	mov		r10, r7
+	pop		{ r4-r7, pc }
+	.pool
+.endfunc
+.endautoregion
+
+.autoregion
+.func ChargedBeam_CalculateDamage
+	ldr		r0, =SamusUpgrades
+	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
+	mov		r3, r1
+	mov		r0, #5
+	cmp		r1, #0
+	beq		@@checkPlasma
+@@countUpgrades:
+	add		r0, #5
+	sub		r2, r1, #1
+	and		r1, r2
+	bne		@@countUpgrades
+@@checkPlasma:
+	; if plasma, damage = ceil((damage + 5) / 3)
+	lsr		r1, r3, BeamUpgrade_PlasmaBeam + 1
+	beq		@@return
+	add		r0, #7
+	mov		r1, 515 / 3
+	mul		r0, r1
+	lsr		r0, #9
+@@return:
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.autoregion
+.func ChargedBeam_HitEnemy
+	push	{ r4-r7, lr }
+	mov		r5, r8
+	mov		r6, r9
+	mov		r7, r10
+	push	{ r5-r7 }
+	mov		r7, r0
+	mov		r8, r1
+	mov		r9, r2
+	mov		r10, r3
+	ldr		r1, =SamusUpgrades
+	ldrb	r6, [r1, SamusUpgrades_BeamUpgrades]
+	ldr		r4, =EnemyList
+	mov		r1, #38h
+	mul		r1, r0
+	add		r4, r1
+	mov		r1, Enemy_Properties
+	ldrb	r1, [r4, r1]
+	lsr		r3, r1, EnemyProps_SolidForProjectiles + 1
+	bcs		@@collideWithSolid
+	lsr		r3, r1, EnemyProps_ImmuneToProjectiles + 1
+	bcs		@@hitInvulnEnemy
+	ldrb	r1, [r4, Enemy_Id]
+	cmp		r1, #0C0h
+	beq		@@checkSaxHit
+	bl		Enemy_GetWeakness
+	lsr		r1, r0, EnemyWeakness_BeamOrBombs + 1
+	bcs		@@hitEnemy
+	lsr		r1, r0, EnemyWeakness_ChargeBeam + 1
+	bcs		@@hitEnemy
+	lsr		r1, r0, EnemyWeakness_Freezable + 1
+	bcc		@@hitImmuneEnemy
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@hitImmuneEnemy
+	b		@@hitEnemy
+@@checkSaxHit:
+	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
+	bcc		@@hitImmuneEnemy
+@@hitEnemy:
+	bl		ChargedBeam_CalculateDamage
+	mov		r1, r0
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@hitWithoutIce
+	mov		r2, r1
+	mov		r0, r7
+	mov		r1, r8
+	bl		IceBeam_DamageEnemy
+	mov		r1, #2
+	mov		r4, r1
+	mov		r5, r0
+	b		@@checkDebris
+@@hitWithoutIce:
+	mov		r0, r7
+	bl		Projectile_DamageEnemy
+	mov		r1, #1
+	mov		r4, r1
+	mov		r5, r0
+@@checkDebris:
+	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@plasmaDebris
+	mov		r0, r7
+	bl		Enemy_MakesDebrisWhenHit
+	cmp		r0, #0
+	beq		@@despawnWithHitParticle
+	mov		r0, r4
+	mov		r1, r5
+	mov		r2, r9
+	mov		r3, r10
+	bl		Enemy_CreateDebris
+	b		@@despawnWithHitParticle
+@@plasmaDebris:
+	mov		r0, r7
+	bl		Enemy_MakesDebrisWhenHit
+	cmp		r0, #0
+	beq		@@return
+	mov		r0, r4
+	mov		r1, r5
+	mov		r2, r9
+	mov		r3, r10
+	bl		Enemy_CreatePlasmaDebris
+	b		@@return
+@@hitImmuneEnemy:
+	mov		r0, r7
+	bl		Enemy_StartOnHitTimer
+	mov		r0, r9
+	mov		r1, r10
+	mov		r2, #7
+	bl		SpawnParticleEffect
+	b		@@despawnIfNoPlasma
+@@hitInvulnEnemy:
+	mov		r0, r9
+	mov		r1, r10
+	mov		r2, #7
+	bl		SpawnParticleEffect
+	b		@@despawn
+@@collideWithSolid:
+	mov		r0, r7
+	bl		Enemy_StartOnHitTimer
+	mov		r0, r7
+	bl		Enemy_GetWeakness
+	lsr		r0, EnemyWeakness_Freezable + 1
+	bcc		@@checkWave
+	lsr		r0, r6, BeamUpgrade_IceBeam + 1
+	bcc		@@checkWave
+	ldr		r2, =EnemyList
+	mov		r1, #38h
+	mul		r1, r7
+	add		r2, r1
+	mov		r3, r2
+	add		r3, #20h
+	ldrb	r0, [r3, Enemy_FreezeTimer - 20h]
+	cmp		r0, #0
+	bne		@@checkWave
+	mov		r0, #240
+	strb	r0, [r3, Enemy_FreezeTimer - 20h]
+	mov		r0, #0
+	strb	r0, [r3, Enemy_StandingOnFlag - 20h]
+	mov		r0, #15
+	ldrb	r1, [r3, Enemy_FreezePaletteOffset - 20h]
+	sub		r0, r1
+	ldrb	r1, [r2, Enemy_SpritesetGfxSlot]
+	sub		r0, r1
+	strb	r0, [r3, Enemy_Palette - 20h]
+@@checkWave:
+	lsr		r0, r6, BeamUpgrade_WaveBeam + 1
+	bcs		@@return
+@@despawnWithHitParticle:
+	lsl		r0, r6, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r0, 1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r1, r6, BeamUpgrade_IceBeam
+	lsl		r1, BeamUpgrade_WideBeam
+	orr		r0, r1
+	ldr		r1, =@BeamImpactParticle
+	ldrb	r2, [r1, r0]
+	mov		r0, r9
+	mov		r1, r10
+	bl		SpawnParticleEffect
+	b		@@despawn
+@@despawnIfNoPlasma:
+	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
+	bcs		@@return
+@@despawn:
+	ldr		r2, =ProjectileList
+	mov		r0, r8
+	lsl		r0, #5
+	add		r1, r2, r0
+	cmp		r6, 1 << BeamUpgrade_ChargeBeam
+	bne		@@despawnNoSoloCharge
+	ldrb	r0, [r1, Projectile_Status]
+	lsr		r0, ProjectileStatus_Exploding + 1
+	bcc		@@despawnNoSoloCharge
+	ldrb	r0, [r1, Projectile_ParentSlot]
+	lsl		r0, #5
+	add		r2, r0
+	ldrb	r0, [r2, Projectile_Stage]
+	cmp		r0, #4
+	bge		@@despawnNoSoloCharge
+	mov		r0, #4
+	strb	r0, [r2, Projectile_Stage]
+@@despawnNoSoloCharge:
+	mov		r0, #0
+	strb	r0, [r1, Projectile_Status]
+@@return:
+	pop		{ r5-r7 }
+	mov		r8, r5
+	mov		r9, r6
+	mov		r10, r7
+	pop		{ r4-r7, pc }
+	.pool
+.endfunc
+.endautoregion
+
+.org 08082CE6h
+	bl		Beam_HitEnemy
+.org 08082D0Ch
+	bl		Beam_HitEnemy
+.org 08082D36h
+	bl		Beam_HitEnemy
+.org 08082D5Eh
+	bl		Beam_HitEnemy
+
+.org 08082DACh
+	bl		ChargedBeam_HitEnemy
+.org 08082DD4h
+	bl		ChargedBeam_HitEnemy
+.org 08082E0Ah
+	bl		ChargedBeam_HitEnemy
+.org 08082E30h
+	bl		ChargedBeam_HitEnemy
+
+.org 0879C284h
+	; projectile update functions
+	.dw		PlasmaBeam_Update | 1
+	.dw		WaveBeam_Update | 1
+	.dw		WaveBeam_Update | 1
+.org 0879C298h
+	.dw		ChargedPlasmaBeam_Update | 1
+	.dw		ChargedWaveBeam_Update | 1
+	.dw		ChargedWaveBeam_Update | 1
+
+.autoregion
+@BeamImpactParticle:
+	.db		3	; normal
+	.db		4	; pure charge
+	.db		5	; pure wide
+	.db		5	; charge + wide
+	.db		6	; pure plasma
+	.db		6	; charge + plasma
+	.db		6	; wide + plasma
+	.db		6	; charge + wide + plasma
+.endautoregion
+
+.autoregion
+@BeamSfx:
+	.db		0C9h	; pure wide
+	.db		0CBh	; pure plasma
+	.db		0CCh	; pure wave
+	.db		0CCh	; wave + plasma
+	.db		0CDh	; pure ice
+	.db		0CDh	; ice + plasma
+	.db		0CDh	; ice + wave
+	.db		0CDh	; ice + wave + plasma
+.endautoregion
+
+.autoregion
+@ChargedBeamSfx:
+	.db		0EEh	; pure wide
+	.db		0EFh	; pure plasma
+	.db		0F0h	; pure wave
+	.db		0F0h	; wave + plasma
+	.db		0F1h	; pure ice
+	.db		0F1h	; ice + plasma
+	.db		0F1h	; ice + wave
+	.db		0F1h	; ice + wave + plasma
+.endautoregion
+
+.autoregion
+@BeamGfxIndex:
+	.db		0	; pure wide
+	.db		1	; pure plasma
+	.db		0	; pure wave
+	.db		2	; wave + plasma
+	.db		3	; pure ice
+	.db		1	; ice + plasma
+	.db		3	; ice + wave
+	.db		2	; ice + wave + plasma
+.endautoregion
+
+.autoregion
+	.align 4
+@BeamOamPointers:
+	.dw		0858DBDCh, 0858DBFCh, 0858DC1Ch
+	.dw		0858DDF4h, 0858DE0Ch, 0858DE24h
+	.dw		0858DF64h, 0858DF74h, 0858DF84h
+	.dw		0858E1D8h, 0858E1E8h, 0858E1F8h
+.endautoregion
+
+.autoregion
+	.align 4
+@ChargedBeamOamPointers:
+	.dw		0858DC3Ch, 0858DC54h, 0858DC6Ch
+	.dw		0858DE3Ch, 0858DE54h, 0858DE6Ch
+	.dw		0858DF94h, 0858DFACh, 0858DFC4h
+	.dw		0858E208h, 0858E218h, 0858E228h
+.endautoregion
+
+.autoregion
+@BeamBboxOffsets:
+	.db		10h, 0Ch, 0Ch, 14h
+.endautoregion
+
+.autoregion
+@ChargedBeamBboxOffsets:
+	.db		14h, 14h, 0Ch, 14h
+.endautoregion
