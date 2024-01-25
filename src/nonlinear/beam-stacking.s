@@ -1,8 +1,3 @@
-; Copyright (c) 2022 Callie "AntyMew" LeFave and contributors
-; This Source Code Form is subject to the terms of the Mozilla Public
-; License, v. 2.0. If a copy of the MPL was not distributed with this
-; file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
 ; Changes all combinations of beam upgrades to function in an intuitive way.
 ; Vanilla behavior expects all previous beam upgrades to have been obtained,
 ; causing behavior such as Plasma, Wave, and Ice firing three projectiles even

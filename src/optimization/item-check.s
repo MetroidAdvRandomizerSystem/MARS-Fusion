@@ -1,8 +1,3 @@
-; Copyright (c) 2022 Callie "AntyMew" LeFave and contributors
-; This Source Code Form is subject to the terms of the Mozilla Public
-; License, v. 2.0. If a copy of the MPL was not distributed with this
-; file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
 ; Optimizes the size of item collection info in memory.
 ; The arrays of room IDs and item positions are replaced with a bit array,
 ; with room IDs and item positions stored in ROM instead.
