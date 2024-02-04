@@ -1,7 +1,7 @@
 IN ?= metroid4
 OUT ?= mfar
 
-AS := ./armips-a8c277c.exe
+AS := ./armips-a8d71f0.exe
 AS_FLAGS += -strequ @@file $(IN).gba -strequ @@out $(OUT).gba
 
 all: $(OUT).gba

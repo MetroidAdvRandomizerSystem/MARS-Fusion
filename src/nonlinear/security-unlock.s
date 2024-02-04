@@ -9,39 +9,39 @@
 .org 08074F70h
 .region 8Ch, 0
 .func UpdateSecurityLevel
-	push	{ r4, lr }
-	mov		r4, r0
-	ldr		r3, =SamusUpgrades
-	ldrb	r1, [r3, SamusUpgrades_SecurityLevel]
+	push	{ lr }
+	mov		r2, r0
 	ldr		r0, =CurrArea
 	ldrb	r0, [r0]
-	sub		r0, #2
-	cmp		r0, #4
-	bhs		@@retZero
-	ldr		r2, =SecurityUnlockEvents
-	lsl		r0, #3
-	add		r2, r0
-	ldrb	r0, [r2, SecurityUnlockEvent_SecurityLevel]
-	orr		r0, r1
-	cmp		r0, r1
-	beq		@@retZero
-	cmp		r4, #0
-	beq		@@ret
-	mov		r4, r0
-	strb	r0, [r3, SamusUpgrades_SecurityLevel]
-	ldr		r1, =LastAbility
-	ldrb	r0, [r2, SecurityUnlockEvent_Message]
-	strb	r0, [r1]
-	mov		r1, r0
+	sub		r0, Area_TRO
+	cmp		r0, Area_ARC - Area_TRO
+	bhi		@@retZero
+	add		r1, =@@SecurityRoomLocations
+	ldrb	r0, [r1, r0]
+	ldr		r1, =MiscProgress
+	ldr		r1, [r1, MiscProgress_MajorLocations]
+	lsr		r1, r0
+	lsr		r1, #1
+	bcs		@@retZero
+	cmp		r2, #0
+	beq		@@retOne
+	bl		ObtainMajorLocation
 	mov		r0,	#2
 	bl		SetEventEffect
-	mov		r0, r4
+@@retOne:
+	mov		r0, #1
 	b		@@ret
 @@retZero:
 	mov		r0, #0
 @@ret:
-	pop		{ r4, pc }
+	pop		{ pc }
 	.pool
+	.align 4
+@@SecurityRoomLocations:
+	.db		MajorLocation_TROSecurity
+	.db		MajorLocation_PYRSecurity
+	.db		MajorLocation_AQASecurity
+	.db		MajorLocation_ARCSecurity
 .endfunc
 .endarea
 
@@ -167,37 +167,3 @@
 .org 0828D2B9h
 	; Security level at game start
 	.db		1 << SecurityLevel_Lv0
-
-.org SecurityUnlockEvents
-.area SecurityUnlockEvent_Size, 0
-	.db		1 << SecurityLevel_Lv1
-	.db		Area_TRO
-	.db		12h
-	.db		13h
-	.db		23h
-	.db		SecurityLevel_Lv1 - 1
-.endarea
-.area SecurityUnlockEvent_Size, 0
-	.db		1 << SecurityLevel_Lv2
-	.db		Area_PYR
-	.db		22h
-	.db		23h
-	.db		37h
-	.db		SecurityLevel_Lv2 - 1
-.endarea
-.area SecurityUnlockEvent_Size, 0
-	.db		1 << SecurityLevel_Lv4
-	.db		Area_AQA
-	.db		52h
-	.db		53h
-	.db		7Dh
-	.db		SecurityLevel_Lv4 - 1
-.endarea
-.area SecurityUnlockEvent_Size, 0
-	.db		1 << SecurityLevel_Lv3
-	.db		Area_ARC
-	.db		36h
-	.db		37h
-	.db		4Bh
-	.db		SecurityLevel_Lv3 - 1
-.endarea

@@ -47,8 +47,8 @@
 	b		@@tryPlay
 @@case_MainDeck_check26:
 	; arachnus fight room
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Arachnus + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #26h
 	bne		@@case_MainDeck_check56
@@ -58,8 +58,8 @@
 	b		@@tryLock
 @@case_MainDeck_check56:
 	; yakuza fight room
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Yakuza + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Yakuza + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #56h
 	bne		@@areaSwitchDone
@@ -71,8 +71,8 @@
 	; charge core-x fight room
 	cmp		r6, #28h
 	bne		@@case_SRX_check28
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_ChargeCoreX + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_ChargeCoreX + 1
 	bcs		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
@@ -82,8 +82,8 @@
 	; ridley fight room
 	cmp		r6, #1Bh
 	bne		@@areaSwitchDone
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Ridley + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Ridley + 1
 	bcs		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
@@ -91,8 +91,8 @@
 	b		@@tryLock
 @@case_TRO:
 	; zazabi fight room
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Zazabi + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Zazabi + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #12h
 	bne		@@case_TRO_check16
@@ -102,8 +102,8 @@
 	b		@@tryLock
 @@case_TRO_check16:
 	; nettori fight room
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Nettori + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Nettori + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #16h
 	bne		@@areaSwitchDone
@@ -127,8 +127,8 @@
 	b		@@tryPlay
 @@case_AQA_check1F:
 	; serris tank
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Serris + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Serris + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #1Fh
 	bne		@@case_AQA_check2A
@@ -146,8 +146,8 @@
 	b		@@tryLock
 @@case_ARC:
 	; nightmare fight room
-	ldrb	r0, [r2, MiscProgress_Bosses]
-	lsr		r0, Boss_Nightmare + 1
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Nightmare + 1
 	bcs		@@areaSwitchDone
 	cmp		r6, #14h
 	bne		@@areaSwitchDone
@@ -215,4 +215,4 @@
 	pop		{ r4-r6, pc }
 	.pool
 .endfunc
-.endarea
+.endregion

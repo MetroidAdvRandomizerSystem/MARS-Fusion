@@ -1,3 +1,7 @@
+MinimapData equ 02034000h
+
+TanksCollected equ 02037200h
+
 Language equ 03000011h
 
 LastAbility equ 0300001Bh
@@ -8,11 +12,24 @@ CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
 CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
+NonGameplayFlag equ 03000B84h
 CurrEvent equ 03000B87h
 
 CurrentClipdataAction equ 03000053h
 
 ToggleInput equ 030011ECh
+
+LevelData equ 03000084h
+.sym off
+LevelData_Bg0 equ 00h
+LevelData_Bg1 equ 08h
+LevelData_Bg2 equ 10h
+LevelData_Clipdata equ 18h
+; LevelLayer struct
+LevelLayer_Data equ 00h
+LevelLayer_Stride equ 04h
+LevelLayer_Rows equ 06h
+.sym on
 
 ArmCannonPos equ 03000B80h
 .sym off
@@ -29,16 +46,17 @@ GameTimer_Frames equ 03h
 GameTimer_Maxed equ 04h
 .sym on
 
-MiscProgress equ 030006AEh
+MiscProgress equ 030006ACh
 .sym off
-MiscProgress_AtmoStabilizers equ 00h
-MiscProgress_NormalXBarriers equ 02h
+; technically not a struct; shifted by two to make ldr work properly
+; heavily modified from vanilla to make room for more flags
+MiscProgress_AtmoStabilizers equ 02h
+MiscProgress_NormalXBarriers equ 03h
 MiscProgress_SuperXBarriers equ 04h
-MiscProgress_PowerXBarriers equ 06h
-MiscProgress_Eyedoors equ 08h
-MiscProgress_StoryFlags equ 0Ah	; \
-MiscProgress_DataRooms equ 0Bh	; | non-vanilla, added by non-linear patches
-MiscProgress_Bosses equ 0Ch		; /
+MiscProgress_PowerXBarriers equ 05h
+MiscProgress_Eyedoors equ 06h
+MiscProgress_MajorLocations equ 08h
+MiscProgress_StoryFlags equ 0Ch
 .sym on
 
 CurrentEnemy equ 030006BCh
@@ -48,6 +66,7 @@ Enemy_Status equ 00h
 Enemy_Health equ 14h
 Enemy_Animation equ 16h
 Enemy_Id equ 1Dh
+Enemy_RoomSlot equ 1Eh
 Enemy_SpritesetGfxSlot equ 1Fh
 Enemy_Palette equ 20h
 Enemy_Pose equ 24h
@@ -119,6 +138,7 @@ SamusUpgrades_MapDownloads equ 0Eh
 SamusUpgrades_LowHealthFlag equ 0Fh
 .sym on
 
+SpecialTileset equ 03004DE4h
 DestinationRoom equ 03004E3Ch
 
 EventUpgradeInfo equ 08575FB4h
@@ -145,6 +165,12 @@ SecurityUnlockEvent_Message equ 05h	; non-vanilla
 SecurityUnlockEvent_Size equ 8
 .sym on
 
+AreaLevels equ 0879B8BCh
+.sym on
+LevelMeta_MapX equ 35h
+LevelMeta_MapY equ 36h
+.sym off
+
 MessagesByLanguage equ 0879CDF4h
 
 DMA0 equ 040000B0h
@@ -155,4 +181,12 @@ DMA3 equ 040000D4h
 DMA_SAD equ 00h
 DMA_DAD equ 04h
 DMA_CNT equ 08h
+.sym on
+
+; non-vanilla structs:
+
+.sym off
+MajorUpgradeInfo_Offset equ 00h
+MajorUpgradeInfo_Bitmask equ 01h
+MajorUpgradeInfo_Message equ 02h
 .sym on

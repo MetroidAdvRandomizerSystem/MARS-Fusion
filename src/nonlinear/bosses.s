@@ -8,17 +8,20 @@
 .area 38h, 0
 	; check arachnus and zazabi kill status before spawning
 	ldrb	r0, [r5, Enemy_Id]
-	sub		r0, EnemyId_Arachnus_CoreXNucleus
-	beq		@@checkStatus
-	sub		r0, EnemyId_Zazabi_CoreXNucleus - EnemyId_Arachnus_CoreXNucleus
+	cmp		r0, EnemyId_Arachnus_CoreXNucleus
+	beq		@@checkArachnus
+	cmp		r0, EnemyId_Zazabi_CoreXNucleus
 	bne		08025438h
-	mov		r0, Boss_Zazabi
+	mov		r0, MajorLocation_Zazabi
 	mov		r4, #4Bh
 	mov		r1, #5Eh
 	mov		r12, r1
+	b		@@checkStatus
+@@checkArachnus:
+	mov		r0, MajorLocation_Arachnus
 @@checkStatus:
 	ldr		r1, =MiscProgress
-	ldrh	r1, [r1, MiscProgress_Bosses]
+	ldr		r1, [r1, MiscProgress_MajorLocations]
 	lsr		r1, r0
 	lsr		r1, #1
 	bcs		08025438h
@@ -35,8 +38,8 @@
 	strb	r5, [r4, r0]
 	mov		r3, #0
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_ChargeCoreX + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_ChargeCoreX + 1
 	bcc		0802D60Ch
 	strb	r3, [r4, Enemy_Status]
 	b		0802D6BCh
@@ -54,8 +57,8 @@
 	mov		r4, #0
 	mov		r5, #2
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_WideCoreX + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_WideCoreX + 1
 	bcc		0803A0B4h
 	strb	r4, [r2, Enemy_Status]
 	b		0803A0FCh
@@ -68,8 +71,8 @@
 	mov		r7, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_Nettori + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Nettori + 1
 	bcc		08043D44h
 	strb	r7, [r4, Enemy_Status]
 	b		08043E44h
@@ -82,8 +85,8 @@
 	mov		r7, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_Serris + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Serris + 1
 	bcc		08047840h
 	strb	r7, [r4, Enemy_Status]
 	b		0804797Ch
@@ -96,8 +99,8 @@
 	mov		r7, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_XBox + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_XBox + 1
 	bcc		08051ADCh
 	strb	r7, [r4, Enemy_Status]
 	b		08051C82h
@@ -110,8 +113,8 @@
 	mov		r6, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_MegaCoreX + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_MegaCoreX + 1
 	bcc		08057588h
 	strb	r6, [r4, Enemy_Status]
 	b		08057694h
@@ -125,8 +128,8 @@
 	mov		r5, #8
 	ldr		r1, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_Ridley + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Ridley + 1
 	bcc		0805B5B4h
 	mov		r0, #0
 	strb	r0, [r1, Enemy_Status]
@@ -140,8 +143,8 @@
 	mov		r6, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_Yakuza + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Yakuza + 1
 	bcc		0805BDD8h
 	strb	r6, [r4, Enemy_Status]
 	b		0805BEA0h
@@ -154,8 +157,8 @@
 	mov		r7, #0
 	ldr		r4, =CurrentEnemy
 	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsr		r0, Boss_Nightmare + 1
+	ldr		r0, [r0, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Nightmare + 1
 	bcc		0805DDF4h
 	strb	r7, [r4, Enemy_Status]
 	b		0805DFA0h
@@ -165,12 +168,13 @@
 .org 08060D38h
 .area 18h, 0
 	; check if box is dead or defeated
-	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
-	lsl		r1, r0, 1Fh - Boss_Box
-	lsr		r1, 1Fh
-	lsl		r0, 1Fh - Boss_XBox
+	ldr		r1, =MiscProgress
+	ldrh	r0, [r1, MiscProgress_StoryFlags]
+	lsl		r0, 1Fh - StoryFlag_BoxDefeated
 	lsr		r0, 1Fh
+	ldr		r1, [r1, MiscProgress_MajorLocations]
+	lsl		r1, 1Fh - MajorLocation_XBox
+	lsr		r1, 1Fh
 	orr		r0, r1
 	bx		lr
 	.pool
@@ -178,15 +182,15 @@
 
 .org 08060D50h
 .area 18h, 0
-	; check if box is not dead or defeated
-	ldr		r0, =MiscProgress
-	ldrh	r0, [r0, MiscProgress_Bosses]
+	; check if box is neither dead nor defeated
+	ldr		r1, =MiscProgress
+	ldrh	r0, [r1, MiscProgress_StoryFlags]
+	lsl		r0, 1Fh - StoryFlag_BoxDefeated
+	ldr		r1, [r1, MiscProgress_MajorLocations]
+	lsl		r1, 1Fh - MajorLocation_XBox
+	orr		r0, r1
 	mvn		r0, r0
-	lsl		r1, r0, 1Fh - Boss_Box
-	lsr		r1, 1Fh
-	lsl		r0, 1Fh - Boss_XBox
 	lsr		r0, 1Fh
-	and		r0, r1
 	bx		lr
 	.pool
 .endarea
@@ -232,53 +236,31 @@
 
 .org 08025C52h
 .area 12h, 0
+	add		r1, =@@BossLocations
 	ldrb	r0, [r4, Enemy_Id]
-	add		r1, =@@BossIds
-	mov		r2, #1
-	add		r3, =@@BossAbilities
-	ldr		r4, =MiscProgress
-	b		@@cont
-	.pool
-.endarea
-	.skip 1Ch
-.area 66h, 0
-	.align 4
-@@BossIds:
-	.db		Boss_Arachnus
-	.db		Boss_Zazabi
-	.db		Boss_Serris
-	.db		Boss_MegaCoreX
-	.db		Boss_Yakuza
-	.db		Boss_Nightmare
-	.db		Boss_Ridley
-	.align 4
-@@BossAbilities:
-.if RANDOMIZER
-.notice "Core-X boss abilities @ " + tohex(.)
-.endif
-	.db		Ability_MorphBall
-	.db		Ability_HiJump
-	.db		Ability_Speedbooster
-	.db		Ability_VariaSuit
-	.db		Ability_SpaceJump
-	.db		Ability_GravitySuit
-	.db		Ability_ScrewAttack
-	.align 2
-@@cont:
 	sub		r0, EnemyId_Arachnus_CoreXNucleus
 	beq		@@obtainAbility
 	sub		r0, EnemyId_Zazabi_CoreXNucleus - EnemyId_Arachnus_CoreXNucleus
 	cmp		r0, EnemyId_Ridley_CoreXNucleus - EnemyId_Zazabi_CoreXNucleus
 	bhi		08025CE6h
 	add		r0, #1
+	b		@@obtainAbility
+.endarea
+	.skip 1Ch
+.area 66h, 0
+	.align 4
+@@BossLocations:
+	.db		MajorLocation_Arachnus
+	.db		MajorLocation_Zazabi
+	.db		MajorLocation_Serris
+	.db		MajorLocation_MegaCoreX
+	.db		MajorLocation_Yakuza
+	.db		MajorLocation_Nightmare
+	.db		MajorLocation_Ridley
+	.align 2
 @@obtainAbility:
-	ldrb	r1, [r1, r0]
-	lsl		r2, r1
-	ldrh	r1, [r4, MiscProgress_Bosses]
-	orr		r1, r2
-	strh	r1, [r4, MiscProgress_Bosses]
-	ldrb	r0, [r3, r0]
-	bl		ObtainAbility
+	ldrb	r0, [r1, r0]
+	bl		ObtainMajorLocation
 	mov		r0, #60
 	ldr		r1, =03000046h
 	strb	r0, [r1]
@@ -289,45 +271,26 @@
 .org 0802DDA0h
 .area 10h, 0
 	ldrb	r0, [r4, Enemy_Id]
-	add		r1, =@@BossIds
-	mov		r2, #1
-	add		r3, =@@BossAbilities
-	ldr		r4, =MiscProgress
-	b		@@cont
-	.pool
-.endarea
-	.skip 1Ch
-.area 28h, 0
-	.align 4
-@@BossIds:
-	.db		Boss_ChargeCoreX
-	.db		Boss_WideCoreX
-	.db		Boss_Nettori
-	.db		Boss_XBox
-	.align 4
-@@BossAbilities:
-.if RANDOMIZER
-.notice "Beam Core-X boss abilities @ " + tohex(.)
-.endif
-	.db		Ability_ChargeBeam
-	.db		Ability_WideBeam
-	.db		Ability_PlasmaBeam
-	.db		Ability_WaveBeam
-	.align 2
-@@cont:
 	sub		r0, EnemyId_ChargeCoreXNucleus
 	cmp		r0, EnemyId_XBox_CoreXNucleus - EnemyId_ChargeCoreXNucleus
 	bhi		0802DDF4h
-	ldrb	r1, [r1, r0]
-	lsl		r2, r1
-	ldrh	r1, [r4, MiscProgress_Bosses]
-	orr		r1, r2
-	strh	r1, [r4, MiscProgress_Bosses]
-	ldrb	r0, [r3, r0]
-	bl		ObtainAbility
+	add		r1, =@@BossLocations
+	b		@@cont
+	.align 4
+@@BossLocations:
+	.db		MajorLocation_ChargeCoreX
+	.db		MajorLocation_WideCoreX
+	.db		MajorLocation_Nettori
+	.db		MajorLocation_XBox
+.endarea
+	.skip 1Ch
+.area 28h, 0
+@@cont:
+	ldrb	r0, [r1, r0]
+	bl		ObtainMajorLocation
 	mov		r0, #60
-	mov		r1, #03h
-	lsl		r1, #18h
-	add		r1, #46h
-	strb	r0, [r1]
+	ldr		r1, =03000046h
+	strb	r0, [r6]
+	b		0802DDF4h
+	.pool
 .endarea

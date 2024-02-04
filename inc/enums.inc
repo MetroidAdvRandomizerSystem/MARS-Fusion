@@ -38,25 +38,46 @@ MusicType_TitleIntro equ 15		; teaser intro
 MusicType_TitleScreen equ 16	; self-explanatory
 MusicType_TitleDemo equ 17		; title screen demonstration
 
-Ability_None equ 0
-Ability_Missiles equ 1
-Ability_MorphBall equ 2
-Ability_ChargeBeam equ 3
-Ability_Bombs equ 4
-Ability_HiJump equ 5
-Ability_Speedbooster equ 6
-Ability_SuperMissiles equ 7
-Ability_VariaSuit equ 8
-Ability_IceMissiles equ 9
-Ability_WideBeam equ 10
-Ability_PowerBombs equ 11
-Ability_SpaceJump equ 12
-Ability_PlasmaBeam equ 13
-Ability_GravitySuit equ 14
-Ability_DiffusionMissiles equ 15
-Ability_WaveBeam equ 16
-Ability_ScrewAttack equ 17
-Ability_IceBeam equ 18
+Message_SecurityLevel1 equ 00h
+Message_SecurityLevel2 equ 01h
+Message_SecurityLevel3 equ 02h
+Message_SecurityLevel4 equ 03h
+Message_MissileUpgrade equ 04h
+Message_SuperMissileUpgrade equ 05h
+Message_BombUpgrade equ 06h
+Message_PowerBombUpgrade equ 07h
+Message_IceMissileUpgrade equ 08h
+Message_DiffusionMissileUpgrade equ 09h
+Message_MorphBallUpgrade equ 0Ah
+Message_HiJumpUpgrade equ 0Bh
+Message_ScrewAttackUpgrade equ 0Ch
+Message_SpaceJumpUpgrade equ 0Dh
+Message_SpeedboosterUpgrade equ 0Eh
+Message_VariaSuitUpgrade equ 0Fh
+Message_GravitySuitUpgrade equ 10h
+Message_ChargeBeamUpgrade equ 11h
+Message_WideBeamUpgrade equ 12h
+Message_WaveBeamUpgrade equ 13h
+Message_PlasmaBeamUpgrade equ 14h
+Message_IceBeamUpgrade equ 15h
+Message_AtmosphericStabilizer1 equ 16h
+Message_AtmosphericStabilizer2 equ 17h
+Message_AtmosphericStabilizer3 equ 18h
+Message_AtmosphericStabilizer4 equ 19h
+Message_AtmosphericStabilizer5 equ 1Ah
+Message_WaterLowered equ 1Bh
+Message_BoilerCooling equ 1Ch
+Message_AnimalsFreed equ 1Dh
+Message_AuxiliaryPower equ 1Eh
+Message_RestrictedSectorDetachment equ 1Fh
+Message_EscapeSequence equ 20h
+Message_EnergyTankUpgrade equ 27h
+Message_MissileTankUpgrade equ 28h
+Message_PowerBombTankUpgrade equ 29h
+
+Tank_Missiles equ 1
+Tank_Energy equ 2
+Tank_PowerBombs equ 3
 
 SecurityLevel_Lv0 equ 0	; Gray doors
 SecurityLevel_Lv1 equ 1	; Blue doors
@@ -86,6 +107,7 @@ SuitUpgrade_GravitySuit equ 5
 SuitUpgrade_MorphBall equ 6
 SuitUpgrade_OmegaSuit equ 7
 
+EnemyId_MessageBox equ 21h
 EnemyId_Arachnus_CoreXNucleus equ 3Fh
 EnemyId_Zazabi_CoreXNucleus equ 44h
 EnemyId_Serris_CoreXNucleus equ 45h
@@ -158,22 +180,59 @@ ClipdataAction_BombChain equ 13
 
 EventEffect_WaterLowering equ 5
 
-; non-vanilla enums:
+; non-vanilla enums
 
-Boss_Arachnus equ 0
-Boss_ChargeCoreX equ 1
-Boss_Zazabi equ 2
-Boss_Serris equ 3
-Boss_Box equ 4
-Boss_MegaCoreX equ 5
-Boss_WideCoreX equ 6
-Boss_Yakuza equ 7
-Boss_Nettori equ 8
-Boss_Nightmare equ 9
-Boss_XBox equ 10
-Boss_Ridley equ 11
+Upgrade_None equ 0
+Upgrade_Missiles equ 1
+Upgrade_MorphBall equ 2
+Upgrade_ChargeBeam equ 3
+Upgrade_SecurityLevel1 equ 4
+Upgrade_Bombs equ 5
+Upgrade_HiJump equ 6
+Upgrade_Speedbooster equ 7
+Upgrade_SecurityLevel2 equ 8
+Upgrade_SuperMissiles equ 9
+Upgrade_VariaSuit equ 10
+Upgrade_SecurityLevel3 equ 11
+Upgrade_IceMissiles equ 12
+Upgrade_WideBeam equ 13
+Upgrade_PowerBombs equ 14
+Upgrade_SpaceJump equ 15
+Upgrade_PlasmaBeam equ 16
+Upgrade_GravitySuit equ 17
+Upgrade_SecurityLevel4 equ 18
+Upgrade_DiffusionMissiles equ 19
+Upgrade_WaveBeam equ 20
+Upgrade_ScrewAttack equ 21
+Upgrade_IceBeam equ 22
+Upgrade_MissileTank equ 23
+Upgrade_EnergyTank equ 24
+Upgrade_PowerBombTank equ 25
+
+MajorLocation_MainDeckData equ 00h
+MajorLocation_Arachnus equ 01h
+MajorLocation_ChargeCoreX equ 02h
+MajorLocation_TROSecurity equ 03h
+MajorLocation_TROData equ 04h
+MajorLocation_Zazabi equ 05h
+MajorLocation_Serris equ 06h
+MajorLocation_PYRSecurity equ 07h
+MajorLocation_PYRData equ 08h
+MajorLocation_MegaCoreX equ 09h
+MajorLocation_ARCSecurity equ 0Ah
+MajorLocation_ARCData equ 0Bh
+MajorLocation_WideCoreX equ 0Ch
+MajorLocation_ARCData2 equ 0Dh
+MajorLocation_Yakuza equ 0Eh
+MajorLocation_Nettori equ 0Fh
+MajorLocation_Nightmare equ 10h
+MajorLocation_AQASecurity equ 11h
+MajorLocation_AQAData equ 12h
+MajorLocation_XBox equ 13h
+MajorLocation_Ridley equ 14h
 
 StoryFlag_MissileHatch equ 0
 StoryFlag_WaterLowered equ 1
+StoryFlag_BoxDefeated equ 2
 
 .sym on

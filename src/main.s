@@ -3,18 +3,20 @@
 
 .table "data/text.tbl"
 
-.include "inc/enums.inc"
-.include "inc/functions.inc"
-.include "inc/macros.inc"
-.include "inc/structs.inc"
-
 ; Assembly-time flags
 .definelabel DEBUG, 1
 .definelabel OPTIMIZE, 0
 .definelabel QOL, 1
-.definelabel PHYSICS, 1
+.definelabel PHYSICS, 0
 .definelabel NONLINEAR, 1
-.definelabel RANDOMIZER, 0
+.definelabel RANDOMIZER, 1
+
+.definelabel ABILITY_FROM_TANK, 0
+
+.include "inc/enums.inc"
+.include "inc/functions.inc"
+.include "inc/macros.inc"
+.include "inc/structs.inc"
 
 ; Mark end-of-file padding as free space
 .defineregion 0879ECC8h, 08800000h - 0879ECC8h, 0
@@ -29,7 +31,7 @@
 ; Patches intended to produce identical behavior to vanilla, but optimized
 .if OPTIMIZE
 .notice "Applying optimization patches..."
-.include "src/optimization/item-check.s"
+; .include "src/optimization/item-check.s"
 .endif
 
 ; Quality of life patches
@@ -66,6 +68,7 @@
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
 ; .include "src/nonlinear/event-spritesets.s"
+.include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"

@@ -20,10 +20,10 @@
 	mov		r0, #0
 	strb	r0, [r3, Enemy_Timer0 - 20h]
 	ldr		r2, =MiscProgress
-	ldrb	r1, [r2, MiscProgress_StoryFlags]
+	ldrh	r1, [r2, MiscProgress_StoryFlags]
 	mov		r0, 1 << StoryFlag_MissileHatch
 	orr		r0, r1
-	strb	r0, [r2, MiscProgress_StoryFlags]
+	strh	r0, [r2, MiscProgress_StoryFlags]
 	mov		r0, #1
 	bl		08041898h
 @@return:
@@ -35,7 +35,7 @@
 .area 1Ah, 0
 	; missile hatch initialize
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_MissileHatch + 1
 	bcc		08041904h
 	ldr		r1, =CurrentEnemy
@@ -48,7 +48,7 @@
 .org 08064FFCh
 	; water height check
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_WaterLowered + 1
 	bcc		08065020h
 .org 08065018h
@@ -58,7 +58,7 @@
 .area 18h, 0
 	; water lowered event check
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsl		r0, 1Fh - StoryFlag_WaterLowered
 	lsr		r0, 1Fh
 	bx		lr
@@ -69,7 +69,7 @@
 .area 18h, 0
 	; pump room active event check
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_WaterLowered + 1
 	sbc		r0, r0
 	neg		r0, r0
@@ -82,7 +82,7 @@
 	; electric wire idle
 	push	{ lr }
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_WaterLowered + 1
 	bcc		@@return
 	ldr		r1, =CurrentEnemy
@@ -104,7 +104,7 @@
 .area 1Ch, 0
 	; electric water damage update
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_WaterLowered + 1
 	bcc		@@return
 	ldr		r1, =CurrentEnemy
@@ -119,7 +119,7 @@
 .area 1Ch, 0
 	; electric water update
 	ldr		r0, =MiscProgress
-	ldrb	r0, [r0, MiscProgress_StoryFlags]
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_WaterLowered + 1
 	bcc		@@return
 	ldr		r1, =CurrentEnemy
@@ -135,11 +135,11 @@
 	; update water lowered flag
 	ldr		r5, =03004E4Ch
 	ldr		r1, =MiscProgress
-	ldrb	r0, [r1, MiscProgress_StoryFlags]
+	ldrh	r0, [r1, MiscProgress_StoryFlags]
 	mov		r1, 1 << StoryFlag_WaterLowered
 	orr		r0, r1
 	ldr		r1, =MiscProgress
-	strb	r0, [r1, MiscProgress_StoryFlags]
+	strh	r0, [r1, MiscProgress_StoryFlags]
 	ldrh	r0, [r5, #8]
 	add		r0, #1
 	strh	r0, [r5, #8]

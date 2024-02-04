@@ -2,12 +2,19 @@ Sfx_Play equ 0800270Ch
 Music_Play equ 08003538h
 Music_FadeOut equ 080036F0h
 
+SpawnPrimarySprite equ 0800FBC8h
+
 LockHatches equ 08063070h
 ChangeSuit equ 08063190h
 SetEventEffect equ 0806342Ch
 
 SpawnParticleEffect equ 080730E4h
 SetEvent equ 08074890h
+
+SetTankAsCollected equ 0806CCF8h
+RemoveCollectedTanks equ 0806CE40h
+MinimapSetCollectedItems equ 08075884h
+MapScreenCountTanks equ 08075D28h
 
 CheckProjectiles equ 0808116Ch
 SpawnProjectile equ 080811BCh

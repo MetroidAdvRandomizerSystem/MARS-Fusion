@@ -808,6 +808,7 @@
 .endregion
 
 .autoregion
+	.align 2
 .func Beam_CalculateDamage
 	ldr		r0, =SamusUpgrades
 	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
@@ -833,6 +834,7 @@
 .endautoregion
 
 .autoregion
+	.align 2
 .func Beam_HitEnemy
 	push	{ r4-r7, lr }
 	mov		r5, r8
@@ -996,6 +998,7 @@
 .endautoregion
 
 .autoregion
+	.align 2
 .func ChargedBeam_CalculateDamage
 	ldr		r0, =SamusUpgrades
 	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
@@ -1023,6 +1026,7 @@
 .endautoregion
 
 .autoregion
+	.align 2
 .func ChargedBeam_HitEnemy
 	push	{ r4-r7, lr }
 	mov		r5, r8

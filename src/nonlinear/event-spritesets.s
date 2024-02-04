@@ -85,6 +85,7 @@
 ;	S0-03 => S0-04, S0-30 => S0-53
 
 .autoregion
+	.align 2
 .func CheckEvent
 	cmp		r0, #6Dh
 	bhi		@@case_default
@@ -145,8 +146,8 @@
 .if !RANDOMIZER
 	ldrb	r0, [r3, MiscProgress_DataRooms]
 	lsr		r0, Area_MainDeck
-	ldrb	r1, [r3, MiscProgress_Bosses]
-	lsr		r1, Boss_Arachnus
+	ldr		r1, [r3, MiscProgress_MajorLocations]
+	lsr		r1, MajorLocation_Arachnus
 	bic		r0, r1
 	mov		r1, #1
 	and		r0, r1
@@ -156,8 +157,8 @@
 	bx		lr
 @@case_0A:
 	; arachnus defeated
-	ldrb	r0, [r3, MiscProgress_Bosses]
-	lsl		r0, 1Fh - Boss_Arachnus
+	ldr		r0, [r3, MiscProgress_MajorLocations]
+	lsl		r0, 1Fh - MajorLocation_Arachnus
 	lsr		r0, 1Fh
 	bx		lr
 @@case_0D:
@@ -185,13 +186,13 @@
 	bx		lr
 @@case_19:
 	; zazabi defeated, zoros in cocoons
-	ldrb	r0, [r3, MiscProgress_Bosses]
-	lsl		r0, 1Fh - Boss_Zazabi
+	ldr		r0, [r3, MiscProgress_MajorLocations]
+	lsl		r0, 1Fh - MajorLocation_Zazabi
 	lsr		r0, 1Fh
 	bx		lr
 @@case_20:
 	; sector 4 water level lowered
-	ldrb	r0, [r3, MiscProgress_StoryFlags]
+	ldrh	r0, [r3, MiscProgress_StoryFlags]
 	lsl		r0, 1Fh - StoryFlag_WaterLowered
 	lsr		r0, 1Fh
 	bx		lr
@@ -215,15 +216,15 @@
 	bx		lr
 @@case_32:
 	; TODO: sector 6 data room destroyed
-	ldrb	r0, [r3, MiscProgress_Bosses]
+	ldr		r0, [r3, MiscProgress_MajorLocations]
 	mvn		r0, r0
-	lsl		r0, 1Fh - Boss_MegaCoreX
+	lsl		r0, 1Fh - MajorLocation_MegaCoreX
 	lsr		r0, 1Fh
 	bx		lr
 @@case_33:
 	; defeated mega core-x
-	ldrb	r0, [r3, MiscProgress_Bosses]
-	lsl		r0, 1Fh - Boss_MegaCoreX
+	ldr		r0, [r3, MiscProgress_MajorLocations]
+	lsl		r0, 1Fh - MajorLocation_MegaCoreX
 	lsr		r0, 1Fh
 	bx		lr
 @@case_3A:
@@ -279,8 +280,8 @@
 	bx		lr
 @@case_4E:
 	; nettori defeated
-	ldrb	r0, [r3, MiscProgress_Bosses]
-	lsl		r0, 1Fh - Boss_Nettori
+	ldr		r0, [r3, MiscProgress_MajorLocations]
+	lsl		r0, 1Fh - MajorLocation_Nettori
 	lsr		r0, 1Fh
 	bx		lr
 @@case_51:
@@ -290,9 +291,9 @@
 	; no entry without authorization
 	; 	S6-10
 .if RANDOMIZER
-	ldrb	r0, [r3, MiscProgress_Bosses]
+	ldr		r0, [r3, MiscProgress_MajorLocations]
 	mvn		r0, r0
-	lsl		r0, 1Fh - Boss_XBox
+	lsl		r0, 1Fh - MajorLocation_XBox
 	lsr		r0, 1Fh
 .endif
 	bx		lr

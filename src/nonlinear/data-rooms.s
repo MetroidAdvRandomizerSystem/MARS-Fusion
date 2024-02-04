@@ -3,43 +3,37 @@
 .org 08074F30h
 .area 40h, 0
 .func CheckOrDownloadDataUpgrade
-	push	{ r4, lr }
-	ldr		r1, =CurrArea
-	ldrb	r4, [r1]
-	mov		r2, #1
-	lsl		r2, r4
-@@checkDownloaded:
-	ldr		r3, =MiscProgress
-	ldrb	r1, [r3, MiscProgress_DataRooms]
-	tst		r1, r2
-	bne		@@fail
-	cmp		r0, #0
+	push	{ lr }
+	mov		r2, r0
+	ldr		r0, =CurrArea
+	ldrb	r0, [r0]
+	add		r1, =@@DataRoomLocations
+	ldrb	r0, [r1, r0]
+	ldr		r1, =MiscProgress
+	ldr		r1, [r1, MiscProgress_MajorLocations]
+	lsr		r1, r0
+	lsr		r1, #1
+	bcs		@@fail
+	cmp		r2, #0
 	beq		@@success
-	orr		r1, r2
-	strb	r1, [r3, MiscProgress_DataRooms]
-	add		r1, =@@AreaUpgradeLookup
-	ldrb	r0, [r1, r4]
-	bl		ObtainAbility
+	bl		ObtainMajorLocation
 @@success:
 	mov		r0, #1
 	b		@@return
 @@fail:
 	mov		r0, #0
 @@return:
-	pop		{ r4, pc }
+	pop		{ pc }
 	.align 4
-@@AreaUpgradeLookup:
-.if RANDOMIZER
-.notice "Data Room abilities @ " + tohex(.)
-.endif
-	.db		Ability_Missiles
-	.skip 1
-	.db		Ability_Bombs
-	.db		Ability_SuperMissiles
-	.db		Ability_DiffusionMissiles
-	.db		Ability_IceMissiles
-	.skip 1
-	.db		Ability_PowerBombs	; second sector 5 download
+@@DataRoomLocations:
+	.db		MajorLocation_MainDeckData
+	.db		0FFh
+	.db		MajorLocation_TROData
+	.db		MajorLocation_PYRData
+	.db		MajorLocation_AQAData
+	.db		MajorLocation_ARCData
+	.db		0FFh
+	.db		MajorLocation_ARCData2	; second sector 5 download
 	.pool
 .endfunc
 .endarea
