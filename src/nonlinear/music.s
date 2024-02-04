@@ -34,29 +34,24 @@
 	.db		(@@case_NOC - @@branch - 4) >> 1
 	.align 2
 @@case_MainDeck:
-	; leaving arachus fight room
-	cmp		r6, #0Eh
-	bne		@@case_MainDeck_check26
-	ldr		r1, =030019F1h
-	ldrb	r0, [r1]
-	cmp		r0, MusicType_BossAmbience
-	bne		@@areaSwitchDone
-	mov		r0, #1Eh
-	mov		r1, MusicType_Transient
-	mov		r2, #60
-	b		@@tryPlay
-@@case_MainDeck_check26:
 	; arachnus fight room
+	cmp		r6, #26h
+	bne		@@case_MainDeck_check54
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@areaSwitchDone
-	cmp		r6, #26h
-	bne		@@case_MainDeck_check56
+	ldr		r1, =030019F1h
+	ldrb	r0, [r1]
+	cmp		r0, MusicType_BossAmbience
+	beq		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
 	b		@@tryLock
-@@case_MainDeck_check56:
+@@case_MainDeck_check54:
+	; arachus fight side room
+	cmp		r6, #54h
+	beq		@@areaSwitchDone
 	; yakuza fight room
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Yakuza + 1
@@ -91,22 +86,22 @@
 	b		@@tryLock
 @@case_TRO:
 	; zazabi fight room
+	cmp		r6, #12h
+	bne		@@case_TRO_check16
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Zazabi + 1
 	bcs		@@areaSwitchDone
-	cmp		r6, #12h
-	bne		@@case_TRO_check16
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
 	b		@@tryLock
 @@case_TRO_check16:
 	; nettori fight room
+	cmp		r6, #16h
+	bne		@@areaSwitchDone
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Nettori + 1
 	bcs		@@areaSwitchDone
-	cmp		r6, #16h
-	bne		@@areaSwitchDone
 	mov		r0, #44h
 	mov		r1, MusicType_BossMusic
 	mov		r2, #50
@@ -127,11 +122,11 @@
 	b		@@tryPlay
 @@case_AQA_check1F:
 	; serris tank
+	cmp		r6, #1Fh
+	bne		@@case_AQA_check2A
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Serris + 1
 	bcs		@@areaSwitchDone
-	cmp		r6, #1Fh
-	bne		@@case_AQA_check2A
 	mov		r0, #5Fh
 	mov		r1, MusicType_AQA1
 	mov		r2, #60
@@ -146,10 +141,10 @@
 	b		@@tryLock
 @@case_ARC:
 	; nightmare fight room
+	cmp		r6, #14h
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Nightmare + 1
 	bcs		@@areaSwitchDone
-	cmp		r6, #14h
 	bne		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
@@ -176,9 +171,12 @@
 	strb	r0, [r1]
 	b		@@return
 @@case_01:
-	; start main deck music
+	; start main deck music and increment sub-event
 	cmp		r4, #3
 	bne		@@return
+	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
+	add		r0, #1
+	strb	r0, [r1]
 	mov		r0, #1Eh
 	mov		r1, MusicType_Transient
 	b		@@playMusic
