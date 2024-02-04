@@ -21,9 +21,10 @@ TODO
 ## Randomizer
 - [x] Disable title screen demos
 - [x] Maps downloaded at game start
-- [ ] Configurable item locations
-  * [ ] Data rooms
-  * [ ] Core-Xs
+- [x] Configurable item locations
+  * [x] Data rooms
+  * [x] Core-Xs
+  * [x] Security rooms
   * [ ] Expansion tanks
 - [ ] Hint system
 
