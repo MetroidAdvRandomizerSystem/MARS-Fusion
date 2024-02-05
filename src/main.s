@@ -5,7 +5,7 @@
 
 ; Assembly-time flags
 .definelabel DEBUG, 1
-.definelabel OPTIMIZE, 0
+.definelabel OPTIMIZE, 1
 .definelabel QOL, 1
 .definelabel PHYSICS, 0
 .definelabel NONLINEAR, 1
@@ -31,7 +31,7 @@
 ; Patches intended to produce identical behavior to vanilla, but optimized
 .if OPTIMIZE
 .notice "Applying optimization patches..."
-; .include "src/optimization/item-check.s"
+.include "src/optimization/item-check.s"
 .endif
 
 ; Quality of life patches

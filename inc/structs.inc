@@ -138,6 +138,22 @@ SamusUpgrades_MapDownloads equ 0Eh
 SamusUpgrades_LowHealthFlag equ 0Fh
 .sym on
 
+TankCounter equ 030016F9h
+.sym off
+TankCounter_MaxAreaEnergyTanks equ 00h
+TankCounter_CurrAreaEnergyTanks equ 01h
+TankCounter_MaxAreaMissileTanks equ 02h
+TankCounter_CurrAreaMissileTanks equ 03h
+TankCounter_MaxAreaPowerBombTanks equ 04h
+TankCounter_CurrAreaPowerBombTanks equ 05h
+TankCounter_MaxTotalEnergyTanks equ 06h
+TankCounter_CurrTotalEnergyTanks equ 07h
+TankCounter_MaxTotalMissileTanks equ 08h
+TankCounter_CurrTotalMissileTanks equ 09h
+TankCounter_MaxTotalPowerBombTanks equ 0Ah
+TankCounter_CurrTotalPowerBombTanks equ 0Bh
+.sym on
+
 SpecialTileset equ 03004DE4h
 DestinationRoom equ 03004E3Ch
 
@@ -189,4 +205,10 @@ DMA_CNT equ 08h
 MajorUpgradeInfo_Offset equ 00h
 MajorUpgradeInfo_Bitmask equ 01h
 MajorUpgradeInfo_Message equ 02h
+.sym on
+
+.sym off
+MinorLocation_XPos equ 00h
+MinorLocation_YPos equ 01h
+MinorLocation_Upgrade equ 02h
 .sym on
