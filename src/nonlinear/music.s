@@ -142,10 +142,10 @@
 @@case_ARC:
 	; nightmare fight room
 	cmp		r6, #14h
+	bne		@@areaSwitchDone
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Nightmare + 1
 	bcs		@@areaSwitchDone
-	bne		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #50
