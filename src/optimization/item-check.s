@@ -260,7 +260,8 @@
 	ldrh	r0, [r4, SamusUpgrades_MaxEnergy]
 	sub		r0, #99
 	mov		r1, #100
-	strb	r0, [r5, TankCounter_CurrTotalMissileTanks]
+	bl		Divide
+	strb	r0, [r5, TankCounter_CurrTotalEnergyTanks]
 	ldrh	r0, [r4, SamusUpgrades_MaxMissiles]
 	sub		r0, #10
 	mov		r1, #5
