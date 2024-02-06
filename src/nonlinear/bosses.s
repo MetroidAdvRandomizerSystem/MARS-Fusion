@@ -290,7 +290,7 @@
 	bl		ObtainMajorLocation
 	mov		r0, #60
 	ldr		r1, =03000046h
-	strb	r0, [r6]
+	strb	r0, [r1]
 	b		0802DDF4h
 	.pool
 .endarea
