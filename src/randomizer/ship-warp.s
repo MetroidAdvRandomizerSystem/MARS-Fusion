@@ -33,18 +33,23 @@
 	strh	r0, [r1, SamusState_PositionX]
 	ldr		r0, =#703
 	strh	r0, [r1, SamusState_PositionY]
-	ldr		r1, =0300121Eh
-	ldrh	r0, [r1]
-	add		r0, #1
 	bl		08080968h
-	cmp		r0, #0
-	beq		@@exit
 	ldr		r1, =GameMode
+	cmp		r0, #0
+	beq		@@intro
 	mov		r0, #GameMode_InGame
 	strh	r0, [r1]
 	ldr		r1, =NonGameplayFlag
 	mov		r0, #0
 	strb	r0, [r1]
+	b		@@reinit_audio
+@@intro:
+	mov		r0, #GameMode_FileSelect
+	strh	r0, [r1]
+	ldr		r1, =SubGameMode2
+	mov		r0, #1
+	strb	r0, [r1]
+@@reinit_audio:
 	ldr		r5, =04000082h
 	ldrh	r4, [r5]
 	bl		InitializeAudio
@@ -76,7 +81,7 @@
 	bl		0807486Ch
 	b		0807EE82h
 @@fade:
-	cmp		r3, #21h
+	cmp		r3, #8
 	bge		@@reload
 	lsr		r3, #1
 	bcc		0807EE82h

@@ -16,6 +16,8 @@ NonGameplayFlag equ 03000B84h
 CurrEvent equ 03000B87h
 SaveSlot equ 03000B8Dh
 GameMode equ 03000BDEh
+SubGameMode1 equ 03000BE0h
+SubGameMode2 equ 03000BE2h
 
 CurrentClipdataAction equ 03000053h
 
