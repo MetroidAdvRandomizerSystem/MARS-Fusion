@@ -80,6 +80,7 @@
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
 .include "src/randomizer/disable-demos.s"
+.include "src/randomizer/ship-warp.s"
 .endif
 
 .close

@@ -1,3 +1,4 @@
+InitializeAudio equ 08002298h
 Sfx_Play equ 0800270Ch
 Music_Play equ 08003538h
 Music_FadeOut equ 080036F0h

@@ -14,6 +14,8 @@ CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
 NonGameplayFlag equ 03000B84h
 CurrEvent equ 03000B87h
+SaveSlot equ 03000B8Dh
+GameMode equ 03000BDEh
 
 CurrentClipdataAction equ 03000053h
 
@@ -179,6 +181,22 @@ SecurityUnlockEvent_NewEvent equ 03h
 SecurityUnlockEvent_SubEvent equ 04h
 SecurityUnlockEvent_Message equ 05h	; non-vanilla
 SecurityUnlockEvent_Size equ 8
+.sym on
+
+SaveData equ 0858225Ch
+.sym off
+SaveData_Area equ 1Dh
+SaveData_Room equ 1Eh
+SaveData_PreviousDoor equ 1Fh
+SaveData_BG0XPosition equ 40h
+SaveData_BG0YPosition equ 42h
+SaveData_BG1XPosition equ 44h
+SaveData_BG1YPosition equ 46h
+SaveData_BG2XPosition equ 48h
+SaveData_BG2YPosition equ 4Ah
+SaveData_BG3XPosition equ 4Ch
+SaveData_BG3YPosition equ 4Eh
+SaveData_SamusState equ 60h
 .sym on
 
 AreaLevels equ 0879B8BCh

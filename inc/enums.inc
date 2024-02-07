@@ -11,6 +11,8 @@ Button_Down equ 7
 Button_R equ 8
 Button_L equ 9
 
+GameMode_InGame equ 1
+
 Area_MainDeck equ 0
 Area_SRX equ 1
 Area_TRO equ 2
