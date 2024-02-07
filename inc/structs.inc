@@ -197,6 +197,8 @@ SaveData_BG2YPosition equ 4Ah
 SaveData_BG3XPosition equ 4Ch
 SaveData_BG3YPosition equ 4Eh
 SaveData_SamusState equ 60h
+SaveData_TanksCollected equ 0F80h
+SaveData_Size equ 1200h
 .sym on
 
 AreaLevels equ 0879B8BCh

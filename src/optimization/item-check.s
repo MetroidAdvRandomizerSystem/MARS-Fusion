@@ -328,12 +328,64 @@
 	.pool
 .endarea
 
+; load entire table to SRAM instead of variable amount based on tanks collected
+org 08080002h
+.area 34h
+	mov		r0, r8
+	add		r1, r0, r7
+	mov		r0, #10h
+	str		r0, [sp]
+	mov		r0, #3
+	ldr		r2, =TanksCollected
+	mov		r3, #(SaveData_Size - SaveData_TanksCollected) >> 4
+	lsl		r3, #4
+	bl		08002F1Ch
+	b		08080036h
+	.pool
+.endarea
+
 ; init item collection info with 0s instead of 1s
 .org 08080416h
 	mov		r1, #0
 
 .org 08080576h
 	mov		r1, #0
+
+.autoregion
+	.align 4
+.func InitializeSavedata
+	push	{ r4, lr }
+	sub		sp, #4
+	ldr		r1, =SaveData
+	ldr		r0, =SaveSlot
+	ldrb	r0, [r0]
+	lsl		r0, #2
+	ldr		r4, [r1, r0]
+	mov		r0, #10h
+	str		r0, [sp]
+	mov		r0, #3
+	mov		r1, #0
+	mov		r2, r4
+	mov		r3, #300 >> 4
+	lsl		r3, #4
+	bl		08002FECh
+	mov		r0, #3
+	mov		r1, #0
+	mov		r2, #SaveData_TanksCollected >> 4
+	lsl		r2, #4
+	add		r2, r4
+	mov		r3, #(SaveData_Size - SaveData_TanksCollected) >> 4
+	lsl		r3, #4
+	bl		08002FECh
+	add		sp, #4
+	pop		{ r4, pc }
+	.pool
+.endfunc
+.endautoregion
+
+.org 0807F1BAh
+	bl	InitializeSavedata
+	b	0807F222h
 
 .autoregion
 .align 4
