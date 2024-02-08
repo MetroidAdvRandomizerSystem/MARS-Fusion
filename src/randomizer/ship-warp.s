@@ -45,6 +45,15 @@
 	strh	r0, [r1, SamusState_PositionX]
 	ldr		r0, =#703
 	strh	r0, [r1, SamusState_PositionY]
+	add		r1, #SaveData_MusicSlot1 - SaveData_SamusState
+	mov		r0, #1Eh
+	strh	r0, [r1]
+	mov		r0, #2Ah
+	strh	r0, [r1, SaveData_MusicSlot2 - SaveData_MusicSlot1]
+	mov		r0, #0
+	strb	r0, [r1, SaveData_MusicSlotSelect - SaveData_MusicSlot1]
+	strb	r0, [r1, SaveData_MusicUnk1 - SaveData_MusicSlot1]
+	strh	r0, [r1, SaveData_MusicUnk2 - SaveData_MusicSlot1]
 	bl		08080968h
 	ldr		r1, =GameMode
 	cmp		r0, #0

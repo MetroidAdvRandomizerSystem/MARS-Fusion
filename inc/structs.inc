@@ -199,6 +199,11 @@ SaveData_BG2YPosition equ 4Ah
 SaveData_BG3XPosition equ 4Ch
 SaveData_BG3YPosition equ 4Eh
 SaveData_SamusState equ 60h
+SaveData_MusicSlot1 equ 0E8h
+SaveData_MusicSlot2 equ 0EAh
+SaveData_MusicSlotSelect equ 0ECh
+SaveData_MusicUnk1 equ 0EDh
+SaveData_MusicUnk2 equ 0EEh
 SaveData_TanksCollected equ 0F80h
 SaveData_Size equ 1200h
 .sym on
