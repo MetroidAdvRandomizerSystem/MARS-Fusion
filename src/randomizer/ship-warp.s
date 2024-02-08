@@ -1,5 +1,17 @@
 ; Allows warp to ship from the sleep mode menu.
-; TODO: replace graphics and text
+
+.org 086B5A18h
+.area 60h, 0
+.stringn 64, "[INDENT]Warp to ship?\n"
+.string  10, "[INDENT]You will return to your ship,"
+.endarea
+.area 72h, 0
+.stringn 19, "[INDENT]but your recent progress\n"
+.string  51, "[INDENT]will not be saved."
+.endarea
+
+.org 0856F71Ch
+.incbin "data/warp-map.gfx"
 
 .autoregion
 	.align 4
