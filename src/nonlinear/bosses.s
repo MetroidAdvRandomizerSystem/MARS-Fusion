@@ -49,6 +49,7 @@
 .org 0803A08Ah
 .area 2Ah, 0
 	; check wide core-x kill status before spawning
+	; TODO: bugged, wide core-x does not spawn
 	ldr		r4, =CurrentEnemy
 	mov		r0, Enemy_IgnoreSamusCollisionTimer
 	mov		r5, #1
@@ -194,14 +195,6 @@
 	bx		lr
 	.pool
 .endarea
-
-.org 08025AD4h
-	; prevent core-x post-boss music from persisting
-	mov		r1, MusicType_Transient
-
-.org 0802E564h
-	; prevent beam core-x post-boss music from persisting
-	mov		r1, MusicType_Transient
 
 .org 08045474h
 .area 18h, 0

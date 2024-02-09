@@ -1,6 +1,36 @@
 ; Overrides vanilla music behavior. Guts functionality for most sub-event
 ; specific songs.
 
+; BUG: serris boss music persists after killing while taking knockback
+
+.org 080715ACh
+.area 44h
+; Reorder function such that default music is set after calling UpdateSubEvent
+.func SetRoomMusic
+	push	{ r4-r5, lr }
+	lsl		r4, r0, #18h
+	lsr		r4, #18h - 2
+	lsl		r5, r1, #18h
+	lsr		r5, #18h
+	ldr		r2, =DestinationRoom
+	strb	r5, [r2]
+	mov		r0, #21h
+	bl		UpdateSubEvent
+	ldr		r1, =0879B8BCh
+	ldr		r1, [r1, r4]
+	lsl		r0, r5, #4
+	sub		r0, r5
+	lsl		r0, #2
+	add		r1, r0
+	ldrh	r0, [r1, #3Ah]
+	ldr		r2, =03004DE8h
+	strh	r0, [r2]
+	bl		Music_CheckSet
+	pop		{ r4-r5, pc }
+	.pool
+.endfunc
+.endarea
+
 .org 08070180h
 .region 142Ch, 0
 .func UpdateSubEvent
@@ -39,11 +69,11 @@
 	bne		@@case_MainDeck_check54
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
-	bcs		@@areaSwitchDone
-	ldr		r1, =030019F1h
+	bcs		@@case_areaSwitch_default
+	ldr		r1, =MusicType
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
-	beq		@@areaSwitchDone
+	beq		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -51,13 +81,18 @@
 @@case_MainDeck_check54:
 	; arachus fight side room
 	cmp		r6, #54h
-	beq		@@areaSwitchDone
+	bne		@@case_MainDeck_check56
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Arachnus + 1
+	bcs		@@case_areaSwitch_default
+	b		@@areaSwitchDone
+@@case_MainDeck_check56:
 	; yakuza fight room
+	cmp		r6, #56h
+	bne		@@case_areaSwitch_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Yakuza + 1
-	bcs		@@areaSwitchDone
-	cmp		r6, #56h
-	bne		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_Transient
 	mov		r2, #50
@@ -68,7 +103,7 @@
 	bne		@@case_SRX_check28
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_ChargeCoreX + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -76,10 +111,10 @@
 @@case_SRX_check28:
 	; ridley fight room
 	cmp		r6, #1Bh
-	bne		@@areaSwitchDone
+	bne		@@case_areaSwitch_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Ridley + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -90,7 +125,7 @@
 	bne		@@case_TRO_check16
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Zazabi + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -98,21 +133,21 @@
 @@case_TRO_check16:
 	; nettori fight room
 	cmp		r6, #16h
-	bne		@@areaSwitchDone
+	bne		@@case_areaSwitch_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Nettori + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #44h
 	mov		r1, MusicType_BossMusic
 	mov		r2, #50
 	b		@@tryLock
 @@case_PYR:
-	b		@@areaSwitchDone
+	b		@@case_areaSwitch_default
 @@case_AQA:
 	; leaving serris tank to main sector
 	cmp		r6, #1Eh
 	bne		@@case_AQA_check1F
-	ldr		r1, =030019F1h
+	ldr		r1, =MusicType
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_AQA1
 	bne		@@areaSwitchDone
@@ -126,7 +161,7 @@
 	bne		@@case_AQA_check2A
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Serris + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #5Fh
 	mov		r1, MusicType_AQA1
 	mov		r2, #60
@@ -134,7 +169,10 @@
 @@case_AQA_check2A:
 	; serris fight room
 	cmp		r6, #2Ah
-	bne		@@areaSwitchDone
+	bne		@@case_areaSwitch_default
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Serris + 1
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #40
@@ -142,15 +180,19 @@
 @@case_ARC:
 	; nightmare fight room
 	cmp		r6, #14h
-	bne		@@areaSwitchDone
+	bne		@@case_areaSwitch_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Nightmare + 1
-	bcs		@@areaSwitchDone
+	bcs		@@case_areaSwitch_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #50
 	b		@@tryLock
 @@case_NOC:
+@@case_areaSwitch_default:
+	ldr		r1, =MusicType
+	mov		r0, MusicType_Transient
+	strb	r0, [r1]
 @@areaSwitchDone:
 	ldr		r1, =CurrSubEvent
 	ldrh	r0, [r1]
