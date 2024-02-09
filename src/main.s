@@ -70,6 +70,7 @@
 ; .include "src/nonlinear/event-spritesets.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
+.include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
 .include "src/nonlinear/story-flags.s"

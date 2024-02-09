@@ -165,13 +165,18 @@
 	beq		@@case_9B
 	b		@@return
 @@case_00:
-	; Increment sub-event and return
+	; start first briefing music and increment subevent
+	ldrb	r2, [r1, PrevSubEvent - CurrSubEvent]
+	cmp		r2, #0FFh
+	bne		@@return
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
 	add		r0, #1
 	strb	r0, [r1]
-	b		@@return
+	mov		r0, #2Ah
+	mov		r1, MusicType_MainDeck
+	b		@@playMusic
 @@case_01:
-	; start main deck music and increment sub-event
+	; start main deck music and increment subevent
 	cmp		r4, #3
 	bne		@@return
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
@@ -214,3 +219,7 @@
 	.pool
 .endfunc
 .endregion
+
+; Remove subevent 0 music handling from dialogue handling
+.org 08079ED4h
+	nop :: nop :: nop :: nop
