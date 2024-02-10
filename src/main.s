@@ -32,6 +32,8 @@
 .if OPTIMIZE
 .notice "Applying optimization patches..."
 .include "src/optimization/item-check.s"
+.elseif RANDOMIZER
+.include "src/optimization/item-check.s"
 .endif
 
 ; Quality of life patches
@@ -82,6 +84,7 @@
 .notice "Applying randomizer patches..."
 .include "src/randomizer/disable-demos.s"
 .include "src/randomizer/ship-warp.s"
+.include "src/randomizer/tank-majors.s"
 .endif
 
 .close

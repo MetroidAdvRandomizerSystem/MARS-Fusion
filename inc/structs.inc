@@ -163,6 +163,14 @@ MusicType equ 030019F1h
 SpecialTileset equ 03004DE4h
 DestinationRoom equ 03004E3Ch
 
+RoomTanks equ 030053DCh
+.sym off
+RoomTanks_AnimationDelay equ 00h
+RoomTanks_AnimationFrame equ 01h
+RoomTanks_Upgrade equ 02h
+RoomTanks_Sprite equ 03h
+.sym on
+
 EventUpgradeInfo equ 08575FB4h
 .sym off
 EventUpgradeInfo_Len equ 19
@@ -240,4 +248,5 @@ MajorUpgradeInfo_Message equ 02h
 MinorLocation_XPos equ 00h
 MinorLocation_YPos equ 01h
 MinorLocation_Upgrade equ 02h
+MinorLocation_Sprite equ 03h
 .sym on

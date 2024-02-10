@@ -68,7 +68,7 @@
 	lsl		r2, r1, #2
 	lsl		r1, r0, #2
 @@lsearch:
-	ldr		r3, =@ItemPositions
+	ldr		r3, =MinorLocations
 	; r1 = offset, r2 = end offset, r3 = array, r4 = position
 	ldrh	r0, [r3, r1]
 	cmp		r0, r4
@@ -136,19 +136,24 @@
 	beq		@@exit
 	mov		r4, r0
 	mov		r5, r1
-	ldr		r6, =TanksCollected
-	ldr		r7, =@ItemPositions
+	mov		r6, r0
+	ldr		r7, =TanksCollected
 @@loop:
-	lsr		r2, r4, #3
-	lsl		r1, r4, #29
+	lsr		r2, r6, #3
+	lsl		r1, r6, #29
 	lsr		r1, #29
 	add		r1, #1
-	ldrb	r0, [r6, r2]
+	ldrb	r0, [r7, r2]
 	lsr		r0, r1
+.if RANDOMIZER
+	bcc		@@load_tank_gfx
+.else
 	bcc		@@loop_inc
+.endif
 	; item collected, delete from the loaded map
-	lsl		r2, r4, #2
-	add		r2, r7
+	ldr		r2, =MinorLocations
+	lsl		r0, r6, #2
+	add		r2, r0
 	ldrb	r0, [r2, MinorLocation_YPos]
 	ldr		r3, =LevelData
 	ldrh	r1, [r3, LevelData_Clipdata + LevelLayer_Stride]
@@ -172,9 +177,21 @@
 	mov		r0, #0
 @@set_bg1:
 	strh	r0, [r3, r2]
+.if RANDOMIZER
+	ldr		r2, =RoomTanks
+	sub		r1, r6, r4
+	lsl		r1, #2
+	mov		r0, #0
+	str		r0, [r2, r1]
+	b		@@loop_inc
+@@load_tank_gfx:
+	sub		r0, r6, r4
+	mov		r1, r6
+	bl		LoadTankGfx
+.endif
 @@loop_inc:
-	add		r4, #1
-	cmp		r4, r5
+	add		r6, #1
+	cmp		r6, r5
 	blt		@@loop
 @@exit:
 	pop		{ r4-r7, pc }
@@ -207,7 +224,7 @@
 	add		r1, #1
 	lsr		r0, r1
 	bcc		@@loop_inc
-	ldr		r5, =@ItemPositions
+	ldr		r5, =MinorLocations
 	lsl		r0, r3, #2
 	add		r5, r0
 	ldrb	r0, [r5, MinorLocation_XPos]
@@ -289,7 +306,7 @@
 	lsr		r0, r1
 	lsl		r0, #31
 	lsr		r3, r0, #31
-	ldr		r1, =@ItemPositions
+	ldr		r1, =MinorLocations
 	lsl		r0, r2, #2
 	add		r1, r0
 	ldrb	r0, [r1, MinorLocation_Upgrade]
@@ -409,20 +426,20 @@ org 08080002h
 	.db		07h, 11h, 23h, 26h, 2Dh, 2Fh, 32h, 33h
 	.db		39h, 45h, 48h, 49h, 54h
 	.fill	16 - (. - @@Items_MainDeck), 0FFh
-	.db		(@Items_MainDeck_Room07 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room11 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room23 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room26 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room2D - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room2F - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room32 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room33 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room39 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room45 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room48 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room49 - @ItemPositions) >> 2
-	.db		(@Items_MainDeck_Room54 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room05 - @ItemPositions) >> 2
+	.db		(@Items_MainDeck_Room07 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room11 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room23 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room26 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room2D - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room2F - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room32 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room33 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room39 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room45 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room48 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room49 - MinorLocations) >> 2
+	.db		(@Items_MainDeck_Room54 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room05 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -430,17 +447,17 @@ org 08080002h
 	.db		05h, 11h, 1Eh, 27h, 28h, 2Bh, 2Ch, 2Fh
 	.db		32h, 34h
 	.fill	16 - (. - @@Items_Sector1), 0FFh
-	.db		(@Items_Sector1_Room05 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room11 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room1E - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room27 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room28 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room2B - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room2C - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room2F - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room32 - @ItemPositions) >> 2
-	.db		(@Items_Sector1_Room34 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room06 - @ItemPositions) >> 2
+	.db		(@Items_Sector1_Room05 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room11 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room1E - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room27 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room28 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room2B - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room2C - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room2F - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room32 - MinorLocations) >> 2
+	.db		(@Items_Sector1_Room34 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room06 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -448,21 +465,21 @@ org 08080002h
 	.db		06h, 09h, 0Ah, 11h, 15h, 19h, 1Bh, 1Fh
 	.db		21h, 2Ah, 2Fh, 32h, 36h, 37h
 	.fill	16 - (. - @@Items_Sector2), 0FFh
-	.db		(@Items_Sector2_Room06 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room09 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room0A - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room11 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room15 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room19 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room1B - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room1F - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room21 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room2A - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room2F - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room32 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room36 - @ItemPositions) >> 2
-	.db		(@Items_Sector2_Room37 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room03 - @ItemPositions) >> 2
+	.db		(@Items_Sector2_Room06 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room09 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room0A - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room11 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room15 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room19 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room1B - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room1F - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room21 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room2A - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room2F - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room32 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room36 - MinorLocations) >> 2
+	.db		(@Items_Sector2_Room37 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room03 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -470,19 +487,19 @@ org 08080002h
 	.db		03h, 06h, 08h, 09h, 0Ch, 13h, 1Ch, 1Eh
 	.db		21h, 22h, 23h, 25h
 	.fill	16 - (. - @@Items_Sector3), 0FFh
-	.db		(@Items_Sector3_Room03 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room06 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room08 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room09 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room0C - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room13 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room1C - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room1E - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room21 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room22 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room23 - @ItemPositions) >> 2
-	.db		(@Items_Sector3_Room25 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room06 - @ItemPositions) >> 2
+	.db		(@Items_Sector3_Room03 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room06 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room08 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room09 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room0C - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room13 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room1C - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room1E - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room21 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room22 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room23 - MinorLocations) >> 2
+	.db		(@Items_Sector3_Room25 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room06 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -490,20 +507,20 @@ org 08080002h
 	.db		06h, 0Ah, 0Dh, 0Fh, 11h, 17h, 18h, 1Ch
 	.db		21h, 24h, 26h, 29h, 2Eh
 	.fill	16 - (. - @@Items_Sector4), 0FFh
-	.db		(@Items_Sector4_Room06 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room0A - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room0D - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room0F - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room11 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room17 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room18 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room1C - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room21 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room24 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room26 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room29 - @ItemPositions) >> 2
-	.db		(@Items_Sector4_Room2E - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room04 - @ItemPositions) >> 2
+	.db		(@Items_Sector4_Room06 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room0A - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room0D - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room0F - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room11 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room17 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room18 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room1C - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room21 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room24 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room26 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room29 - MinorLocations) >> 2
+	.db		(@Items_Sector4_Room2E - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room04 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -511,21 +528,21 @@ org 08080002h
 	.db		04h, 0Ch, 0Eh, 12h, 16h, 17h, 1Ah, 1Eh
 	.db		21h, 22h, 24h, 2Fh, 32h, 33h
 	.fill	16 - (. - @@Items_Sector5), 0FFh
-	.db		(@Items_Sector5_Room04 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room0C - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room0E - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room12 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room16 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room17 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room1A - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room1E - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room21 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room22 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room24 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room2F - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room32 - @ItemPositions) >> 2
-	.db		(@Items_Sector5_Room33 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room00 - @ItemPositions) >> 2
+	.db		(@Items_Sector5_Room04 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room0C - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room0E - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room12 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room16 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room17 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room1A - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room1E - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room21 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room22 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room24 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room2F - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room32 - MinorLocations) >> 2
+	.db		(@Items_Sector5_Room33 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room00 - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
@@ -533,405 +550,408 @@ org 08080002h
 	.db		00h, 0Fh, 12h, 18h, 1Ah, 1Eh, 22h, 26h
 	.db		27h
 	.fill	16 - (. - @@Items_Sector6), 0FFh
-	.db		(@Items_Sector6_Room00 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room0F - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room12 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room18 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room1A - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room1E - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room22 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room26 - @ItemPositions) >> 2
-	.db		(@Items_Sector6_Room27 - @ItemPositions) >> 2
-	.db		(@ItemPositions_End - @ItemPositions) >> 2
+	.db		(@Items_Sector6_Room00 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room0F - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room12 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room18 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room1A - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room1E - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room22 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room26 - MinorLocations) >> 2
+	.db		(@Items_Sector6_Room27 - MinorLocations) >> 2
+	.db		(MinorLocations_End - MinorLocations) >> 2
 .endautoregion
 
 .autoregion
 .align 2
-@ItemPositions:
+.if RANDOMIZER
+.notice "Tanks @ " + tohex(.)
+.endif
+MinorLocations:
 @Items_MainDeck_Room07:
 	.db		0Dh, 0Eh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room11:
 	.db		09h, 14h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_MainDeck_Room23:
 	.db		0Eh, 41h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room26:
 	.db		35h, 0Ah
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_MainDeck_Room2D:
 	.db		04h, 04h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room2F:
 	.db		04h, 03h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_MainDeck_Room32:
 	.db		36h, 08h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_MainDeck_Room33:
 	.db		05h, 1Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room39:
 	.db		0Ch, 0Ah
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_MainDeck_Room45:
 	.db		1Dh, 1Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room48:
 	.db		0Dh, 09h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room49:
 	.db		06h, 0Ah
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_MainDeck_Room54:
 	.db		0Eh, 0Ah
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector1_Room05:
 	.db		1Bh, 0Ah
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector1_Room11:
 	.db		08h, 06h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		19h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		2Ch, 13h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector1_Room1E:
 	.db		0Fh, 08h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector1_Room27:
 	.db		04h, 05h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector1_Room28:
 	.db		0Ch, 08h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector1_Room2B:
 	.db		0Dh, 0Bh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector1_Room2C:
 	.db		04h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector1_Room2F:
 	.db		0Ah, 02h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector1_Room32:
 	.db		06h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector1_Room34:
 	.db		0Dh, 07h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector2_Room06:
 	.db		1Dh, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room09:
 	.db		0Dh, 04h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room0A:
 	.db		13h, 23h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room11:
 	.db		2Ch, 07h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector2_Room15:
 	.db		1Dh, 04h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector2_Room19:
 	.db		04h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room1B:
 	.db		1Ch, 07h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room1F:
 	.db		28h, 07h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room21:
 	.db		15h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room2A:
 	.db		05h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector2_Room2F:
 	.db		1Dh, 10h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector2_Room32:
 	.db		03h, 07h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		03h, 18h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector2_Room36:
 	.db		04h, 05h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 	.db		09h, 0Eh
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector2_Room37:
 	.db		07h, 04h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		0Ah, 1Ah
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room03:
 	.db		3Ch, 0Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room06:
 	.db		05h, 11h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room08:
 	.db		09h, 09h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		16h, 0Dh
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector3_Room09:
 	.db		2Ah, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room0C:
 	.db		0Ch, 19h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector3_Room13:
 	.db		13h, 0Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		2Bh, 0Ah
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector3_Room1C:
 	.db		0Ch, 07h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 	.db		24h, 1Bh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room1E:
 	.db		04h, 0Dh
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector3_Room21:
 	.db		0Fh, 0Ah
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room22:
 	.db		0Ah, 0Fh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector3_Room23:
 	.db		04h, 1Bh
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		0Fh, 56h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector3_Room25:
 	.db		0Fh, 03h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector4_Room06:
 	.db		16h, 1Dh
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector4_Room0A:
 	.db		0Ch, 1Dh
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector4_Room0D:
 	.db		18h, 09h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		26h, 0Fh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room0F:
 	.db		2Ch, 05h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room11:
 	.db		17h, 14h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room17:
 	.db		39h, 13h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector4_Room18:
 	.db		28h, 07h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector4_Room1C:
 	.db		09h, 06h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room21:
 	.db		0Ah, 0Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room24:
 	.db		03h, 07h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector4_Room26:
 	.db		16h, 0Ah
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		2Ah, 05h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector4_Room29:
 	.db		0Fh, 04h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector4_Room2E:
 	.db		04h, 0Ah
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector5_Room04:
 	.db		05h, 05h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		14h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector5_Room0C:
 	.db		03h, 0Ah
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector5_Room0E:
 	.db		0Dh, 03h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector5_Room12:
 	.db		03h, 03h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room16:
 	.db		03h, 30h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room17:
 	.db		0Eh, 06h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room1A:
 	.db		04h, 06h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room1E:
 	.db		17h, 07h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector5_Room21:
 	.db		0Eh, 03h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector5_Room22:
 	.db		0Eh, 08h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector5_Room24:
 	.db		08h, 08h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room2F:
 	.db		04h, 0Ah
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room32:
 	.db		0Dh, 08h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 @Items_Sector5_Room33:
 	.db		0Bh, 03h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room00:
 	.db		29h, 12h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room0F:
 	.db		03h, 03h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room12:
 	.db		0Fh, 03h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		1Dh, 14h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room18:
 	.db		1Dh, 09h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room1A:
 	.db		05h, 06h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector6_Room1E:
 	.db		09h, 0Dh
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 	.db		13h, 08h
 	.db		Upgrade_MissileTank
-	.skip 1
+	.db		Upgrade_MissileTank
 @Items_Sector6_Room22:
 	.db		0Eh, 08h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector6_Room26:
 	.db		2Dh, 06h
 	.db		Upgrade_EnergyTank
-	.skip 1
+	.db		Upgrade_EnergyTank
 @Items_Sector6_Room27:
 	.db		0Ah, 18h
 	.db		Upgrade_PowerBombTank
-	.skip 1
+	.db		Upgrade_PowerBombTank
 	.db		21h, 0Ah
 	.db		Upgrade_PowerBombTank
-	.skip 1
-@ItemPositions_End:
+	.db		Upgrade_PowerBombTank
+MinorLocations_End:
 .endautoregion

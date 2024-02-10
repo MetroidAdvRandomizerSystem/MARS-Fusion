@@ -1,5 +1,7 @@
 ; Common functions for use in other non-linearity patches.
 
+; TODO: rewrite message box to work properly for major tanks
+
 .autoregion
 	.align 2
 .func ObtainMajorLocation
@@ -99,7 +101,7 @@
 ; major item.
 	.align 2
 .func SpawnUpgradeMessageBox
-	push	{ lr }
+	push	{ r4-r7, lr }
 	cmp		r1, #0
 	beq		@@spawnSprite
 	mov		r1, #0
@@ -111,8 +113,8 @@
 	mov		r1, r0
 @@spawnSprite:
 	mov		r0, #EnemyId_MessageBox
-	bl		SpawnPrimarySprite
-	pop		{ pc }
+	ldr		r4, =(SpawnPrimarySprite + 2) | 1
+	bx		r4
 	.pool
 .endfunc
 .endautoregion
