@@ -1,6 +1,6 @@
 ; Common functions for use in other non-linearity patches.
 
-; TODO: rewrite message box to work properly for major tanks
+; TODO: Implement obtaining nothing from a check
 
 .autoregion
 	.align 2
@@ -91,30 +91,6 @@
 	strb	r0, [r1]
 @@return:
 	bx		lr
-	.pool
-.endfunc
-.endautoregion
-
-.autoregion
-; Drop-in replacement for spawning an ability or tank collection message.
-; Forces the long fanfare if the location is a boss, or the collectible is a
-; major item.
-	.align 2
-.func SpawnUpgradeMessageBox
-	push	{ r4-r7, lr }
-	cmp		r1, #0
-	beq		@@spawnSprite
-	mov		r1, #0
-	ldr		r0, =LastAbility
-	ldrb	r0, [r0]
-	cmp		r0, Message_IceBeamUpgrade
-	bls		@@spawnSprite
-	sub		r0, #15h
-	mov		r1, r0
-@@spawnSprite:
-	mov		r0, #EnemyId_MessageBox
-	ldr		r4, =(SpawnPrimarySprite + 2) | 1
-	bx		r4
 	.pool
 .endfunc
 .endautoregion
@@ -247,5 +223,9 @@ MajorUpgradeInfo:
 	.db		SamusUpgrades_SuitUpgrades
 	.db		1 << SuitUpgrade_ScrewAttack
 	.db		Message_ScrewAttackUpgrade
+	.skip 1
+	.db		SamusUpgrades_BeamUpgrades
+	.db		1 << BeamUpgrade_IceBeam
+	.db		Message_IceBeamUpgrade
 	.skip 1
 .endautoregion

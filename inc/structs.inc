@@ -142,6 +142,8 @@ SamusUpgrades_MapDownloads equ 0Eh
 SamusUpgrades_LowHealthFlag equ 0Fh
 .sym on
 
+TimeStopTimer equ 03001348h
+
 TankCounter equ 030016F9h
 .sym off
 TankCounter_MaxAreaEnergyTanks equ 00h
