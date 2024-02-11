@@ -40,9 +40,9 @@
 	ldr		r4, =RoomTanks
 	mov		r3, #0
 @@loop:
-	ldrb	r0, [r4, RoomTanks_Upgrade]
-	cmp		r0, #0
-	beq		@@loop_inc
+	ldrb	r0, [r4, RoomTanks_Sprite]
+	cmp		r0, Upgrade_PowerBombTank
+	bhi		@@loop_inc
 	ldrb	r0, [r4, RoomTanks_AnimationDelay]
 	add		r0, #1
 	strb	r0, [r4, RoomTanks_AnimationDelay]
@@ -130,7 +130,8 @@
 ; cleanup temporary tank data
 .org 0806C4E2h
 .area 06h
-	str		r6, [r4]
+	mvn		r0, r6
+	str		r0, [r4]
 	pop		{ r4-r6, pc }
 .endarea
 

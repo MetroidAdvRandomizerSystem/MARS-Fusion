@@ -111,6 +111,7 @@ Projectile_Size equ 20h
 SamusState equ 03001244h
 SamusStateBackup equ 03001270h
 .sym off
+SamusState_Unk00 equ 00h
 SamusState_Pose equ 01h
 SamusState_ForcedMovement equ 03h
 SamusState_ArmCannonDirection equ 07h

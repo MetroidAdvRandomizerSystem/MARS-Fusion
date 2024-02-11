@@ -74,9 +74,16 @@ Message_AnimalsFreed equ 1Dh
 Message_AuxiliaryPower equ 1Eh
 Message_RestrictedSectorDetachment equ 1Fh
 Message_EscapeSequence equ 20h
+Message_SavePrompt equ 21h
+Message_SaveComplete equ 22h
+Message_AdamUplinkPrompt equ 23h
+Message_ResupplyComplete equ 24h
+Message_EnergyRechargeComplete equ 25h
+Message_RechargeAllComplete equ 26h
 Message_EnergyTankUpgrade equ 27h
 Message_MissileTankUpgrade equ 28h
 Message_PowerBombTankUpgrade equ 29h
+Message_NothingUpgrade equ 2Ah	; vanilla: enemy location abnormal
 
 Tank_Missiles equ 1
 Tank_Energy equ 2

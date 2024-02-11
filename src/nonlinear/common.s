@@ -1,7 +1,5 @@
 ; Common functions for use in other non-linearity patches.
 
-; TODO: Implement obtaining nothing from a check
-
 .autoregion
 	.align 2
 .func ObtainMajorLocation
@@ -16,7 +14,29 @@
 	b		ObtainUpgrade
 	.pool
 .endfunc
+
 .func ObtainUpgrade
+	push	{ lr }
+	cmp		r0, Upgrade_None
+	bne		@@checkMajor
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_SuitUpgrades]
+	lsr		r0, SuitUpgrade_VariaSuit + 1
+	bcs		@@skipFreeze
+	mov		r0, #146h >> 1
+	lsl		r0, #1
+	bl		08002854h
+	ldr		r1, =0828FD04h
+	ldr		r0, =SamusState
+	ldrb	r0, [r0, SamusState_Unk00]
+	lsl		r0, #2
+	ldr		r1, [r1, r0]
+	mov		r0, #0FBh
+	blx		r1
+@@skipFreeze:
+	mov		r0, Message_NothingUpgrade
+	b		@@setMessage
+@@checkMajor:
 	cmp		r0, Upgrade_IceBeam
 	bhi		@@checkMinors
 	ldr		r3, =MajorUpgradeInfo
@@ -90,7 +110,7 @@
 	ldr		r1, =LastAbility
 	strb	r0, [r1]
 @@return:
-	bx		lr
+	pop		{ pc }
 	.pool
 .endfunc
 .endautoregion
@@ -134,11 +154,16 @@ MajorLocations:
 	.db		Upgrade_ScrewAttack
 .endautoregion
 
+.org 086B5912h
+.area 72h, 0
+	.string 56, "[INDENT]You are a FOOL!\n"
+.endarea
+
 .autoregion
 MajorUpgradeInfo:
 	.db		00h
 	.db		00h
-	.db		00h
+	.db		Message_NothingUpgrade
 	.skip 1
 	.db		SamusUpgrades_ExplosiveUpgrades
 	.db		1 << ExplosiveUpgrade_Missiles
