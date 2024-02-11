@@ -130,8 +130,7 @@
 ; cleanup temporary tank data
 .org 0806C4E2h
 .area 06h
-	mvn		r0, r6
-	str		r0, [r4]
+	str		r6, [r4]
 	pop		{ r4-r6, pc }
 .endarea
 

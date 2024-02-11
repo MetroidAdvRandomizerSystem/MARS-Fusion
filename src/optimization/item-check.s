@@ -132,11 +132,11 @@
 	cmp		r0, #0
 	bne		@@exit
 	bl		GetRoomItems
-	cmp		r0, r1
-	beq		@@exit
 	mov		r4, r0
 	mov		r5, r1
 	mov		r6, r0
+	cmp		r0, r1
+	beq		@@clear_tank_slot
 	ldr		r7, =TanksCollected
 @@loop:
 	lsr		r0, r6, #3
@@ -183,6 +183,7 @@
 	sub		r1, r6, r4
 	lsl		r1, #2
 	mov		r0, #0
+	mvn		r0, r0
 	str		r0, [r2, r1]
 	b		@@loop_inc
 @@load_tank_gfx:
