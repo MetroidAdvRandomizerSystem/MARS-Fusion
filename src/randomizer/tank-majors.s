@@ -7,9 +7,7 @@
 	ldr		r3, =RoomTanks
 	lsl		r0, #2
 	add		r3, r0
-	ldr		r0, =MinorLocations
-	lsl		r1, #2
-	add		r1, r0
+	; TODO: replace tank bg0 and clipdata
 	ldrb	r0, [r1, MinorLocation_Upgrade]
 	strb	r0, [r3, RoomTanks_Upgrade]
 	ldrb	r2, [r1, MinorLocation_Sprite]

@@ -42,8 +42,8 @@
 	cmp		r0, r1
 	bne		@@fail
 	add		r2, #16
-	ldrb	r0, [r2, MinorLocation_XPos]
-	ldrb	r1, [r2, MinorLocation_YPos]
+	ldrb	r0, [r2]
+	ldrb	r1, [r2, #1]
 	bx		lr
 	.pool
 @@fail:
@@ -139,11 +139,11 @@
 	mov		r6, r0
 	ldr		r7, =TanksCollected
 @@loop:
-	lsr		r2, r6, #3
+	lsr		r0, r6, #3
 	lsl		r1, r6, #29
 	lsr		r1, #29
 	add		r1, #1
-	ldrb	r0, [r7, r2]
+	ldrb	r0, [r7, r0]
 	lsr		r0, r1
 .if RANDOMIZER
 	bcc		@@load_tank_gfx
@@ -178,6 +178,7 @@
 @@set_bg1:
 	strh	r0, [r3, r2]
 .if RANDOMIZER
+@@clear_tank_slot:
 	ldr		r2, =RoomTanks
 	sub		r1, r6, r4
 	lsl		r1, #2
@@ -186,13 +187,18 @@
 	b		@@loop_inc
 @@load_tank_gfx:
 	sub		r0, r6, r4
-	mov		r1, r6
+	mov		r1, r2
 	bl		LoadTankGfx
 .endif
 @@loop_inc:
 	add		r6, #1
 	cmp		r6, r5
 	blt		@@loop
+.if RANDOMIZER
+	sub		r0, r6, r4
+	cmp		r0, #3
+	blt		@@clear_tank_slot
+.endif
 @@exit:
 	pop		{ r4-r7, pc }
 	.pool
