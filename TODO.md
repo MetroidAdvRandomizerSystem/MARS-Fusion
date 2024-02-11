@@ -9,7 +9,7 @@ TODO
 - [x] Boss fights
 - [x] Data rooms
 - [ ] Stackable missiles
-- [ ] Disable Adam event locks
+- [x] Disable Adam event locks
 - [ ] Map changes to prevent major softlocks
 - [ ] Event-based environment changes
   * [ ] Wrecked Sector 5
@@ -25,7 +25,7 @@ TODO
   * [x] Data rooms
   * [x] Core-Xs
   * [x] Security rooms
-  * [ ] Expansion tanks
+  * [x] Expansion tanks
 - [ ] Hint system
 
 ## Miscellaneous improvements
