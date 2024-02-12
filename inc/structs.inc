@@ -161,7 +161,14 @@ TankCounter_MaxTotalPowerBombTanks equ 0Ah
 TankCounter_CurrTotalPowerBombTanks equ 0Bh
 .sym on
 
-MusicType equ 030019F1h
+MusicInfo equ 030019D0h
+.sym off
+MusicInfo_Slot1Track equ 1Ch
+MusicInfo_Slot2Track equ 1Eh
+MusicInfo_SlotSelect equ 20h
+MusicInfo_Type equ 21h
+MusicInfo_NextTrack equ 22h
+.sym on
 
 SpecialTileset equ 03004DE4h
 DestinationRoom equ 03004E3Ch

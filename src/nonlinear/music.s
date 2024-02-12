@@ -1,7 +1,20 @@
 ; Overrides vanilla music behavior. Guts functionality for most sub-event
 ; specific songs.
 
-; BUG: serris boss music persists after killing while taking knockback
+.org Music_CheckSet + 2Ah
+; Check currently playing slot for the desired track
+.area 16h, 0
+	mov		r0, MusicInfo_SlotSelect
+	ldrb	r0, [r5, r0]
+	lsl		r0, #1
+	add		r0, MusicInfo_Slot1Track
+	ldrh	r0, [r5, r0]
+	cmp		r0, r4
+	beq		080034DAh
+	mov		r0, #30
+	bl		Music_FadeOut
+	strh	r6, [r5, MusicInfo_SlotSelect]
+.endarea
 
 .org 080715ACh
 .area 44h
@@ -23,8 +36,6 @@
 	lsl		r0, #2
 	add		r1, r0
 	ldrh	r0, [r1, #3Ah]
-	ldr		r2, =03004DE8h
-	strh	r0, [r2]
 	bl		Music_CheckSet
 	pop		{ r4-r5, pc }
 	.pool
@@ -70,10 +81,10 @@
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@case_areaSwitch_default
-	ldr		r1, =MusicType
+	ldr		r1, =MusicInfo + MusicInfo_Type
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
-	beq		@@case_areaSwitch_default
+	beq		@@areaSwitchDone
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -144,17 +155,12 @@
 @@case_PYR:
 	b		@@case_areaSwitch_default
 @@case_AQA:
-	; leaving serris tank to main sector
-	cmp		r6, #1Eh
+	cmp		r6, #0Ah
 	bne		@@case_AQA_check1F
-	ldr		r1, =MusicType
-	ldrb	r0, [r1]
-	cmp		r0, MusicType_AQA1
-	bne		@@areaSwitchDone
-	mov		r0, #09h
-	mov		r1, MusicType_Transient
-	mov		r2, #60
-	b		@@tryPlay
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Serris + 1
+	bcs		@@case_areaSwitch_default
+	b		@@areaSwitchDone
 @@case_AQA_check1F:
 	; serris tank
 	cmp		r6, #1Fh
@@ -162,6 +168,10 @@
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Serris + 1
 	bcs		@@case_areaSwitch_default
+	ldr		r1, =MusicInfo + MusicInfo_Type
+	ldrb	r0, [r1]
+	cmp		r0, MusicType_AQA1
+	beq		@@areaSwitchDone
 	mov		r0, #5Fh
 	mov		r1, MusicType_AQA1
 	mov		r2, #60
@@ -190,7 +200,7 @@
 	b		@@tryLock
 @@case_NOC:
 @@case_areaSwitch_default:
-	ldr		r1, =MusicType
+	ldr		r1, =MusicInfo + MusicInfo_Type
 	mov		r0, MusicType_Transient
 	strb	r0, [r1]
 @@areaSwitchDone:
