@@ -29,6 +29,8 @@
 	strb	r5, [r2]
 	mov		r0, #21h
 	bl		UpdateSubEvent
+	cmp		r0, #1
+	beq		@@return
 	ldr		r1, =0879B8BCh
 	ldr		r1, [r1, r4]
 	lsl		r0, r5, #4
@@ -37,6 +39,7 @@
 	add		r1, r0
 	ldrh	r0, [r1, #3Ah]
 	bl		Music_CheckSet
+@@return:
 	pop		{ r4-r5, pc }
 	.pool
 .endfunc
@@ -55,7 +58,9 @@
 @@checkTrigger:
 	sub		r0, #21h
 	cmp		r0, #1
-	bhi		@@areaSwitchDone
+	bls		@@areaSwitch
+	bl		@@areaSwitchDone
+@@areaSwitch:
 	ldr		r1, =DestinationRoom
 	ldrb	r6, [r1]
 	ldr		r2, =MiscProgress
@@ -80,11 +85,11 @@
 	bne		@@case_MainDeck_check54
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
-	bcs		@@case_areaSwitch_default
+	bcs		@@case_MainDeck_default
 	ldr		r1, =MusicInfo + MusicInfo_Type
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
-	beq		@@areaSwitchDone
+	beq		@@case_MainDeck_break
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -95,19 +100,23 @@
 	bne		@@case_MainDeck_check56
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
-	bcs		@@case_areaSwitch_default
-	b		@@areaSwitchDone
+	bcs		@@case_MainDeck_default
+	b		@@case_MainDeck_break
 @@case_MainDeck_check56:
 	; yakuza fight room
 	cmp		r6, #56h
-	bne		@@case_areaSwitch_default
+	bne		@@case_MainDeck_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Yakuza + 1
-	bcs		@@case_areaSwitch_default
+	bcs		@@case_MainDeck_default
 	mov		r0, #18h
 	mov		r1, MusicType_Transient
 	mov		r2, #50
 	b		@@tryLock
+@@case_MainDeck_default:
+	b		@@case_areaSwitch_default
+@@case_MainDeck_break:
+	b		@@areaSwitchDone
 @@case_SRX:
 	; charge core-x fight room
 	cmp		r6, #28h
@@ -153,7 +162,15 @@
 	mov		r2, #50
 	b		@@tryLock
 @@case_PYR:
-	b		@@case_areaSwitch_default
+	cmp		r6, #19h
+	bne		@@case_areaSwitch_default
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_WideCoreX + 1
+	bcs		@@case_areaSwitch_default
+	mov		r0, #18h
+	mov		r1, MusicType_BossAmbience
+	mov		r2, #60
+	b		@@tryLock
 @@case_AQA:
 	cmp		r6, #0Ah
 	bne		@@case_AQA_check1F
@@ -199,6 +216,51 @@
 	mov		r2, #50
 	b		@@tryLock
 @@case_NOC:
+	; mega core-x eyedoor room
+	cmp		r6, #0Ch
+	bne		@@case_NOC_check0D
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_MegaCoreX + 1
+	bcs		@@case_areaSwitch_default
+	ldr		r1, =MusicInfo + MusicInfo_Type
+	ldrb	r0, [r1]
+	cmp		r0, MusicType_BossAmbience
+	beq		@@areaSwitchDone
+	mov		r0, #18h
+	mov		r1, MusicType_BossAmbience
+	mov		r2, #60
+	b		@@tryPlay
+@@case_NOC_check0D:
+	; mega core-x fight room
+	cmp		r6, #0Dh
+	bne		@@case_NOC_check19
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_MegaCoreX + 1
+	bcs		@@case_areaSwitch_default
+	ldr		r1, =MusicInfo + MusicInfo_Type
+	ldrb	r0, [r1]
+	cmp		r0, MusicType_BossAmbience
+	beq		@@lockWithoutMusic
+	mov		r0, #18h
+	mov		r1, MusicType_BossAmbience
+	mov		r2, #60
+	b		@@tryLock
+@@case_NOC_check19:
+	; NOC data room
+	cmp		r6, #19h
+	bne		@@case_areaSwitch_default
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_MegaCoreX + 1
+	bcs		@@case_areaSwitch_default
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	lsr		r0, StoryFlag_NocDataDestroyed + 1
+	bcs		@@areaSwitchDone
+	cmp		r4, #22h
+	bne		@@areaSwitchDone
+@@lockWithoutMusic:
+	mov		r0, #3Fh
+	bl		LockHatches
+	b		@@areaSwitchDone
 @@case_areaSwitch_default:
 	ldr		r1, =MusicInfo + MusicInfo_Type
 	mov		r0, MusicType_Transient
@@ -215,12 +277,12 @@
 	beq		@@case_00
 	cmp		r0, #9Bh	; Escape sequence
 	beq		@@case_9B
-	b		@@return
+	b		@@return_false
 @@case_00:
 	; start first briefing music and increment subevent
 	ldrb	r2, [r1, PrevSubEvent - CurrSubEvent]
 	cmp		r2, #0FFh
-	bne		@@return
+	bne		@@return_false
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
 	add		r0, #1
 	strb	r0, [r1]
@@ -230,7 +292,7 @@
 @@case_01:
 	; start main deck music and increment subevent
 	cmp		r4, #3
-	bne		@@return
+	bne		@@return_false
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
 	add		r0, #1
 	strb	r0, [r1]
@@ -240,9 +302,9 @@
 @@case_9B:
 	; escape sequence omega encounter
 	cmp		r5, Area_MainDeck
-	bne		@@return
+	bne		@@return_false
 	cmp		r6, #3Fh
-	bne		@@return
+	bne		@@return_false
 	mov		r0, #58h
 	mov		r1, MusicType_BossMusic
 	mov		r2, #0
@@ -259,18 +321,85 @@
 	beq		@@fadeOut
 	cmp		r4, #22h
 	beq		@@playMusic
-	b		@@return
+	b		@@return_false
 @@fadeOut:
 	mov		r0, r2
 	bl		Music_FadeOut
-	b		@@return
+	b		@@return_true
 @@playMusic:
 	bl		Music_Play
-@@return:
+@@return_true:
+	mov		r0, #1
+	pop		{ r4-r6, pc }
+@@return_false:
+	mov		r0, #0
 	pop		{ r4-r6, pc }
 	.pool
 .endfunc
 .endregion
+
+.org 0803A170h
+; Wide Core-X boss music
+.area 2Ch
+	push	{ lr }
+	ldr		r2, =CurrentEnemy
+	ldrh	r0, [r2, Enemy_Status]
+	ldr		r1, =#8020h
+	orr		r0, r1
+	strh	r0, [r2, Enemy_Status]
+	mov		r0, #2Ch
+	strh	r0, [r2, Enemy_XParasiteTimer]
+	add		r2, #20h
+	mov		r0, #46h
+	strb	r0, [r2, Enemy_Pose - 20h]
+	mov		r0, #0
+	strb	r0, [r2, Enemy_SamusCollision - 20h]
+	mov		r0, #43h
+	mov		r1, MusicType_BossMusic
+	bl		Music_Play
+	pop		{ pc }
+	.pool
+.endarea
+
+.org 0802DBC4h
+; Wide Core-X defeated music
+.area 5Ch
+	push	{ lr }
+	ldr		r2, =CurrentEnemy
+	mov		r3, r2
+	add		r3, #20h
+	mov		r0, #5Dh
+	strb	r0, [r3, Enemy_Pose - 20h]
+	mov		r0, #0Ch
+	strb	r0, [r3, Enemy_SamusCollision - 20h]
+	mov		r1, #0
+	strh	r1, [r2, Enemy_Health]
+	ldr		r0, =0300007Ah
+	ldrb	r0, [r0]
+	lsl		r0, #20h - 2
+	lsr		r0, #20h - 2
+	strb	r0, [r3, Enemy_BgPriority - 20h]
+	mov		r0, #4
+	strb	r0, [r3, Enemy_DrawOrder - 20h]
+	strb	r1, [r3, Enemy_Palette - 20h]
+	strb	r1, [r3, Enemy_Timer0 - 20h]
+	strb	r1, [r3, Enemy_Timer1 - 20h]
+	mov		r0, #1
+	strb	r0, [r3, Enemy_VelocityX - 20h]
+	strb	r0, [r3, Enemy_VelocityY - 20h]
+	strb	r0, [r3, Enemy_IgnoreSamusCollisionTimer - 20h]
+	bl		08025270h
+	ldr		r0, =CurrentEnemy
+	ldrb	r0, [r0, Enemy_Id]
+	cmp		r0, #57h
+	bne		@@return
+	mov		r0, #18h
+	mov		r1, MusicType_BossAmbience
+	bl		Music_Play
+@@return:
+	pop		{ pc }
+	.pool
+.endarea
 
 ; Remove subevent 0 music handling from dialogue handling
 .org 08079ED4h

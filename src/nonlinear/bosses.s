@@ -46,23 +46,40 @@
 	.pool
 .endarea
 
+; check wide core-x kill status before spawning
+.org 08060E54h
+.area 20h
+	ldr		r1, =MiscProgress
+	ldr		r0, [r1, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_WideCoreX + 1
+	bcc		@@boss_alive
+.if !RANDOMIZER
+	ldrh	r0, [r1, MiscProgress_StoryFlags]
+	lsr		r0, StoryFlag_BoilerCooling + 1
+	bcc		@@boiler_console_active
+.endif
+	mov		r0, #0
+	bx		lr
+@@boss_alive:
+	mov		r0, #1
+	bx		lr
+.if !RANDOMIZER
+@@boiler_console_active:
+	mov		r0, #2
+	bx		lr
+.endif
+	.pool
+.endarea
+
 .org 0803A08Ah
 .area 2Ah, 0
-	; check wide core-x kill status before spawning
-	; TODO: bugged, wide core-x does not spawn
-	ldr		r4, =CurrentEnemy
+	ldr		r2, =CurrentEnemy
 	mov		r0, Enemy_IgnoreSamusCollisionTimer
 	mov		r5, #1
-	strb	r5, [r4, r0]
-	mov		r2, r4
+	strb	r5, [r2, r0]
 	mov		r4, #0
 	mov		r5, #2
-	ldr		r0, =MiscProgress
-	ldr		r0, [r0, MiscProgress_MajorLocations]
-	lsr		r0, MajorLocation_WideCoreX + 1
-	bcc		0803A0B4h
-	strb	r4, [r2, Enemy_Status]
-	b		0803A0FCh
+	b		0803A0B4h
 	.pool
 .endarea
 
@@ -107,6 +124,44 @@
 	b		08051C82h
 	.pool
 .endregion
+
+.org 08060C90h
+.area 18h
+	; check if NOC data room is not destroyed
+	ldr		r1, =MiscProgress
+	ldr		r0, [r1, MiscProgress_StoryFlags]
+	lsl		r0, 1Fh - StoryFlag_NocDataDestroyed
+	ldrh	r1, [r1, MiscProgress_MajorLocations]
+	lsl		r1, 1Fh - MajorLocation_MegaCoreX
+	orr		r0, r1
+	mvn		r0, r0
+	lsr		r0, 1Fh
+	bx		lr
+	.pool
+.endarea
+
+.autoregion
+	.align 2
+.func SetNocDataDestroyed
+	; unlock doors in NOC data room
+	ldr		r2, =MiscProgress
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r1, #1 << StoryFlag_NocDataDestroyed
+	orr		r0, r1
+	strh	r0, [r2, MiscProgress_StoryFlags]
+	ldr		r1, =DoorUnlockTimer
+	mov		r0, #60
+	strb	r0, [r1]
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.org 08043A72h
+.area 06h
+	bl		SetNocDataDestroyed
+	nop
+.endarea
 
 .org 08057564h
 .area 24h, 0
@@ -255,7 +310,7 @@
 	ldrb	r0, [r1, r0]
 	bl		ObtainMajorLocation
 	mov		r0, #60
-	ldr		r1, =03000046h
+	ldr		r1, =DoorUnlockTimer
 	strb	r0, [r1]
 	b		08025CE6h
 	.pool
@@ -282,7 +337,7 @@
 	ldrb	r0, [r1, r0]
 	bl		ObtainMajorLocation
 	mov		r0, #60
-	ldr		r1, =03000046h
+	ldr		r1, =DoorUnlockTimer
 	strb	r0, [r1]
 	b		0802DDF4h
 	.pool
