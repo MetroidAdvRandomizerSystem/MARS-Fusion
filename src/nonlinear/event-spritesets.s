@@ -131,6 +131,9 @@
 	.db		(@@case_60 - @@branch - 4) >> 1
 	.db		(@@case_63 - @@branch - 4) >> 1
 	.db		(@@case_67 - @@branch - 4) >> 1
+.if ((@@case_67 - @@branch - 4) >> 1) >= (1 << 8)
+	.error "Branch table overflowed"
+.endif
 	.align 2
 @@branch:
 	add		pc, r0

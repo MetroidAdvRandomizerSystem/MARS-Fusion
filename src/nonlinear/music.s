@@ -78,6 +78,9 @@
 	.db		(@@case_AQA - @@branch - 4) >> 1
 	.db		(@@case_ARC - @@branch - 4) >> 1
 	.db		(@@case_NOC - @@branch - 4) >> 1
+.if ((@@case_NOC - @@branch - 4) >> 1) >= (1 << 8)
+	.error "Branch table overflowed"
+.endif
 	.align 2
 @@case_MainDeck:
 	; arachnus fight room
