@@ -1,5 +1,5 @@
 .gba
-.open "metroid4.gba", "mfar.gba", 08000000h
+.open "base.gba", "mfar.gba", 08000000h
 
 .table "data/text.tbl"
 
@@ -19,7 +19,8 @@
 .include "inc/structs.inc"
 
 ; Mark end-of-file padding as free space
-.defineregion 0879ECC8h, 08800000h - 0879ECC8h, 0
+@@EOF equ 0879EFA8h ; 0879ECC8h
+.defineregion @@EOF, 08800000h - @@EOF, 0FFh
 
 ; Debug mode patch
 .if DEBUG

@@ -1,3 +1,4 @@
 .vscode/*
+tools/*
 *.gba
-armips*
+*.exe

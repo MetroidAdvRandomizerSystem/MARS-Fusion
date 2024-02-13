@@ -1,12 +1,16 @@
 IN ?= metroid4
+BASE ?= base
 OUT ?= mfar
 
-AS := ./armips-a8d71f0.exe
-AS_FLAGS += -strequ @@file $(IN).gba -strequ @@out $(OUT).gba
+FLIPS := ./tools/flips.exe
+AS := ./tools/armips-a8d71f0.exe
 
 all: $(OUT).gba
 
-$(OUT).gba: check $(IN).gba
+$(BASE).gba: $(IN).gba
+	$(FLIPS) -a data/room-edits.bps metroid4.gba $(BASE).gba
+
+$(OUT).gba: check $(BASE).gba
 	$(AS) src/main.s
 
 check: $(IN).gba
@@ -16,6 +20,7 @@ stat: $(IN).gba
 	$(AS) src/main.s -stat
 
 clean:
+	$(RM) $(BASE).gba
 	$(RM) $(OUT).gba
 
 .PHONY: all check clean
