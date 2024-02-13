@@ -10,6 +10,8 @@ PowerOutageSecurityBackup equ 0300001Dh
 
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
+DoorUnlockTimer equ 03000046h
+SpritesetId equ 03000052h
 CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
 NonGameplayFlag equ 03000B84h
@@ -67,16 +69,22 @@ CurrentEnemy equ 030006BCh
 EnemyList equ 03000140h
 .sym off
 Enemy_Status equ 00h
+Enemy_XParasiteTimer equ 06h
 Enemy_Health equ 14h
 Enemy_Animation equ 16h
 Enemy_Id equ 1Dh
 Enemy_RoomSlot equ 1Eh
 Enemy_SpritesetGfxSlot equ 1Fh
 Enemy_Palette equ 20h
+Enemy_BgPriority equ 21h
+Enemy_DrawOrder equ 22h
 Enemy_Pose equ 24h
+Enemy_SamusCollision equ 25h
 Enemy_IgnoreSamusCollisionTimer equ 26h
 Enemy_Timer0 equ 2Eh
 Enemy_Timer1 equ 2Fh
+Enemy_VelocityX equ 30h
+Enemy_VelocityY equ 31h
 Enemy_FreezeTimer equ 32h
 Enemy_StandingOnFlag equ 33h
 Enemy_Properties equ 34h
@@ -230,6 +238,14 @@ SaveData_Size equ 1200h
 
 AreaLevels equ 0879B8BCh
 .sym on
+LevelMeta_Spriteset0 equ 20h
+LevelMeta_Spriteset0Id equ 24h
+LevelMeta_Spriteset1Event equ 25h
+LevelMeta_Spriteset1 equ 28h
+LevelMeta_Spriteset1Id equ 2Ch
+LevelMeta_Spriteset2Event equ 2Dh
+LevelMeta_Spriteset2 equ 30h
+LevelMeta_Spriteset2Id equ 34h
 LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
 .sym off

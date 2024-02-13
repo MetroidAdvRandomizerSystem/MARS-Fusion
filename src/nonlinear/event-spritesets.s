@@ -84,6 +84,45 @@
 ;	S0-06, S0-07, S0-26, S0-2E
 ;	S0-03 => S0-04, S0-30 => S0-53
 
+.org 080648DAh
+.area 26h, 0
+	mov		r5, r1
+	cmp		r0, #0
+	beq		@@check_spriteset_1
+	bl		CheckEvent
+	cmp		r0, #0
+	beq		@@check_spriteset_1
+	mov		r0, #2
+	b		@@set_spriteset
+@@check_spriteset_1:
+	add		r0, sp, #20h
+	ldrb	r0, [r0, LevelMeta_Spriteset1Event - 20h]
+	cmp		r0, #0
+	beq		@@set_spriteset_0
+	bl		CheckEvent
+	cmp		r0, #0
+	beq		@@set_spriteset_0
+	mov		r0, #1
+	b		@@set_spriteset
+.endarea
+	.skip	0Ch
+.area 38h, 0
+@@set_spriteset_0:
+	mov		r0, #0
+@@set_spriteset:
+	strb	r0, [r4]
+	lsl		r0, #3
+	add		r1, sp, #20h
+	add		r1, r0
+	ldrb	r0, [r1, LevelMeta_Spriteset0Id - 20h]
+	ldr		r2, =SpritesetId
+	strb	r0, [r2]
+	ldr		r0, [r1, LevelMeta_Spriteset0 - 20h]
+	str		r0, [r5, #08h]
+	b		08064944h
+	.pool
+.endarea
+
 .autoregion
 	.align 2
 .func CheckEvent
@@ -124,19 +163,33 @@
 	.db		44h, 46h, 47h, 4Bh, 4Dh, 4Eh, 51h, 59h
 	.db		60h, 63h, 67h
 @@eventBranchTable:
-	.db		(@@case_08 - @@branch - 4) >> 1, (@@case_0A - @@branch - 4) >> 1
-	.db		(@@case_0D - @@branch - 4) >> 1, (@@case_10 - @@branch - 4) >> 1
-	.db		(@@case_19 - @@branch - 4) >> 1, (@@case_20 - @@branch - 4) >> 1
-	.db		(@@case_21 - @@branch - 4) >> 1, (@@case_23 - @@branch - 4) >> 1
-	.db		(@@case_31 - @@branch - 4) >> 1, (@@case_32 - @@branch - 4) >> 1
-	.db		(@@case_33 - @@branch - 4) >> 1, (@@case_3A - @@branch - 4) >> 1
-	.db		(@@case_3D - @@branch - 4) >> 1, (@@case_3E - @@branch - 4) >> 1
-	.db		(@@case_42 - @@branch - 4) >> 1, (@@case_44 - @@branch - 4) >> 1
-	.db		(@@case_4D - @@branch - 4) >> 1, (@@case_47 - @@branch - 4) >> 1
-	.db		(@@case_4B - @@branch - 4) >> 1, (@@case_4D - @@branch - 4) >> 1
-	.db		(@@case_4E - @@branch - 4) >> 1, (@@case_51 - @@branch - 4) >> 1
-	.db		(@@case_59 - @@branch - 4) >> 1, (@@case_60 - @@branch - 4) >> 1
-	.db		(@@case_63 - @@branch - 4) >> 1, (@@case_67 - @@branch - 4) >> 1
+	.db		(@@case_08 - @@branch - 4) >> 1
+	.db		(@@case_0A - @@branch - 4) >> 1
+	.db		(@@case_0D - @@branch - 4) >> 1
+	.db		(@@case_10 - @@branch - 4) >> 1
+	.db		(@@case_16 - @@branch - 4) >> 1
+	.db		(@@case_19 - @@branch - 4) >> 1
+	.db		(@@case_20 - @@branch - 4) >> 1
+	.db		(@@case_21 - @@branch - 4) >> 1
+	.db		(@@case_23 - @@branch - 4) >> 1
+	.db		(@@case_31 - @@branch - 4) >> 1
+	.db		(@@case_32 - @@branch - 4) >> 1
+	.db		(@@case_33 - @@branch - 4) >> 1
+	.db		(@@case_3A - @@branch - 4) >> 1
+	.db		(@@case_3D - @@branch - 4) >> 1
+	.db		(@@case_3E - @@branch - 4) >> 1
+	.db		(@@case_42 - @@branch - 4) >> 1
+	.db		(@@case_44 - @@branch - 4) >> 1
+	.db		(@@case_46 - @@branch - 4) >> 1
+	.db		(@@case_47 - @@branch - 4) >> 1
+	.db		(@@case_4B - @@branch - 4) >> 1
+	.db		(@@case_4D - @@branch - 4) >> 1
+	.db		(@@case_4E - @@branch - 4) >> 1
+	.db		(@@case_51 - @@branch - 4) >> 1
+	.db		(@@case_59 - @@branch - 4) >> 1
+	.db		(@@case_60 - @@branch - 4) >> 1
+	.db		(@@case_63 - @@branch - 4) >> 1
+	.db		(@@case_67 - @@branch - 4) >> 1
 	.align 2
 @@branch:
 	add		pc, r0
@@ -215,10 +268,12 @@
 .endif
 	bx		lr
 @@case_32:
-	; TODO: sector 6 data room destroyed
-	ldr		r0, [r3, MiscProgress_MajorLocations]
-	mvn		r0, r0
-	lsl		r0, 1Fh - MajorLocation_MegaCoreX
+	; sector 6 data room destroyed
+	ldr		r0, [r3, MiscProgress_StoryFlags]
+	lsl		r0, 1Fh - StoryFlag_NocDataDestroyed
+	ldrh	r1, [r3, MiscProgress_MajorLocations]
+	lsl		r1, 1Fh - MajorLocation_MegaCoreX
+	orr		r0, r1
 	lsr		r0, 1Fh
 	bx		lr
 @@case_33:

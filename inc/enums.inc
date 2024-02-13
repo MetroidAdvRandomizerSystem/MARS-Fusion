@@ -244,5 +244,7 @@ MajorLocation_Ridley equ 14h
 StoryFlag_MissileHatch equ 0
 StoryFlag_WaterLowered equ 1
 StoryFlag_BoxDefeated equ 2
+StoryFlag_NocDataDestroyed equ 3
+StoryFlag_BoilerCooling equ 4
 
 .sym on
