@@ -5,7 +5,6 @@
 ; uninterruptable sequences:
 ;	operations deck escape (08-0A)
 ;	security robot in sector 3 (26-27)
-;	past mega core-x eyedoor (32-33)
 
 ; super missiles downloaded (26):
 ;	S3-06 => S3-18, S3-07 => S3-16
@@ -17,11 +16,6 @@
 ;	S5-03 => S5-06, S5-05 => S5-10, S5-07 => S5-0F, S5-0D => S5-2C
 ; restricted sector invaded by sa-x (5C):
 ;	S0-4E => S0-4F
-; restricted sector detached (5F):
-;	S0-4D => S0-11
-; escape sequence (67):
-;	S0-06, S0-07, S0-26, S0-2E
-;	S0-03 => S0-04, S0-30 => S0-53
 
 .org 080648DAh
 .area 26h, 0
@@ -71,11 +65,11 @@
 	bhi		@@case_default
 	mov		r1, r0
 	ldr		r3, =@@eventCases
-	mov		r2, 1 << log2(27)
-	ldrb	r0, [r3, 27 - (1 << log2(27))]
+	mov		r2, 1 << log2(28)
+	ldrb	r0, [r3, 28 - (1 << log2(28))]
 	cmp		r0, r1
 	bhi		@@bsearch_loop
-	add		r3, 27 - (1 << log2(27))
+	add		r3, 28 - (1 << log2(28))
 @@bsearch_loop:
 	ldrb	r0, [r3, r2]
 	cmp		r0, r1
@@ -102,7 +96,7 @@
 	.db		08h, 0Ah, 0Dh, 10h, 16h, 19h, 20h, 21h
 	.db		23h, 31h, 32h, 33h, 3Ah, 3Dh, 3Eh, 42h
 	.db		44h, 46h, 47h, 4Bh, 4Dh, 4Eh, 51h, 59h
-	.db		60h, 63h, 67h
+	.db		5Fh, 60h, 63h, 67h
 @@eventBranchTable:
 	.db		(@@case_08 - @@branch - 4) >> 1
 	.db		(@@case_0A - @@branch - 4) >> 1
@@ -128,6 +122,7 @@
 	.db		(@@case_4E - @@branch - 4) >> 1
 	.db		(@@case_51 - @@branch - 4) >> 1
 	.db		(@@case_59 - @@branch - 4) >> 1
+	.db		(@@case_5F - @@branch - 4) >> 1
 	.db		(@@case_60 - @@branch - 4) >> 1
 	.db		(@@case_63 - @@branch - 4) >> 1
 	.db		(@@case_67 - @@branch - 4) >> 1
@@ -143,10 +138,9 @@
 	; spritesets: S0-3C
 	; room states: S0-0D => S0-4A
 .if !RANDOMIZER
-	ldrb	r0, [r3, MiscProgress_DataRooms]
-	lsr		r0, Area_MainDeck
-	ldr		r1, [r3, MiscProgress_MajorLocations]
-	lsr		r1, MajorLocation_Arachnus
+	ldrb	r0, [r3, MiscProgress_MajorLocations]
+	lsr		r1, r0, MajorLocation_MainDeckData
+	lsr		r0, MajorLocation_Arachnus
 	bic		r0, r1
 	mov		r1, #1
 	and		r0, r1
@@ -252,6 +246,10 @@
 	; boiler cooling reactivated
 	; spritesets: S3-05, S3-0A, S5-00
 	; room states: S3-11 => S3-1D
+	ldr		r0, [r3, MiscProgress_MajorLocations]
+	lsl		r0, 1Fh - MajorLocation_WideCoreX
+	lsr		r0, 1Fh
+	bx		lr
 @@case_3E:
 	; save the animals
 	; spritesets: S0-0C, S0-12, S0-18
@@ -263,6 +261,7 @@
 	; downloaded power bombs
 	; spritesets: S5-08, S5-09, S5-18
 	; room states: S5-15 => S5-16, S5-27 => S5-28
+	; TODO: decide what to do with leftover S5-28 spriteset
 	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
 	lsl		r0, 1Fh - ExplosiveUpgrade_PowerBombs
 	lsr		r0, 1Fh
@@ -286,6 +285,15 @@
 	; en route to main reactor
 	; spritesets: S0-06, S0-30, S2-00, S2-04, S2-05, S2-09, S2-0A, S2-11,
 	;             S2-13, S2-1E, S2-1F, S2-2C, S2-2E
+.if RANDOMIZER
+	; TODO: split off S0-06 and S0-30 to event 42h
+	ldrb	r0, [r3, MiscProgress_MajorLocations]
+	lsl		r1, r0, 1Fh - MajorLocation_Yakuza
+	lsl		r0, 1Fh - MajorLocation_Nettori
+	orr		r0, r1
+	lsr		r0, 1Fh
+.endif
+	bx		lr
 @@case_4B:
 	; auxiliary power active
 	; spritesets: S0-31
@@ -307,6 +315,11 @@
 @@case_51:
 	; nightmare defeated
 	; spritesets: S4-24, S4-26
+.if RANDOMIZER
+	; TODO: S4-24 event moved, decide what to do with leftover spriteset
+	mov		r0, #1
+.endif
+	bx		lr
 @@case_59:
 	; no entry without authorization
 	; spritesets: S6-10
@@ -317,23 +330,42 @@
 	lsr		r0, 1Fh
 .endif
 	bx		lr
+@@case_5F:
+	; restricted sector detached
+	; room states: S0-4D => S0-11
+.if RANDOMIZER
+	mov		r0, #1
+.endif
+	bx		lr
 @@case_60:
 	; ridley defeated
 	; spritesets: S1-04, S1-0C, S1-0F, S1-14
 .if !RANDOMIZER
+	mov		r0, #0
 	bx		lr
 .endif
+	; randomizer falls through to go mode check
 @@case_63:
 	; permission for orbit change granted
 	; spritesets: S0-0C, S0-0D, S0-0E, S0-15
-	; room states: S2-2E => S2-55
+	; room states: S0-0D => S0-55
 .if RANDOMIZER
-	; check for go-mode
+	; TODO: check for go mode
 .endif
 	bx		lr
 @@case_67:
 	; escape sequence
 	; spritesets: S0-06, S0-07, S0-26, S0-2E
 	; room states: S0-03 => S0-04, S0-30 => S0-53
+	ldr		r0, =CurrEvent
+	ldrb	r0, [r0]
+	cmp		r0, #67
+	beq		@@escape_sequence_active
+	mov		r0, #1
+	bx		lr
+@@escape_sequence_active:
+	mov		r0, #0
+	bx		lr
+	.pool
 .endfunc
 .endautoregion

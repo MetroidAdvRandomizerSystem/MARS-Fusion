@@ -136,7 +136,11 @@
 	mov		r5, r1
 	mov		r6, r0
 	cmp		r0, r1
+.if RANDOMIZER
 	beq		@@clear_tank_slot
+.else
+	b		@@exit
+.endif
 	ldr		r7, =TanksCollected
 @@loop:
 	lsr		r0, r6, #3
