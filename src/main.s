@@ -19,7 +19,7 @@
 .include "inc/structs.inc"
 
 ; Mark end-of-file padding as free space
-@@EOF equ 0879EFA8h ; 0879ECC8h
+@@EOF equ 0879F87Ch ; 0879ECC8h
 .defineregion @@EOF, 08800000h - @@EOF, 0FFh
 
 ; Debug mode patch
