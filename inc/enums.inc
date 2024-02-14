@@ -13,6 +13,7 @@ Button_L equ 9
 
 GameMode_InGame equ 1
 GameMode_FileSelect equ 7
+GameMode_Demo equ 12
 
 Area_MainDeck equ 0
 Area_SRX equ 1

@@ -83,7 +83,6 @@
 ; Patches making randomization of the game possible
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
-.include "src/randomizer/disable-demos.s"
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/ship-warp.s"
 .include "src/randomizer/tank-majors.s"

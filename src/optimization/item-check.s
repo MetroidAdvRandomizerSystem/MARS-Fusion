@@ -382,6 +382,12 @@ org 08080002h
 .org 08080576h
 	mov		r1, #0
 
+; reformat demo tank collection info
+.org 083E40C8h
+.area 14h, 0
+	.db		1 << 3
+.endarea
+
 .autoregion
 	.align 4
 .func InitializeSavedata

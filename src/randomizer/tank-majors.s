@@ -12,10 +12,20 @@
 	ldr		r3, =RoomTanks
 	lsl		r0, #2
 	add		r3, r0
+	ldr		r0, =GameMode
+	ldrb	r0, [r0]
+	cmp		r0, #GameMode_Demo
+	bne		@@set_tank_info
+	mov		r0, #Upgrade_None
+	strb	r0, [r3, RoomTanks_Upgrade]
+	strb	r0, [r3, RoomTanks_Sprite]
+	b		@@load_tank_vram
+@@set_tank_info:
 	ldrb	r0, [r1, MinorLocation_Upgrade]
 	strb	r0, [r3, RoomTanks_Upgrade]
 	ldrb	r2, [r1, MinorLocation_Sprite]
 	strb	r2, [r3, RoomTanks_Sprite]
+@@load_tank_vram:
 	ldr		r3, =DMA3
 	ldr		r1, =@TankTiles
 	lsl		r0, r2, #9
