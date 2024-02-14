@@ -149,15 +149,15 @@
 	add		r1, #1
 	ldrb	r0, [r7, r0]
 	lsr		r0, r1
-	ldr		r2, =MinorLocations
-	lsl		r0, r6, #2
-	add		r2, r0
 .if RANDOMIZER
 	bcc		@@load_tank_gfx
 .else
 	bcc		@@loop_inc
 .endif
 	; item collected, delete from the loaded map
+	ldr		r2, =MinorLocations
+	lsl		r0, r6, #2
+	add		r2, r0
 	ldrb	r0, [r2, MinorLocation_YPos]
 	ldr		r3, =LevelData
 	ldrh	r1, [r3, LevelData_Clipdata + LevelLayer_Stride]
@@ -191,6 +191,9 @@
 	str		r0, [r2, r1]
 	b		@@loop_inc
 @@load_tank_gfx:
+	ldr		r2, =MinorLocations
+	lsl		r0, r6, #2
+	add		r2, r0
 	sub		r0, r6, r4
 	mov		r1, r2
 	bl		LoadTankGfx
