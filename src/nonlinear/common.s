@@ -211,7 +211,7 @@ MajorUpgradeInfo:
 	.skip 1
 	.db		SamusUpgrades_ExplosiveUpgrades
 	.db		1 << ExplosiveUpgrade_IceMissiles
-	.db		Message_IceBeamUpgrade
+	.db		Message_IceMissileUpgrade
 	.skip 1
 	.db		SamusUpgrades_BeamUpgrades
 	.db		1 << BeamUpgrade_WideBeam
