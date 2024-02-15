@@ -582,12 +582,12 @@ org 08080002h
 	.db		(MinorLocations_End - MinorLocations) >> 2
 .endautoregion
 
-.autoregion
+.org MinorLocations
+.area 200h
 .align 2
 .if RANDOMIZER
 .notice "Tanks @ " + tohex(.)
 .endif
-MinorLocations:
 @Items_MainDeck_Room07:
 	.db		0Dh, 0Eh
 	.db		Upgrade_MissileTank
@@ -974,4 +974,4 @@ MinorLocations:
 	.db		Upgrade_PowerBombTank
 	.db		Upgrade_PowerBombTank
 MinorLocations_End:
-.endautoregion
+.endarea

@@ -20,7 +20,10 @@
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879F87Ch ; 0879ECC8h
-.defineregion @@EOF, 08800000h - @@EOF, 0FFh
+.defineregion @@EOF, 087FF000h - @@EOF, 0FFh
+
+MinorLocations equ 087FF000h
+MajorLocations equ 087FF200h
 
 ; Debug mode patch
 .if DEBUG
@@ -76,6 +79,7 @@
 .include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
+.include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"
 .endif
 

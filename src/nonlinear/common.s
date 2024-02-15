@@ -126,11 +126,10 @@
 	.pool
 .endarea
 
-.autoregion
+.org MajorLocations
 .if RANDOMIZER
 .notice "Bosses, data rooms, and security rooms @ " + tohex(.)
 .endif
-MajorLocations:
 	.db		Upgrade_Missiles
 	.db		Upgrade_MorphBall
 	.db		Upgrade_ChargeBeam
@@ -152,7 +151,6 @@ MajorLocations:
 	.db		Upgrade_DiffusionMissiles
 	.db		Upgrade_WaveBeam
 	.db		Upgrade_ScrewAttack
-.endautoregion
 
 .org 086B5912h
 .area 72h, 0
