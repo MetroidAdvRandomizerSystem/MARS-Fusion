@@ -21,6 +21,10 @@
 ; Reorder function such that default music is set after calling UpdateSubEvent
 .func SetRoomMusic
 	push	{ r4-r5, lr }
+	ldr		r2, =GameMode
+	ldrh	r2, [r2]
+	cmp		r2, #GameMode_Demo
+	beq		@@return
 	lsl		r4, r0, #18h
 	lsr		r4, #18h - 2
 	lsl		r5, r1, #18h
