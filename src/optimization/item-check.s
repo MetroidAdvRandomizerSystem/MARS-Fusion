@@ -605,7 +605,7 @@ MinorLocations:
 	.db		Upgrade_EnergyTank
 	.db		Upgrade_EnergyTank
 @Items_MainDeck_Room2D:
-	.db		04h, 04h
+	.db		04h, 06h
 	.db		Upgrade_MissileTank
 	.db		Upgrade_MissileTank
 @Items_MainDeck_Room2F:
@@ -659,7 +659,7 @@ MinorLocations:
 	.db		Upgrade_EnergyTank
 	.db		Upgrade_EnergyTank
 @Items_Sector1_Room27:
-	.db		04h, 05h
+	.db		04h, 06h
 	.db		Upgrade_PowerBombTank
 	.db		Upgrade_PowerBombTank
 @Items_Sector1_Room28:
@@ -752,7 +752,7 @@ MinorLocations:
 	.db		Upgrade_MissileTank
 	.db		Upgrade_MissileTank
 @Items_Sector3_Room03:
-	.db		3Ch, 0Dh
+	.db		2Ch, 0Dh
 	.db		Upgrade_MissileTank
 	.db		Upgrade_MissileTank
 @Items_Sector3_Room06:
