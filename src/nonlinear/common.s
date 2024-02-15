@@ -58,12 +58,12 @@
 	ldr		r2, =SamusUpgrades
 	cmp		r0, Upgrade_MissileTank
 	bne		@@checkETank
-	ldrb	r0, [r2, SamusUpgrades_CurrMissiles]
+	ldrh	r0, [r2, SamusUpgrades_CurrMissiles]
 	add		r0, #5
-	strb	r0, [r2, SamusUpgrades_CurrMissiles]
-	ldrb	r0, [r2, SamusUpgrades_MaxMissiles]
+	strh	r0, [r2, SamusUpgrades_CurrMissiles]
+	ldrh	r0, [r2, SamusUpgrades_MaxMissiles]
 	add		r0, #5
-	strb	r0, [r2, SamusUpgrades_MaxMissiles]
+	strh	r0, [r2, SamusUpgrades_MaxMissiles]
 .if ABILITY_FROM_TANK
 	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
 	lsr		r1, r0, ExplosiveUpgrade_Missiles + 1
@@ -80,10 +80,10 @@
 @@checkETank:
 	cmp		r0, Upgrade_EnergyTank
 	bne		@@checkPBTank
-	ldrb	r0, [r2, SamusUpgrades_MaxEnergy]
+	ldrh	r0, [r2, SamusUpgrades_MaxEnergy]
 	add		r0, #100
-	strb	r0, [r2, SamusUpgrades_MaxEnergy]
-	strb	r0, [r2, SamusUpgrades_CurrEnergy]
+	strh	r0, [r2, SamusUpgrades_MaxEnergy]
+	strh	r0, [r2, SamusUpgrades_CurrEnergy]
 	mov		r0, Message_EnergyTankUpgrade
 	b		@@setMessage
 @@checkPBTank:
