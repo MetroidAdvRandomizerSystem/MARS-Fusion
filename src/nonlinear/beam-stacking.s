@@ -1199,6 +1199,12 @@
 .endfunc
 .endautoregion
 
+.org 08004F40h
+.area 1Ah
+	; prevent ice from granting omega suit
+	b		08004F5Ah
+.endarea
+
 .org 08082CE6h
 	bl		Beam_HitEnemy
 .org 08082D0Ch

@@ -34,10 +34,10 @@
 	ldr		r1, =06004A00h
 	lsr		r0, r2, #7
 	add		r1, r0
-	str		r1, [r2, DMA_DAD]
+	str		r1, [r3, DMA_DAD]
 	ldr		r0, =80000040h
-	str		r0, [r2, DMA_CNT]
-	ldr		r0, [r2, DMA_CNT]
+	str		r0, [r3, DMA_CNT]
+	ldr		r0, [r3, DMA_CNT]
 	bx		lr
 	.pool
 .endfunc
