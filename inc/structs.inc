@@ -196,6 +196,16 @@ RoomTanks_Upgrade equ 02h
 RoomTanks_Sprite equ 03h
 .sym on
 
+VariableConnections equ 083C8C68h
+.sym off
+VariableConnections_Len equ 3Bh
+VariableConnection_Area equ 00h
+VariableConnection_SourceDoor equ 01h
+VariableConnection_Event equ 02h
+VariableConnection_DestinationDoor equ 02h
+VariableConnection_Size equ 04h
+.sym on
+
 EventUpgradeInfo equ 08575FB4h
 .sym off
 EventUpgradeInfo_Len equ 19

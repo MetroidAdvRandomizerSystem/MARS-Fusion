@@ -1,5 +1,5 @@
-; Changes event-based spriteset checks to check various progression flags
-; instead of comparing against the linear event counter.
+; Changes room state checks to check various progression flags instead of
+; comparing against the linear event counter.
 
 ; NOTES:
 ; uninterruptable sequences:
@@ -19,6 +19,7 @@
 
 .org 080648DAh
 .area 26h, 0
+	; change spriteset handling to call custom event function
 	mov		r5, r1
 	cmp		r0, #0
 	beq		@@check_spriteset_1
@@ -53,6 +54,41 @@
 	ldr		r0, [r1, LevelMeta_Spriteset0 - 20h]
 	str		r0, [r5, #08h]
 	b		08064944h
+	.pool
+.endarea
+
+.org 08069508h
+.area 64h
+	; change door transition to call custom event function
+	push	{ r4-r7, lr }
+	lsl		r4, r0, #18h
+	lsr		r0, #18h
+	ldr		r5, =VariableConnections
+	mov		r6, #0
+	ldr		r0, =CurrArea
+	ldrb	r7, [r0]
+@@loop:
+	add		r1, r5, r6
+	ldrb	r0, [r1, VariableConnection_Area]
+	cmp		r0, r7
+	bne		@@loop_inc
+	ldrb	r0, [r1, VariableConnection_SourceDoor]
+	cmp		r0, r4
+	bne		@@loop_inc
+	ldrb	r0, [r1, VariableConnection_Event]
+	bl		CheckEvent
+	cmp		r0, #0
+	beq		@@loop_inc
+	add		r0, r5, r6
+	ldrb	r0, [r0, VariableConnection_DestinationDoor]
+	b		@@return
+@@loop_inc:
+	add		r1, #VariableConnection_Size
+	cmp		r1, #VariableConnections_Len
+	blt		@@loop
+	mov		r0, #0FFh
+@@return:
+	pop		{ r4-r7, pc }
 	.pool
 .endarea
 
@@ -179,6 +215,7 @@
 	lsr		r0, 1Fh
 .else
 	; TODO: fixme
+	mov		r0, #0
 .endif
 	bx		lr
 @@case_19:
@@ -240,6 +277,7 @@
 	; spritesets: S5-08, S5-18, S5-27
 .if RANDOMIZER
 	; maybe split S5-18 and S5-27
+	mov		r0, #0
 .endif
 	bx		lr
 @@case_3D:
@@ -255,6 +293,7 @@
 	; spritesets: S0-0C, S0-12, S0-18
 .if RANDOMIZER
 	; decide when to place PB barriers in main deck
+	mov		r0, #0
 .endif
 	bx		lr
 @@case_42:
@@ -351,6 +390,7 @@
 	; room states: S0-0D => S0-55
 .if RANDOMIZER
 	; TODO: check for go mode
+	mov		r0, #0
 .endif
 	bx		lr
 @@case_67:

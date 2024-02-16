@@ -73,7 +73,7 @@ MajorLocations equ 087FF200h
 .include "src/nonlinear/beam-stacking.s"
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
-.include "src/nonlinear/event-spritesets.s"
+.include "src/nonlinear/room-states.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/null-event.s"
