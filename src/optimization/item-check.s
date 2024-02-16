@@ -9,10 +9,15 @@
 ; The start index is in r0, and the (exclusive) end index is in r1.
 ; The indices will be numbers from 0 to 99, else they will both be 0.
 	.align 2
-.func GetRoomItems
+.func GetLoadedRoomItems
 	ldr		r1, =CurrArea
 	ldrb	r0, [r1]
 	ldrb	r1, [r1, CurrRoom - CurrArea]
+	b		GetRoomItems
+	.pool
+.endfunc
+
+.func GetRoomItems
 	ldr		r2, =@ItemsByArea
 	lsl		r0, #2
 	ldr		r2, [r2, r0]
@@ -62,7 +67,7 @@
 	push	{ r4, lr }
 	lsl		r4, r1, #8h
 	orr		r4, r0
-	bl		GetRoomItems
+	bl		GetLoadedRoomItems
 	cmp		r0, r1
 	beq		@@fail
 	lsl		r2, r1, #2
@@ -131,7 +136,7 @@
 	ldrb	r0, [r0]
 	cmp		r0, #0
 	bne		@@exit
-	bl		GetRoomItems
+	bl		GetLoadedRoomItems
 	mov		r4, r0
 	mov		r5, r1
 	mov		r6, r0
@@ -218,48 +223,61 @@
 .area 0A4h
 	push	{ r4-r7, lr }
 	mov		r5, r8
-	push	{ r5 }
+	mov		r6, r9
+	push	{ r5-r6 }
+	mov		r8, r0
 	ldr		r1, =@ItemsByArea
 	lsl		r0, #2
-	ldr		r6, [r1, r0]
-	ldr		r7, =AreaLevels
-	ldr		r7, [r7, r0]
+	ldr		r7, [r1, r0]
 @@loop:
-	ldrb	r2, [r6]
+	ldrb	r2, [r7]
 	cmp		r2, #0FFh
 	beq		@@exit
-	mov		r8, r2
-	ldrb	r3, [r6, #16]
-	lsr		r0, r3, #3
+	mov		r9, r2
+	mov		r0, r8
+	mov		r1, r9
+	bl		GetRoomItems
+	cmp		r0, r1
+	beq		@@loop_inc_room
+	mov		r5, r0
+	mov		r6, r1
+@@loop_room:
+	lsr		r0, r5, #3
 	ldr		r1, =TanksCollected
 	ldrb	r0, [r1, r0]
-	lsl		r1, r3, #29
-	lsr		r1, #29
+	lsl		r1, r5, #20h - 3
+	lsr		r1, #20h - 3
 	add		r1, #1
 	lsr		r0, r1
-	bcc		@@loop_inc
-	ldr		r5, =MinorLocations
-	lsl		r0, r3, #2
-	add		r5, r0
-	ldrb	r0, [r5, MinorLocation_XPos]
-	sub		r0, #2
-	mov		r1, #15
-	bl		Divide
-	mov		r4, r0
-	ldrb	r0, [r5, MinorLocation_YPos]
-	sub		r0, #2
-	mov		r1, #10
-	bl		Divide
-	mov		r5, r0
-	mov		r0, r8
+	bcc		@@loop_inc_item
+	ldr		r4, =MinorLocations
+	lsl		r0, r5, #2
+	add		r4, r0
+	mov		r0, r9
 	mov		r1, #60
 	mul		r0, r1
-	add		r3, r7, r0
+	ldr		r3, =AreaLevels
+	mov		r1, r8
+	lsl		r1, #2
+	ldr		r1, [r3, r1]
+	add		r3, r1, r0
 	add		r3, #LevelMeta_MapX
 	ldrb	r0, [r3, LevelMeta_MapY - LevelMeta_MapX]
-	add		r0, r5
+	ldrb	r1, [r4, MinorLocation_YPos]
+	sub		r1, #2
+	mov		r2, #((1 << 13) / 10 + 1) >> 2
+	lsl		r2, #2
+	mul		r1, r2
+	lsr		r1, #13
+	add		r0, r1
 	lsl		r0, #5
-	add		r0, r4
+	ldrb	r1, [r4, MinorLocation_XPos]
+	sub		r1, #2
+	mov		r2, #((1 << 12) / 15 + 1) >> 1
+	lsl		r2, #1
+	mul		r1, r2
+	lsr		r1, #12
+	add		r0, r1
 	ldrb	r1, [r3]
 	add		r0, r1
 	lsl		r0, #1
@@ -267,13 +285,18 @@
 	ldrh	r1, [r3, r0]
 	add		r1, #1
 	strh	r1, [r3, r0]
-@@loop_inc:
-	add		r6, #1
+@@loop_inc_item:
+	add		r5, #1
+	cmp		r5, r6
+	blt		@@loop_room
+@@loop_inc_room:
+	add		r7, #1
 	b		@@loop
 	.pool
 @@exit:
-	pop		{ r5 }
+	pop		{ r5-r6 }
 	mov		r8, r5
+	mov		r9, r6
 	pop		{ r4-r7, pc }
 .endarea
 
