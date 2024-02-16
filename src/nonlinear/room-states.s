@@ -401,10 +401,10 @@
 	ldrb	r0, [r0]
 	cmp		r0, #67
 	beq		@@escape_sequence_active
-	mov		r0, #1
+	mov		r0, #0
 	bx		lr
 @@escape_sequence_active:
-	mov		r0, #0
+	mov		r0, #1
 	bx		lr
 	.pool
 .endfunc
