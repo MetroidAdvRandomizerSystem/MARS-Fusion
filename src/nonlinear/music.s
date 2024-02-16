@@ -270,6 +270,10 @@
 	b		@@areaSwitchDone
 @@case_areaSwitch_default:
 	ldr		r1, =MusicInfo + MusicInfo_Type
+	ldr		r2, =GameMode
+	ldrh	r2, [r2]
+	cmp		r2, #GameMode_Demo
+	beq @@areaSwitchDone
 	mov		r0, MusicType_Transient
 	strb	r0, [r1]
 @@areaSwitchDone:
