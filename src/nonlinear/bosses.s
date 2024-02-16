@@ -149,6 +149,8 @@
 	mov		r1, #1 << StoryFlag_NocDataDestroyed
 	orr		r0, r1
 	strh	r0, [r2, MiscProgress_StoryFlags]
+.endfunc
+.func SetDoorUnlockTimer
 	ldr		r1, =DoorUnlockTimer
 	mov		r0, #60
 	strb	r0, [r1]
@@ -219,6 +221,42 @@
 	strb	r7, [r4, Enemy_Status]
 	b		0805DFA0h
 	.pool
+.endarea
+
+.org 080369A0h
+.area 3Ch
+	; set box kill status
+	ldr		r1, =CurrentEnemy
+	mov		r2, r1
+	add		r2, #20h
+	ldr		r0, =08347BD8h
+	str		r0, [r1, Enemy_GfxPointer]
+	mov		r3, #0
+	strh	r3, [r1, Enemy_Animation]
+	strb	r3, [r1, Enemy_AnimationFrame]
+	strb	r3, [r2, Enemy_Timer0 - 20h]
+	strb	r3, [r2, Enemy_VelocityY - 20h]
+	mov		r0, #44h
+	strb	r0, [r2, Enemy_Pose - 20h]
+	add		r2, #03000784h - CurrentEnemy - 20h
+	ldr		r0, =08342DF0h
+	str		r0, [r2]
+	strh	r3, [r2, #04h]
+	strb	r3, [r2, #06h]
+	add		r1, #MiscProgress - CurrentEnemy
+	ldrh	r0, [r1, MiscProgress_StoryFlags]
+	mov		r2, #1 << StoryFlag_BoxDefeated
+	orr		r0, r2
+	strh	r0, [r1, MiscProgress_StoryFlags]
+	bx		lr
+	.pool
+.endarea
+
+.org 08037FDCh
+.area 0Ch
+	; unlock doors after killing box
+	bl		SetDoorUnlockTimer
+	nop
 .endarea
 
 .org 08060D38h

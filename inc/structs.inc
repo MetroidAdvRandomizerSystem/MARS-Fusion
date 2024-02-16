@@ -72,6 +72,8 @@ Enemy_Status equ 00h
 Enemy_XParasiteTimer equ 06h
 Enemy_Health equ 14h
 Enemy_Animation equ 16h
+Enemy_GfxPointer equ 18h
+Enemy_AnimationFrame equ 1Ch
 Enemy_Id equ 1Dh
 Enemy_RoomSlot equ 1Eh
 Enemy_SpritesetGfxSlot equ 1Fh

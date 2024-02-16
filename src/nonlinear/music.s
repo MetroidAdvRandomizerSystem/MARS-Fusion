@@ -130,7 +130,7 @@
 	bne		@@case_SRX_check28
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_ChargeCoreX + 1
-	bcs		@@case_areaSwitch_default
+	bcs		@@case_MainDeck_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -169,6 +169,20 @@
 	mov		r2, #50
 	b		@@tryLock
 @@case_PYR:
+	; box fight room
+	cmp		r6, #17h
+	bne		@@case_PYR_check19
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	lsr		r0, StoryFlag_BoxDefeated + 1
+	bcs		@@case_areaSwitch_default
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_XBox + 1
+	bcs		@@case_areaSwitch_default
+	mov		r0, #18h
+	mov		r1, MusicType_BossAmbience
+	mov		r2, #60
+	b		@@tryLock
+@@case_PYR_check19:
 	cmp		r6, #19h
 	bne		@@case_areaSwitch_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
