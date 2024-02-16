@@ -360,7 +360,23 @@
 .endarea
 
 ; load entire table to SRAM instead of variable amount based on tanks collected
-org 08080002h
+.org 0807FF1Ah
+.area 34h
+	mov		r0, r8
+	add		r2, r0, r7
+	mov		r0, #10h
+	str		r0, [sp]
+	mov		r0, #3
+	ldr		r1, =TanksCollected
+	mov		r3, #(SaveData_Size - SaveData_TanksCollected) >> 4
+	lsl		r3, #4
+	bl		08002F1Ch
+	b		0807FF4Eh
+	.pool
+.endarea
+
+; load entire table from SRAM
+.org 08080002h
 .area 34h
 	mov		r0, r8
 	add		r1, r0, r7
