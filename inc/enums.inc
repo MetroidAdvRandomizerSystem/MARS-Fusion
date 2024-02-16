@@ -78,13 +78,13 @@ Message_EscapeSequence equ 20h
 Message_SavePrompt equ 21h
 Message_SaveComplete equ 22h
 Message_AdamUplinkPrompt equ 23h
-Message_ResupplyComplete equ 24h
+Message_IceTrapUpgrade equ 24h			; vanilla: ammunition resupply
 Message_EnergyRechargeComplete equ 25h
 Message_RechargeAllComplete equ 26h
 Message_EnergyTankUpgrade equ 27h
 Message_MissileTankUpgrade equ 28h
 Message_PowerBombTankUpgrade equ 29h
-Message_NothingUpgrade equ 2Ah	; vanilla: enemy location abnormal
+Message_NothingUpgrade equ 2Ah		; vanilla: enemy location abnormal
 
 Tank_Missiles equ 1
 Tank_Energy equ 2
@@ -227,6 +227,7 @@ Upgrade_IceBeam equ 22
 Upgrade_MissileTank equ 23
 Upgrade_EnergyTank equ 24
 Upgrade_PowerBombTank equ 25
+Upgrade_IceTrap equ 26
 
 MajorLocation_MainDeckData equ 00h
 MajorLocation_Arachnus equ 01h

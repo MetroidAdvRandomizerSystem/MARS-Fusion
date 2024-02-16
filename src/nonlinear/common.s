@@ -18,6 +18,11 @@
 .func ObtainUpgrade
 	push	{ lr }
 	cmp		r0, Upgrade_None
+	bne		@@checkIceTrap
+	mov		r0, Message_NothingUpgrade
+	b		@@setMessage
+@@checkIceTrap:
+	cmp		r0, Upgrade_IceTrap
 	bne		@@checkMajor
 	ldr		r0, =SamusUpgrades
 	ldrb	r0, [r0, SamusUpgrades_SuitUpgrades]
@@ -34,7 +39,7 @@
 	mov		r0, #0FBh
 	blx		r1
 @@skipFreeze:
-	mov		r0, Message_NothingUpgrade
+	mov		r0, Message_IceTrapUpgrade
 	b		@@setMessage
 @@checkMajor:
 	cmp		r0, Upgrade_IceBeam
@@ -152,9 +157,14 @@
 	.db		Upgrade_WaveBeam
 	.db		Upgrade_ScrewAttack
 
+.org 086B56FAh
+.area 48h, 0
+	.string 56, "[INDENT]You are a FOOL!\n"
+.endarea
+
 .org 086B5912h
 .area 72h, 0
-	.string 56, "[INDENT]You are a FOOL!\n"
+	.string 50, "[INDENT]Nothing acquired.\n"
 .endarea
 
 .autoregion

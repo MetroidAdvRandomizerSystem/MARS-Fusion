@@ -26,6 +26,10 @@
 	ldrb	r2, [r1, MinorLocation_Sprite]
 	strb	r2, [r3, RoomTanks_Sprite]
 @@load_tank_vram:
+	cmp		r2, #Upgrade_IceTrap
+	blo		@@load_tiles
+	mov		r2, #Upgrade_None
+@@load_tiles:
 	ldr		r3, =DMA3
 	ldr		r1, =@TankTiles
 	lsl		r0, r2, #9
@@ -38,6 +42,7 @@
 	ldr		r0, =80000040h
 	str		r0, [r3, DMA_CNT]
 	ldr		r0, [r3, DMA_CNT]
+@@return:
 	bx		lr
 	.pool
 .endfunc
@@ -50,9 +55,6 @@
 	ldr		r4, =RoomTanks
 	mov		r3, #0
 @@loop:
-	ldrb	r0, [r4, RoomTanks_Sprite]
-	cmp		r0, Upgrade_PowerBombTank
-	bhi		@@loop_inc
 	ldrb	r0, [r4, RoomTanks_AnimationDelay]
 	add		r0, #1
 	strb	r0, [r4, RoomTanks_AnimationDelay]
@@ -70,6 +72,10 @@
 	lsl		r0, #7
 	add		r1, r0
 	ldrb	r0, [r4, RoomTanks_Sprite]
+	cmp		r0, #Upgrade_IceTrap
+	blo		@@load_tiles
+	mov		r0, #Upgrade_None
+@@load_tiles:
 	lsl		r0, #9
 	add		r1, r0
 	str		r1, [r2, DMA_SAD]
