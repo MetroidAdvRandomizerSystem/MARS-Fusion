@@ -204,7 +204,7 @@ VariableConnections_Len equ 3Bh
 VariableConnection_Area equ 00h
 VariableConnection_SourceDoor equ 01h
 VariableConnection_Event equ 02h
-VariableConnection_DestinationDoor equ 02h
+VariableConnection_DestinationDoor equ 03h
 VariableConnection_Size equ 04h
 .sym on
 

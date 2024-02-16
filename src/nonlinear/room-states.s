@@ -62,7 +62,7 @@
 	; change door transition to call custom event function
 	push	{ r4-r7, lr }
 	lsl		r4, r0, #18h
-	lsr		r0, #18h
+	lsr		r4, #18h
 	ldr		r5, =VariableConnections
 	mov		r6, #0
 	ldr		r0, =CurrArea
@@ -83,8 +83,8 @@
 	ldrb	r0, [r0, VariableConnection_DestinationDoor]
 	b		@@return
 @@loop_inc:
-	add		r1, #VariableConnection_Size
-	cmp		r1, #VariableConnections_Len
+	add		r6, #VariableConnection_Size
+	cmp		r6, #VariableConnections_Len * VariableConnection_Size
 	blt		@@loop
 	mov		r0, #0FFh
 @@return:
@@ -101,7 +101,7 @@
 	bhi		@@case_default
 	mov		r1, r0
 	ldr		r3, =@@eventCases
-	mov		r2, 1 << log2(28)
+	mov		r2, 1 << (log2(28) - 1)
 	ldrb	r0, [r3, 28 - (1 << log2(28))]
 	cmp		r0, r1
 	bhi		@@bsearch_loop
