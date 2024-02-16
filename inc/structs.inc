@@ -135,6 +135,13 @@ SamusState_VelocityY equ 1Ch
 SamusState_Animation equ 22h
 .sym on
 
+SamusTimers equ 030012F0h
+.sym off
+SamusTimers_SubzeroKnockback equ 05h
+SamusTimers_EnvironmentalDamage equ 14h
+SamusTimers_EnvironmentalDamageSfx equ 15h
+.sym on
+
 SamusUpgrades equ 03001310h
 .sym off
 SamusUpgrades_CurrEnergy equ 00h

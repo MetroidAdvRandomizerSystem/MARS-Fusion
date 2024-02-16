@@ -118,6 +118,14 @@ SuitUpgrade_GravitySuit equ 5
 SuitUpgrade_MorphBall equ 6
 SuitUpgrade_OmegaSuit equ 7
 
+EnvironmentalHazard_None equ 0
+EnvironmentalHazard_Water equ 1
+EnvironmentalHazard_Lava equ 2
+EnvironmentalHazard_Acid equ 3
+EnvironmentalHazard_Heat equ 4
+EnvironmentalHazard_Subzero equ 5
+EnvironmentalHazard_Cold equ 6
+
 EnemyId_MessageBox equ 21h
 EnemyId_Arachnus_CoreXNucleus equ 3Fh
 EnemyId_Zazabi_CoreXNucleus equ 44h
