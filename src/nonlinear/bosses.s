@@ -123,7 +123,7 @@
 	strb	r7, [r4, Enemy_Status]
 	b		08051C82h
 	.pool
-.endregion
+.endarea
 
 .org 08060C90h
 .area 18h
@@ -193,7 +193,7 @@
 	strb	r0, [r1, Enemy_Status]
 	b		0805B5FCh
 	.pool
-.endregion
+.endarea
 
 .org 0805BDB8h
 .area 20h, 0

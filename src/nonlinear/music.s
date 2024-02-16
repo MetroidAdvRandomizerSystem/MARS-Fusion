@@ -138,10 +138,10 @@
 @@case_SRX_check28:
 	; ridley fight room
 	cmp		r6, #1Bh
-	bne		@@case_areaSwitch_default
+	bne		@@case_MainDeck_default
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Ridley + 1
-	bcs		@@case_areaSwitch_default
+	bcs		@@case_MainDeck_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -254,7 +254,7 @@
 @@case_NOC_check0D:
 	; mega core-x fight room
 	cmp		r6, #0Dh
-	bne		@@case_NOC_check19
+	bne		@@case_NOC_check10
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_MegaCoreX + 1
 	bcs		@@case_areaSwitch_default
@@ -265,6 +265,17 @@
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
+	b		@@tryLock
+@@case_NOC_check10:
+	; xbox fight room
+	cmp		r6, #10h
+	bne		@@case_NOC_check19
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_XBox + 1
+	bcs		@@case_areaSwitch_default
+	mov		r0, #1Bh
+	mov		r1, MusicType_BossMusic
+	mov		r2, #20
 	b		@@tryLock
 @@case_NOC_check19:
 	; NOC data room
