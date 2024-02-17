@@ -125,6 +125,7 @@ SamusState_Unk00 equ 00h
 SamusState_Pose equ 01h
 SamusState_ForcedMovement equ 03h
 SamusState_ArmCannonDirection equ 07h
+SamusState_SecondaryWeaponSelect equ 08h
 SamusState_ProjectileCooldown equ 0Ah
 SamusState_SoloWaveDirection equ 0Bh	; non-vanilla
 SamusState_ChargeCounter equ 0Ch

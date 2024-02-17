@@ -12,6 +12,7 @@
 .definelabel RANDOMIZER, 1
 
 .definelabel ABILITY_FROM_TANK, 0
+.definelabel BOMBLESS_PBS, 1
 
 .include "inc/enums.inc"
 .include "inc/functions.inc"
@@ -81,6 +82,10 @@ MajorLocations equ 087FF200h
 .include "src/nonlinear/security-unlock.s"
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"
+
+.if BOMBLESS_PBS
+.include "src/nonlinear/bombless-pbs.s"
+.endif
 .endif
 
 ; Randomizer patches
