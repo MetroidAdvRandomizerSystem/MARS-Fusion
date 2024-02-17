@@ -9,7 +9,9 @@ SpawnPrimarySprite equ 0800FBC8h
 LockHatches equ 08063070h
 ChangeSuit equ 08063190h
 SetEventEffect equ 0806342Ch
-
+SetBg1Tile equ 0806C614h
+SetSpecialBg1Tile equ 0806C6E4h
+SetClipdata equ 0806C82Ch
 SpawnParticleEffect equ 080730E4h
 SetEvent equ 08074890h
 

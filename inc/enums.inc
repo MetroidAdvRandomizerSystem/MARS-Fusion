@@ -229,6 +229,34 @@ Upgrade_EnergyTank equ 24
 Upgrade_PowerBombTank equ 25
 Upgrade_IceTrap equ 26
 
+UpgradeSprite_Empty equ 0
+UpgradeSprite_Missiles equ 1
+UpgradeSprite_MorphBall equ 2
+UpgradeSprite_ChargeBeam equ 3
+UpgradeSprite_SecurityLevel1 equ 4
+UpgradeSprite_Bombs equ 5
+UpgradeSprite_HiJump equ 6
+UpgradeSprite_Speedbooster equ 7
+UpgradeSprite_SecurityLevel2 equ 8
+UpgradeSprite_SuperMissiles equ 9
+UpgradeSprite_VariaSuit equ 10
+UpgradeSprite_SecurityLevel3 equ 11
+UpgradeSprite_IceMissiles equ 12
+UpgradeSprite_WideBeam equ 13
+UpgradeSprite_PowerBombs equ 14
+UpgradeSprite_SpaceJump equ 15
+UpgradeSprite_PlasmaBeam equ 16
+UpgradeSprite_GravitySuit equ 17
+UpgradeSprite_SecurityLevel4 equ 18
+UpgradeSprite_DiffusionMissiles equ 19
+UpgradeSprite_WaveBeam equ 20
+UpgradeSprite_ScrewAttack equ 21
+UpgradeSprite_IceBeam equ 22
+UpgradeSprite_MissileTank equ 23
+UpgradeSprite_EnergyTank equ 24
+UpgradeSprite_PowerBombTank equ 25
+UpgradeSprite_Anonymous equ 26
+
 MajorLocation_MainDeckData equ 00h
 MajorLocation_Arachnus equ 01h
 MajorLocation_ChargeCoreX equ 02h
@@ -256,5 +284,23 @@ StoryFlag_WaterLowered equ 1
 StoryFlag_BoxDefeated equ 2
 StoryFlag_NocDataDestroyed equ 3
 StoryFlag_BoilerCooling equ 4
+
+; alternate palette
+AltTankPal0 equ 0000h
+AltTankPal1 equ 0000h
+AltTankPal2 equ 294Ah
+AltTankPal3 equ 4210h
+AltTankPal4 equ 56B5h
+AltTankPal5 equ 6B5Ah
+AltTankPal6 equ 77BDh
+AltTankPal7 equ 0140h
+AltTankPal8 equ 0240h
+AltTankPal9 equ 27E9h
+AltTankPalA equ 3900h
+AltTankPalB equ 7E00h
+AltTankPalC equ 02D6h
+AltTankPalD equ 27FFh
+AltTankPalE equ 0013h
+AltTankPalF equ 043Fh
 
 .sym on

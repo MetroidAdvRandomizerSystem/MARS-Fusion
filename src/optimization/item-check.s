@@ -630,387 +630,387 @@
 @Items_MainDeck_Room07:
 	.db		0Dh, 0Eh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room11:
 	.db		09h, 14h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_MainDeck_Room23:
 	.db		0Eh, 41h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room26:
 	.db		35h, 0Ah
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_MainDeck_Room2D:
 	.db		04h, 06h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room2F:
 	.db		04h, 03h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_MainDeck_Room32:
 	.db		36h, 08h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_MainDeck_Room33:
 	.db		05h, 1Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room39:
 	.db		0Ch, 0Ah
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_MainDeck_Room45:
 	.db		1Dh, 1Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room48:
 	.db		0Dh, 09h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room49:
 	.db		06h, 0Ah
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_MainDeck_Room54:
 	.db		0Eh, 0Ah
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector1_Room05:
 	.db		1Bh, 0Ah
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector1_Room11:
 	.db		08h, 06h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_DiffusionMissiles
 	.db		19h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_SecurityLevel2
 	.db		2Ch, 13h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_SecurityLevel3
 @Items_Sector1_Room1E:
 	.db		0Fh, 08h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector1_Room27:
 	.db		04h, 06h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector1_Room28:
 	.db		0Ch, 08h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector1_Room2B:
 	.db		0Dh, 0Bh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector1_Room2C:
 	.db		04h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector1_Room2F:
 	.db		0Ah, 02h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector1_Room32:
 	.db		06h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector1_Room34:
 	.db		0Dh, 07h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector2_Room06:
 	.db		1Dh, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room09:
 	.db		0Dh, 04h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room0A:
 	.db		13h, 23h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room11:
 	.db		2Ch, 07h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector2_Room15:
 	.db		1Dh, 04h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector2_Room19:
 	.db		04h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room1B:
 	.db		1Ch, 07h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room1F:
 	.db		28h, 07h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room21:
 	.db		15h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room2A:
 	.db		05h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector2_Room2F:
 	.db		1Dh, 10h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector2_Room32:
 	.db		03h, 07h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		03h, 18h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector2_Room36:
 	.db		04h, 05h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 	.db		09h, 0Eh
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector2_Room37:
 	.db		07h, 04h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		0Ah, 1Ah
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room03:
 	.db		2Ch, 0Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_SecurityLevel4
 @Items_Sector3_Room06:
 	.db		05h, 11h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room08:
 	.db		09h, 09h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		16h, 0Dh
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector3_Room09:
 	.db		2Ah, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room0C:
 	.db		0Ch, 19h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector3_Room13:
 	.db		13h, 0Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 	.db		2Bh, 0Ah
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector3_Room1C:
 	.db		0Ch, 07h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 	.db		24h, 1Bh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room1E:
 	.db		04h, 0Dh
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector3_Room21:
 	.db		0Fh, 0Ah
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room22:
 	.db		0Ah, 0Fh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room23:
 	.db		04h, 1Bh
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		0Fh, 56h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector3_Room25:
 	.db		0Fh, 03h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector4_Room06:
 	.db		16h, 1Dh
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector4_Room0A:
 	.db		0Ch, 1Dh
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector4_Room0D:
 	.db		18h, 09h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 	.db		26h, 0Fh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room0F:
 	.db		2Ch, 05h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room11:
 	.db		17h, 14h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room17:
 	.db		39h, 13h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector4_Room18:
 	.db		28h, 07h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector4_Room1C:
 	.db		09h, 06h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room21:
 	.db		0Ah, 0Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room24:
 	.db		03h, 07h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector4_Room26:
 	.db		16h, 0Ah
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 	.db		2Ah, 05h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector4_Room29:
 	.db		0Fh, 04h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector4_Room2E:
 	.db		04h, 0Ah
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector5_Room04:
 	.db		05h, 05h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		14h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector5_Room0C:
 	.db		03h, 0Ah
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector5_Room0E:
 	.db		0Dh, 03h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector5_Room12:
 	.db		03h, 03h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room16:
 	.db		03h, 30h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room17:
 	.db		0Eh, 06h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room1A:
 	.db		04h, 06h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room1E:
 	.db		17h, 07h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector5_Room21:
 	.db		0Eh, 03h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector5_Room22:
 	.db		0Eh, 08h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector5_Room24:
 	.db		08h, 08h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room2F:
 	.db		04h, 0Ah
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room32:
 	.db		0Dh, 08h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 @Items_Sector5_Room33:
 	.db		0Bh, 03h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room00:
 	.db		29h, 12h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room0F:
 	.db		03h, 03h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room12:
 	.db		0Fh, 03h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		1Dh, 14h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room18:
 	.db		1Dh, 09h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room1A:
 	.db		05h, 06h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector6_Room1E:
 	.db		09h, 0Dh
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 	.db		13h, 08h
 	.db		Upgrade_MissileTank
-	.db		Upgrade_MissileTank
+	.db		UpgradeSprite_MissileTank
 @Items_Sector6_Room22:
 	.db		0Eh, 08h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector6_Room26:
 	.db		2Dh, 06h
 	.db		Upgrade_EnergyTank
-	.db		Upgrade_EnergyTank
+	.db		UpgradeSprite_EnergyTank
 @Items_Sector6_Room27:
 	.db		0Ah, 18h
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 	.db		21h, 0Ah
 	.db		Upgrade_PowerBombTank
-	.db		Upgrade_PowerBombTank
+	.db		UpgradeSprite_PowerBombTank
 MinorLocations_End:
 .endarea
