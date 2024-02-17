@@ -6,48 +6,6 @@
 ; Placing an item in any of these rooms would cause the message box to
 ; overwrite existing sprite slots
 
-/*.autoregion
-	.align 2
-.func LoadTankGfx
-	ldr		r3, =RoomTanks
-	lsl		r0, #2
-	add		r3, r0
-	ldr		r0, =GameMode
-	ldrb	r0, [r0]
-	cmp		r0, #GameMode_Demo
-	bne		@@set_tank_info
-	mov		r0, #Upgrade_None
-	strb	r0, [r3, RoomTanks_Upgrade]
-	strb	r0, [r3, RoomTanks_Sprite]
-	b		@@load_tank_vram
-@@set_tank_info:
-	ldrb	r0, [r1, MinorLocation_Upgrade]
-	strb	r0, [r3, RoomTanks_Upgrade]
-	ldrb	r2, [r1, MinorLocation_Sprite]
-	strb	r2, [r3, RoomTanks_Sprite]
-@@load_tank_vram:
-	cmp		r2, #Upgrade_IceTrap
-	blo		@@load_tiles
-	mov		r2, #Upgrade_None
-@@load_tiles:
-	ldr		r3, =DMA3
-	ldr		r1, =@TankTiles
-	lsl		r0, r2, #9
-	add		r1, r0
-	str		r1, [r3, DMA_SAD]
-	ldr		r1, =06004A00h
-	lsr		r0, r2, #7
-	add		r1, r0
-	str		r1, [r3, DMA_DAD]
-	ldr		r0, =80000040h
-	str		r0, [r3, DMA_CNT]
-	ldr		r0, [r3, DMA_CNT]
-@@return:
-	bx		lr
-	.pool
-.endfunc
-.endautoregion*/
-
 .autoregion
 	.align 2
 .func LoadTankGfx
@@ -137,6 +95,7 @@
 	eor		r0, r1
 	mov		r5, r0
 	ldr		r1, =RoomTanks
+	lsl		r0, #2
 	add		r1, r0
 	ldrb	r1, [r1, RoomTanks_Sprite]
 	cmp		r1, #Upgrade_DiffusionMissiles
@@ -158,13 +117,13 @@
 	b		@@set_clipdata
 @@set_tile:
 	ldr		r0, =#801Ch
-	add		r5, r0
+	add		r0, r5
 	ldrh	r1, [r4, #2]
 	ldrh	r2, [r4]
 	bl		SetSpecialBg1Tile
 @@set_clipdata:
 	ldr		r0, =#801Ch
-	add		r5, r0
+	add		r0, r5
 	ldrh	r1, [r4, #2]
 	ldrh	r2, [r4]
 	bl		SetClipdata
