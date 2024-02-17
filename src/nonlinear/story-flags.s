@@ -34,13 +34,13 @@
 .org 080418EAh
 .area 1Ah, 0
 	; missile hatch initialize
+	mov		r4, #0
 	ldr		r0, =MiscProgress
 	ldrh	r0, [r0, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_MissileHatch + 1
 	bcc		08041904h
 	ldr		r1, =CurrentEnemy
-	mov		r0, #0
-	strb	r0, [r1, Enemy_Status]
+	strb	r4, [r1, Enemy_Status]
 	b		0804196Ah
 	.pool
 .endarea
