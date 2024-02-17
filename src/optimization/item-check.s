@@ -686,13 +686,13 @@
 @Items_Sector1_Room11:
 	.db		08h, 06h
 	.db		Upgrade_MissileTank
-	.db		UpgradeSprite_DiffusionMissiles
+	.db		UpgradeSprite_MissileTank
 	.db		19h, 08h
 	.db		Upgrade_MissileTank
-	.db		UpgradeSprite_SecurityLevel2
+	.db		UpgradeSprite_MissileTank
 	.db		2Ch, 13h
 	.db		Upgrade_MissileTank
-	.db		UpgradeSprite_SecurityLevel3
+	.db		UpgradeSprite_MissileTank
 @Items_Sector1_Room1E:
 	.db		0Fh, 08h
 	.db		Upgrade_EnergyTank
@@ -793,7 +793,7 @@
 @Items_Sector3_Room03:
 	.db		2Ch, 0Dh
 	.db		Upgrade_MissileTank
-	.db		UpgradeSprite_SecurityLevel4
+	.db		UpgradeSprite_MissileTank
 @Items_Sector3_Room06:
 	.db		05h, 11h
 	.db		Upgrade_MissileTank
