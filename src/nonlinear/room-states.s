@@ -399,7 +399,7 @@
 	; room states: S0-03 => S0-04, S0-30 => S0-53
 	ldr		r0, =CurrEvent
 	ldrb	r0, [r0]
-	cmp		r0, #67
+	cmp		r0, #67h
 	beq		@@escape_sequence_active
 	mov		r0, #0
 	bx		lr

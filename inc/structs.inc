@@ -201,7 +201,7 @@ RoomTanks_Sprite equ 03h
 
 VariableConnections equ 083C8C68h
 .sym off
-VariableConnections_Len equ 3Bh
+VariableConnections_Len equ 3Ch
 VariableConnection_Area equ 00h
 VariableConnection_SourceDoor equ 01h
 VariableConnection_Event equ 02h

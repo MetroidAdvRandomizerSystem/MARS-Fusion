@@ -298,7 +298,7 @@
 	ldr		r2, =GameMode
 	ldrh	r2, [r2]
 	cmp		r2, #GameMode_Demo
-	beq @@areaSwitchDone
+	beq		@@areaSwitchDone
 	mov		r0, MusicType_Transient
 	strb	r0, [r1]
 @@areaSwitchDone:
@@ -310,7 +310,7 @@
 	cmp		r0, #01h	; Adam intro finished
 	beq		@@case_01
 	cmp		r0, #9Ah	; Escape sequence started
-	beq		@@case_00
+	beq		@@case_9A
 	cmp		r0, #9Bh	; Escape sequence
 	beq		@@case_9B
 	b		@@return_false
@@ -335,12 +335,17 @@
 	mov		r0, #1Eh
 	mov		r1, MusicType_Transient
 	b		@@playMusic
+@@case_9A:
+	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
+	add		r0, #1
+	strb	r0, [r1]
+	b		@@return_true
 @@case_9B:
 	; escape sequence omega encounter
 	cmp		r5, Area_MainDeck
-	bne		@@return_false
+	bne		@@return_true
 	cmp		r6, #3Fh
-	bne		@@return_false
+	bne		@@return_true
 	mov		r0, #58h
 	mov		r1, MusicType_BossMusic
 	mov		r2, #0
