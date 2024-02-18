@@ -23,8 +23,10 @@
 @@EOF equ 0879F87Ch ; 0879ECC8h
 .defineregion @@EOF, 087FF000h - @@EOF, 0FFh
 
+StartingItems equ 0828D2ACh
 MinorLocations equ 087FF000h
 MajorLocations equ 087FF200h
+TankIncrements equ 087FF220h
 
 ; Debug mode patch
 .if DEBUG
@@ -50,7 +52,6 @@ MajorLocations equ 087FF200h
 .include "src/qol/fast-elevators.s"
 .include "src/qol/major-completion.s"
 .include "src/qol/map-info.s"
-.include "src/qol/maps-downloaded.s"
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
 .include "src/qol/skip-intro.s"

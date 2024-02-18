@@ -19,7 +19,7 @@ TODO
 - [x] Configurable item locations
 - [ ] Hint system
 - [ ] More configurable settings
-  * [ ] Expansion tank amounts
+  * [x] Expansion tank amounts
   * [ ] Environmental damage
 - [ ] HUD Support for >20 E-Tanks
 

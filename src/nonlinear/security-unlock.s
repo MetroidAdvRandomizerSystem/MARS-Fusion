@@ -48,12 +48,12 @@
 ; Fix security level during initial adam dialogue
 .org 08080454h
 .area 0Eh
-	mov		r0, #0
+	ldr		r0, =StartingItems
+	ldrb	r0, [r0, SamusUpgrades_SecurityLevel]
 	strb	r0, [r2, SamusUpgrades_SecurityLevel]
 	ldr		r1, =0300001Ch
 	strb	r0, [r1]
-	ldr		r1, =0300001Dh
-	strb	r0, [r1]
+	strb	r0, [r1, #1]
 	nop
 .endarea
 	.skip 96h
@@ -179,7 +179,3 @@
 	mov		r4, #9
 .endarea
 @@cont:
-
-.org 0828D2B9h
-	; Security level at game start
-	.db		1 << SecurityLevel_Lv0

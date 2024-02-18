@@ -16,7 +16,7 @@
 .endfunc
 
 .func ObtainUpgrade
-	push	{ lr }
+	push	{ r4, lr }
 	cmp		r0, Upgrade_None
 	bne		@@checkIceTrap
 	mov		r0, Message_NothingUpgrade
@@ -58,24 +58,39 @@
 	ldrb	r0, [r3, MajorUpgradeInfo_Message]
 	b		@@setMessage
 @@checkMinors:
+	ldr		r3, =TankIncrements
 	cmp		r0, Upgrade_PowerBombTank
 	bhi		@@return
-	ldr		r2, =SamusUpgrades
+	ldr		r4, =SamusUpgrades
 	cmp		r0, Upgrade_MissileTank
 	bne		@@checkETank
-	ldrh	r0, [r2, SamusUpgrades_CurrMissiles]
-	add		r0, #5
-	strh	r0, [r2, SamusUpgrades_CurrMissiles]
-	ldrh	r0, [r2, SamusUpgrades_MaxMissiles]
-	add		r0, #5
-	strh	r0, [r2, SamusUpgrades_MaxMissiles]
+	mov		r0, #(Tank_Missiles - 1) << 1
+	ldrsh	r3, [r3, r0]
+	ldrh	r0, [r4, SamusUpgrades_CurrMissiles]
+	add		r0, r3
+	asr		r2, r0, #1Fh
+	bic		r0, r2
+	ldr		r1, =#0FFFFh
+	sub		r1, r0
+	asr		r1, #1Fh
+	orr		r0, r1
+	strh	r0, [r4, SamusUpgrades_CurrMissiles]
+	ldrh	r0, [r4, SamusUpgrades_MaxMissiles]
+	add		r0, r3
+	asr		r2, r0, #1Fh
+	bic		r0, r2
+	ldr		r1, =#0FFFFh
+	sub		r1, r0
+	asr		r1, #1Fh
+	orr		r0, r1
+	strh	r0, [r4, SamusUpgrades_MaxMissiles]
 .if ABILITY_FROM_TANK
-	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
 	lsr		r1, r0, ExplosiveUpgrade_Missiles + 1
 	bcs		@@setMissileTankMessage
 	mov		r1, 1 << ExplosiveUpgrade_Missiles
 	orr		r0, r1
-	strb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
+	strb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
 	mov		r0, Message_MissileUpgrade
 	b		@@setMessage
 @@setMissileTankMessage:
@@ -85,23 +100,47 @@
 @@checkETank:
 	cmp		r0, Upgrade_EnergyTank
 	bne		@@checkPBTank
-	ldrh	r0, [r2, SamusUpgrades_MaxEnergy]
-	add		r0, #100
-	strh	r0, [r2, SamusUpgrades_MaxEnergy]
-	strh	r0, [r2, SamusUpgrades_CurrEnergy]
+	mov		r0, #(Tank_Energy - 1) << 1
+	ldrsh	r3, [r3, r0]
+	ldrh	r0, [r4, SamusUpgrades_MaxEnergy]
+	add		r0, r3
+	sub		r0, #1
+	asr		r2, r0, #1Fh
+	bic		r0, r2
+	add		r0, #1
+	ldr		r1, =#0FFFFh
+	sub		r1, r0
+	asr		r1, #1Fh
+	orr		r0, r1
+	strh	r0, [r4, SamusUpgrades_MaxEnergy]
+	strh	r0, [r4, SamusUpgrades_CurrEnergy]
 	mov		r0, Message_EnergyTankUpgrade
 	b		@@setMessage
 @@checkPBTank:
 	cmp		r0, Upgrade_PowerBombTank
 	bne		@@return
-	ldrb	r0, [r2, SamusUpgrades_CurrPowerBombs]
-	add		r0, #2
-	strb	r0, [r2, SamusUpgrades_CurrPowerBombs]
-	ldrb	r0, [r2, SamusUpgrades_MaxPowerBombs]
-	add		r0, #2
-	strb	r0, [r2, SamusUpgrades_MaxPowerBombs]
+	mov		r0, #(Tank_PowerBombs - 1) << 1
+	ldrsh	r3, [r3, r0]
+	ldrb	r0, [r4, SamusUpgrades_CurrPowerBombs]
+	add		r0, r3
+	asr		r2, r0, #1Fh
+	bic		r0, r2
+	mov		r1, #0FFh
+	sub		r1, r0
+	asr		r1, #1Fh
+	orr		r0, r1
+	strb	r0, [r4, SamusUpgrades_CurrPowerBombs]
+	ldrb	r0, [r4, SamusUpgrades_MaxPowerBombs]
+	add		r0, r3
+	asr		r2, r0, #1Fh
+	bic		r0, r2
+	mov		r1, #255
+	sub		r1, r0
+	asr		r1, #1Fh
+	orr		r0, r1
+	strb	r0, [r4, SamusUpgrades_MaxPowerBombs]
 .if ABILITY_FROM_TANK
-	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
 	lsr		r1, r0, ExplosiveUpgrade_PowerBombs + 1
 	bcs		@@setPBTankMessage
 	mov		r1, 1 << ExplosiveUpgrade_PowerBombs
@@ -115,7 +154,7 @@
 	ldr		r1, =LastAbility
 	strb	r0, [r1]
 @@return:
-	pop		{ pc }
+	pop		{ r4, pc }
 	.pool
 .endfunc
 .endautoregion
@@ -132,6 +171,7 @@
 .endarea
 
 .org MajorLocations
+.area 20h
 	.db		Upgrade_Missiles
 	.db		Upgrade_MorphBall
 	.db		Upgrade_ChargeBeam
@@ -153,6 +193,34 @@
 	.db		Upgrade_DiffusionMissiles
 	.db		Upgrade_WaveBeam
 	.db		Upgrade_ScrewAttack
+.endarea
+
+.org TankIncrements
+.area 10h
+	.dh		5	; missile tank
+	.dh		100	; energy tank
+	.dh		2	; power bomb tank
+.endarea
+
+.org StartingItems
+.area 0Fh
+	; same format as SamusUpgrades struct
+	.dh		99		 ; current energy
+	.dh		99		 ; max energy
+	.dh		10		 ; current missiles
+	.dh		10		 ; max missiles
+	.db		10		 ; current power bombs
+	.db		10		 ; max power bombs
+	.db		0		 ; beam upgrades
+	.db		0		 ; explosive upgrades
+	.db		0		 ; suit upgrades
+	.db		00001b	 ; security level
+	.db		1111111b ; maps downloaded
+.endarea
+
+.org 0807DF04h
+	; nop out SetLastAbility
+	bx		lr
 
 .org 086B56FAh
 .area 48h, 0
