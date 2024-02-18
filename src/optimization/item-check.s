@@ -624,9 +624,6 @@
 .org MinorLocations
 .area 200h
 .align 2
-.if RANDOMIZER
-.notice "Tanks @ " + tohex(.)
-.endif
 @Items_MainDeck_Room07:
 	.db		0Dh, 0Eh
 	.db		Upgrade_MissileTank

@@ -132,9 +132,6 @@
 .endarea
 
 .org MajorLocations
-.if RANDOMIZER
-.notice "Bosses, data rooms, and security rooms @ " + tohex(.)
-.endif
 	.db		Upgrade_Missiles
 	.db		Upgrade_MorphBall
 	.db		Upgrade_ChargeBeam

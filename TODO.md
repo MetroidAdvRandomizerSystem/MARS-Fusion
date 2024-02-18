@@ -29,8 +29,8 @@ TODO
 - [x] Skip intro and ending
 - [x] Screw attack unbonk
 - [x] Completion info on map without game completion
+- [x] Use a custom palette for some tank sprites
 - [ ] Add two item locations to replace Power Bomb download and Ice Beam
-- [ ] Use a custom palette for some tank sprites
 - [ ] Add option to reveal full map and uncollected items at game start
 - [ ] Eliminate major luck time losses, i.e. Gadoras, Zazabi, and animals
 - [ ] Ability toggles, a la SM/ZM
