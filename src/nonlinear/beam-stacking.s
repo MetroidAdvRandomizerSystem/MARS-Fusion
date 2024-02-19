@@ -1205,6 +1205,106 @@
 	b		08004F5Ah
 .endarea
 
+.org 08059888h
+.area 3Ch
+	; ridley uncharged wave beam interaction
+	ldrb	r1, [r4, Projectile_Status]
+	lsr		r0, r1, #ProjectileStatus_Exists + 1
+	bcc		080598EEh
+	lsr		r0, r1, #ProjectileStatus_AffectsClipdata + 1
+	bcc		080598EEh
+	ldrb	r0, [r4, Projectile_Type]
+	sub		r0, #Projectile_WideBeam
+	cmp		r0, #Projectile_WaveBeam - Projectile_WideBeam
+	bhi		080598EEh
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, #BeamUpgrade_WaveBeam + 1
+	bcc		080598EEh
+	ldrh	r5, [r4, Projectile_PosY]
+	ldrh	r6, [r4, Projectile_PosX]
+	ldrh	r0, [r4, Projectile_BboxTop]
+	add		r0, r5
+	ldrh	r1, [r4, Projectile_BboxBottom]
+	add		r1, r5
+	ldrh	r2, [r4, Projectile_BboxLeft]
+	add		r2, r6
+	ldrh	r3, [r4, Projectile_BboxRight]
+	add		r3, r6
+	b		080598C4h
+	.pool
+.endarea
+
+.org 080508B0h
+.area 3Ch
+	; sa-x monster form uncharged wave beam interaction
+	ldrb	r1, [r4, Projectile_Status]
+	lsr		r0, r1, #ProjectileStatus_Exists + 1
+	bcc		08050916h
+	lsr		r0, r1, #ProjectileStatus_AffectsClipdata + 1
+	bcc		08050916h
+	ldrb	r0, [r4, Projectile_Type]
+	sub		r0, #Projectile_WideBeam
+	cmp		r0, #Projectile_WaveBeam - Projectile_WideBeam
+	bhi		08050916h
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, #BeamUpgrade_WaveBeam + 1
+	bcc		08050916h
+	ldrh	r5, [r4, Projectile_PosY]
+	ldrh	r6, [r4, Projectile_PosX]
+	ldrh	r0, [r4, Projectile_BboxTop]
+	add		r0, r5
+	ldrh	r1, [r4, Projectile_BboxBottom]
+	add		r1, r5
+	ldrh	r2, [r4, Projectile_BboxLeft]
+	add		r2, r6
+	ldrh	r3, [r4, Projectile_BboxRight]
+	add		r3, r6
+	b		080508ECh
+	.pool
+.endarea
+
+.org 0804A9BCh
+.area 4Eh
+	; telescoping pillar wave beam interaction
+	ldrb	r1, [r3, Projectile_Status]
+	lsr		r0, r1, #ProjectileStatus_Exists + 1
+	bcc		0804AA26h
+	lsr		r0, r1, #ProjectileStatus_AffectsClipdata + 1
+	bcc		0804AA26h
+	ldrb	r1, [r3, Projectile_Type]
+	cmp		r1, #Projectile_Bomb
+	beq		0804A9E2h
+	cmp		r1, #Projectile_DiffusionFlake
+	beq		0804A9E2h
+	sub		r0, r1, #Projectile_WideBeam
+	cmp		r0, #Projectile_WaveBeam - Projectile_WideBeam
+	bls		@@checkWaveUpgrade
+	sub		r0, r1, #Projectile_ChargedWideBeam
+	cmp		r0, #Projectile_ChargedWaveBeam - Projectile_ChargedWideBeam
+	bhi		0804AA26h
+@@checkWaveUpgrade:
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, #BeamUpgrade_WaveBeam + 1
+	bcc		0804AA26h
+	ldrh	r5, [r3, Projectile_PosY]
+	ldrh	r6, [r3, Projectile_PosX]
+	ldrh	r0, [r3, Projectile_BboxTop]
+	add		r0, r5
+	ldrh	r1, [r3, Projectile_BboxBottom]
+	add		r1, r5
+	ldrh	r2, [r3, Projectile_BboxLeft]
+	add		r2, r6
+	ldrh	r3, [r3, Projectile_BboxRight]
+	add		r3, r6
+	mov		r6, r0
+	mov		r5, r1
+	b		0804AA0Ah
+	.pool
+.endarea
+
 .org 08082CE6h
 	bl		Beam_HitEnemy
 .org 08082D0Ch
