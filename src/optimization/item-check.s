@@ -302,6 +302,7 @@
 
 .org MapScreenCountTanks
 .area 13Ch
+	; TODO: stop using hardcoded numbers
 	push	{ r4-r5, lr }
 	ldr		r5, =TankCounter
 	mov		r0, #20

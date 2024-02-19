@@ -25,7 +25,9 @@
 
 StartingItems equ 0828D2ACh
 MinorLocations equ 087FF000h
+MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
+MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
 
 ; Debug mode patch
@@ -50,7 +52,6 @@ TankIncrements equ 087FF220h
 .include "src/qol/completion-seconds.s"
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
-.include "src/qol/major-completion.s"
 .include "src/qol/map-info.s"
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
@@ -76,6 +77,7 @@ TankIncrements equ 087FF220h
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
 .include "src/nonlinear/room-states.s"
+.include "src/nonlinear/major-completion.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/null-event.s"

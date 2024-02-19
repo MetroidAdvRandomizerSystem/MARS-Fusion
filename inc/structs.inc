@@ -295,4 +295,5 @@ MinorLocation_XPos equ 00h
 MinorLocation_YPos equ 01h
 MinorLocation_Upgrade equ 02h
 MinorLocation_Sprite equ 03h
+MinorLocation_Size equ 04h
 .sym on
