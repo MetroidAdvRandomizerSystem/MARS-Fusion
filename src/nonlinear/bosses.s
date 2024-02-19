@@ -359,6 +359,29 @@
 	b		080454AEh
 .endarea
 
+.autoregion
+.func CheckOmegaMetroidVulnerable
+	ldr		r0, =CurrEvent
+	ldrb	r0, [r0]
+	sub		r0, #6Bh
+	blt		@@return_false
+	mov		r0, #1
+	bx		lr
+@@return_false:
+	mov		r0, #0
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.org 0801006Eh
+.area 0Ah
+	bl		CheckOmegaMetroidVulnerable
+	cmp		r0, #0
+	beq		08010096h
+	nop
+.endarea
+
 .org 08025C52h
 .area 12h, 0
 	add		r1, =@@BossLocations
