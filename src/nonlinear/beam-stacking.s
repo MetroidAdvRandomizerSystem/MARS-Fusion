@@ -1218,9 +1218,12 @@
 	cmp		r0, #Projectile_WaveBeam - Projectile_WideBeam
 	bhi		080598EEh
 	ldr		r0, =SamusUpgrades
-	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
-	lsr		r0, #BeamUpgrade_WaveBeam + 1
+	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, r1, #BeamUpgrade_PlasmaBeam + 1
+	bcs		@@destroy_projectile
+	lsr		r0, r1, #BeamUpgrade_WaveBeam + 1
 	bcc		080598EEh
+@@destroy_projectile:
 	ldrh	r5, [r4, Projectile_PosY]
 	ldrh	r6, [r4, Projectile_PosX]
 	ldrh	r0, [r4, Projectile_BboxTop]
@@ -1248,9 +1251,12 @@
 	cmp		r0, #Projectile_WaveBeam - Projectile_WideBeam
 	bhi		08050916h
 	ldr		r0, =SamusUpgrades
-	ldrb	r0, [r0, SamusUpgrades_BeamUpgrades]
-	lsr		r0, #BeamUpgrade_WaveBeam + 1
+	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
+	lsr		r0, r1, #BeamUpgrade_PlasmaBeam + 1
+	bcs		@@destroy_projectile
+	lsr		r0, r1, #BeamUpgrade_WaveBeam + 1
 	bcc		08050916h
+@@destroy_projectile:
 	ldrh	r5, [r4, Projectile_PosY]
 	ldrh	r6, [r4, Projectile_PosX]
 	ldrh	r0, [r4, Projectile_BboxTop]
