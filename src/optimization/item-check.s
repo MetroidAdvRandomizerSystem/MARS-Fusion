@@ -148,6 +148,12 @@
 .endif
 	ldr		r7, =TanksCollected
 @@loop:
+	ldr		r2, =MinorLocations
+	lsl		r0, r6, #2
+	add		r2, r0
+	ldrb	r0, [r2, MinorLocation_Upgrade]
+	cmp		r0, #Upgrade_Invalid
+	beq		@@loop_inc
 	lsr		r0, r6, #3
 	lsl		r1, r6, #29
 	lsr		r1, #29
@@ -160,9 +166,6 @@
 	bcc		@@loop_inc
 .endif
 	; item collected, delete from the loaded map
-	ldr		r2, =MinorLocations
-	lsl		r0, r6, #2
-	add		r2, r0
 	ldrb	r0, [r2, MinorLocation_YPos]
 	ldr		r3, =LevelData
 	ldrh	r1, [r3, LevelData_Clipdata + LevelLayer_Stride]
@@ -196,9 +199,6 @@
 	str		r0, [r2, r1]
 	b		@@loop_inc
 @@load_tank_gfx:
-	ldr		r2, =MinorLocations
-	lsl		r0, r6, #2
-	add		r2, r0
 	sub		r0, r6, r4
 	mov		r1, r2
 	bl		LoadTankGfx
@@ -253,6 +253,9 @@
 	ldr		r4, =MinorLocations
 	lsl		r0, r5, #2
 	add		r4, r0
+	ldrb	r0, [r4, MinorLocation_Upgrade]
+	cmp		r0, #Upgrade_Invalid
+	beq		@@loop_inc_item
 	mov		r0, r9
 	mov		r1, #60
 	mul		r0, r1
@@ -348,7 +351,9 @@
 	lsl		r0, r2, #2
 	add		r1, r0
 	ldrb	r0, [r1, MinorLocation_Upgrade]
-	cmp		r0, Upgrade_MissileTank
+	cmp		r0, #Upgrade_Invalid
+	beq		@@loop_inc
+	cmp		r0, #Upgrade_MissileTank
 	bne		@@checkETank
 	ldrb	r0, [r5, TankCounter_MaxAreaMissileTanks]
 	add		r0, #1

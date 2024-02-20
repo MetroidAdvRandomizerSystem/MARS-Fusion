@@ -228,6 +228,7 @@ Upgrade_MissileTank equ 23
 Upgrade_EnergyTank equ 24
 Upgrade_PowerBombTank equ 25
 Upgrade_IceTrap equ 26
+Upgrade_Invalid equ 0FFh
 
 UpgradeSprite_Empty equ 0
 UpgradeSprite_Missiles equ 1
