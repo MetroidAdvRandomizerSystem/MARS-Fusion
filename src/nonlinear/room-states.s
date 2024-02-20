@@ -292,7 +292,6 @@
 	; save the animals
 	; spritesets: S0-0C, S0-12, S0-18
 .if RANDOMIZER
-	; decide when to place PB barriers in main deck
 	mov		r0, #0
 .endif
 	bx		lr
@@ -300,7 +299,6 @@
 	; downloaded power bombs
 	; spritesets: S5-08, S5-09, S5-18
 	; room states: S5-15 => S5-16, S5-27 => S5-28
-	; TODO: decide what to do with leftover S5-28 spriteset
 	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
 	lsl		r0, 1Fh - ExplosiveUpgrade_PowerBombs
 	lsr		r0, 1Fh
@@ -355,7 +353,6 @@
 	; nightmare defeated
 	; spritesets: S4-24, S4-26
 .if RANDOMIZER
-	; TODO: S4-24 event moved, decide what to do with leftover spriteset
 	mov		r0, #1
 .endif
 	bx		lr
