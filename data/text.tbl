@@ -87,6 +87,14 @@ DA00=z
 DB00={
 DC00=|
 DD00=}
+00030103=[Up_button]
+02030303=[Down_button]
+04030503=[Left_button]
+06030703=[Right_button]
+08030903=[A_button]
+0A030B03=[B_button]
+0C030D03=[L_button]
+0E030F03=[R_button]
 80=[INDENT]
 0081=[/COLOR]
 0181=[COLOR=1]

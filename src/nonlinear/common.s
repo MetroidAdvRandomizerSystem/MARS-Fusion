@@ -222,16 +222,6 @@
 	; nop out SetLastAbility
 	bx		lr
 
-.org 086B56FAh
-.area 48h, 0
-	.string 56, "[INDENT]You are a FOOL!\n"
-.endarea
-
-.org 086B5912h
-.area 72h, 0
-	.string 50, "[INDENT]Nothing acquired.\n"
-.endarea
-
 .autoregion
 MajorUpgradeInfo:
 	.db		00h

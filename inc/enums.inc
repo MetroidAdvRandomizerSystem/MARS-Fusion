@@ -42,6 +42,7 @@ MusicType_TitleIntro equ 15		; teaser intro
 MusicType_TitleScreen equ 16	; self-explanatory
 MusicType_TitleDemo equ 17		; title screen demonstration
 
+; messages rearranged for nonlinear patches
 Message_SecurityLevel1 equ 00h
 Message_SecurityLevel2 equ 01h
 Message_SecurityLevel3 equ 02h
@@ -64,27 +65,34 @@ Message_WideBeamUpgrade equ 12h
 Message_WaveBeamUpgrade equ 13h
 Message_PlasmaBeamUpgrade equ 14h
 Message_IceBeamUpgrade equ 15h
-Message_AtmosphericStabilizer1 equ 16h
-Message_AtmosphericStabilizer2 equ 17h
-Message_AtmosphericStabilizer3 equ 18h
-Message_AtmosphericStabilizer4 equ 19h
-Message_AtmosphericStabilizer5 equ 1Ah
-Message_WaterLowered equ 1Bh
-Message_BoilerCooling equ 1Ch
-Message_AnimalsFreed equ 1Dh
-Message_AuxiliaryPower equ 1Eh
-Message_RestrictedSectorDetachment equ 1Fh
-Message_EscapeSequence equ 20h
-Message_SavePrompt equ 21h
-Message_SaveComplete equ 22h
-Message_AdamUplinkPrompt equ 23h
-Message_IceTrapUpgrade equ 24h			; vanilla: ammunition resupply
-Message_EnergyRechargeComplete equ 25h
-Message_RechargeAllComplete equ 26h
-Message_EnergyTankUpgrade equ 27h
-Message_MissileTankUpgrade equ 28h
-Message_PowerBombTankUpgrade equ 29h
-Message_NothingUpgrade equ 2Ah		; vanilla: enemy location abnormal
+Message_ObjectiveClearPrompt equ 16h
+Message_ConfirmObjectivePrompt equ 17h
+Message_SleepModePrompt1 equ 18h
+Message_SleepModePrompt2 equ 19h
+Message_SleepModePrompt3 equ 1Ah
+Message_AtmosphericStabilizer1 equ 1Bh
+Message_AtmosphericStabilizer2 equ 1Ch
+Message_AtmosphericStabilizer3 equ 1Dh
+Message_AtmosphericStabilizer4 equ 1Eh
+Message_AtmosphericStabilizer5 equ 1Fh
+Message_WaterLowered equ 20h
+Message_BoilerCooling equ 21h
+Message_AnimalsFreed equ 22h
+Message_AuxiliaryPower equ 23h
+Message_RestrictedSectorDetachment equ 24h
+Message_EscapeSequence equ 25h
+Message_SavePrompt equ 26h
+Message_SaveComplete equ 27h
+Message_AdamUplinkPrompt equ 28h
+Message_ResupplyComplete equ 29h
+Message_EnergyRechargeComplete equ 2Ah
+Message_RechargeAllComplete equ 2Bh
+Message_EnergyTankUpgrade equ 2Ch
+Message_MissileTankUpgrade equ 2Dh
+Message_PowerBombTankUpgrade equ 2Eh
+Message_EnemyLocationAbnormal equ 2Fh
+Message_IceTrapUpgrade equ 30h
+Message_NothingUpgrade equ 31h
 
 Tank_Missiles equ 1
 Tank_Energy equ 2

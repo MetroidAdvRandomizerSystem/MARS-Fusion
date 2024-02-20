@@ -82,6 +82,7 @@
 	bl		RevealTank
 
 .autoregion
+	.align 2
 .func RevealTank
 	push	{ r4-r5, lr }
 	mov		r4, r0
@@ -206,17 +207,13 @@
 	mov		r5, #0
 	ldr		r0, =LastAbility
 	ldrb	r0, [r0]
-	cmp		r0, Message_IceBeamUpgrade
+	cmp		r0, #Message_IceBeamUpgrade
 	bls		0806C446h
-	sub		r0, #15h
+	sub		r0, #Message_AtmosphericStabilizer1 - 1
 	mov		r5, r0
 	b		0806C446h
 	.pool
 .endarea
-
-; force check if message box sprite graphics are loaded
-.org 0802A93Ah
-	nop :: nop
 
 ; check temporary tank data for tank deletion
 .org 0802ABB0h
