@@ -230,12 +230,11 @@
 	lsl		r0, #2
 	ldr		r7, [r1, r0]
 @@loop:
-	ldrb	r2, [r7]
-	cmp		r2, #0FFh
+	ldrb	r1, [r7]
+	cmp		r1, #0FFh
 	beq		@@exit
-	mov		r9, r2
+	mov		r9, r1
 	mov		r0, r8
-	mov		r1, r9
 	bl		GetRoomItems
 	cmp		r0, r1
 	beq		@@loop_inc_room
@@ -268,18 +267,16 @@
 	ldrb	r0, [r3, LevelMeta_MapY - LevelMeta_MapX]
 	ldrb	r1, [r4, MinorLocation_YPos]
 	sub		r1, #2
-	mov		r2, #((1 << 13) / 10 + 1) >> 2
-	lsl		r2, #2
+	mov		r2, #(1 << 11) / 10 + 1
 	mul		r1, r2
-	lsr		r1, #13
+	lsr		r1, #11
 	add		r0, r1
 	lsl		r0, #5
 	ldrb	r1, [r4, MinorLocation_XPos]
 	sub		r1, #2
-	mov		r2, #((1 << 12) / 15 + 1) >> 1
-	lsl		r2, #1
+	mov		r2, #(1 << 11) / 15 + 1
 	mul		r1, r2
-	lsr		r1, #12
+	lsr		r1, #11
 	add		r0, r1
 	ldrb	r1, [r3]
 	add		r0, r1
