@@ -44,18 +44,22 @@
 @@checkMajor:
 	cmp		r0, Upgrade_IceBeam
 	bhi		@@checkMinors
-	ldr		r3, =MajorUpgradeInfo
+	ldr		r4, =MajorUpgradeInfo
 	lsl		r0, #2
-	add		r3, r0
+	add		r4, r0
 @@obtainMajor:
-	ldr		r2, =SamusUpgrades
-	ldrb	r0, [r3, MajorUpgradeInfo_Offset]
-	add		r2, r0
-	ldrb	r0, [r3, MajorUpgradeInfo_Bitmask]
-	ldrb	r1, [r2]
+	ldr		r3, =SamusUpgrades
+	ldrb	r2, [r4, MajorUpgradeInfo_Offset]
+	ldrb	r0, [r4, MajorUpgradeInfo_Bitmask]
+	ldrb	r1, [r3, r2]
 	orr		r0, r1
-	strb	r0, [r2]
-	ldrb	r0, [r3, MajorUpgradeInfo_Message]
+	strb	r0, [r3, r2]
+	cmp		r2, #SamusUpgrades_SecurityLevel
+	bne		@@setMajorMessage
+	ldr		r1, =SecurityLevelFlash
+	strb	r0, [r1]
+@@setMajorMessage:
+	ldrb	r0, [r4, MajorUpgradeInfo_Message]
 	b		@@setMessage
 @@checkMinors:
 	ldr		r3, =TankIncrements
