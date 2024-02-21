@@ -14,6 +14,31 @@
 	add		r2, #Message_EnemyLocationAbnormal + 1
 .endarea
 
+.org 0802AA2Ch
+.area 04h
+	; play upgrade collected fanfare
+	cmp		r6, #0
+	bne		0802AA3Ch
+.endarea
+
+.org 0802AA3Ch
+.area 0Eh
+	; play task complete fanfare
+	mov		r0, r6
+	sub		r0, #Message_AtmosphericStabilizer5 - (Message_AtmosphericStabilizer1 - 1)
+	cmp		r0, #Message_AuxiliaryPower - Message_AtmosphericStabilizer5
+	bhi		0802AA5Ch
+	cmp		r6, #Message_BoilerCooling - (Message_AtmosphericStabilizer1 - 1)
+	bne		0802AA52h
+.endarea
+
+.org 0802AA5Ch
+.area 04h
+	; check for noiseless messages
+	cmp		r0, #Message_SavePrompt - Message_AtmosphericStabilizer5
+	bls		0802AA66h
+.endarea
+
 .org 0802AABCh
 .area 08h, 0
 	; spawn selection cursor in prompt messages
