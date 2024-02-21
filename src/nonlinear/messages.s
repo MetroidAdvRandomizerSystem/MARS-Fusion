@@ -50,10 +50,10 @@
 
 .org 0802AAE0h
 .area 0Ch, 0
-	; check for recharge or resupply
+	; spawn countdown for lategame messages
 	mov		r0, r6
-	sub		r0, #Message_ResupplyComplete - (Message_AtmosphericStabilizer1 - 1)
-	cmp		r0, #Message_EnergyRechargeComplete - Message_ResupplyComplete
+	sub		r0, #Message_RestrictedSectorDetachment - (Message_AtmosphericStabilizer1 - 1)
+	cmp		r0, #Message_EscapeSequence - Message_RestrictedSectorDetachment
 	bhi		0802AAF0h
 .endarea
 
