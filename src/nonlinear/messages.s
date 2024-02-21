@@ -8,10 +8,10 @@
 .org 080797EEh
 .area 08h, 0
 	; bounds check non-major upgrade messages
-	sub		r2, #Message_EnemyLocationAbnormal - (Message_AtmosphericStabilizer1 - 1) + 1
+	sub		r2, #Message_NothingUpgrade - (Message_AtmosphericStabilizer1 - 1) + 1
 	asr		r0, r2, #1Fh
 	and		r2, r0
-	add		r2, #Message_EnemyLocationAbnormal + 1
+	add		r2, #Message_NothingUpgrade + 1
 .endarea
 
 .org 0802AA2Ch
