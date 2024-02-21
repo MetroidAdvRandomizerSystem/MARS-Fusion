@@ -243,9 +243,13 @@
 @@case_23:
 	; green doors unlocked, sector 3 awakened
 	; spritesets: S3-00, S3-03, S3-05, S3-06, S3-0A, S3-1B, S3-1E
+.if RANDOMIZER
+	mov		r0, #1
+.else
 	ldrb	r0, [r2, SamusUpgrades_SecurityLevel]
 	lsl		r0, 1Fh - SecurityLevel_Lv2
 	lsr		r0, 1Fh
+.endif
 	bx		lr
 @@case_31:
 	; TODO: escaped sector 6 SA-X
