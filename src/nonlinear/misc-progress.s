@@ -58,12 +58,16 @@
 	.pool
 
 ; power bomb core x barrier checks
+.org 08042218h
+	sub		r0, #80h
 .org 0804221Eh
 	ldr		r0, =MiscProgress
 	ldrb	r0, [r0, MiscProgress_PowerXBarriers]
 	.skip 16h
 	.pool
 
+.org 08042366h
+	sub		r0, #80h
 .org 08042374h
 	ldr		r2, =MiscProgress
 	ldrb	r0, [r2, MiscProgress_PowerXBarriers]
