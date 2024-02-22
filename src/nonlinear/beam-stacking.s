@@ -847,11 +847,12 @@
 	mov		r10, r3
 	ldr		r1, =SamusUpgrades
 	ldrb	r6, [r1, SamusUpgrades_BeamUpgrades]
-	ldr		r2, =EnemyList
-	add		r2, Enemy_Properties
+	ldr		r4, =EnemyList
+	add		r4, #20h
 	mov		r1, #38h
 	mul		r1, r0
-	ldrb	r1, [r2, r1]
+	add		r4, r1
+	ldrb	r1, [r4, Enemy_Properties - 20h]
 	lsr		r3, r1, EnemyProps_SolidForProjectiles + 1
 	bcs		@@collideWithSolid
 	lsr		r3, r1, EnemyProps_ImmuneToProjectiles + 1
@@ -859,6 +860,9 @@
 	bl		Enemy_GetWeakness
 	lsr		r1, r0, EnemyWeakness_BeamOrBombs + 1
 	bcs		@@hitEnemy
+	ldrb	r1, [r4, Enemy_FreezeTimer - 20h]
+	cmp		r1, #0
+	bne		@@hitImmuneEnemy
 	lsr		r1, r0, EnemyWeakness_Freezable + 1
 	bcc		@@hitImmuneEnemy
 	lsr		r0, r6, BeamUpgrade_IceBeam + 1
@@ -870,7 +874,7 @@
 	bcc		@@hitWithoutIce
 	mov		r2, r1
 	mov		r0, r7
-	mov		r1, r8
+	mov		r1, #0
 	bl		IceBeam_DamageEnemy
 	mov		r1, #2
 	mov		r4, r1
@@ -1057,6 +1061,10 @@
 	bcs		@@hitEnemy
 	lsr		r1, r0, EnemyWeakness_ChargeBeam + 1
 	bcs		@@hitEnemy
+	mov		r1, Enemy_FreezeTimer
+	ldrb	r1, [r4, r1]
+	cmp		r1, #0
+	bne		@@hitImmuneEnemy
 	lsr		r1, r0, EnemyWeakness_Freezable + 1
 	bcc		@@hitImmuneEnemy
 	lsr		r0, r6, BeamUpgrade_IceBeam + 1
@@ -1072,7 +1080,7 @@
 	bcc		@@hitWithoutIce
 	mov		r2, r1
 	mov		r0, r7
-	mov		r1, r8
+	mov		r1, #1
 	bl		IceBeam_DamageEnemy
 	mov		r1, #2
 	mov		r4, r1
@@ -1198,6 +1206,24 @@
 	.pool
 .endfunc
 .endautoregion
+
+.org 08083A54h
+.area 1Eh, 0
+	mov		r4, r0
+	mov		r5, r2
+	mov		r6, #0
+	mov		r7, #0
+	mov		r8, r1
+	bl		Enemy_GetWeakness
+	mov		r3, r0
+	lsr		r0, r3, #EnemyWeakness_BeamOrBombs + 1
+	bcs		08083A72h
+	lsr		r0, r3, #EnemyWeakness_ChargeBeam + 1
+	bcc		08083B2Ch
+	mov		r0, r8
+	cmp		r0, #0
+	beq		08083B2Ch
+.endarea
 
 .org 08004F40h
 .area 1Ah
