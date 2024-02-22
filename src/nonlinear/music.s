@@ -1,6 +1,22 @@
 ; Overrides vanilla music behavior. Guts functionality for most sub-event
 ; specific songs.
 
+.autoregion
+.func Music_VariableFade
+	push	{ lr }
+	mov		r0, #0
+	ldr		r1, =03004E58h
+	ldrb	r1, [r0]
+	cmp		r1, #4
+	bne		@@call_fade
+	mov		r0, #30
+@@call_fade:
+	bl		Music_FadeOut
+	pop		{ pc }
+	.pool
+.endfunc
+.endautoregion
+
 .org Music_CheckSet + 2Ah
 ; Check currently playing slot for the desired track
 .area 16h, 0
@@ -11,8 +27,7 @@
 	ldrh	r0, [r5, r0]
 	cmp		r0, r4
 	beq		080034DAh
-	mov		r0, #30
-	bl		Music_FadeOut
+	bl		Music_VariableFade
 	strh	r6, [r5, MusicInfo_SlotSelect]
 .endarea
 
