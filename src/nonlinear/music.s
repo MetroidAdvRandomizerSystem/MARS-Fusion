@@ -6,7 +6,7 @@
 	push	{ lr }
 	mov		r0, #0
 	ldr		r1, =03004E58h
-	ldrb	r1, [r0]
+	ldrb	r1, [r1]
 	cmp		r1, #4
 	bne		@@call_fade
 	mov		r0, #30
@@ -276,7 +276,11 @@
 	ldr		r1, =MusicInfo + MusicInfo_Type
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
+	bne		@@startMegaCoreAmbience
+	cmp		r4, #22h
 	beq		@@lockWithoutMusic
+	b		@@areaSwitchDone
+@@startMegaCoreAmbience:
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60

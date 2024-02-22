@@ -172,3 +172,14 @@
 	; start water lowering event effect
 	mov		r0, EventEffect_WaterLowering
 	bl		0806368Ch
+
+.org 08060BFCh
+.area 18h
+	; blue x flee after varia suit is acquired
+	ldr		r0, =SamusUpgrades
+	ldrb	r0, [r0, SamusUpgrades_SuitUpgrades]
+	lsl		r0, #1Fh - SuitUpgrade_VariaSuit
+	lsr		r0, #1Fh
+	bx		lr
+	.pool
+.endarea
