@@ -456,7 +456,7 @@
 
 .org WaveBeam_MoveParts
 .area 3Ch, 0
-	push	{ r4, r5, r6, lr }
+	push	{ r4-r6, lr }
 	ldr		r5, =CurrentProjectile
 	ldrb	r0, [r5, Projectile_Timer]
 	mov		r4, #0Fh
@@ -476,6 +476,27 @@
 	add		r3, r0, r6
 	ldrb	r2, [r5, Projectile_Part]
 	b		0808257Ah
+	.pool
+.endarea
+
+.org 08012B54h
+.area 2Ch
+	; wave beam core-x beam movement
+	push	{ r4-r6, lr }
+	ldr		r5, =CurrentEnemy
+	mov		r0, #Enemy_Timer0
+	ldrb	r0, [r5, r0]
+	mov		r4, #0Fh
+	and		r4, r0
+	ldr		r1, =0858B3CCh
+	lsl		r0, r4, #1
+	ldrsh	r6, [r1, r0]
+	mov		r0, #0CDh
+	mul		r0, r6
+	lsr		r0, #9
+	add		r3, r0, r6
+	ldrb	r2, [r5, Enemy_RoomSlot]
+	b		08012BA6h
 	.pool
 .endarea
 
