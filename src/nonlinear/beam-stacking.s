@@ -831,24 +831,26 @@
 .autoregion
 	.align 2
 .func Beam_CalculateDamage
+	; 2 * (1 + wave + ice)
+	; accounts for missing bonus projectile from solo charge
 	ldr		r0, =SamusUpgrades
-	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
-	mov		r3, r1
-	mov		r0, #2
-	cmp		r1, #0
-	beq		@@checkChargeWide
-@@countUpgrades:
+	ldrb	r3, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r0, r3, #1Fh - BeamUpgrade_WaveBeam
+	lsr		r0, #1Fh
+	lsl		r1, r3, #1Fh - BeamUpgrade_IceBeam
+	lsr		r1, #1Fh
+	add		r0, r1
 	add		r0, #1
-	sub		r2, r1, #1
-	and		r1, r2
-	bne		@@countUpgrades
-@@checkChargeWide:
-	; subtract 1 if charge or wide
-	lsl		r1, r3, 1Fh - BeamUpgrade_WideBeam
-	lsr		r1, #1Eh
+	lsl		r2, r0, #1
+	cmp		r3, #1 << BeamUpgrade_ChargeBeam
 	beq		@@return
-	sub		r0, #1
+	lsl		r0, r3, #1Fh - BeamUpgrade_ChargeBeam
+	lsl		r1, r3, #1Fh - BeamUpgrade_WideBeam
+	bic		r0, r1
+	lsr		r0, #1Fh
+	lsl		r2, r0
 @@return:
+	mov		r0, r2
 	bx		lr
 	.pool
 .endfunc
@@ -1025,26 +1027,34 @@
 .autoregion
 	.align 2
 .func ChargedBeam_CalculateDamage
+	; 5 * (2 + wave + ice) * (3 * plasma / 5)
+	; accounts for missing bonus projectile from solo charge
 	ldr		r0, =SamusUpgrades
-	ldrb	r1, [r0, SamusUpgrades_BeamUpgrades]
-	mov		r3, r1
-	mov		r0, #5
-	cmp		r1, #0
-	beq		@@checkPlasma
-@@countUpgrades:
-	add		r0, #5
-	sub		r2, r1, #1
-	and		r1, r2
-	bne		@@countUpgrades
-@@checkPlasma:
-	; if plasma, damage = ceil((damage + 5) / 3)
-	lsr		r1, r3, BeamUpgrade_PlasmaBeam + 1
+	ldrb	r3, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r0, r3, #1Fh - BeamUpgrade_WaveBeam
+	lsr		r0, #1Fh
+	lsl		r1, r3, #1Fh - BeamUpgrade_IceBeam
+	lsr		r1, #1Fh
+	add		r0, r1
+	add		r0, #2
+	lsl		r1, r0, #2
+	add		r2, r0, r1
+	cmp		r3, #1 << BeamUpgrade_ChargeBeam
 	beq		@@return
-	add		r0, #7
-	mov		r1, 515 / 3
-	mul		r0, r1
-	lsr		r0, #9
+	lsl		r0, r3, #1Fh - BeamUpgrade_ChargeBeam
+	lsl		r1, r3, #1Fh - BeamUpgrade_WideBeam
+	bic		r0, r1
+	lsl		r1, r3, #1Fh - BeamUpgrade_WaveBeam
+	bic		r0, r1
+	lsr		r0, #1Fh
+	lsl		r2, r0
+	lsr		r0, r3, #BeamUpgrade_PlasmaBeam + 1
+	bcc		@@return
+	mov		r0, #(3 << 8) / 5
+	mul		r2, r0
+	lsr		r2, #8
 @@return:
+	mov		r0, r2
 	bx		lr
 	.pool
 .endfunc
@@ -1227,6 +1237,57 @@
 	.pool
 .endfunc
 .endautoregion
+
+.org 08084596h
+.area 2Eh
+	; set beam flare damage
+	; 3 * (2 + plasma + wave + ice)
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r1, r2, #1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r1, #1Fh
+	lsl		r0, r2, #1Fh - BeamUpgrade_WaveBeam
+	lsr		r0, #1Fh
+	add		r1, r0
+	lsl		r0, r2, #1Fh - BeamUpgrade_IceBeam
+	lsr		r0, #1Fh
+	add		r1, r0
+	add		r1, #2
+	lsl		r0, r1, #1
+	add		r1, r0
+	b		080845C4h
+	.pool
+.endarea
+
+.org 080836FCh
+.area 1Ch
+	; set pseudo-screw damage
+	; 10 * (1.5 + plasma + wave + ice)
+	ldr		r0, =SamusUpgrades
+	ldrb	r2, [r0, SamusUpgrades_BeamUpgrades]
+	lsl		r1, r2, #1Fh - BeamUpgrade_PlasmaBeam
+	lsr		r1, #1Fh
+	lsl		r0, r2, #1Fh - BeamUpgrade_WaveBeam
+	lsr		r0, #1Fh
+	add		r1, r0
+	lsl		r0, r2, #1Fh - BeamUpgrade_IceBeam
+	lsr		r0, #1Fh
+	add		r1, r0
+	add		r1, #1
+	lsl		r1, #1
+	add		r1, #1
+	b		@@cont
+.endarea
+.area 0Ch
+	.skip 8
+	.pool
+.endarea
+.area 22h
+@@cont:
+	lsl		r0, r1, #2
+	add		r1, r0
+	b		08083746h
+.endarea
 
 .org 08083A54h
 .area 1Eh, 0
