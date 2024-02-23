@@ -163,6 +163,46 @@ SamusUpgrades_LowHealthFlag equ 0Fh
 
 TimeStopTimer equ 03001348h
 
+; commonly used menu sprite slots:
+; next message cursor		01h
+; adam activity light		03h
+; textbox frame				04h
+; textbox background		05h
+; sector target marker		0Ah
+; station render			0Ch
+; objective button			0Dh
+; status button				10h
+; sleep button				11h
+; sector sign				12h
+; game timer				13h
+; e-tanks counter			14h
+; missile tanks counter		15h
+; pb tanks counter			16h
+; e-tanks complete			17h
+; missile tanks complete	18h
+; pb tanks complete			19h
+; lv1 locks					1Ah
+; lv2 locks					1Bh
+; lv3 locks					1Ch
+; lv4 locks					1Dh
+; nav target				1Fh
+; current room marker		20h
+; navigation console		25h
+; navigation hatch left		26h
+; navigation hatch right	27h
+
+MenuSprites equ 030014B0h
+.sym off
+MenuSprites_Len equ 28h
+MenuSprite_YPos equ 00h
+MenuSprite_XPos equ 02h
+MenuSprite_AnimationTick equ 08h
+MenuSprite_AnimationFrame equ 09h
+MenuSprite_Graphic equ 0Ah
+MenuSprite_Priority equ 0Bh
+MenuSprite_Size equ 0Ch
+.sym on
+
 TankCounter equ 030016F9h
 .sym off
 TankCounter_MaxAreaEnergyTanks equ 00h
