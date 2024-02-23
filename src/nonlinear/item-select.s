@@ -3,8 +3,26 @@
 .org 08077160h
 	bl		SamusStatusMenu_Update
 
-.org 0807748Ah
-	nop
+.org 08077488h
+.area 04h, 0
+	; always enable debug menu cursor
+.endarea
+
+.org 0807E64Ch
+.area 2Ch
+	; init cursor
+	push	{ lr }
+	mov		r0, #0
+	mov		r1, #MenuSpriteGfx_CursorRight
+	bl		0807486Ch
+	ldr		r1, =MenuSprites
+	mov		r0, #08h
+	strh	r0, [r1, MenuSprite_XPos]
+	mov		r0, #30h
+	strh	r0, [r1, MenuSprite_YPos]
+	pop		{ pc }
+	.pool
+.endarea
 
 .autoregion
 	.align 2
@@ -22,6 +40,8 @@
 	cmp		r0, #0
 	bne		@@check_dpad_vertical
 	strb	r0, [r1, #2]
+	ldr		r1, =MenuSprites
+	strb	r0, [r1, #MenuSprite_Graphic]
 	mov		r0, #7
 	strb	r0, [r4]
 	b		@@return
@@ -56,9 +76,50 @@
 	lsl		r1, r0, #3
 	add		r0, r1
 	lsl		r0, #4
-	add		r0, #10h
+	add		r0, #08h
 	strh	r0, [r4, #6]
 @@check_a:
+	ldr		r2, =ToggleInput
+	ldrh	r2, [r2]
+	lsr		r0, r2, #Button_A + 1
+	bcc		@@return
+	ldrh	r6, [r4, #4]
+	lsr		r6, #3
+	sub		r6, #6
+	lsl		r0, r6, #1
+	ldrh	r5, [r4, #6]
+	lsr		r5, #7
+	add		r0, r5
+	ldr		r1, =@UpgradeLookup
+	ldrb	r0, [r1, r0]
+	lsl		r0, #2
+	ldr		r3, =MajorUpgradeInfo
+	add		r3, r0
+	ldr		r2, =SamusUpgrades
+	ldrb	r1, [r3, MajorUpgradeInfo_Offset]
+	add		r2, r1
+	ldrb	r0, [r2]
+	ldrb	r1, [r3, MajorUpgradeInfo_Bitmask]
+	eor		r0, r1
+	strb	r0, [r2]
+	and		r0, r1
+	bne		@@set_upgrade_check
+	ldr		r1, =#0B1CDh
+	b		@@set_bg1
+@@set_upgrade_check:
+	ldr		r1, =#0B14Eh
+@@set_bg1:
+	ldr		r2, =#0600C800h
+	ldrh	r0, [r4, #6]
+	lsr		r0, #3
+	add		r0, #1
+	lsl		r0, #1
+	add		r2, r0
+	ldrh	r0, [r4, #4]
+	lsr		r0, #3
+	lsl		r0, #6
+	add		r2, r0
+	strh	r1, [r2]
 @@return:
 	pop		{ r4-r7, pc }
 	.pool
@@ -70,6 +131,8 @@
 	.align 2
 .func SamusStatusMenu_MoveCursor
 	; r0 = start x, r1 = start y, r2 = offset x, r3 = offset y
+	; TODO: game hangs when moving horizontally between top row with missing
+	; upgrades
 	push	{ r4-r7, lr }
 	mov		r4, r0
 	mov		r5, r1
