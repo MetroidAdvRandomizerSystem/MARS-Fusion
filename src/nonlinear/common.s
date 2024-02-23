@@ -55,9 +55,14 @@
 	orr		r0, r1
 	strb	r0, [r3, r2]
 	cmp		r2, #SamusUpgrades_SecurityLevel
-	bne		@@setMajorMessage
+	bne		@@setUpgradeBackup
 	ldr		r1, =SecurityLevelFlash
 	strb	r0, [r1]
+	b		@@setMajorMessage
+@@setUpgradeBackup:
+	ldr		r3, =UpgradesBackup
+	sub		r2, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
+	strb	r0, [r3, r2]
 @@setMajorMessage:
 	ldrb	r0, [r4, MajorUpgradeInfo_Message]
 	b		@@setMessage

@@ -8,6 +8,77 @@
 	; always enable debug menu cursor
 .endarea
 
+.org 0807E6ACh
+.area 0A8h
+	; initialize status screen with upgrade backup
+	push	{ r4-r5, lr }
+	ldr		r4, =UpgradesBackup
+	ldr		r5, =SamusUpgrades
+	mov		r0, #0
+	ldrb	r1, [r4, UpgradesBackup_BeamUpgrades]
+	bl		0807E834h
+	mov		r0, #1
+	ldrb	r1, [r4, UpgradesBackup_ExplosiveUpgrades]
+	bl		0807E97Ch
+	mov		r0, #3
+	ldrb	r1, [r4, UpgradesBackup_SuitUpgrades]
+	bl		0807E834h
+	mov		r0, #2
+	ldrb	r1, [r4, UpgradesBackup_ExplosiveUpgrades]
+	bl		0807E97Ch
+	mov		r0, #4
+	ldrb	r1, [r4, UpgradesBackup_SuitUpgrades]
+	bl		0807EAD8h
+	mov		r0, #5
+	ldrh	r1, [r5, SamusUpgrades_CurrEnergy]
+	mov		r2, #6
+	mov		r3, #0
+	bl		0807E754h
+	mov		r0, #6
+	ldrh	r1, [r5, SamusUpgrades_MaxEnergy]
+	mov		r2, #3
+	mov		r3, #1
+	bl		0807E754h
+	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
+	lsr		r0, #ExplosiveUpgrade_Missiles + 1
+	bcs		@@write_missile_counts
+	mov		r0, #1
+	bl		0807EC8Ch
+	b		@@check_pbs
+@@write_missile_counts:
+	mov		r0, #7
+	ldrh	r1, [r5, SamusUpgrades_CurrMissiles]
+	mov		r2, #6
+	mov		r3, #0
+	bl		0807E754h
+	mov		r0, #8
+	ldrh	r1, [r5, SamusUpgrades_MaxMissiles]
+	mov		r2, #3
+	mov		r3, #1
+	bl		0807E754h
+@@check_pbs:
+	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
+	lsr		r0, #ExplosiveUpgrade_PowerBombs + 1
+	bcs		@@write_pb_counts
+	mov		r0, #2
+	bl		0807EC8Ch
+	b		@@return
+@@write_pb_counts:
+	mov		r0, #9
+	ldrb	r1, [r5, SamusUpgrades_CurrPowerBombs]
+	mov		r2, #6
+	mov		r3, #0
+	bl		0807E754h
+	mov		r0, #10
+	ldrb	r1, [r5, SamusUpgrades_MaxPowerBombs]
+	mov		r2, #3
+	mov		r3, #1
+	bl		0807E754h
+@@return:
+	pop		{ r4-r5, pc }
+	.pool
+.endarea
+
 .org 0807E64Ch
 .area 2Ch
 	; init cursor
@@ -159,7 +230,7 @@
 	ldr		r1, =MajorUpgradeInfo
 	add		r1, r0
 	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
-	ldr		r2, =SamusUpgrades
+	ldr		r2, =UpgradesBackup
 	ldrb	r0, [r2, r0]
 	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
 	tst		r0, r1
@@ -186,7 +257,8 @@
 	ldr		r1, =MajorUpgradeInfo
 	add		r1, r0
 	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
-	ldr		r2, =SamusUpgrades
+	sub		r0, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
+	ldr		r2, =UpgradesBackup
 	ldrb	r0, [r2, r0]
 	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
 	tst		r0, r1

@@ -10,6 +10,14 @@ PowerOutageSecurityBackup equ 0300001Dh
 
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
+
+UpgradesBackup equ 0300003Bh
+.sym off
+UpgradesBackup_BeamUpgrades equ 00h
+UpgradesBackup_ExplosiveUpgrades equ 01h
+UpgradesBackup_SuitUpgrades equ 02h
+.sym on
+
 DoorUnlockTimer equ 03000046h
 SpritesetId equ 03000052h
 CurrSubEvent equ 03000060h
