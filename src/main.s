@@ -4,7 +4,7 @@
 .table "data/text.tbl"
 
 ; Assembly-time flags
-.definelabel DEBUG, 0
+.definelabel DEBUG, 1
 .definelabel OPTIMIZE, 1
 .definelabel QOL, 1
 .definelabel PHYSICS, 0
