@@ -77,6 +77,68 @@
 	.pool
 .endarea
 
+.org 08060E74h
+.area 18h
+	; habitation deck misc pad event check
+	ldr		r0, =MiscProgress
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
+	mvn		r0, r0
+	lsl		r0, #1Fh - StoryFlag_AnimalsFreed
+	lsr		r0, #1Fh
+	bx		lr
+	.pool
+.endarea
+
+.org 08060E8Ch
+.area 18h
+	; animals saved event check
+	ldr		r0, =MiscProgress
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
+	lsl		r0, #1Fh - StoryFlag_AnimalsFreed
+	lsr		r0, #1Fh
+	bx		lr
+	.pool
+.endarea
+
+.org 080651BEh
+.area 16h, 0
+	; auxiliary power room event effect init
+	ldr		r0, =MiscProgress
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
+	lsr		r0, #StoryFlag_AuxiliaryPower + 1
+	bcs		080652B8h
+	ldr		r0, =03004FC8h
+	strb	r2, [r0]
+	mov		r0, #EventEffect_AuxiliaryPower
+	b		080652B6h
+.endarea
+	.skip 4
+	.pool
+
+.org 08063774h
+.area 10h
+	; auxiliary power room event effect check
+	ldr		r0, =MiscProgress
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
+	lsr		r0, #StoryFlag_AuxiliaryPower + 1
+	bcs		08063802h
+	pop		{ pc }
+	.pool
+.endarea
+
+
+.org 08060EA4h
+.area 18h
+	; auxiliary power console event check
+	ldr		r0, =MiscProgress
+	ldrh	r0, [r0, MiscProgress_StoryFlags]
+	mvn		r0, r0
+	lsl		r0, #1Fh - StoryFlag_AuxiliaryPower
+	lsr		r0, #1Fh
+	bx		lr
+	.pool
+.endarea
+
 .org 08030ECCh
 .area 34h, 0
 	; electric wire idle
@@ -168,10 +230,79 @@
 	.pool
 .endarea
 
-.org 080395E2h
-	; start water lowering event effect
-	mov		r0, EventEffect_WaterLowering
+.org 080395A4h
+.area 0A0h
+	; miscellaneous console event handler
+	push	{ lr }
+	sub		sp, #0Ch
+	ldr		r2, =MiscProgress
+	ldr		r3, =CurrentEnemy + Enemy_Id
+	ldrb	r0, [r3, Enemy_Timer0 - Enemy_Id]
+	sub		r0, #1
+	strb	r0, [r3, Enemy_Timer0 - Enemy_Id]
+	bne		@@return
+	mov		r0, #1Eh
+	strb	r0, [r3, Enemy_Pose - Enemy_Id]
+	ldrb	r0, [r3]
+	cmp		r0, #65h
+	beq		@@lower_water_level
+	cmp		r0, #66h
+	beq		@@boiler_cooling
+	cmp		r0, #67h
+	beq		@@auxiliary_power
+	cmp		r0, #68h
+	beq		@@animals_freed
+	b		@@return
+@@lower_water_level:
+	mov		r0, #EventEffect_WaterLowering
 	bl		0806368Ch
+	mov		r0, #Message_WaterLowered - (Message_AtmosphericStabilizer1 - 1)
+	b		@@spawn_message_box
+@@boiler_cooling:
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r1, #1 << StoryFlag_BoilerCooling
+	orr		r0, r1
+	strh	r0, [r2, MiscProgress_StoryFlags]
+	ldr		r1, =DoorUnlockTimer
+	mov		r0, #60
+	strb	r0, [r1]
+	mov		r0, #Message_BoilerCooling - (Message_AtmosphericStabilizer1 - 1)
+	b		@@spawn_message_box
+@@auxiliary_power:
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r1, #1 << StoryFlag_AuxiliaryPower
+	orr		r0, r1
+	strh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r0, #Message_AuxiliaryPower - (Message_AtmosphericStabilizer1 - 1)
+	b		@@spawn_message_box
+@@animals_freed:
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r1, #1 << StoryFlag_AnimalsFreed
+	orr		r0, r1
+	strh	r0, [r2, MiscProgress_StoryFlags]
+	mov		r0, #Message_AnimalsFreed - (Message_AtmosphericStabilizer1 - 1)
+@@spawn_message_box:
+	mov		r1, r0
+	ldr		r2, =TimeStopTimer
+	mov		r0, #1000 >> 2
+	lsl		r0, #2
+	strh	r0, [r1]
+	ldr		r2, =030006A0h
+	ldrh	r0, [r2]
+	str		r0, [sp]
+	ldrh	r0, [r2, #2]
+	str		r0, [sp, #4]
+	mov		r0, #0
+	str		r0, [sp, #8]
+	mov		r0, #21h
+	mov		r2, #2
+	mov		r3, #10h
+	bl		SpawnPrimarySprite
+@@return:
+	add		sp, #0Ch
+	pop		{ pc }
+	.pool
+.endarea
 
 .org 08060BFCh
 .area 18h

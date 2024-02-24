@@ -53,21 +53,17 @@
 	ldr		r0, [r1, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_WideCoreX + 1
 	bcc		@@boss_alive
-.if !RANDOMIZER
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_BoilerCooling + 1
 	bcc		@@boiler_console_active
-.endif
 	mov		r0, #0
 	bx		lr
 @@boss_alive:
 	mov		r0, #1
 	bx		lr
-.if !RANDOMIZER
 @@boiler_console_active:
 	mov		r0, #2
 	bx		lr
-.endif
 	.pool
 .endarea
 
@@ -436,6 +432,10 @@
 @@cont:
 	ldrb	r0, [r1, r0]
 	bl		ObtainMajorLocation
+	; wide core-x lets the boiler console unlock doors
+	ldrb	r0, [r4, Enemy_Id]
+	cmp		r0, #EnemyId_WideCoreXNucleus
+	beq		0802DDF4h
 	mov		r0, #60
 	ldr		r1, =DoorUnlockTimer
 	strb	r0, [r1]

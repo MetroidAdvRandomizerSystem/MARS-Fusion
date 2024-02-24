@@ -206,6 +206,7 @@ ClipdataAction_ScrewAttack equ 12
 ClipdataAction_BombChain equ 13
 
 EventEffect_WaterLowering equ 5
+EventEffect_AuxiliaryPower equ 7
 
 MenuSpriteGfx_None equ 00h
 MenuSpriteGfx_FlashingSquare equ 01h
@@ -355,6 +356,9 @@ StoryFlag_WaterLowered equ 1
 StoryFlag_BoxDefeated equ 2
 StoryFlag_NocDataDestroyed equ 3
 StoryFlag_BoilerCooling equ 4
+StoryFlag_AnimalsFreed equ 5
+StoryFlag_AuxiliaryPower equ 6
+StoryFlag_RestrictedSectorDetached equ 7
 
 ; alternate palette
 AltTankPal0 equ 0000h

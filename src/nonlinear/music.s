@@ -328,6 +328,8 @@
 	beq		@@case_00
 	cmp		r0, #01h	; Adam intro finished
 	beq		@@case_01
+	cmp		r0, #6Bh	; Auxiliary power active
+	beq		@@case_6B
 	cmp		r0, #9Ah	; Escape sequence started
 	beq		@@case_9A
 	cmp		r0, #9Bh	; Escape sequence
@@ -353,6 +355,12 @@
 	strb	r0, [r1]
 	mov		r0, #1Eh
 	mov		r1, MusicType_Transient
+	b		@@playMusic
+@@case_6B:
+	cmp		r4, #0Bh
+	bne		@@return_false
+	mov		r0, #2Eh
+	mov		r1, #MusicType_Misc
 	b		@@playMusic
 @@case_9A:
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
