@@ -11,6 +11,7 @@ PowerOutageSecurityBackup equ 0300001Dh
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
 DoorUnlockTimer equ 03000046h
+CurrentNavRoom equ 03000048h
 SpritesetId equ 03000052h
 CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
@@ -271,6 +272,20 @@ SecurityUnlockEvent_NewEvent equ 03h
 SecurityUnlockEvent_SubEvent equ 04h
 SecurityUnlockEvent_Message equ 05h	; non-vanilla
 SecurityUnlockEvent_Size equ 8
+.sym on
+
+NavBriefings equ 08575A60h
+.sym off
+NavBriefing_Area equ 00h
+NavBriefing_Room equ 01h
+NavBriefing_XStart equ 02h
+NavBriefing_YStart equ 03h
+NavBriefing_XEnd equ 04h
+NavBriefing_YEnd equ 05h
+NavBriefing_Dialogue equ 06h
+NavBriefing_NavRoom equ 07h
+NavBriefing_EventType equ 08h
+NavBriefing_Size equ 0Ch
 .sym on
 
 SaveData equ 0858225Ch

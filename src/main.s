@@ -19,16 +19,19 @@
 .include "inc/macros.inc"
 .include "inc/structs.inc"
 
-; Mark end-of-file padding as free space
-@@EOF equ 0879F87Ch ; 0879ECC8h
-.defineregion @@EOF, 087FF000h - @@EOF, 0FFh
-
 StartingItems equ 0828D2ACh
+HintTargets equ 085766ECh
+ReservedSpace equ 087FE000h
+ReservedSpace_Len equ 1000h
 MinorLocations equ 087FF000h
 MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
+
+; Mark end-of-file padding as free space
+@@EOF equ 0879F87Ch ; 0879ECC8h
+.defineregion @@EOF, ReservedSpace - @@EOF, 0FFh
 
 ; Debug mode patch
 .if DEBUG
@@ -96,6 +99,7 @@ TankIncrements equ 087FF220h
 ; Patches making randomization of the game possible
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
+.include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/ship-warp.s"
 .include "src/randomizer/tank-majors.s"
