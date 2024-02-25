@@ -20,6 +20,26 @@
 	cmp		r0, #1
 	bgt		0807A6E6h
 
+; Placeholder hint
+.org 086CECB2h
+.area 8Ch
+	.stringn "No traces of your equipment\n"
+	.string  "from this Navigation Room."
+.endarea
+
+.org 0879D514h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+	.dw		086CECB2h, 086CECB2h
+
 ; Disable minimap targets by default
 .org HintTargets
 	.fill 8 * 11
