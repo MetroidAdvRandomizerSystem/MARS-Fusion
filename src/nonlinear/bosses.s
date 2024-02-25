@@ -299,12 +299,11 @@
 	; check if box is dead or defeated
 	ldr		r1, =MiscProgress
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
-	lsl		r0, 1Fh - StoryFlag_BoxDefeated
-	lsr		r0, 1Fh
+	lsl		r0, #1Fh - StoryFlag_BoxDefeated
 	ldr		r1, [r1, MiscProgress_MajorLocations]
-	lsl		r1, 1Fh - MajorLocation_XBox
-	lsr		r1, 1Fh
+	lsl		r1, #1Fh - MajorLocation_XBox
 	orr		r0, r1
+	lsr		r0, #1Fh
 	bx		lr
 	.pool
 .endarea
@@ -314,14 +313,20 @@
 	; check if box is neither dead nor defeated
 	ldr		r1, =MiscProgress
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
-	lsl		r0, 1Fh - StoryFlag_BoxDefeated
+	lsl		r0, #1Fh - StoryFlag_BoxDefeated
 	ldr		r1, [r1, MiscProgress_MajorLocations]
-	lsl		r1, 1Fh - MajorLocation_XBox
+	lsl		r1, #1Fh - MajorLocation_XBox
 	orr		r0, r1
 	mvn		r0, r0
-	lsr		r0, 1Fh
+	lsr		r0, #1Fh
 	bx		lr
 	.pool
+.endarea
+
+.org 080382EAh
+.area 04h, 0
+	; box debris should always fall
+	mov		r0, #0
 .endarea
 
 .org 08045474h
