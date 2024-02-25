@@ -14,8 +14,6 @@
 ;	S0-22 => S0-2B
 ; sector 5 flooded (4F):
 ;	S5-03 => S5-06, S5-05 => S5-10, S5-07 => S5-0F, S5-0D => S5-2C
-; restricted sector invaded by sa-x (5C):
-;	S0-4E => S0-4F
 
 .org 080648DAh
 .area 26h, 0
@@ -132,7 +130,7 @@
 	.db		08h, 0Ah, 0Dh, 10h, 16h, 19h, 20h, 21h
 	.db		23h, 31h, 32h, 33h, 3Ah, 3Dh, 3Eh, 42h
 	.db		44h, 46h, 47h, 4Bh, 4Dh, 4Eh, 51h, 59h
-	.db		5Fh, 60h, 63h, 67h
+	.db		5Ch, 5Fh, 60h, 63h, 67h
 @@eventBranchTable:
 	.db		(@@case_08 - @@branch - 4) >> 1
 	.db		(@@case_0A - @@branch - 4) >> 1
@@ -158,6 +156,7 @@
 	.db		(@@case_4E - @@branch - 4) >> 1
 	.db		(@@case_51 - @@branch - 4) >> 1
 	.db		(@@case_59 - @@branch - 4) >> 1
+	.db		(@@case_5C - @@branch - 4) >> 1
 	.db		(@@case_5F - @@branch - 4) >> 1
 	.db		(@@case_60 - @@branch - 4) >> 1
 	.db		(@@case_63 - @@branch - 4) >> 1
@@ -370,11 +369,23 @@
 	lsr		r0, 1Fh
 .endif
 	bx		lr
+@@case_5C:
+	; restricted sector invaded by sa-x (5C)
+	; S0-4E => S0-4F
+	ldr		r0, =CurrEvent
+	ldrb	r0, [r0]
+	cmp		r0, #5Ch
+	beq		@@return_true
+	b		@@return_false
 @@case_5F:
 	; restricted sector detached
 	; room states: S0-4D => S0-11
 .if RANDOMIZER
 	mov		r0, #1
+.else
+	ldrh	r0, [r3, MiscProgress_StoryFlags]
+	lsl		r0, #1Fh - StoryFlag_RestrictedSectorDetached
+	lsr		r0, #1Fh
 .endif
 	bx		lr
 @@case_60:
@@ -401,10 +412,11 @@
 	ldr		r0, =CurrEvent
 	ldrb	r0, [r0]
 	cmp		r0, #67h
-	beq		@@escape_sequence_active
+	beq		@@return_true
+@@return_false:
 	mov		r0, #0
 	bx		lr
-@@escape_sequence_active:
+@@return_true:
 	mov		r0, #1
 	bx		lr
 	.pool
