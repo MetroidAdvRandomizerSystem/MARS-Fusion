@@ -36,7 +36,10 @@
 	ldrh	r0, [r5]
 	strh	r0, [r6]
 	ldrh	r0, [r5, #2]
-	add		r0, r1
+	cmp		r1, #0
+	beq		@@set_tile
+	add		r0, #2
+@@set_tile:
 	strh	r0, [r6, #2]
 	ldrh	r0, [r5, #4]
 	add		r0, r1
@@ -116,7 +119,6 @@
 	ldrh	r0, [r5]
 	strh	r0, [r6]
 	ldrh	r0, [r5, #2]
-	add		r0, r1
 	strh	r0, [r6, #2]
 	ldrh	r0, [r5, #4]
 	add		r0, r1
@@ -184,6 +186,19 @@
 	push	{ r4-r5, lr }
 	ldr		r4, =UpgradesBackup
 	ldr		r5, =SamusUpgrades
+	; TODO: make room for this
+/*	ldrb	r0, [r4, UpgradesBackup_BeamUpgrades]
+	ldrb	r1, [r5, SamusUpgrades_BeamUpgrades]
+	orr		r0, r1
+	strb	r0, [r4, UpgradesBackup_BeamUpgrades]
+	ldrb	r0, [r4, UpgradesBackup_ExplosiveUpgrades]
+	ldrb	r1, [r5, SamusUpgrades_ExplosiveUpgrades]
+	orr		r0, r1
+	strb	r0, [r4, UpgradesBackup_ExplosiveUpgrades]
+	ldrb	r0, [r4, UpgradesBackup_SuitUpgrades]
+	ldrb	r1, [r5, SamusUpgrades_SuitUpgrades]
+	orr		r0, r1
+	strb	r0, [r4, UpgradesBackup_SuitUpgrades]*/
 	bl		@InitBeams
 	mov		r0, #1
 	ldrb	r1, [r4, UpgradesBackup_ExplosiveUpgrades]
@@ -339,12 +354,7 @@
 	ldrb	r1, [r3, MajorUpgradeInfo_Bitmask]
 	eor		r0, r1
 	strb	r0, [r2]
-	and		r0, r1
-	bne		@@set_upgrade_check
-	ldr		r1, =#0B1CDh
-	b		@@set_bg1
-@@set_upgrade_check:
-	ldr		r1, =#0B14Eh
+	and		r1, r0
 @@set_bg1:
 	ldr		r2, =#0600C800h
 	ldrh	r0, [r4, #6]
@@ -356,7 +366,40 @@
 	lsr		r0, #3
 	lsl		r0, #6
 	add		r2, r0
-	strh	r1, [r2]
+	cmp		r1, #0
+	bne		@@set_checked
+	ldr		r0, =#0B150h
+	b		@@set_checkbox
+@@set_checked:
+	ldr		r0, =#0B14Eh
+@@set_checkbox:
+	strh	r0, [r2]
+	mov		r1, #0Bh ^ 0Ch
+	lsl		r1, #0Ch
+	ldrh	r0, [r2, #2]
+	eor		r0, r1
+	strh	r0, [r2, #2]
+	ldrh	r0, [r2, #4]
+	eor		r0, r1
+	strh	r0, [r2, #4]
+	ldrh	r0, [r2, #6]
+	eor		r0, r1
+	strh	r0, [r2, #6]
+	ldrh	r0, [r2, #8]
+	eor		r0, r1
+	strh	r0, [r2, #8]
+	ldrh	r0, [r2, #10]
+	eor		r0, r1
+	strh	r0, [r2, #10]
+	ldrh	r0, [r4, #6]
+	cmp		r0, #098h
+	bne		@@return
+	ldrh	r0, [r2, #12]
+	eor		r0, r1
+	strh	r0, [r2, #12]
+	ldrh	r0, [r2, #14]
+	eor		r0, r1
+	strh	r0, [r2, #14]
 @@return:
 	pop		{ r4-r7, pc }
 	.pool
@@ -471,3 +514,14 @@
 	.db		Upgrade_DiffusionMissiles,	Upgrade_SpaceJump
 	.db		Upgrade_None,				Upgrade_ScrewAttack
 .endautoregion
+
+; graphics
+.org 0856A254h
+.incbin "data/status.gfx"
+
+; palettes
+.org 08565908h + 0Dh * 2
+	.dh		7FE2h
+
+.org 08565928h + 0Dh * 2
+	.dh		5282h
