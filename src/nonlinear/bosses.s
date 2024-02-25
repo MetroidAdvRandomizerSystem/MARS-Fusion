@@ -138,7 +138,7 @@
 
 .autoregion
 	.align 2
-.func SetNocDataDestroyed
+.func @SetNocDataDestroyed
 	; unlock doors in NOC data room
 	ldr		r2, =MiscProgress
 	ldrh	r0, [r2, MiscProgress_StoryFlags]
@@ -146,7 +146,7 @@
 	orr		r0, r1
 	strh	r0, [r2, MiscProgress_StoryFlags]
 .endfunc
-.func SetDoorUnlockTimer
+.func @SetDoorUnlockTimer
 	ldr		r1, =DoorUnlockTimer
 	mov		r0, #60
 	strb	r0, [r1]
@@ -157,7 +157,7 @@
 
 .org 08043A72h
 .area 06h
-	bl		SetNocDataDestroyed
+	bl		@SetNocDataDestroyed
 	nop
 .endarea
 
@@ -287,11 +287,10 @@
 	.pool
 .endarea
 
-.org 08037FDCh
-.area 0Ch
+.org 08037FDAh
+.area 0Ch, 0
 	; unlock doors after killing box
-	bl		SetDoorUnlockTimer
-	nop
+	bl		@SetDoorUnlockTimer
 .endarea
 
 .org 08060D38h
@@ -323,10 +322,24 @@
 	.pool
 .endarea
 
+.autoregion
+	.align 2
+.func @CheckBoxDefeatState
+	; check if hatches are locked
+	ldr		r0, =03004DECh
+	ldrb	r0, [r0]
+	mvn		r0, r0
+	lsl		r0, #1Fh - 7
+	lsr		r0, #1Fh
+	bx		lr
+.endfunc
+	.pool
+.endautoregion
+
 .org 080382EAh
 .area 04h, 0
-	; box debris should always fall
-	mov		r0, #0
+	; check box defeat state for debris
+	bl		@CheckBoxDefeatState
 .endarea
 
 .org 08045474h
