@@ -80,6 +80,7 @@ TankIncrements equ 087FF220h
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
 .include "src/nonlinear/room-states.s"
+.include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
