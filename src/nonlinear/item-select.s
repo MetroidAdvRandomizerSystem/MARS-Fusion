@@ -9,176 +9,337 @@
 .endarea
 
 .org 0807E834h
-.area 148h
-	.align 2
-.func @InitBeams
-	push	{ r4-r6, lr }
-	add		r2, =@@BeamOrder
+.region 458h
+.align 2
+.func @InitUpgrades
+	push	{ r4, lr }
 	ldr		r0, =UpgradesBackup
-	ldrb	r3, [r0, UpgradesBackup_BeamUpgrades]
-	ldr		r0, =SamusUpgrades
-	ldrb	r4, [r0, SamusUpgrades_BeamUpgrades]
-	cmp		r3, #0
+	ldrb	r2, [r0, UpgradesBackup_BeamUpgrades]
+	cmp		r2, #0
+	beq		@@init_missiles
+	ldr		r0, =#0B18Ah
+	ldr		r1, =#0600C982h
+	ldr		r3, =SamusUpgrades
+	ldrb	r3, [r3, SamusUpgrades_BeamUpgrades]
+	add		r4, =@@BeamOrder
+	bl		@InitLeftUpgrade
+@@init_missiles:
+	ldr		r0, =UpgradesBackup
+	ldrb	r2, [r0, UpgradesBackup_ExplosiveUpgrades]
+	lsr		r0, r2, #ExplosiveUpgrade_Missiles + 1
+	bcc		@@init_bombs
+	ldr		r0, =#0B234h
+	ldr		r1, =#0600CB42h
+	strh	r0, [r1]
+	ldr		r0, =#0B0EAh
+	strh	r0, [r1, #2]
+	add		r0, #1
+	strh	r0, [r1, #4]
+	add		r0, #1
+	strh	r0, [r1, #6]
+	add		r0, #1
+	strh	r0, [r1, #8]
+	add		r0, #1
+	strh	r0, [r1, #10]
+	add		r0, #1
+	strh	r0, [r1, #12]
+	add		r0, #1
+	strh	r0, [r1, #14]
+	add		r0, #0F3h - 0F0h
+	add		r1, #40h
+	ldr		r3, =SamusUpgrades
+	ldrb	r3, [r3, SamusUpgrades_ExplosiveUpgrades]
+	add		r4, =@@MissileOrder
+	bl		@InitLeftUpgrade
+@@init_bombs:
+	ldr		r0, =UpgradesBackup
+	ldrb	r2, [r0, UpgradesBackup_ExplosiveUpgrades]
+.if BOMBLESS_PBS
+	mov		r0, #(1 << ExplosiveUpgrade_Bombs) | (1 << ExplosiveUpgrade_PowerBombs)
+.else
+	mov		r0, #(1 << ExplosiveUpgrade_Bombs)
+.endif
+	tst		r0, r2
+	beq		@@init_suits
+	ldr		r0, =#0B0EAh
+	add		r0, #40h
+	ldr		r1, =#0600C966h
+	strh	r0, [r1]
+	add		r0, #1
+	strh	r0, [r1, #2]
+	add		r0, #1
+	strh	r0, [r1, #4]
+	add		r0, #1
+	strh	r0, [r1, #6]
+	add		r0, #1
+	strh	r0, [r1, #8]
+	add		r0, #1
+	strh	r0, [r1, #10]
+	strh	r0, [r1, #12]
+	add		r0, #1
+	strh	r0, [r1, #14]
+	add		r0, #1
+	strh	r0, [r1, #16]
+	add		r0, #1
+	strh	r0, [r1, #18]
+	add		r0, #0F8h - 132h
+	add		r1, #40h
+	ldr		r3, =SamusUpgrades
+	ldrb	r3, [r3, SamusUpgrades_ExplosiveUpgrades]
+	add		r4, =@@BombOrder
+	bl		@InitRightUpgrade
+@@init_suits:
+	ldr		r0, =UpgradesBackup
+	ldrb	r2, [r0, UpgradesBackup_SuitUpgrades]
+	mov		r0, #(1 << SuitUpgrade_VariaSuit) | (1 << SuitUpgrade_GravitySuit)
+	tst		r0, r2
+	beq		@@init_misc
+	ldr		r0, =#0B118h
+	ldr		r1, =#0600CA66h
+	ldr		r3, =SamusUpgrades
+	ldrb	r3, [r3, SamusUpgrades_SuitUpgrades]
+	add		r4, =@@SuitOrder
+	bl		@InitRightUpgrade
+@@init_misc:
+	ldr		r0, =UpgradesBackup
+	ldrb	r2, [r0, UpgradesBackup_SuitUpgrades]
+	mov		r0, #(1 << SuitUpgrade_MorphBall) | (1 << SuitUpgrade_HiJump) \
+			   | (1 << SuitUpgrade_Speedbooster) | (1 << SuitUpgrade_SpaceJump) \
+			   | (1 << SuitUpgrade_ScrewAttack)
+	tst		r0, r2
 	beq		@@return
-	ldr		r5, =#0600CD82h
-	ldr		r6, =#0600C982h
-@@loop:
-	ldrb	r1, [r2]
-	cmp		r1, #0FFh
-	beq		@@end
-	lsr		r0, r3, #1
-	lsr		r0, r1
-	bcc		@@loop_inc
-	mvn		r0, r4
-	lsr		r0, r1
-	lsl		r0, #1Fh
-	lsr		r1, r0, #1Fh - 0Ch
-	ldrh	r0, [r5]
-	strh	r0, [r6]
-	ldrh	r0, [r5, #2]
-	cmp		r1, #0
-	beq		@@set_tile
-	add		r0, #2
-@@set_tile:
-	strh	r0, [r6, #2]
-	ldrh	r0, [r5, #4]
-	add		r0, r1
-	strh	r0, [r6, #4]
-	ldrh	r0, [r5, #6]
-	add		r0, r1
-	strh	r0, [r6, #6]
-	ldrh	r0, [r5, #8]
-	add		r0, r1
-	strh	r0, [r6, #8]
-	ldrh	r0, [r5, #10]
-	add		r0, r1
-	strh	r0, [r6, #10]
-	ldrh	r0, [r5, #12]
-	add		r0, r1
-	strh	r0, [r6, #12]
-	ldrh	r0, [r5, #14]
-	strh	r0, [r6, #14]
-	add		r6, #40h
-@@loop_inc:
-	add		r5, #40h
-	add		r2, #1
-	b		@@loop
-@@end:
-	ldrh	r0, [r5]
-	strh	r0, [r6]
-	ldrh	r0, [r5, #2]
-	strh	r0, [r6, #2]
-	ldrh	r0, [r5, #4]
-	strh	r0, [r6, #4]
-	ldrh	r0, [r5, #6]
-	strh	r0, [r6, #6]
-	ldrh	r0, [r5, #8]
-	strh	r0, [r6, #8]
-	ldrh	r0, [r5, #10]
-	strh	r0, [r6, #10]
-	ldrh	r0, [r5, #12]
-	strh	r0, [r6, #12]
-	ldrh	r0, [r5, #14]
-	strh	r0, [r6, #14]
+	ldr		r0, =#0B0EAh
+	add		r0, #60h
+	ldr		r1, =#0600CB26h
+	strh	r0, [r1]
+	add		r0, #1
+	strh	r0, [r1, #2]
+	add		r0, #1
+	strh	r0, [r1, #4]
+	add		r0, #1
+	strh	r0, [r1, #6]
+	add		r0, #12Fh - 14Dh
+	strh	r0, [r1, #8]
+	strh	r0, [r1, #10]
+	strh	r0, [r1, #12]
+	add		r0, #1
+	strh	r0, [r1, #14]
+	add		r0, #1
+	strh	r0, [r1, #16]
+	add		r0, #1
+	strh	r0, [r1, #18]
+	add		r0, #18Eh - 132h
+	add		r1, #40h
+	ldr		r3, =SamusUpgrades
+	ldrb	r3, [r3, SamusUpgrades_SuitUpgrades]
+	add		r4, =@@MiscOrder
+	bl		@InitRightUpgrade
 @@return:
-	pop		{ r4-r6, pc }
+	pop		{ r4, pc }
 	.pool
-.endfunc
 	.align 4
 @@BeamOrder:
-	.db		BeamUpgrade_ChargeBeam
-	.db		BeamUpgrade_WideBeam
-	.db		BeamUpgrade_PlasmaBeam
-	.db		BeamUpgrade_WaveBeam
-	.db		BeamUpgrade_IceBeam
-	.db		0FFh
-
-	.align 2
-.func @InitSuits
-	push	{ r4-r6, lr }
-	add		r2, =@@SuitOrder
-	ldr		r0, =UpgradesBackup
-	ldrb	r3, [r0, UpgradesBackup_SuitUpgrades]
-	ldr		r0, =SamusUpgrades
-	ldrb	r4, [r0, SamusUpgrades_SuitUpgrades]
-	cmp		r3, #0
-	beq		@@return
-	ldr		r5, =#0600CDA6h
-	ldr		r6, =#0600CA66h
-@@loop:
-	ldrb	r1, [r2]
-	cmp		r1, #0FFh
-	beq		@@end
-	lsr		r0, r3, #1
-	lsr		r0, r1
-	bcc		@@loop_inc
-	mvn		r0, r4
-	lsr		r0, r1
-	lsl		r0, #1Fh
-	lsr		r1, r0, #1Fh - 0Ch
-	ldrh	r0, [r5]
-	strh	r0, [r6]
-	ldrh	r0, [r5, #2]
-	strh	r0, [r6, #2]
-	ldrh	r0, [r5, #4]
-	add		r0, r1
-	strh	r0, [r6, #4]
-	ldrh	r0, [r5, #6]
-	add		r0, r1
-	strh	r0, [r6, #6]
-	ldrh	r0, [r5, #8]
-	add		r0, r1
-	strh	r0, [r6, #8]
-	ldrh	r0, [r5, #10]
-	add		r0, r1
-	strh	r0, [r6, #10]
-	ldrh	r0, [r5, #12]
-	add		r0, r1
-	strh	r0, [r6, #12]
-	ldrh	r0, [r5, #14]
-	add		r0, r1
-	strh	r0, [r6, #14]
-	ldrh	r0, [r5, #16]
-	add		r0, r1
-	strh	r0, [r6, #16]
-	ldrh	r0, [r5, #18]
-	strh	r0, [r6, #18]
-	add		r6, #40h
-@@loop_inc:
-	add		r5, #40h
-	add		r2, #1
-	b		@@loop
-@@end:
-	ldrh	r0, [r5]
-	strh	r0, [r6]
-	ldrh	r0, [r5, #2]
-	strh	r0, [r6, #2]
-	ldrh	r0, [r5, #4]
-	strh	r0, [r6, #4]
-	ldrh	r0, [r5, #6]
-	strh	r0, [r6, #6]
-	ldrh	r0, [r5, #8]
-	strh	r0, [r6, #8]
-	ldrh	r0, [r5, #10]
-	strh	r0, [r6, #10]
-	ldrh	r0, [r5, #12]
-	strh	r0, [r6, #12]
-	ldrh	r0, [r5, #14]
-	strh	r0, [r6, #14]
-	ldrh	r0, [r5, #16]
-	strh	r0, [r6, #16]
-	ldrh	r0, [r5, #18]
-	strh	r0, [r6, #18]
-@@return:
-	pop		{ r4-r6, pc }
-	.pool
-.endfunc
+	.db		BeamUpgrade_ChargeBeam, 4
+	.db		BeamUpgrade_WideBeam, 3
+	.db		BeamUpgrade_PlasmaBeam, 4
+	.db		BeamUpgrade_WaveBeam, 3
+	.db		BeamUpgrade_IceBeam, 2
+	.db		0FFh, 0FFh
+	.align 4
+@@MissileOrder:
+	.db		ExplosiveUpgrade_SuperMissiles, 3
+	.db		ExplosiveUpgrade_IceMissiles, 2
+	.db		ExplosiveUpgrade_DiffusionMissiles, 5
+	.db		0FFh, 0FFh
+@@BombOrder:
+	.db		ExplosiveUpgrade_PowerBombs, 4
+	.db		0FFh, 0FFh
 	.align 4
 @@SuitOrder:
-	.db		SuitUpgrade_VariaSuit
-	.db		SuitUpgrade_GravitySuit
-	.db		0FFh
-.endarea
+	.db		SuitUpgrade_VariaSuit, 3
+	.db		SuitUpgrade_GravitySuit, 4
+	.db		0FFh, 0FFh
+	.align 4
+@@MiscOrder:
+	.db		SuitUpgrade_MorphBall, 6
+	.db		SuitUpgrade_HiJump, 4
+	.db		SuitUpgrade_Speedbooster, 8
+	.db		SuitUpgrade_SpaceJump, 6
+	.db		SuitUpgrade_ScrewAttack, 7
+	.db		0FFh, 0FFh
+.endfunc
+
+	.align 2
+.func @InitLeftUpgrade
+	push	{ r5-r7, lr }
+	mov		r7, r4
+	mov		r6, r3
+	mov		r5, r2
+	mov		r4, r1
+	mov		r3, r0
+@@loop:
+	ldrb	r2, [r7]
+	cmp		r2, #0FFh
+	beq		@@write_last_row
+	mov		r0, r5
+	lsr		r0, r2
+	lsr		r0, #1
+	bcc		@@loop_inc
+	ldr		r0, =#0B22Ah
+	add		r0, #254h - 22Ah
+	strh	r0, [r4]
+	mvn		r0, r6
+	lsr		r0, r2
+	lsl		r0, #1Fh
+	lsr		r2, r0, #1Fh
+	ldr		r0, =#0B22Ah
+	add		r0, r2
+	strh	r0, [r4, #2]
+	lsl		r1, r2, #0Ch
+	add		r0, r3, r1
+	mov		r1, #0
+	ldrb	r2, [r7, #1]
+	add		r4, #4
+@@write_text_loop:
+	strh	r0, [r4]
+	add		r0, #1
+	add		r4, #2
+	add		r1, #1
+	cmp		r1, r2
+	blt		@@write_text_loop
+	ldr		r0, =#0B22Ah
+	add		r0, #2
+@@write_empty_loop:
+	cmp		r1, #5
+	bge		@@write_last_col
+	strh	r0, [r4]
+	add		r4, #2
+	add		r1, #1
+	b		@@write_empty_loop
+@@write_last_col:
+	add		r0, #1
+	strh	r0, [r4]
+	add		r4, #32h
+@@loop_inc:
+	add		r3, #20h
+	add		r7, #2
+	b		@@loop
+@@write_last_row:
+	ldr		r0, =#0B22Ah
+	add		r0, #274h - 22Ah
+	strh	r0, [r4]
+	add		r0, #5
+	strh	r0, [r4, #2]
+	add		r0, #1
+	strh	r0, [r4, #4]
+	add		r0, #1
+	strh	r0, [r4, #6]
+	add		r0, #1
+	strh	r0, [r4, #8]
+	sub		r0, #7
+	strh	r0, [r4, #10]
+	add		r0, #1
+	strh	r0, [r4, #12]
+	add		r0, #1
+	strh	r0, [r4, #14]
+@@return:
+	pop		{ r5-r7, pc }
+	.pool
+.endfunc
+
+	.align 2
+.func @InitRightUpgrade
+	push	{ r5-r7, lr }
+	mov		r7, r4
+	mov		r6, r3
+	mov		r5, r2
+	mov		r4, r1
+	mov		r3, r0
+@@loop:
+	ldrb	r2, [r7]
+	cmp		r2, #0FFh
+	beq		@@write_last_row
+	mov		r0, r5
+	lsr		r0, r2
+	lsr		r0, #1
+	bcc		@@loop_inc
+	ldr		r0, =#0B22Ah
+	add		r0, #254h - 22Ah
+	strh	r0, [r4]
+	mvn		r0, r6
+	lsr		r0, r2
+	lsl		r0, #1Fh
+	lsr		r2, r0, #1Fh
+	ldr		r0, =#0B22Ah
+	add		r0, r2
+	strh	r0, [r4, #2]
+	lsl		r1, r2, #0Ch
+	add		r0, r3, r1
+	mov		r1, #0
+	ldrb	r2, [r7, #1]
+	add		r4, #4
+@@write_text_loop:
+	strh	r0, [r4]
+	add		r0, #1
+	add		r4, #2
+	add		r1, #1
+	cmp		r1, r2
+	blt		@@write_text_loop
+	cmp		r1, #8
+	blt		@@init_empty_loop
+@@speedbooster_special_case:
+	sub		r4, #2
+	lsr		r1, r6, #SuitUpgrade_Speedbooster + 1
+	bcs		@@loop_inc_dest
+	ldr		r0, =#0B1D6h
+	strh	r0, [r4]
+	b		@@loop_inc_dest
+@@init_empty_loop:
+	ldr		r0, =#0B22Ah
+	add		r0, #2
+@@write_empty_loop:
+	cmp		r1, #7
+	bge		@@write_last_col
+	strh	r0, [r4]
+	add		r4, #2
+	add		r1, #1
+	b		@@write_empty_loop
+@@write_last_col:
+	add		r0, #2
+	strh	r0, [r4]
+@@loop_inc_dest:
+	add		r4, #2Eh
+@@loop_inc:
+	add		r3, #20h
+	add		r7, #2
+	b		@@loop
+@@write_last_row:
+	ldr		r0, =#0B22Ah
+	add		r0, #278h - 22Ah
+	strh	r0, [r4]
+	add		r0, #1
+	strh	r0, [r4, #2]
+	add		r0, #1
+	strh	r0, [r4, #4]
+	add		r0, #1
+	strh	r0, [r4, #6]
+	sub		r0, #1
+	strh	r0, [r4, #8]
+	add		r0, #1
+	strh	r0, [r4, #10]
+	add		r0, #1
+	strh	r0, [r4, #12]
+	add		r0, #1
+	strh	r0, [r4, #14]
+	add		r0, #1
+	strh	r0, [r4, #16]
+	add		r0, #1
+	strh	r0, [r4, #18]
+@@return:
+	pop		{ r5-r7, pc }
+	.pool
+.endfunc
+.endregion
 
 .org 0807E6ACh
 .area 0A8h
@@ -186,7 +347,7 @@
 	push	{ r4-r5, lr }
 	ldr		r4, =UpgradesBackup
 	ldr		r5, =SamusUpgrades
-	; TODO: make room for this
+	; keep commented for testing
 /*	ldrb	r0, [r4, UpgradesBackup_BeamUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_BeamUpgrades]
 	orr		r0, r1
@@ -199,17 +360,7 @@
 	ldrb	r1, [r5, SamusUpgrades_SuitUpgrades]
 	orr		r0, r1
 	strb	r0, [r4, UpgradesBackup_SuitUpgrades]*/
-	bl		@InitBeams
-	mov		r0, #1
-	ldrb	r1, [r4, UpgradesBackup_ExplosiveUpgrades]
-	bl		0807E97Ch
-	bl		@InitSuits
-	mov		r0, #2
-	ldrb	r1, [r4, UpgradesBackup_ExplosiveUpgrades]
-	bl		0807E97Ch
-	mov		r0, #4
-	ldrb	r1, [r4, UpgradesBackup_SuitUpgrades]
-	bl		0807EAD8h
+	bl		@InitUpgrades
 	mov		r0, #5
 	ldrh	r1, [r5, SamusUpgrades_CurrEnergy]
 	mov		r2, #6
@@ -264,6 +415,13 @@
 .area 2Ch
 	; init cursor
 	push	{ lr }
+	ldr		r2, =UpgradesBackup
+	ldrb	r0, [r2, UpgradesBackup_BeamUpgrades]
+	ldrb	r1, [r2, UpgradesBackup_ExplosiveUpgrades]
+	ldrb	r2, [r2, UpgradesBackup_SuitUpgrades]
+	orr		r0, r1
+	orr		r0, r2
+	beq		@@return
 	mov		r0, #0
 	mov		r1, #MenuSpriteGfx_CursorRight
 	bl		0807486Ch
@@ -272,6 +430,7 @@
 	strh	r0, [r1, MenuSprite_XPos]
 	mov		r0, #30h
 	strh	r0, [r1, MenuSprite_YPos]
+@@return:
 	pop		{ pc }
 	.pool
 .endarea
@@ -368,10 +527,10 @@
 	add		r2, r0
 	cmp		r1, #0
 	bne		@@set_checked
-	ldr		r0, =#0B150h
+	ldr		r0, =#0B22Bh
 	b		@@set_checkbox
 @@set_checked:
-	ldr		r0, =#0B14Eh
+	ldr		r0, =#0B22Ah
 @@set_checkbox:
 	strh	r0, [r2]
 	mov		r1, #0Bh ^ 0Ch
@@ -400,6 +559,15 @@
 	ldrh	r0, [r2, #14]
 	eor		r0, r1
 	strh	r0, [r2, #14]
+	ldrh	r0, [r2, #16]
+	add		r1, r0, #1
+	lsl		r1, #20h - 0Ch
+	lsr		r1, #20h - 0Bh
+	cmp		r1, #1D6h >> 1
+	bne		@@return
+	mov		r1, #1D5h ^ 1D6h
+	eor		r0, r1
+	strh	r0, [r2, #16]
 @@return:
 	pop		{ r4-r7, pc }
 	.pool
@@ -483,7 +651,7 @@
 	blo		@@find_closest_loop
 	asr		r0, r3, #1Fh
 	mvn		r3, r3
-	adc		r3, r0
+	sub		r3, r0
 	add		r0, r5, r3
 	cmp		r0, #12
 	blo		@@find_closest_loop
@@ -517,7 +685,14 @@
 
 ; graphics
 .org 0856A254h
+.area 2614h
 .incbin "data/status.gfx"
+.endarea
+
+.org 085748ACh
+.area 49Ch
+.incbin "data/status-vram.bin"
+.endarea
 
 ; palettes
 .org 08565908h + 0Dh * 2
