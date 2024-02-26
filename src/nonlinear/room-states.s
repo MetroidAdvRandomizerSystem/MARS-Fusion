@@ -99,11 +99,11 @@
 	bhi		@@case_default
 	mov		r1, r0
 	ldr		r3, =@@eventCases
-	mov		r2, 1 << (log2(28) - 1)
-	ldrb	r0, [r3, 28 - (1 << log2(28))]
+	mov		r2, #1 << (log2(29) - 1)
+	ldrb	r0, [r3, 29 - (1 << log2(29))]
 	cmp		r0, r1
 	bhi		@@bsearch_loop
-	add		r3, 28 - (1 << log2(28))
+	add		r3, #29 - (1 << log2(29))
 @@bsearch_loop:
 	ldrb	r0, [r3, r2]
 	cmp		r0, r1
@@ -131,6 +131,10 @@
 	.db		23h, 31h, 32h, 33h, 3Ah, 3Dh, 3Eh, 42h
 	.db		44h, 46h, 47h, 4Bh, 4Dh, 4Eh, 51h, 59h
 	.db		5Ch, 5Fh, 60h, 63h, 67h
+.if 29 != @@eventBranchTable - @@eventCases
+	; can't treat this as a variable b/c armips is really dumb
+	.error "Binary search tree size not updated"
+.endif
 @@eventBranchTable:
 	.db		(@@case_08 - @@branch - 4) >> 1
 	.db		(@@case_0A - @@branch - 4) >> 1
