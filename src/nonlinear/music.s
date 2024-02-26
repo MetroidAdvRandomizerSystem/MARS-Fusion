@@ -4,7 +4,7 @@
 .autoregion
 .func Music_VariableFade
 	push	{ lr }
-	mov		r0, #0
+	mov		r0, #10
 	ldr		r1, =03004E58h
 	ldrb	r1, [r1]
 	cmp		r1, #4
