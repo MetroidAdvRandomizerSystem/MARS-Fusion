@@ -222,10 +222,6 @@
 	.db		1111111b ; maps downloaded
 .endarea
 
-.org 0807DF04h
-	; nop out SetLastAbility
-	bx		lr
-
 .autoregion
 MajorUpgradeInfo:
 	.db		00h

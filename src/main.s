@@ -79,6 +79,7 @@ TankIncrements equ 087FF220h
 .include "src/nonlinear/beam-stacking.s"
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
+.include "src/nonlinear/demos.s"
 .include "src/nonlinear/room-states.s"
 .include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"
