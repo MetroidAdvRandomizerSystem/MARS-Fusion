@@ -2,14 +2,20 @@ MinimapData equ 02034000h
 
 TanksCollected equ 02037200h
 
+LongFrameCounter equ 03000002h
+ShortFrameCounter equ 03000BE5h
+
 Language equ 03000011h
 
 LastAbility equ 0300001Bh
 SecurityLevelFlash equ 0300001Ch
 PowerOutageSecurityBackup equ 0300001Dh
 
+CurrentDemo equ 0300001Eh
+
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
+PrevDoor equ 0300002Eh
 DoorUnlockTimer equ 03000046h
 CurrentNavRoom equ 03000048h
 SpritesetId equ 03000052h
@@ -136,6 +142,7 @@ SamusState_PositionX equ 16h
 SamusState_PositionY equ 18h
 SamusState_VelocityX equ 1Ah
 SamusState_VelocityY equ 1Ch
+SamusState_AnimationFrame equ 21h
 SamusState_Animation equ 22h
 .sym on
 
@@ -249,6 +256,32 @@ VariableConnection_Event equ 02h
 VariableConnection_DestinationDoor equ 03h
 VariableConnection_Size equ 04h
 .sym on
+
+DemoMemory equ 083E3F6Ch
+.sym off
+; modified from vanilla to account for nonlinear upgrades
+DemoMemory_Len equ 12
+DemoMemory_Area equ 00h
+DemoMemory_PrevDoor equ 01h
+DemoMemory_SecurityLevel equ 02h
+DemoMemory_MapDownloads equ 03h
+DemoMemory_BeamUpgrades equ 04h
+DemoMemory_ExplosiveUpgrades equ 05h
+DemoMemory_SuitUpgrades equ 06h
+DemoMemory_StoryFlags equ 08h
+DemoMemory_MaxEnergy equ 0Ah
+DemoMemory_CurrEnergy equ 0Ch
+DemoMemory_MaxMissiles equ 0Eh
+DemoMemory_CurrMissiles equ 10h
+DemoMemory_MaxPowerBombs equ 12h
+DemoMemory_CurrPowerBombs equ 13h
+DemoMemory_SamusDirection equ 14h
+DemoMemory_SamusXPos equ 16h
+DemoMemory_SamusYPos equ 18h
+DemoMemory_Size equ 1Ch
+.sym on
+
+DemoTanksCollected equ 083E40C8h
 
 EventUpgradeInfo equ 08575FB4h
 .sym off
