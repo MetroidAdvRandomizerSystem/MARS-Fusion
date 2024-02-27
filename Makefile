@@ -1,6 +1,6 @@
 IN ?= metroid4
 BASE := base
-OUT := mfar
+OUT := m4rs
 
 OBJ_DIR := ./obj
 

@@ -1,5 +1,5 @@
 .gba
-.open "obj/base.gba", "mfar.gba", 08000000h
+.open "obj/base.gba", "m4rs.gba", 08000000h
 
 .table "data/text.tbl"
 
