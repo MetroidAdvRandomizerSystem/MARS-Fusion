@@ -21,22 +21,23 @@
 	bne		@@set_tank_info
 	mov		r0, #Upgrade_None
 	strb	r0, [r2, RoomTanks_Upgrade]
-	strb	r0, [r2, RoomTanks_Sprite]
+	mov		r4, #UpgradeSprite_Anonymous
+	strb	r4, [r2, RoomTanks_Sprite]
 	b		@@load_tank_vram
 @@set_tank_info:
 	ldrb	r0, [r3, MinorLocation_Upgrade]
 	strb	r0, [r2, RoomTanks_Upgrade]
 	ldrb	r4, [r3, MinorLocation_Sprite]
 	strb	r4, [r2, RoomTanks_Sprite]
-	cmp		r4, #Upgrade_DiffusionMissiles
+	cmp		r4, #UpgradeSprite_DiffusionMissiles
 	beq		@@set_bg1
-	cmp		r4, #Upgrade_SecurityLevel1
+	cmp		r4, #UpgradeSprite_SecurityLevel1
 	beq		@@set_bg1
-	cmp		r4, #Upgrade_SecurityLevel2
+	cmp		r4, #UpgradeSprite_SecurityLevel2
 	beq		@@set_bg1
-	cmp		r4, #Upgrade_SecurityLevel3
+	cmp		r4, #UpgradeSprite_SecurityLevel3
 	beq		@@set_bg1
-	cmp		r4, #Upgrade_SecurityLevel4
+	cmp		r4, #UpgradeSprite_SecurityLevel4
 	bne		@@load_tank_vram
 @@set_bg1:
 	ldr		r2, =LevelData + LevelData_Bg1
@@ -56,9 +57,9 @@
 	add		r0, #53h
 	strh	r0, [r2]
 @@load_tank_vram:
-	cmp		r4, #Upgrade_IceTrap
-	blo		@@load_tiles
-	mov		r4, #Upgrade_None
+	cmp		r4, #UpgradeSprite_Anonymous
+	bls		@@load_tiles
+	mov		r4, #UpgradeSprite_Empty
 @@load_tiles:
 	ldr		r2, =DMA3
 	ldr		r1, =@TankTiles
@@ -99,15 +100,15 @@
 	lsl		r0, #2
 	add		r1, r0
 	ldrb	r1, [r1, RoomTanks_Sprite]
-	cmp		r1, #Upgrade_DiffusionMissiles
+	cmp		r1, #UpgradeSprite_DiffusionMissiles
 	beq		@@set_alt_palette
-	cmp		r1, #Upgrade_SecurityLevel1
+	cmp		r1, #UpgradeSprite_SecurityLevel1
 	beq		@@set_alt_palette
-	cmp		r1, #Upgrade_SecurityLevel2
+	cmp		r1, #UpgradeSprite_SecurityLevel2
 	beq		@@set_alt_palette
-	cmp		r1, #Upgrade_SecurityLevel3
+	cmp		r1, #UpgradeSprite_SecurityLevel3
 	beq		@@set_alt_palette
-	cmp		r1, #Upgrade_SecurityLevel4
+	cmp		r1, #UpgradeSprite_SecurityLevel4
 	bne		@@set_tile
 @@set_alt_palette:
 	mov		r0, r5
@@ -161,9 +162,9 @@
 	lsl		r0, #7
 	add		r1, r0
 	ldrb	r0, [r4, RoomTanks_Sprite]
-	cmp		r0, #Upgrade_IceTrap
-	blo		@@load_tiles
-	mov		r0, #Upgrade_None
+	cmp		r0, #UpgradeSprite_Anonymous
+	bls		@@load_tiles
+	mov		r0, #UpgradeSprite_Empty
 @@load_tiles:
 	lsl		r0, #9
 	add		r1, r0
