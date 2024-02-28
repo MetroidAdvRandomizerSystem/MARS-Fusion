@@ -21,6 +21,12 @@
 	strb	r0, [r1, CurrRoom - CurrArea]
 	ldrb	r0, [r2, DemoMemory_PrevDoor]
 	strb	r0, [r1, PrevDoor - CurrArea]
+	ldr		r1, =CurrEvent
+	mov		r0, #0
+	strb	r0, [r1]
+	ldr		r1, =CurrSubEvent
+	mov		r0, #2
+	strb	r0, [r1]
 	ldrb	r0, [r2, DemoMemory_SecurityLevel]
 	ldr		r1, =SamusUpgrades
 	ldrb	r0, [r2, DemoMemory_SecurityLevel]
