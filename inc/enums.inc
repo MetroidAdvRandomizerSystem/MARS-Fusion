@@ -328,6 +328,8 @@ UpgradeSprite_MissileTank equ 23
 UpgradeSprite_EnergyTank equ 24
 UpgradeSprite_PowerBombTank equ 25
 UpgradeSprite_Anonymous equ 26
+UpgradeSprite_ShinyMissileTank equ 27
+UpgradeSprite_ShinyPowerBombTank equ 28
 
 MajorLocation_MainDeckData equ 00h
 MajorLocation_Arachnus equ 01h
