@@ -111,7 +111,7 @@
 	ldr		r1, =MusicInfo + MusicInfo_Type
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
-	beq		@@case_MainDeck_break
+	beq		@@case_MainDeck_lockWithoutMusic
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
@@ -159,6 +159,10 @@
 @@case_MainDeck_default:
 	b		@@case_areaSwitch_default
 @@case_MainDeck_break:
+	b		@@areaSwitchDone
+@@case_MainDeck_lockWithoutMusic:
+	mov		r0, #3Fh
+	bl		LockHatches
 	b		@@areaSwitchDone
 @@case_SRX:
 	; charge core-x fight room
