@@ -162,8 +162,8 @@
 	.dw		086B5984h	; is your objective clear?
 	.dw		086B59CCh	; confirm mission objective?
 .if RANDOMIZER
-	.dw		@EnglishMessage_WarpToShipLine1
-	.dw		@EnglishMessage_WarpToShipLine2
+	.dw		@EnglishMessage_WarpToStartLine1
+	.dw		@EnglishMessage_WarpToStartLine2
 .else
 	.dw		086B5A18h	; sleep mode line 1
 	.dw		086B5A78h	; sleep mode line 2
@@ -212,15 +212,15 @@
 
 .autoregion
 	.align 2
-@EnglishMessage_WarpToShipLine1:
-	.stringn 64, "[INDENT]Warp to ship?\n"
-	.string  10, "[INDENT]You will return to your ship,"
+@EnglishMessage_WarpToStartLine1:
+	.stringn 58, "[INDENT]Warp to start?\n"
+	.string  7, "[INDENT]You will return to your start"
 .endautoregion
 
 .autoregion
 	.align 2
-@EnglishMessage_WarpToShipLine2:
-	.stringn 19, "[INDENT]but your recent progress\n"
-	.string  51, "[INDENT]will not be saved."
+@EnglishMessage_WarpToStartLine2:
+	.stringn 20, "[INDENT]location, but your recent\n"
+	.string  15, "[INDENT]progress will not be saved."
 .endautoregion
 .endif

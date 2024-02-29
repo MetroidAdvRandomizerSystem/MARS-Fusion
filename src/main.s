@@ -104,7 +104,7 @@ StartingLocation equ 087FF228h
 .notice "Applying randomizer patches..."
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
-.include "src/randomizer/ship-warp.s"
+.include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
 .endif

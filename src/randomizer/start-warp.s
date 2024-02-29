@@ -1,21 +1,23 @@
-; Allows warp to ship from the sleep mode menu.
+; Allows warp to start location from the sleep mode menu.
 
 .org 0856F71Ch
 .incbin "data/warp-map.gfx"
 
 .autoregion
 	.align 4
-.func ReloadAtShip
+.func @ReloadAtStart
 	push	{ r4-r5, lr }
+	ldr		r2, =StartingLocation
 	ldr		r1, =SaveData
 	ldr		r0, =SaveSlot
 	ldrb	r0, [r0]
 	lsl		r0, #2
 	ldr		r1, [r1, r0]
-	mov		r0, Area_MainDeck
+	ldrb	r0, [r2, StartingLocation_Area]
 	strb	r0, [r1, SaveData_Area]
-	mov		r0, #0
+	ldrb	r0, [r2, StartingLocation_Room]
 	strb	r0, [r1, SaveData_Room]
+	ldrb	r0, [r2, StartingLocation_Door]
 	strb	r0, [r1, SaveData_PreviousDoor]
 	add		r1, #SaveData_BG0XPosition
 	mov		r0, #1088 >> 4
@@ -102,7 +104,7 @@
 	strh	r0, [r1]
 	b		0807EE82h
 @@reload:
-	bl		ReloadAtShip
+	bl		@ReloadAtStart
 	b		0807EE82h
 	.pool
 .endarea
