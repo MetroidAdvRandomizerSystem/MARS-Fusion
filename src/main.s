@@ -28,6 +28,7 @@ MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
+StartingLocation equ 087FF228h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879F87Ch ; 0879ECC8h
@@ -104,6 +105,7 @@ TankIncrements equ 087FF220h
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/ship-warp.s"
+.include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
 .endif
 

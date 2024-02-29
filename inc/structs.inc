@@ -1,4 +1,5 @@
 MinimapData equ 02034000h
+DecompressedMinimapData equ 02034800h
 
 TanksCollected equ 02037200h
 
@@ -16,6 +17,9 @@ CurrentDemo equ 0300001Eh
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
 PrevDoor equ 0300002Eh
+MinimapX equ 03000031h
+MinimapY equ 03000032h
+
 DoorUnlockTimer equ 03000046h
 CurrentNavRoom equ 03000048h
 SpritesetId equ 03000052h
@@ -384,4 +388,12 @@ MinorLocation_YPos equ 01h
 MinorLocation_Upgrade equ 02h
 MinorLocation_Sprite equ 03h
 MinorLocation_Size equ 04h
+.sym on
+
+.sym off
+StartingLocation_Area equ 00h
+StartingLocation_Room equ 01h
+StartingLocation_Door equ 02h
+StartingLocation_XPos equ 04h
+StartingLocation_YPos equ 06h
 .sym on
