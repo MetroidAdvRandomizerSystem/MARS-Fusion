@@ -54,6 +54,7 @@ StartingLocation equ 087FF228h
 .if QOL
 .notice "Applying quality of life patches..."
 .include "src/qol/completion-seconds.s"
+.include "src/qol/cross-sector-maps.s"
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
 .include "src/qol/map-info.s"

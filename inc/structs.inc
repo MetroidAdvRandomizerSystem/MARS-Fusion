@@ -48,6 +48,18 @@ LevelLayer_Stride equ 04h
 LevelLayer_Rows equ 06h
 .sym on
 
+BgPositions equ 030000C8h
+.sym off
+BgPositions_Bg0X equ 00h
+BgPositions_Bg0Y equ 02h
+BgPositions_Bg1X equ 04h
+BgPositions_Bg1Y equ 06h
+BgPositions_Bg2X equ 08h
+BgPositions_Bg2Y equ 0Ah
+BgPositions_Bg3X equ 0Ch
+BgPositions_Bg3Y equ 0Eh
+.sym on
+
 ArmCannonPos equ 03000B80h
 .sym off
 ArmCannonPos_X equ 00h

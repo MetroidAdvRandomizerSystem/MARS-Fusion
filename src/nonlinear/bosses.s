@@ -374,6 +374,7 @@
 .endarea
 
 .autoregion
+	.align 2
 .func CheckOmegaMetroidVulnerable
 	ldr		r0, =CurrEvent
 	ldrb	r0, [r0]
