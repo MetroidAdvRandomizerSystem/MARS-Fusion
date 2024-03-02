@@ -177,7 +177,7 @@
 	; spritesets: S0-3C
 	; room states: S0-0D => S0-4A
 .if !RANDOMIZER
-	ldrb	r0, [r3, MiscProgress_MajorLocations]
+	ldr		r0, [r3, MiscProgress_MajorLocations]
 	lsr		r1, r0, MajorLocation_MainDeckData
 	lsr		r0, MajorLocation_Arachnus
 	bic		r0, r1
@@ -331,7 +331,7 @@
 	;             S2-13, S2-1E, S2-1F, S2-2C, S2-2E
 .if RANDOMIZER
 	; TODO: split off S0-06 and S0-30 to event 42h
-	ldrb	r0, [r3, MiscProgress_MajorLocations]
+	ldr		r0, [r3, MiscProgress_MajorLocations]
 	lsl		r1, r0, 1Fh - MajorLocation_Yakuza
 	lsl		r0, 1Fh - MajorLocation_Nettori
 	orr		r0, r1
