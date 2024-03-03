@@ -19,23 +19,10 @@
 	strb	r0, [r1, SaveData_Room]
 	ldrb	r0, [r2, StartingLocation_Door]
 	strb	r0, [r1, SaveData_PreviousDoor]
-	add		r1, #SaveData_BG0XPosition
-	mov		r0, #1088 >> 4
-	lsl		r0, #4
-	strh	r0, [r1, SaveData_BG0XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG1XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG2XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG3XPosition - SaveData_BG0XPosition]
-	mov		r0, #128
-	strh	r0, [r1, SaveData_BG0YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG1YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG2YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG3YPosition - SaveData_BG0XPosition]
-	add		r1, #SaveData_SamusState - SaveData_BG0XPosition
-	mov		r0, #1600 >> 4
-	lsl		r0, #4
+	add		r1, #SaveData_SamusState
+	ldrh	r0, [r2, StartingLocation_XPos]
 	strh	r0, [r1, SamusState_PositionX]
-	ldr		r0, =#703
+	ldrh	r0, [r2, StartingLocation_YPos]
 	strh	r0, [r1, SamusState_PositionY]
 	add		r1, #SaveData_MusicSlot1 - SaveData_SamusState
 	mov		r0, #1Eh
