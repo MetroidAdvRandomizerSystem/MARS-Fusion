@@ -4,7 +4,7 @@
 .table "data/text.tbl"
 
 ; Assembly-time flags
-.definelabel DEBUG, 1
+.definelabel DEBUG, 0
 .definelabel OPTIMIZE, 1
 .definelabel QOL, 1
 .definelabel PHYSICS, 0
@@ -95,6 +95,9 @@ StartingLocation equ 087FF228h
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"
 
+.if !DEBUG
+.include "src/nonlinear/item-select.s"
+.endif
 .if BOMBLESS_PBS
 .include "src/nonlinear/bombless-pbs.s"
 .endif

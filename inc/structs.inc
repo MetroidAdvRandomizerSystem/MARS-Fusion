@@ -16,9 +16,17 @@ CurrentDemo equ 0300001Eh
 
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
+
 PrevDoor equ 0300002Eh
 MinimapX equ 03000031h
 MinimapY equ 03000032h
+
+PermanentUpgrades equ 0300003Bh
+.sym off
+PermanentUpgrades_BeamUpgrades equ 00h
+PermanentUpgrades_ExplosiveUpgrades equ 01h
+PermanentUpgrades_SuitUpgrades equ 02h
+.sym on
 
 DoorUnlockTimer equ 03000046h
 CurrentNavRoom equ 03000048h
@@ -409,6 +417,8 @@ DMA_CNT equ 08h
 .sym on
 
 ; non-vanilla structs:
+
+UpgradeLookup equ 03001800h
 
 .sym off
 MajorUpgradeInfo_Offset equ 00h
