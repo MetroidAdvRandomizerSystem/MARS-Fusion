@@ -21,11 +21,11 @@ PrevDoor equ 0300002Eh
 MinimapX equ 03000031h
 MinimapY equ 03000032h
 
-UpgradesBackup equ 0300003Bh
+PermanentUpgrades equ 0300003Bh
 .sym off
-UpgradesBackup_BeamUpgrades equ 00h
-UpgradesBackup_ExplosiveUpgrades equ 01h
-UpgradesBackup_SuitUpgrades equ 02h
+PermanentUpgrades_BeamUpgrades equ 00h
+PermanentUpgrades_ExplosiveUpgrades equ 01h
+PermanentUpgrades_SuitUpgrades equ 02h
 .sym on
 
 DoorUnlockTimer equ 03000046h

@@ -22,7 +22,7 @@
 	str		r0, [r1, #16]
 	str		r0, [r1, #20]
 	add		r4, =@@UpgradeOrder
-	ldr		r5, =UpgradesBackup
+	ldr		r5, =PermanentUpgrades
 	ldr		r6, =MajorUpgradeInfo
 @@loop_pool:
 	ldr		r3, =UpgradeLookup
@@ -38,7 +38,7 @@
 	lsl		r0, r2, #2
 	add		r1, r6, r0
 	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
-	sub		r0, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
+	sub		r0, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
 	ldrb	r0, [r5, r0]
 	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
 	and		r0, r1
@@ -74,8 +74,8 @@
 .func @InitUpgrades
 	push	{ r4, lr }
 	bl		@InitUpgradeLookup
-	ldr		r0, =UpgradesBackup
-	ldrb	r2, [r0, UpgradesBackup_BeamUpgrades]
+	ldr		r0, =PermanentUpgrades
+	ldrb	r2, [r0, PermanentUpgrades_BeamUpgrades]
 	cmp		r2, #0
 	beq		@@init_missiles
 	ldr		r0, =#0B18Ah
@@ -85,8 +85,8 @@
 	add		r4, =@@BeamOrder
 	bl		@InitLeftUpgrade
 @@init_missiles:
-	ldr		r0, =UpgradesBackup
-	ldrb	r2, [r0, UpgradesBackup_ExplosiveUpgrades]
+	ldr		r0, =PermanentUpgrades
+	ldrb	r2, [r0, PermanentUpgrades_ExplosiveUpgrades]
 	lsr		r0, r2, #ExplosiveUpgrade_Missiles + 1
 	bcc		@@init_bombs
 	ldr		r0, =#0B234h
@@ -114,8 +114,8 @@
 	add		r4, =@@MissileOrder
 	bl		@InitLeftUpgrade
 @@init_bombs:
-	ldr		r0, =UpgradesBackup
-	ldrb	r2, [r0, UpgradesBackup_ExplosiveUpgrades]
+	ldr		r0, =PermanentUpgrades
+	ldrb	r2, [r0, PermanentUpgrades_ExplosiveUpgrades]
 .if BOMBLESS_PBS
 	mov		r0, #(1 << ExplosiveUpgrade_Bombs) | (1 << ExplosiveUpgrade_PowerBombs)
 .else
@@ -151,8 +151,8 @@
 	add		r4, =@@BombOrder
 	bl		@InitRightUpgrade
 @@init_suits:
-	ldr		r0, =UpgradesBackup
-	ldrb	r2, [r0, UpgradesBackup_SuitUpgrades]
+	ldr		r0, =PermanentUpgrades
+	ldrb	r2, [r0, PermanentUpgrades_SuitUpgrades]
 	mov		r0, #(1 << SuitUpgrade_VariaSuit) | (1 << SuitUpgrade_GravitySuit)
 	tst		r0, r2
 	beq		@@init_misc
@@ -164,8 +164,8 @@
 	add		r4, =@@SuitOrder
 	bl		@InitRightUpgrade
 @@init_misc:
-	ldr		r0, =UpgradesBackup
-	ldrb	r2, [r0, UpgradesBackup_SuitUpgrades]
+	ldr		r0, =PermanentUpgrades
+	ldrb	r2, [r0, PermanentUpgrades_SuitUpgrades]
 	mov		r0, #(1 << SuitUpgrade_MorphBall) | (1 << SuitUpgrade_HiJump) \
 			   | (1 << SuitUpgrade_Speedbooster) | (1 << SuitUpgrade_SpaceJump) \
 			   | (1 << SuitUpgrade_ScrewAttack)
@@ -409,20 +409,20 @@
 .area 0A8h
 	; initialize status screen with upgrade backup
 	push	{ r4-r5, lr }
-	ldr		r4, =UpgradesBackup
+	ldr		r4, =PermanentUpgrades
 	ldr		r5, =SamusUpgrades
-	ldrb	r0, [r4, UpgradesBackup_BeamUpgrades]
+	ldrb	r0, [r4, PermanentUpgrades_BeamUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_BeamUpgrades]
 	orr		r0, r1
-	strb	r0, [r4, UpgradesBackup_BeamUpgrades]
-	ldrb	r0, [r4, UpgradesBackup_ExplosiveUpgrades]
+	strb	r0, [r4, PermanentUpgrades_BeamUpgrades]
+	ldrb	r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_ExplosiveUpgrades]
 	orr		r0, r1
-	strb	r0, [r4, UpgradesBackup_ExplosiveUpgrades]
-	ldrb	r0, [r4, UpgradesBackup_SuitUpgrades]
+	strb	r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r4, PermanentUpgrades_SuitUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_SuitUpgrades]
 	orr		r0, r1
-	strb	r0, [r4, UpgradesBackup_SuitUpgrades]
+	strb	r0, [r4, PermanentUpgrades_SuitUpgrades]
 	bl		@InitUpgrades
 	mov		r0, #5
 	ldrh	r1, [r5, SamusUpgrades_CurrEnergy]
@@ -478,10 +478,10 @@
 .area 2Ch
 	; init cursor
 	push	{ lr }
-	ldr		r2, =UpgradesBackup
-	ldrb	r0, [r2, UpgradesBackup_BeamUpgrades]
-	ldrb	r1, [r2, UpgradesBackup_ExplosiveUpgrades]
-	ldrb	r2, [r2, UpgradesBackup_SuitUpgrades]
+	ldr		r2, =PermanentUpgrades
+	ldrb	r0, [r2, PermanentUpgrades_BeamUpgrades]
+	ldrb	r1, [r2, PermanentUpgrades_ExplosiveUpgrades]
+	ldrb	r2, [r2, PermanentUpgrades_SuitUpgrades]
 	orr		r0, r1
 	orr		r0, r2
 	beq		@@return
@@ -670,8 +670,8 @@
 	ldr		r1, =MajorUpgradeInfo
 	add		r1, r0
 	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
-	sub		r0, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
-	ldr		r2, =UpgradesBackup
+	sub		r0, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
+	ldr		r2, =PermanentUpgrades
 	ldrb	r0, [r2, r0]
 	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
 	tst		r0, r1
@@ -698,8 +698,8 @@
 	ldr		r1, =MajorUpgradeInfo
 	add		r1, r0
 	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
-	sub		r0, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
-	ldr		r2, =UpgradesBackup
+	sub		r0, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
+	ldr		r2, =PermanentUpgrades
 	ldrb	r0, [r2, r0]
 	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
 	tst		r0, r1
