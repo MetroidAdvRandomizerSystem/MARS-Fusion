@@ -434,7 +434,7 @@
 	mov		r2, #3
 	mov		r3, #1
 	bl		0807E754h
-	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
 	lsr		r0, #ExplosiveUpgrade_Missiles + 1
 	bcs		@@write_missile_counts
 	mov		r0, #1
@@ -452,7 +452,7 @@
 	mov		r3, #1
 	bl		0807E754h
 @@check_pbs:
-	ldrb	r0, [r4, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
 	lsr		r0, #ExplosiveUpgrade_PowerBombs + 1
 	bcs		@@write_pb_counts
 	mov		r0, #2
