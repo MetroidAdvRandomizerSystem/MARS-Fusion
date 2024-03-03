@@ -19,6 +19,9 @@
 	ldrb	r0, [r1, StartingLocation_Area]
 	strb	r0, [r2, SaveMeta_Area]
 .endif
+	strb	r3, [r2, SaveMeta_Event]
+	strb	r3, [r2, SaveMeta_IgtHours]
+	strb	r3, [r2, SaveMeta_IgtMinutes]
 	bx		lr
 	.pool
 .endfunc
