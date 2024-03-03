@@ -1,2 +1,2 @@
-Metroid Fusion Alternative Randomizer
-=====================================
+## Metroid Advance Randomizer System
+### Metroid Fusion

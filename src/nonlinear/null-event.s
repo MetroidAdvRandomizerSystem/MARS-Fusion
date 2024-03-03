@@ -10,9 +10,12 @@
 	.stringn "locks[/COLOR].[NEXT]"
 	.stringn "Then go to the [COLOR=2]Operations\n"
 	.stringn "Room[/COLOR] and modify the station's[NEXT]"
-	.stringn "orbit to collide with [COLOR=2]SR388[/COLOR].[OBJECTIVE]"
-	.stringn "Start by searching the\n"
-	.string  "[COLOR=2]Quarantine Bay[/COLOR]."
+	.stringn "orbit to collide with [COLOR=2]SR388[/COLOR].[NEXT]"
+	.stringn "Uplink at [COLOR=2]Navigation Rooms[/COLOR]\n"
+	.stringn "along the way.[NEXT]"
+	.stringn "I can scan the station for\n"
+	.stringn "useful equipment from there.[OBJECTIVE]"
+	.string  "Good. Move out."
 @DefaultConfirmDialogue:
 	.string  "Get going."
 @DefaultObjective:
@@ -32,10 +35,13 @@
 	.skip 1
 	.fill 3
 
-; Disable nav briefing
-.org 08575A6Ch
-	.fill 6, 0FFh
-	.fill 6
+; Dummy out nav room event increment
+.org 08074EACh
+.area 4Ah
+	push	{ r4-r5, lr }
+	mov		r5, #0
+	b		08074EF6h
+.endarea
 
 ; Disable minimap target
 .org 085766E4h

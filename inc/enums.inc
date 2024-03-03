@@ -98,6 +98,11 @@ Tank_Missiles equ 1
 Tank_Energy equ 2
 Tank_PowerBombs equ 3
 
+StandingFlag_Ground equ 00h
+StandingFlag_Enemy equ 01h
+StandingFlag_Midair equ 02h
+StandingFlag_NoControl equ 03h
+
 SecurityLevel_Lv0 equ 0	; Gray doors
 SecurityLevel_Lv1 equ 1	; Blue doors
 SecurityLevel_Lv2 equ 2	; Green doors
@@ -206,6 +211,7 @@ ClipdataAction_ScrewAttack equ 12
 ClipdataAction_BombChain equ 13
 
 EventEffect_WaterLowering equ 5
+EventEffect_AuxiliaryPower equ 7
 
 MenuSpriteGfx_None equ 00h
 MenuSpriteGfx_FlashingSquare equ 01h
@@ -327,6 +333,8 @@ UpgradeSprite_MissileTank equ 23
 UpgradeSprite_EnergyTank equ 24
 UpgradeSprite_PowerBombTank equ 25
 UpgradeSprite_Anonymous equ 26
+UpgradeSprite_ShinyMissileTank equ 27
+UpgradeSprite_ShinyPowerBombTank equ 28
 
 MajorLocation_MainDeckData equ 00h
 MajorLocation_Arachnus equ 01h
@@ -355,6 +363,9 @@ StoryFlag_WaterLowered equ 1
 StoryFlag_BoxDefeated equ 2
 StoryFlag_NocDataDestroyed equ 3
 StoryFlag_BoilerCooling equ 4
+StoryFlag_AnimalsFreed equ 5
+StoryFlag_AuxiliaryPower equ 6
+StoryFlag_RestrictedSectorDetached equ 7
 
 ; alternate palette
 AltTankPal0 equ 0000h

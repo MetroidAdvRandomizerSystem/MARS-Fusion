@@ -1,6 +1,10 @@
 MinimapData equ 02034000h
+DecompressedMinimapData equ 02034800h
 
 TanksCollected equ 02037200h
+
+LongFrameCounter equ 03000002h
+ShortFrameCounter equ 03000BE5h
 
 Language equ 03000011h
 
@@ -8,8 +12,14 @@ LastAbility equ 0300001Bh
 SecurityLevelFlash equ 0300001Ch
 PowerOutageSecurityBackup equ 0300001Dh
 
+CurrentDemo equ 0300001Eh
+
 CurrArea equ 0300002Ch
 CurrRoom equ 0300002Dh
+
+PrevDoor equ 0300002Eh
+MinimapX equ 03000031h
+MinimapY equ 03000032h
 
 UpgradesBackup equ 0300003Bh
 .sym off
@@ -19,6 +29,7 @@ UpgradesBackup_SuitUpgrades equ 02h
 .sym on
 
 DoorUnlockTimer equ 03000046h
+CurrentNavRoom equ 03000048h
 SpritesetId equ 03000052h
 CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
@@ -43,6 +54,18 @@ LevelData_Clipdata equ 18h
 LevelLayer_Data equ 00h
 LevelLayer_Stride equ 04h
 LevelLayer_Rows equ 06h
+.sym on
+
+BgPositions equ 030000C8h
+.sym off
+BgPositions_Bg0X equ 00h
+BgPositions_Bg0Y equ 02h
+BgPositions_Bg1X equ 04h
+BgPositions_Bg1Y equ 06h
+BgPositions_Bg2X equ 08h
+BgPositions_Bg2Y equ 0Ah
+BgPositions_Bg3X equ 0Ch
+BgPositions_Bg3Y equ 0Eh
 .sym on
 
 ArmCannonPos equ 03000B80h
@@ -143,6 +166,8 @@ SamusState_PositionX equ 16h
 SamusState_PositionY equ 18h
 SamusState_VelocityX equ 1Ah
 SamusState_VelocityY equ 1Ch
+SamusState_StandingFlag equ 20h
+SamusState_AnimationFrame equ 21h
 SamusState_Animation equ 22h
 .sym on
 
@@ -257,6 +282,32 @@ VariableConnection_DestinationDoor equ 03h
 VariableConnection_Size equ 04h
 .sym on
 
+DemoMemory equ 083E3F6Ch
+.sym off
+; modified from vanilla to account for nonlinear upgrades
+DemoMemory_Len equ 12
+DemoMemory_Area equ 00h
+DemoMemory_PrevDoor equ 01h
+DemoMemory_SecurityLevel equ 02h
+DemoMemory_MapDownloads equ 03h
+DemoMemory_BeamUpgrades equ 04h
+DemoMemory_ExplosiveUpgrades equ 05h
+DemoMemory_SuitUpgrades equ 06h
+DemoMemory_StoryFlags equ 08h
+DemoMemory_MaxEnergy equ 0Ah
+DemoMemory_CurrEnergy equ 0Ch
+DemoMemory_MaxMissiles equ 0Eh
+DemoMemory_CurrMissiles equ 10h
+DemoMemory_MaxPowerBombs equ 12h
+DemoMemory_CurrPowerBombs equ 13h
+DemoMemory_SamusDirection equ 14h
+DemoMemory_SamusXPos equ 16h
+DemoMemory_SamusYPos equ 18h
+DemoMemory_Size equ 1Ch
+.sym on
+
+DemoTanksCollected equ 083E40C8h
+
 EventUpgradeInfo equ 08575FB4h
 .sym off
 EventUpgradeInfo_Len equ 19
@@ -279,6 +330,40 @@ SecurityUnlockEvent_NewEvent equ 03h
 SecurityUnlockEvent_SubEvent equ 04h
 SecurityUnlockEvent_Message equ 05h	; non-vanilla
 SecurityUnlockEvent_Size equ 8
+.sym on
+
+NavBriefings equ 08575A60h
+.sym off
+NavBriefing_Area equ 00h
+NavBriefing_Room equ 01h
+NavBriefing_XStart equ 02h
+NavBriefing_YStart equ 03h
+NavBriefing_XEnd equ 04h
+NavBriefing_YEnd equ 05h
+NavBriefing_Dialogue equ 06h
+NavBriefing_NavRoom equ 07h
+NavBriefing_EventType equ 08h
+NavBriefing_Size equ 0Ch
+.sym on
+
+SaveMetadata equ 03000B94h
+.sym off
+SaveMetadata_Len equ 3
+SaveMeta_Exists equ 00h
+SaveMeta_CorruptionFlag equ 01h
+SaveMeta_Area equ 02h
+SaveMeta_Event equ 03h
+SaveMeta_CurrEnergy equ 04h
+SaveMeta_MaxEnergy equ 06h
+SaveMeta_CurrMissiles equ 08h
+SaveMeta_MaxMissiles equ 0Ah
+SaveMeta_SuitUpgrades equ 0Ch
+SaveMeta_IgtHours equ 0Dh
+SaveMeta_IgtMinutes equ 0Eh
+SaveMeta_HasSaved equ 0Fh
+SaveMeta_GameCompleted equ 10h
+SaveMeta_IntroPlayed equ 11h
+SaveMeta_Size equ 14h
 .sym on
 
 SaveData equ 0858225Ch
@@ -316,6 +401,7 @@ LevelMeta_Spriteset2 equ 30h
 LevelMeta_Spriteset2Id equ 34h
 LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
+LevelMeta_Music equ 3Ah
 .sym off
 
 MessagesByLanguage equ 0879CDF4h
@@ -346,4 +432,12 @@ MinorLocation_YPos equ 01h
 MinorLocation_Upgrade equ 02h
 MinorLocation_Sprite equ 03h
 MinorLocation_Size equ 04h
+.sym on
+
+.sym off
+StartingLocation_Area equ 00h
+StartingLocation_Room equ 01h
+StartingLocation_Door equ 02h
+StartingLocation_XPos equ 04h
+StartingLocation_YPos equ 06h
 .sym on

@@ -1,45 +1,41 @@
-; Allows warp to ship from the sleep mode menu.
+; Allows warp to start location from the sleep mode menu.
 
 .org 0856F71Ch
 .incbin "data/warp-map.gfx"
 
 .autoregion
 	.align 4
-.func ReloadAtShip
+.func @ReloadAtStart
 	push	{ r4-r5, lr }
+	ldr		r2, =StartingLocation
 	ldr		r1, =SaveData
 	ldr		r0, =SaveSlot
 	ldrb	r0, [r0]
 	lsl		r0, #2
 	ldr		r1, [r1, r0]
-	mov		r0, Area_MainDeck
+	ldrb	r0, [r2, StartingLocation_Area]
 	strb	r0, [r1, SaveData_Area]
-	mov		r0, #0
+	ldrb	r0, [r2, StartingLocation_Room]
 	strb	r0, [r1, SaveData_Room]
+	ldrb	r0, [r2, StartingLocation_Door]
 	strb	r0, [r1, SaveData_PreviousDoor]
-	add		r1, #SaveData_BG0XPosition
-	mov		r0, #1088 >> 4
-	lsl		r0, #4
-	strh	r0, [r1, SaveData_BG0XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG1XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG2XPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG3XPosition - SaveData_BG0XPosition]
-	mov		r0, #128
-	strh	r0, [r1, SaveData_BG0YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG1YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG2YPosition - SaveData_BG0XPosition]
-	strh	r0, [r1, SaveData_BG3YPosition - SaveData_BG0XPosition]
-	add		r1, #SaveData_SamusState - SaveData_BG0XPosition
-	mov		r0, #1600 >> 4
-	lsl		r0, #4
+	add		r1, #SaveData_SamusState
+	ldrh	r0, [r2, StartingLocation_XPos]
 	strh	r0, [r1, SamusState_PositionX]
-	ldr		r0, =#703
+	ldrh	r0, [r2, StartingLocation_YPos]
 	strh	r0, [r1, SamusState_PositionY]
+	ldr		r3, =AreaLevels
+	ldrb	r0, [r2, StartingLocation_Area]
+	lsl		r0, #2
+	ldr		r3, [r3, r0]
+	ldrb	r0, [r2, StartingLocation_Room]
+	lsl		r2, r0, #4
+	sub		r0, r2, r0
+	lsl		r0, #2
+	add		r3, r0
+	ldrh	r0, [r3, LevelMeta_Music]
 	add		r1, #SaveData_MusicSlot1 - SaveData_SamusState
-	mov		r0, #1Eh
 	strh	r0, [r1]
-	mov		r0, #2Ah
-	strh	r0, [r1, SaveData_MusicSlot2 - SaveData_MusicSlot1]
 	mov		r0, #0
 	strb	r0, [r1, SaveData_MusicSlotSelect - SaveData_MusicSlot1]
 	strb	r0, [r1, SaveData_MusicUnk1 - SaveData_MusicSlot1]
@@ -102,7 +98,7 @@
 	strh	r0, [r1]
 	b		0807EE82h
 @@reload:
-	bl		ReloadAtShip
+	bl		@ReloadAtStart
 	b		0807EE82h
 	.pool
 .endarea

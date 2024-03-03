@@ -53,21 +53,17 @@
 	ldr		r0, [r1, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_WideCoreX + 1
 	bcc		@@boss_alive
-.if !RANDOMIZER
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_BoilerCooling + 1
 	bcc		@@boiler_console_active
-.endif
 	mov		r0, #0
 	bx		lr
 @@boss_alive:
 	mov		r0, #1
 	bx		lr
-.if !RANDOMIZER
 @@boiler_console_active:
 	mov		r0, #2
 	bx		lr
-.endif
 	.pool
 .endarea
 
@@ -142,7 +138,7 @@
 
 .autoregion
 	.align 2
-.func SetNocDataDestroyed
+.func @SetNocDataDestroyed
 	; unlock doors in NOC data room
 	ldr		r2, =MiscProgress
 	ldrh	r0, [r2, MiscProgress_StoryFlags]
@@ -150,7 +146,7 @@
 	orr		r0, r1
 	strh	r0, [r2, MiscProgress_StoryFlags]
 .endfunc
-.func SetDoorUnlockTimer
+.func @SetDoorUnlockTimer
 	ldr		r1, =DoorUnlockTimer
 	mov		r0, #60
 	strb	r0, [r1]
@@ -161,7 +157,7 @@
 
 .org 08043A72h
 .area 06h
-	bl		SetNocDataDestroyed
+	bl		@SetNocDataDestroyed
 	nop
 .endarea
 
@@ -291,11 +287,10 @@
 	.pool
 .endarea
 
-.org 08037FDCh
-.area 0Ch
+.org 08037FDAh
+.area 0Ch, 0
 	; unlock doors after killing box
-	bl		SetDoorUnlockTimer
-	nop
+	bl		@SetDoorUnlockTimer
 .endarea
 
 .org 08060D38h
@@ -303,12 +298,11 @@
 	; check if box is dead or defeated
 	ldr		r1, =MiscProgress
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
-	lsl		r0, 1Fh - StoryFlag_BoxDefeated
-	lsr		r0, 1Fh
+	lsl		r0, #1Fh - StoryFlag_BoxDefeated
 	ldr		r1, [r1, MiscProgress_MajorLocations]
-	lsl		r1, 1Fh - MajorLocation_XBox
-	lsr		r1, 1Fh
+	lsl		r1, #1Fh - MajorLocation_XBox
 	orr		r0, r1
+	lsr		r0, #1Fh
 	bx		lr
 	.pool
 .endarea
@@ -318,14 +312,34 @@
 	; check if box is neither dead nor defeated
 	ldr		r1, =MiscProgress
 	ldrh	r0, [r1, MiscProgress_StoryFlags]
-	lsl		r0, 1Fh - StoryFlag_BoxDefeated
+	lsl		r0, #1Fh - StoryFlag_BoxDefeated
 	ldr		r1, [r1, MiscProgress_MajorLocations]
-	lsl		r1, 1Fh - MajorLocation_XBox
+	lsl		r1, #1Fh - MajorLocation_XBox
 	orr		r0, r1
 	mvn		r0, r0
-	lsr		r0, 1Fh
+	lsr		r0, #1Fh
 	bx		lr
 	.pool
+.endarea
+
+.autoregion
+	.align 2
+.func @CheckBoxDefeatState
+	; check if hatches are locked
+	ldr		r0, =03004DECh
+	ldrb	r0, [r0]
+	mvn		r0, r0
+	lsl		r0, #1Fh - 7
+	lsr		r0, #1Fh
+	bx		lr
+.endfunc
+	.pool
+.endautoregion
+
+.org 080382EAh
+.area 04h, 0
+	; check box defeat state for debris
+	bl		@CheckBoxDefeatState
 .endarea
 
 .org 08045474h
@@ -360,6 +374,7 @@
 .endarea
 
 .autoregion
+	.align 2
 .func CheckOmegaMetroidVulnerable
 	ldr		r0, =CurrEvent
 	ldrb	r0, [r0]
@@ -436,6 +451,10 @@
 @@cont:
 	ldrb	r0, [r1, r0]
 	bl		ObtainMajorLocation
+	; wide core-x lets the boiler console unlock doors
+	ldrb	r0, [r4, Enemy_Id]
+	cmp		r0, #EnemyId_WideCoreXNucleus
+	beq		0802DDF4h
 	mov		r0, #60
 	ldr		r1, =DoorUnlockTimer
 	strb	r0, [r1]

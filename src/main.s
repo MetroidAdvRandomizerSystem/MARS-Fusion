@@ -1,5 +1,5 @@
 .gba
-.open "obj/base.gba", "mfar.gba", 08000000h
+.open "obj/base.gba", "m4rs.gba", 08000000h
 
 .table "data/text.tbl"
 
@@ -19,16 +19,20 @@
 .include "inc/macros.inc"
 .include "inc/structs.inc"
 
-; Mark end-of-file padding as free space
-@@EOF equ 0879F87Ch ; 0879ECC8h
-.defineregion @@EOF, 087FF000h - @@EOF, 0FFh
-
 StartingItems equ 0828D2ACh
+HintTargets equ 085766ECh
+ReservedSpace equ 087FE000h
+ReservedSpace_Len equ 1000h
 MinorLocations equ 087FF000h
 MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
+StartingLocation equ 087FF228h
+
+; Mark end-of-file padding as free space
+@@EOF equ 0879F87Ch ; 0879ECC8h
+.defineregion @@EOF, ReservedSpace - @@EOF, 0FFh
 
 ; Debug mode patch
 .if DEBUG
@@ -50,6 +54,7 @@ TankIncrements equ 087FF220h
 .if QOL
 .notice "Applying quality of life patches..."
 .include "src/qol/completion-seconds.s"
+.include "src/qol/cross-sector-maps.s"
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
 .include "src/qol/map-info.s"
@@ -76,11 +81,14 @@ TankIncrements equ 087FF220h
 .include "src/nonlinear/beam-stacking.s"
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
+.include "src/nonlinear/demos.s"
 .include "src/nonlinear/room-states.s"
+.include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
+.include "src/nonlinear/new-game-init.s"
 .include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
@@ -99,8 +107,10 @@ TankIncrements equ 087FF220h
 ; Patches making randomization of the game possible
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
+.include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
-.include "src/randomizer/ship-warp.s"
+.include "src/randomizer/start-warp.s"
+.include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
 .endif
 

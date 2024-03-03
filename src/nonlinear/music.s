@@ -4,7 +4,7 @@
 .autoregion
 .func Music_VariableFade
 	push	{ lr }
-	mov		r0, #0
+	mov		r0, #10
 	ldr		r1, =03004E58h
 	ldrb	r1, [r1]
 	cmp		r1, #4
@@ -104,18 +104,39 @@
 @@case_MainDeck:
 	; arachnus fight room
 	cmp		r6, #26h
-	bne		@@case_MainDeck_check54
+	bne		@@case_MainDeck_check4D
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@case_MainDeck_default
 	ldr		r1, =MusicInfo + MusicInfo_Type
 	ldrb	r0, [r1]
 	cmp		r0, MusicType_BossAmbience
-	beq		@@case_MainDeck_break
+	beq		@@case_MainDeck_lockWithoutMusic
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
 	b		@@tryLock
+@@case_MainDeck_check4D:
+.if !RANDOMIZER
+	; restricted sector tube
+	cmp		r6, #4Dh
+	bne		@@case_MainDeck_check4F
+	ldr		r1, =CurrEvent
+	ldrb	r0, [r1]
+	cmp		r0, #5Dh
+	blt		@@case_MainDeck_break
+	mov		r0, #0
+	strb	r0, [r1]
+	b		@@case_MainDeck_break
+@@case_MainDeck_check4F:
+	; restricted sector last room
+	cmp		r6, #4Eh
+	bne		@@case_MainDeck_check54
+	ldr		r1, =CurrEvent
+	mov		r0, #5Bh
+	strb	r0, [r1]
+	b		@@case_MainDeck_break
+.endif
 @@case_MainDeck_check54:
 	; arachus fight side room
 	cmp		r6, #54h
@@ -138,6 +159,10 @@
 @@case_MainDeck_default:
 	b		@@case_areaSwitch_default
 @@case_MainDeck_break:
+	b		@@areaSwitchDone
+@@case_MainDeck_lockWithoutMusic:
+	mov		r0, #3Fh
+	bl		LockHatches
 	b		@@areaSwitchDone
 @@case_SRX:
 	; charge core-x fight room
@@ -328,6 +353,8 @@
 	beq		@@case_00
 	cmp		r0, #01h	; Adam intro finished
 	beq		@@case_01
+	cmp		r0, #6Bh	; Auxiliary power active
+	beq		@@case_6B
 	cmp		r0, #9Ah	; Escape sequence started
 	beq		@@case_9A
 	cmp		r0, #9Bh	; Escape sequence
@@ -353,6 +380,12 @@
 	strb	r0, [r1]
 	mov		r0, #1Eh
 	mov		r1, MusicType_Transient
+	b		@@playMusic
+@@case_6B:
+	cmp		r4, #0Bh
+	bne		@@return_false
+	mov		r0, #2Eh
+	mov		r1, #MusicType_Misc
 	b		@@playMusic
 @@case_9A:
 	strb	r0, [r1, PrevSubEvent - CurrSubEvent]
