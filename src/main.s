@@ -88,6 +88,7 @@ StartingLocation equ 087FF228h
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/music.s"
+.include "src/nonlinear/new-game-init.s"
 .include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"

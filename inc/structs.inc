@@ -338,6 +338,26 @@ NavBriefing_EventType equ 08h
 NavBriefing_Size equ 0Ch
 .sym on
 
+SaveMetadata equ 03000B94h
+.sym off
+SaveMetadata_Len equ 3
+SaveMeta_Exists equ 00h
+SaveMeta_CorruptionFlag equ 01h
+SaveMeta_Area equ 02h
+SaveMeta_Event equ 03h
+SaveMeta_CurrEnergy equ 04h
+SaveMeta_MaxEnergy equ 06h
+SaveMeta_CurrMissiles equ 08h
+SaveMeta_MaxMissiles equ 0Ah
+SaveMeta_SuitUpgrades equ 0Ch
+SaveMeta_IgtHours equ 0Dh
+SaveMeta_IgtMinutes equ 0Eh
+SaveMeta_HasSaved equ 0Fh
+SaveMeta_GameCompleted equ 10h
+SaveMeta_IntroPlayed equ 11h
+SaveMeta_Size equ 14h
+.sym on
+
 SaveData equ 0858225Ch
 .sym off
 SaveData_Area equ 1Dh
