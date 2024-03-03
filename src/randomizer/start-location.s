@@ -210,10 +210,10 @@
 
 .org StartingLocation
 .area 08h
-	.db		Area_SRX
-	.db		01h
-	.db		05h
+	.db		Area_MainDeck
+	.db		00h
+	.db		00h
 	.skip 1
-	.dh		260h
-	.dh		289h
+	.dh		640h
+	.dh		1DFh
 .endarea
