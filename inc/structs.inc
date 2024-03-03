@@ -332,6 +332,8 @@ DMA_CNT equ 08h
 
 ; non-vanilla structs:
 
+UpgradeLookup equ 03001800h
+
 .sym off
 MajorUpgradeInfo_Offset equ 00h
 MajorUpgradeInfo_Bitmask equ 01h

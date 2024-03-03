@@ -10,9 +10,70 @@
 
 .org 0807E834h
 .region 458h
+	.align 2
+.func @InitUpgradeLookup
+	push	{ r4-r6, lr }
+	ldr		r1, =UpgradeLookup
+	mov		r0, #0
+	str		r0, [r1]
+	str		r0, [r1, #4]
+	str		r0, [r1, #8]
+	str		r0, [r1, #12]
+	str		r0, [r1, #16]
+	str		r0, [r1, #20]
+	add		r4, =@@UpgradeOrder
+	ldr		r5, =UpgradesBackup
+	ldr		r6, =MajorUpgradeInfo
+@@loop_pool:
+	ldr		r3, =UpgradeLookup
+	ldrb	r0, [r4]
+	cmp		r0, #0FFh
+	beq		@@return
+	add		r3, r0
+@@loop_upgrade:
+	add		r4, #1
+	ldrb	r2, [r4]
+	cmp		r2, #0FFh
+	beq		@@loop_pool_inc
+	lsl		r0, r2, #2
+	add		r1, r6, r0
+	ldrb	r0, [r1, MajorUpgradeInfo_Offset]
+	sub		r0, #SamusUpgrades_BeamUpgrades - UpgradesBackup_BeamUpgrades
+	ldrb	r0, [r5, r0]
+	ldrb	r1, [r1, MajorUpgradeInfo_Bitmask]
+	and		r0, r1
+	beq		@@loop_upgrade
+	strb	r2, [r3]
+	add		r3, #2
+	b		@@loop_upgrade
+@@loop_pool_inc:
+	add		r4, #1
+	b		@@loop_pool
+@@return:
+	pop		{ r4-r6, pc }
+	.pool
+	.align 4
+@@UpgradeOrder:
+	.db		0 + 0 * 2
+	.db		Upgrade_ChargeBeam, Upgrade_WideBeam, Upgrade_PlasmaBeam
+	.db		Upgrade_WaveBeam, Upgrade_IceBeam, 0FFh
+	.db		0 + 8 * 2
+	.db		Upgrade_SuperMissiles, Upgrade_IceMissiles
+	.db		Upgrade_DiffusionMissiles, 0FFh
+	.db		1 + 0 * 2
+	.db		Upgrade_PowerBombs, 0FFh
+	.db		1 + 3 * 2
+	.db		Upgrade_VariaSuit, Upgrade_GravitySuit, 0FFh
+	.db		1 + 7 * 2
+	.db		Upgrade_MorphBall, Upgrade_HiJump, Upgrade_Speedbooster
+	.db		Upgrade_SpaceJump, Upgrade_ScrewAttack, 0FFh
+	.db		0FFh
+.endfunc
+
 .align 2
 .func @InitUpgrades
 	push	{ r4, lr }
+	bl		@InitUpgradeLookup
 	ldr		r0, =UpgradesBackup
 	ldrb	r2, [r0, UpgradesBackup_BeamUpgrades]
 	cmp		r2, #0
@@ -32,6 +93,7 @@
 	ldr		r1, =#0600CB42h
 	strh	r0, [r1]
 	ldr		r0, =#0B0EAh
+	add		r0, #20h
 	strh	r0, [r1, #2]
 	add		r0, #1
 	strh	r0, [r1, #4]
@@ -45,7 +107,7 @@
 	strh	r0, [r1, #12]
 	add		r0, #1
 	strh	r0, [r1, #14]
-	add		r0, #0F3h - 0F0h
+	add		r0, #0F3h - 110h
 	add		r1, #40h
 	ldr		r3, =SamusUpgrades
 	ldrb	r3, [r3, SamusUpgrades_ExplosiveUpgrades]
@@ -94,7 +156,8 @@
 	mov		r0, #(1 << SuitUpgrade_VariaSuit) | (1 << SuitUpgrade_GravitySuit)
 	tst		r0, r2
 	beq		@@init_misc
-	ldr		r0, =#0B118h
+	ldr		r0, =#0B0EAh
+	add		r0, #118h - 0EAh
 	ldr		r1, =#0600CA66h
 	ldr		r3, =SamusUpgrades
 	ldrb	r3, [r3, SamusUpgrades_SuitUpgrades]
@@ -109,7 +172,7 @@
 	tst		r0, r2
 	beq		@@return
 	ldr		r0, =#0B0EAh
-	add		r0, #60h
+	add		r0, #80h
 	ldr		r1, =#0600CB26h
 	strh	r0, [r1]
 	add		r0, #1
@@ -118,8 +181,9 @@
 	strh	r0, [r1, #4]
 	add		r0, #1
 	strh	r0, [r1, #6]
-	add		r0, #12Fh - 14Dh
+	add		r0, #1
 	strh	r0, [r1, #8]
+	add		r0, #12Fh - 16Eh
 	strh	r0, [r1, #10]
 	strh	r0, [r1, #12]
 	add		r0, #1
@@ -347,8 +411,7 @@
 	push	{ r4-r5, lr }
 	ldr		r4, =UpgradesBackup
 	ldr		r5, =SamusUpgrades
-	; keep commented for testing
-/*	ldrb	r0, [r4, UpgradesBackup_BeamUpgrades]
+	ldrb	r0, [r4, UpgradesBackup_BeamUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_BeamUpgrades]
 	orr		r0, r1
 	strb	r0, [r4, UpgradesBackup_BeamUpgrades]
@@ -359,7 +422,7 @@
 	ldrb	r0, [r4, UpgradesBackup_SuitUpgrades]
 	ldrb	r1, [r5, SamusUpgrades_SuitUpgrades]
 	orr		r0, r1
-	strb	r0, [r4, UpgradesBackup_SuitUpgrades]*/
+	strb	r0, [r4, UpgradesBackup_SuitUpgrades]
 	bl		@InitUpgrades
 	mov		r0, #5
 	ldrh	r1, [r5, SamusUpgrades_CurrEnergy]
@@ -501,7 +564,7 @@
 	ldrh	r5, [r4, #6]
 	lsr		r5, #7
 	add		r0, r5
-	ldr		r1, =@UpgradeLookup
+	ldr		r1, =UpgradeLookup
 	ldrb	r0, [r1, r0]
 	lsl		r0, #2
 	ldr		r3, =MajorUpgradeInfo
@@ -597,7 +660,7 @@
 	beq		@@return_prev
 	b		@@scroll_vertical_first
 @@scroll_vertical_loop:
-	ldr		r1, =@UpgradeLookup
+	ldr		r1, =UpgradeLookup
 	lsl		r0, #1
 	add		r0, r4
 	ldrb	r0, [r1, r0]
@@ -624,7 +687,7 @@
 	mov		r3, #0
 	b		@@find_closest_first
 @@find_closest_loop:
-	ldr		r1, =@UpgradeLookup
+	ldr		r1, =UpgradeLookup
 	lsl		r0, #1
 	add		r0, r4
 	add		r0, r6
@@ -665,22 +728,6 @@
 	pop		{ r4-r7, pc }
 	.pool
 .endfunc
-.endautoregion
-
-.autoregion
-@UpgradeLookup:
-	.db		Upgrade_ChargeBeam,			Upgrade_PowerBombs
-	.db		Upgrade_WideBeam,			Upgrade_None
-	.db		Upgrade_PlasmaBeam,			Upgrade_None
-	.db		Upgrade_WaveBeam,			Upgrade_VariaSuit
-	.db		Upgrade_IceBeam,			Upgrade_GravitySuit
-	.db		Upgrade_None,				Upgrade_None
-	.db		Upgrade_None,				Upgrade_None
-	.db		Upgrade_None,				Upgrade_MorphBall
-	.db		Upgrade_SuperMissiles,		Upgrade_HiJump
-	.db		Upgrade_IceMissiles,		Upgrade_Speedbooster
-	.db		Upgrade_DiffusionMissiles,	Upgrade_SpaceJump
-	.db		Upgrade_None,				Upgrade_ScrewAttack
 .endautoregion
 
 ; graphics
