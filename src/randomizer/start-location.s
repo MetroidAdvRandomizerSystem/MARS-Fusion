@@ -154,15 +154,25 @@
 .autoregion
 	.align 2
 .func @CheckLoadSaveOrNewGame
+	push	{ r1 }
 	ldr		r0, =#03000B8Bh
 	ldrb	r0, [r0]
 	cmp		r0, #0
 	bne		@@return_true
 	ldr		r0, =#03000BE3h
 	ldrb	r0, [r0]
-	bx		lr
+	cmp		r0, #0
+	bne		@@return_false
+	ldr		r1, =SamusState + 20h
+	mov		r0, #StandingFlag_Enemy
+	strb	r0, [r1, SamusState_StandingFlag - 20h]
 @@return_true:
 	mov		r0, #1
+	b		@@return
+@@return_false:
+	mov		r0, #0
+@@return:
+	pop		{ r1 }
 	bx		lr
 	.pool
 .endfunc
@@ -173,8 +183,8 @@
 	; check if save pad should start lowered
 	bl		@CheckLoadSaveOrNewGame
 	cmp		r0, #0
-	bne		0801F466h
-	b		0801F416h
+	bne		0801F416h
+	b		0801F466h
 .endarea
 
 .org 08060DF8h
@@ -200,10 +210,10 @@
 
 .org StartingLocation
 .area 08h
-	.db		Area_MainDeck
-	.db		00h
-	.db		00h
+	.db		Area_SRX
+	.db		01h
+	.db		05h
 	.skip 1
-	.dh		640h
-	.dh		1DFh
+	.dh		260h
+	.dh		289h
 .endarea

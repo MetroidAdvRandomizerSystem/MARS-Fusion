@@ -158,6 +158,7 @@ SamusState_PositionX equ 16h
 SamusState_PositionY equ 18h
 SamusState_VelocityX equ 1Ah
 SamusState_VelocityY equ 1Ch
+SamusState_StandingFlag equ 20h
 SamusState_AnimationFrame equ 21h
 SamusState_Animation equ 22h
 .sym on

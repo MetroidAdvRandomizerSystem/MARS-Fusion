@@ -98,6 +98,11 @@ Tank_Missiles equ 1
 Tank_Energy equ 2
 Tank_PowerBombs equ 3
 
+StandingFlag_Ground equ 00h
+StandingFlag_Enemy equ 01h
+StandingFlag_Midair equ 02h
+StandingFlag_NoControl equ 03h
+
 SecurityLevel_Lv0 equ 0	; Gray doors
 SecurityLevel_Lv1 equ 1	; Blue doors
 SecurityLevel_Lv2 equ 2	; Green doors
