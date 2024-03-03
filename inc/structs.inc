@@ -393,6 +393,7 @@ LevelMeta_Spriteset2 equ 30h
 LevelMeta_Spriteset2Id equ 34h
 LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
+LevelMeta_Music equ 3Ah
 .sym off
 
 MessagesByLanguage equ 0879CDF4h

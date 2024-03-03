@@ -24,11 +24,18 @@
 	strh	r0, [r1, SamusState_PositionX]
 	ldrh	r0, [r2, StartingLocation_YPos]
 	strh	r0, [r1, SamusState_PositionY]
+	ldr		r3, =AreaLevels
+	ldrb	r0, [r2, StartingLocation_Area]
+	lsl		r0, #2
+	ldr		r3, [r3, r0]
+	ldrb	r0, [r2, StartingLocation_Room]
+	lsl		r2, r0, #4
+	sub		r0, r2, r0
+	lsl		r0, #2
+	add		r3, r0
+	ldrh	r0, [r3, LevelMeta_Music]
 	add		r1, #SaveData_MusicSlot1 - SaveData_SamusState
-	mov		r0, #1Eh
 	strh	r0, [r1]
-	mov		r0, #2Ah
-	strh	r0, [r1, SaveData_MusicSlot2 - SaveData_MusicSlot1]
 	mov		r0, #0
 	strb	r0, [r1, SaveData_MusicSlotSelect - SaveData_MusicSlot1]
 	strb	r0, [r1, SaveData_MusicUnk1 - SaveData_MusicSlot1]
