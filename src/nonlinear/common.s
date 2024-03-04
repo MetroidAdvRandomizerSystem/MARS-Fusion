@@ -17,16 +17,16 @@
 
 .func ObtainUpgrade
 	push	{ r4, lr }
-	cmp		r0, Upgrade_None
+	cmp		r0, #Upgrade_None
 	bne		@@checkIceTrap
-	mov		r0, Message_NothingUpgrade
+	mov		r0, #Message_NothingUpgrade
 	b		@@setMessage
 @@checkIceTrap:
-	cmp		r0, Upgrade_IceTrap
-	bne		@@checkMajor
+	cmp		r0, #Upgrade_IceTrap
+	bne		@@checkMetroid
 	ldr		r0, =SamusUpgrades
 	ldrb	r0, [r0, SamusUpgrades_SuitUpgrades]
-	lsr		r0, SuitUpgrade_VariaSuit + 1
+	lsr		r0, #SuitUpgrade_VariaSuit + 1
 	bcs		@@skipFreeze
 	mov		r0, #146h >> 1
 	lsl		r0, #1
@@ -39,10 +39,27 @@
 	mov		r0, #0FBh
 	blx		r1
 @@skipFreeze:
-	mov		r0, Message_IceTrapUpgrade
+	mov		r0, #Message_IceTrapUpgrade
+	b		@@setMessage
+@@checkMetroid:
+	cmp		r0, #Upgrade_InfantMetroid
+	bne		@@checkMajor
+	ldr		r1, =PermanentUpgrades
+	ldrb	r0, [r1, PermanentUpgrades_InfantMetroids]
+	add		r0, #1
+	strb	r0, [r1, PermanentUpgrades_InfantMetroids]
+	ldr		r1, =RequiredMetroidCount
+	ldrb	r1, [r1]
+	cmp		r0, r1
+	bge		@@lastMetroid
+	mov		r0, #Message_InfantMetroid
+	b		@@setMessage
+@@lastMetroid:
+	; the last metroid is in captivity. the galaxy is at peace.
+	mov		r0, #Message_LastInfantMetroid
 	b		@@setMessage
 @@checkMajor:
-	cmp		r0, Upgrade_IceBeam
+	cmp		r0, #Upgrade_IceBeam
 	bhi		@@checkMinors
 	ldr		r4, =MajorUpgradeInfo
 	lsl		r0, #2
@@ -179,6 +196,9 @@
 	.pool
 .endarea
 
+.org RequiredMetroidCount
+	.db		4
+
 .org MajorLocations
 .area 20h
 	.db		Upgrade_Missiles
@@ -225,6 +245,14 @@
 	.db		0		 ; suit upgrades
 	.db		00001b	 ; security level
 	.db		1111111b ; maps downloaded
+.endarea
+
+.org EventUpgradeInfo + 18 * EventUpgradeInfo_Size
+.area EventUpgradeInfo_Size
+	.db		0
+	.db		0
+	.db		1 << SuitUpgrade_OmegaSuit
+	.skip 5
 .endarea
 
 .autoregion

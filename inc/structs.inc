@@ -26,6 +26,7 @@ PermanentUpgrades equ 0300003Bh
 PermanentUpgrades_BeamUpgrades equ 00h
 PermanentUpgrades_ExplosiveUpgrades equ 01h
 PermanentUpgrades_SuitUpgrades equ 02h
+PermanentUpgrades_InfantMetroids equ 03h
 .sym on
 
 DoorUnlockTimer equ 03000046h

@@ -2,6 +2,7 @@
 ; specific songs.
 
 .autoregion
+	.align 2
 .func Music_VariableFade
 	push	{ lr }
 	mov		r0, #10
@@ -102,6 +103,13 @@
 .endif
 	.align 2
 @@case_MainDeck:
+	; operations deck
+	cmp		r6, #0Dh
+	bne		@@case_MainDeck_check26
+	mov		r0, #08h
+	bl		LockHatches
+	b		@@case_MainDeck_break
+@@case_MainDeck_check26:
 	; arachnus fight room
 	cmp		r6, #26h
 	bne		@@case_MainDeck_check4D
@@ -131,20 +139,43 @@
 @@case_MainDeck_check4F:
 	; restricted sector last room
 	cmp		r6, #4Eh
-	bne		@@case_MainDeck_check54
+	bne		@@case_MainDeck_check52
 	ldr		r1, =CurrEvent
 	mov		r0, #5Bh
 	strb	r0, [r1]
 	b		@@case_MainDeck_break
 .endif
+@@case_MainDeck_check52:
+	; operations room
+	cmp		r6, #52h
+	bne		@@case_MainDeck_check54
+	ldr		r1, =CurrEvent
+	ldrb	r0, [r1]
+	cmp		r0, #65h
+	bgt		@@case_MainDeck_break
+	b		@@case_MainDeck_default
 @@case_MainDeck_check54:
 	; arachus fight side room
 	cmp		r6, #54h
-	bne		@@case_MainDeck_check56
+	bne		@@case_MainDeck_check55
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@case_MainDeck_default
 	b		@@case_MainDeck_break
+@@case_MainDeck_check55:
+	; sa-x fight room
+	cmp		r6, #55h
+	bne		@@case_MainDeck_check56
+	ldr		r1, =CurrEvent
+	ldrb	r0, [r1]
+	cmp		r0, #65h
+	bgt		@@case_MainDeck_default
+	mov		r0, #65h
+	strb	r0, [r1]
+	mov		r0, #2Eh
+	mov		r1, #MusicType_Misc
+	mov		r2, #60
+	b		@@tryPlay
 @@case_MainDeck_check56:
 	; yakuza fight room
 	cmp		r6, #56h

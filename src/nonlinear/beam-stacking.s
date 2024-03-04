@@ -883,9 +883,6 @@
 	bl		Enemy_GetWeakness
 	lsr		r1, r0, EnemyWeakness_BeamOrBombs + 1
 	bcs		@@hitEnemy
-	ldrb	r1, [r4, Enemy_FreezeTimer - 20h]
-	cmp		r1, #0
-	bne		@@hitImmuneEnemy
 	lsr		r1, r0, EnemyWeakness_Freezable + 1
 	bcc		@@hitImmuneEnemy
 	lsr		r0, r6, BeamUpgrade_IceBeam + 1
@@ -962,9 +959,6 @@
 	add		r2, r1
 	mov		r3, r2
 	add		r3, #20h
-	ldrb	r0, [r3, Enemy_FreezeTimer - 20h]
-	cmp		r0, #0
-	bne		@@checkWave
 	mov		r0, #240
 	strb	r0, [r3, Enemy_FreezeTimer - 20h]
 	mov		r0, #0
@@ -1084,25 +1078,14 @@
 	bcs		@@collideWithSolid
 	lsr		r3, r1, EnemyProps_ImmuneToProjectiles + 1
 	bcs		@@hitInvulnEnemy
-	ldrb	r1, [r4, Enemy_Id]
-	cmp		r1, #0C0h
-	beq		@@checkSaxHit
 	bl		Enemy_GetWeakness
 	lsr		r1, r0, EnemyWeakness_BeamOrBombs + 1
 	bcs		@@hitEnemy
 	lsr		r1, r0, EnemyWeakness_ChargeBeam + 1
 	bcs		@@hitEnemy
-	mov		r1, Enemy_FreezeTimer
-	ldrb	r1, [r4, r1]
-	cmp		r1, #0
-	bne		@@hitImmuneEnemy
 	lsr		r1, r0, EnemyWeakness_Freezable + 1
 	bcc		@@hitImmuneEnemy
 	lsr		r0, r6, BeamUpgrade_IceBeam + 1
-	bcc		@@hitImmuneEnemy
-	b		@@hitEnemy
-@@checkSaxHit:
-	lsr		r0, r6, BeamUpgrade_PlasmaBeam + 1
 	bcc		@@hitImmuneEnemy
 @@hitEnemy:
 	bl		ChargedBeam_CalculateDamage
@@ -1176,9 +1159,6 @@
 	add		r2, r1
 	mov		r3, r2
 	add		r3, #20h
-	ldrb	r0, [r3, Enemy_FreezeTimer - 20h]
-	cmp		r0, #0
-	bne		@@checkWave
 	mov		r0, #240
 	strb	r0, [r3, Enemy_FreezeTimer - 20h]
 	mov		r0, #0

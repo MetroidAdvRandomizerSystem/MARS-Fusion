@@ -4,7 +4,7 @@
 .table "data/text.tbl"
 
 ; Assembly-time flags
-.definelabel DEBUG, 0
+.definelabel DEBUG, 1
 .definelabel OPTIMIZE, 1
 .definelabel QOL, 1
 .definelabel PHYSICS, 0
@@ -28,6 +28,7 @@ MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
+RequiredMetroidCount equ 087FF227h
 StartingLocation equ 087FF228h
 
 ; Mark end-of-file padding as free space
@@ -90,7 +91,7 @@ StartingLocation equ 087FF228h
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/new-game-init.s"
 .include "src/nonlinear/null-event.s"
-.include "src/nonlinear/operations-room.s"
+; .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"

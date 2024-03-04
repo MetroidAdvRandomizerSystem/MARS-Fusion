@@ -159,6 +159,8 @@
 	.dw		086B50FCh	; wave beam
 	.dw		086B5170h	; plasma beam
 	.dw		086B51E6h	; ice beam
+	.dw		@EnglishMessage_InfantMetroid
+	.dw		@EnglishMessage_LastInfantMetroid
 	.dw		086B5984h	; is your objective clear?
 	.dw		086B59CCh	; confirm mission objective?
 .if RANDOMIZER
@@ -204,6 +206,19 @@
 	.align 2
 @EnglishMessage_Nothing:
 	.string 50, "[INDENT]Nothing acquired.\n"
+.endautoregion
+
+.autoregion
+	.align 2
+@EnglishMessage_InfantMetroid:
+	.string 24, "[INDENT]Found an infant metroid.\n"
+.endautoregion
+
+.autoregion
+	.align 2
+@EnglishMessage_LastInfantMetroid:
+	.stringn 3,  "[INDENT]Found the last infant metroid.\n"
+	.string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
 
 .if RANDOMIZER

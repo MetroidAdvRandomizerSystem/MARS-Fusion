@@ -406,9 +406,16 @@
 	; room states: S0-0D => S0-55
 .if RANDOMIZER
 	; TODO: check for go mode
-	mov		r0, #0
-.endif
+	ldr		r1, =PermanentUpgrades
+	ldrb	r0, [r1, PermanentUpgrades_InfantMetroids]
+	ldr		r1, =RequiredMetroidCount
+	ldrb	r1, [r1]
+	cmp		r0, r1
+	bge		@@return_true
+	b		@@return_false
+.else
 	bx		lr
+.endif
 @@case_67:
 	; escape sequence
 	; spritesets: S0-06, S0-07, S0-26, S0-2E

@@ -220,7 +220,7 @@
 	mov		r5, #0
 	ldr		r0, =LastAbility
 	ldrb	r0, [r0]
-	cmp		r0, #Message_IceBeamUpgrade
+	cmp		r0, #Message_LastInfantMetroid
 	bls		0806C446h
 	sub		r0, #Message_AtmosphericStabilizer1 - 1
 	mov		r5, r0
