@@ -220,14 +220,26 @@
 @@case_TRO:
 	; zazabi fight room
 	cmp		r6, #12h
-	bne		@@case_TRO_check16
+	bne		@@case_TRO_check14
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Zazabi + 1
-	bcs		@@case_areaSwitch_default
+	bcs		@@case_MainDeck_default
 	mov		r0, #18h
 	mov		r1, MusicType_BossAmbience
 	mov		r2, #60
 	b		@@tryLock
+@@case_TRO_check14:
+	; nettori backdoor
+	cmp		r6, #14h
+	bne		@@case_TRO_check16
+	cmp		r4, #22h
+	bne		@@case_MainDeck_default
+	ldr		r0, [r2, MiscProgress_MajorLocations]
+	lsr		r0, MajorLocation_Nettori + 1
+	bcs		@@case_MainDeck_default
+	mov		r0, #02h
+	bl		LockHatches
+	b		@@case_areaSwitch_default
 @@case_TRO_check16:
 	; nettori fight room
 	cmp		r6, #16h
