@@ -32,7 +32,7 @@ RequiredMetroidCount equ 087FF227h
 StartingLocation equ 087FF228h
 
 ; Mark end-of-file padding as free space
-@@EOF equ 0879F87Ch ; 0879ECC8h
+@@EOF equ 0879FA88h ; 0879ECC8h
 .defineregion @@EOF, ReservedSpace - @@EOF, 0FFh
 
 ; Debug mode patch
