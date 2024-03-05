@@ -150,6 +150,16 @@ Projectile_ParentSlot equ 1Fh
 Projectile_Size equ 20h
 .sym on
 
+MissileSpeeds equ 0858B40Ch
+NormalMissileGfx0 equ 0858D324h
+NormalMissileGfx1 equ 0858D3A4h
+SuperMissileGfx0 equ 0858D424h
+SuperMissileGfx1 equ 0858D4A4h
+IceMissileGfx0 equ 0858D524h
+IceMissileGfx1 equ 0858D5A4h
+DiffusionMissileGfx0 equ 0858D624h
+DiffusionMissileGfx1 equ 0858D6A4h
+
 SamusState equ 03001244h
 SamusStateBackup equ 03001270h
 .sym off
@@ -175,6 +185,7 @@ SamusState_Animation equ 22h
 SamusTimers equ 030012F0h
 .sym off
 SamusTimers_SubzeroKnockback equ 05h
+SamusTimers_DiffusionMissileCharge equ 13h
 SamusTimers_EnvironmentalDamage equ 14h
 SamusTimers_EnvironmentalDamageSfx equ 15h
 .sym on
