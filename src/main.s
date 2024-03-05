@@ -91,7 +91,7 @@ StartingLocation equ 087FF228h
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/new-game-init.s"
 .include "src/nonlinear/null-event.s"
-; .include "src/nonlinear/operations-room.s"
+.include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"

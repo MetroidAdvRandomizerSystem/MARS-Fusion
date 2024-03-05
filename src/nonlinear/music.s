@@ -106,9 +106,12 @@
 	; operations deck
 	cmp		r6, #0Dh
 	bne		@@case_MainDeck_check26
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
+	lsr		r0, #StoryFlag_SaxDefeated + 1
+	bcs		@@case_MainDeck_break
 	mov		r0, #08h
 	bl		LockHatches
-	b		@@case_MainDeck_break
+	b		@@case_MainDeck_default
 @@case_MainDeck_check26:
 	; arachnus fight room
 	cmp		r6, #26h
@@ -127,7 +130,7 @@
 @@case_MainDeck_check36:
 	cmp		r6, #36h
 	bne		@@case_MainDeck_check4D
-	ldr		r0, [r2, MiscProgress_StoryFlags]
+	ldrh	r0, [r2, MiscProgress_StoryFlags]
 	lsr		r0, StoryFlag_AuxiliaryPower + 1
 	bcs		@@case_MainDeck_default
 	mov		r0, #0Fh
@@ -167,25 +170,11 @@
 @@case_MainDeck_check54:
 	; arachus fight side room
 	cmp		r6, #54h
-	bne		@@case_MainDeck_check55
+	bne		@@case_MainDeck_check56
 	ldr		r0, [r2, MiscProgress_MajorLocations]
 	lsr		r0, MajorLocation_Arachnus + 1
 	bcs		@@case_MainDeck_default
 	b		@@case_MainDeck_break
-@@case_MainDeck_check55:
-	; sa-x fight room
-	cmp		r6, #55h
-	bne		@@case_MainDeck_check56
-	ldr		r1, =CurrEvent
-	ldrb	r0, [r1]
-	cmp		r0, #65h
-	bgt		@@case_MainDeck_default
-	mov		r0, #65h
-	strb	r0, [r1]
-	mov		r0, #2Eh
-	mov		r1, #MusicType_Misc
-	mov		r2, #60
-	b		@@tryPlay
 @@case_MainDeck_check56:
 	; yakuza fight room
 	cmp		r6, #56h
@@ -634,10 +623,8 @@
 	.dh		2Eh		; main deck auxiliary power station
 .org 083C2C4Ch + 51h * LevelMeta_Size + LevelMeta_Music
 	.dh		2Eh		; main deck operations deck recharge room
-.org 083C2C4Ch + 51h * LevelMeta_Size + LevelMeta_Music
+.org 083C2C4Ch + 52h * LevelMeta_Size + LevelMeta_Music
 	.dh		2Eh		; main deck operations room
-.org 083C2C4Ch + 55h * LevelMeta_Size + LevelMeta_Music
-	.dh		2Eh		; main deck sa-x arena
 
 .org 083C40B0h + 12h * LevelMeta_Size + LevelMeta_Music
 	.dh		35h		; sector 1 tourian shaft east

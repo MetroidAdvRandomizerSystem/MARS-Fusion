@@ -342,6 +342,74 @@
 	bl		@CheckBoxDefeatState
 .endarea
 
+.autoregion
+	.align 2
+.func @CheckSaxShouldSpawn
+	ldr		r0, =PermanentUpgrades
+	ldrb	r1, [r0, PermanentUpgrades_InfantMetroids]
+	ldr		r0, =RequiredMetroidCount
+	ldrb	r0, [r0]
+	sub		r0, r1
+	sub		r0, #1
+	lsr		r0, #1Fh
+	ldr		r1, =MiscProgress
+	ldrh	r1, [r1, MiscProgress_StoryFlags]
+	mvn		r1, r1
+	lsl		r1, #1Fh - StoryFlag_SaxDefeated
+	lsr		r1, #1Fh
+	and		r0, r1
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.org 0801A916h
+.area 04h, 0
+	; check if go mode is active and sa-x is not defeated
+	bl		@CheckSaxShouldSpawn
+.endarea
+
+.autoregion
+	.align 2
+.func @StartSaxFight
+	push	{ lr }
+	mov		r0, #0
+	bl		Music_FadeOut
+	mov		r0, #3Fh
+	bl		LockHatches
+	pop		{ pc }
+.endfunc
+.endautoregion
+
+.org 0801A8BCh
+.area 06h, 0
+	; start sa-x fight
+	bl		@StartSaxFight
+.endarea
+
+.autoregion
+	.align 2
+.func @SetSaxDefeatedFlag
+	ldr		r2, =MiscProgress
+	ldrh	r1, [r2, MiscProgress_StoryFlags]
+	mov		r0, #1
+	lsl		r0, #StoryFlag_SaxDefeated
+	orr		r0, r1
+	strh	r0, [r2, MiscProgress_StoryFlags]
+	ldr		r1, =DoorUnlockTimer
+	mov		r0, #60
+	strb	r0, [r1]
+	bx		lr
+	.pool
+.endfunc
+.endautoregion
+
+.org 0802DF90h
+.area 06h, 0
+	; set sa-x defeated flag
+	bl		@SetSaxDefeatedFlag
+.endarea
+
 .org 08045474h
 .area 18h, 0
 	; make zazabi take damage from any missile or charge beam projectile type

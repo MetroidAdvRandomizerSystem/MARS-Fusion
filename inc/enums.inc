@@ -370,6 +370,7 @@ StoryFlag_BoilerCooling equ 4
 StoryFlag_AnimalsFreed equ 5
 StoryFlag_AuxiliaryPower equ 6
 StoryFlag_RestrictedSectorDetached equ 7
+StoryFlag_SaxDefeated equ 8
 
 ; alternate palette
 AltTankPal0 equ 0000h
