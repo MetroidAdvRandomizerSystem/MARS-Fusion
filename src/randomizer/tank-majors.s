@@ -40,6 +40,8 @@
 	cmp		r4, #UpgradeSprite_SecurityLevel4
 	beq		@@set_bg1
 	cmp		r4, #UpgradeSprite_Speedbooster
+	beq		@@set_bg1
+	cmp		r4, #UpgradeSprite_InfantMetroid
 	bne		@@load_tank_vram
 @@set_bg1:
 	ldr		r2, =LevelData + LevelData_Bg1
@@ -59,7 +61,7 @@
 	add		r0, #53h
 	strh	r0, [r2]
 @@load_tank_vram:
-	cmp		r4, #UpgradeSprite_ShinyPowerBombTank
+	cmp		r4, #UpgradeSprite_InfantMetroid
 	bls		@@load_tiles
 	mov		r4, #UpgradeSprite_Empty
 @@load_tiles:
@@ -113,6 +115,8 @@
 	cmp		r1, #UpgradeSprite_SecurityLevel4
 	beq		@@set_alt_palette
 	cmp		r1, #UpgradeSprite_Speedbooster
+	beq		@@set_alt_palette
+	cmp		r1, #UpgradeSprite_InfantMetroid
 	bne		@@set_tile
 @@set_alt_palette:
 	mov		r0, r5
@@ -152,8 +156,16 @@
 	ldrb	r0, [r4, RoomTanks_AnimationDelay]
 	add		r0, #1
 	strb	r0, [r4, RoomTanks_AnimationDelay]
+	ldrb	r1, [r4, RoomTanks_Sprite]
+	cmp		r1, #UpgradeSprite_InfantMetroid
+	beq		@@metroid_inc_delay
 	cmp		r0, #5
 	blt		@@loop_inc
+	b		@@inc_frame
+@@metroid_inc_delay:
+	cmp		r0, #8
+	blt		@@loop_inc
+@@inc_frame:
 	mov		r0, #0
 	strb	r0, [r4, RoomTanks_AnimationDelay]
 	ldrb	r0, [r4, RoomTanks_AnimationFrame]
@@ -166,7 +178,7 @@
 	lsl		r0, #7
 	add		r1, r0
 	ldrb	r0, [r4, RoomTanks_Sprite]
-	cmp		r0, #UpgradeSprite_ShinyPowerBombTank
+	cmp		r0, #UpgradeSprite_InfantMetroid
 	bls		@@load_tiles
 	mov		r0, #UpgradeSprite_Empty
 @@load_tiles:

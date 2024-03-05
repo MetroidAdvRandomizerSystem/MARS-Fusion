@@ -382,8 +382,8 @@ AltTankPal6 equ 77BDh
 AltTankPal7 equ 0140h
 AltTankPal8 equ 0240h
 AltTankPal9 equ 27E9h
-AltTankPalA equ 3900h
-AltTankPalB equ 7E00h
+AltTankPalA equ 61C2h
+AltTankPalB equ 7F62h
 AltTankPalC equ 02D6h
 AltTankPalD equ 27FFh
 AltTankPalE equ 0013h
