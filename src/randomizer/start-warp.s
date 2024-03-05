@@ -19,11 +19,38 @@
 	strb	r0, [r1, SaveData_Room]
 	ldrb	r0, [r2, StartingLocation_Door]
 	strb	r0, [r1, SaveData_PreviousDoor]
+	ldrb	r0, [r2, StartingLocation_Area]
+	cmp		r0, #Area_MainDeck
+	bne		@@write_start_position
+	ldrb	r0, [r2, StartingLocation_Room]
+	cmp		r0, #00h
+	bne		@@write_start_position
+	add		r1, #SaveData_BG0XPosition
+	mov		r0, #1088 >> 4
+	lsl		r0, #4
+	strh	r0, [r1, SaveData_BG0XPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG1XPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG2XPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG3XPosition - SaveData_BG0XPosition]
+	mov		r0, #128
+	strh	r0, [r1, SaveData_BG0YPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG1YPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG2YPosition - SaveData_BG0XPosition]
+	strh	r0, [r1, SaveData_BG3YPosition - SaveData_BG0XPosition]
+	add		r1, #SaveData_SamusState - SaveData_BG0XPosition
+	mov		r0, #1600 >> 4
+	lsl		r0, #4
+	strh	r0, [r1, SamusState_PositionX]
+	ldr		r0, =#703
+	strh	r0, [r1, SamusState_PositionY]
+	b		@@set_music
+@@write_start_position:
 	add		r1, #SaveData_SamusState
 	ldrh	r0, [r2, StartingLocation_XPos]
 	strh	r0, [r1, SamusState_PositionX]
 	ldrh	r0, [r2, StartingLocation_YPos]
 	strh	r0, [r1, SamusState_PositionY]
+@@set_music:
 	ldr		r3, =AreaLevels
 	ldrb	r0, [r2, StartingLocation_Area]
 	lsl		r0, #2
