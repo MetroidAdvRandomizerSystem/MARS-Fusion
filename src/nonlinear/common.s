@@ -84,6 +84,8 @@
 @@setUpgradeBackup:
 	ldr		r3, =PermanentUpgrades
 	sub		r2, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
+	ldrb	r1, [r3, r2]
+	orr		r0, r1
 	strb	r0, [r3, r2]
 @@setMajorMessage:
 	ldrb	r0, [r4, MajorUpgradeInfo_Message]
