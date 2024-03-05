@@ -119,7 +119,7 @@
 	ldrb	r0, [r3]
 	lsl		r0, #1
 	ldr		r3, =MiscProgress
-	ldr		r2, =SamusUpgrades
+	ldr		r2, =PermanentUpgrades
 	b		@@branch
 @@case_default:
 	mov		r0, #0
@@ -213,7 +213,7 @@
 	; downloaded bombs
 	; room states: S2-03 => S2-1E, S2-07 => S2-1F
 .if !RANDOMIZER
-	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
 	lsl		r0, 1Fh - ExplosiveUpgrade_Bombs
 	lsr		r0, 1Fh
 .else
@@ -249,7 +249,8 @@
 .if RANDOMIZER
 	mov		r0, #1
 .else
-	ldrb	r0, [r2, SamusUpgrades_SecurityLevel]
+	ldr		r1, =SamusUpgrades
+	ldrb	r0, [r1, SamusUpgrades_SecurityLevel]
 	lsl		r0, 1Fh - SecurityLevel_Lv2
 	lsr		r0, 1Fh
 .endif
@@ -306,7 +307,7 @@
 	; downloaded power bombs
 	; spritesets: S5-08, S5-09, S5-18
 	; room states: S5-15 => S5-16, S5-27 => S5-28
-	ldrb	r0, [r2, SamusUpgrades_ExplosiveUpgrades]
+	ldrb	r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
 	lsl		r0, 1Fh - ExplosiveUpgrade_PowerBombs
 	lsr		r0, 1Fh
 	bx		lr
@@ -406,8 +407,7 @@
 	; room states: S0-0D => S0-55
 .if RANDOMIZER
 	; TODO: check for go mode
-	ldr		r1, =PermanentUpgrades
-	ldrb	r0, [r1, PermanentUpgrades_InfantMetroids]
+	ldrb	r0, [r2, PermanentUpgrades_InfantMetroids]
 	ldr		r1, =RequiredMetroidCount
 	ldrb	r1, [r1]
 	cmp		r0, r1
