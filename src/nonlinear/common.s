@@ -50,9 +50,14 @@
 	strb	r0, [r1, PermanentUpgrades_InfantMetroids]
 	ldr		r1, =RequiredMetroidCount
 	ldrb	r1, [r1]
+	sub		r1, #1
 	cmp		r0, r1
-	bge		@@lastMetroid
+	bgt		@@lastMetroid
+	beq		@@secondLastMetroid
 	mov		r0, #Message_InfantMetroid
+	b		@@setMessage
+@@secondLastMetroid:
+	mov		r0, #Message_SecondLastInfantMetroid
 	b		@@setMessage
 @@lastMetroid:
 	; the last metroid is in captivity. the galaxy is at peace.

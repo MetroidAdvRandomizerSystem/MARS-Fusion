@@ -1,5 +1,92 @@
 ; Moves or removes all vanilla messages to make space for custom messages
 
+.org 08079654h
+.area 0ECh
+.func RenderMessage
+	; TODO: support required metroid counts greater than 10
+	push	{ r4-r7, lr }
+	sub		sp, #04h
+	mov		r6, r1
+	cmp		r0, #1
+	bgt		@@check_multiline
+	ldr		r7, =02000000h
+	b		@@render_message
+@@check_multiline:
+	cmp		r0, #2
+	bne		@@return
+	ldr		r7, =02000800h
+	ldr		r1, [r6]
+	mov		r2, #0FEh
+	lsl		r2, #08h
+@@skip_to_newline_loop:
+	ldrh	r0, [r1]
+	add		r1, #2
+	cmp		r0, r2
+	bne		@@skip_to_newline_loop
+	str		r1, [r6]
+@@render_message:
+	mov		r5, #0
+@@render_message_loop:
+	ldr		r0, [r6]
+	ldrh	r4, [r0]
+	mov		r0, #0FFh
+	lsl		r0, #08h
+	cmp		r0, r4
+	beq		@@return
+	mov		r0, #0FEh
+	lsl		r0, #08h
+	cmp		r0, r4
+	beq		@@return
+	lsr		r0, r4, #08h
+	cmp		r0, #80h
+	bne		@@check_group83
+	lsl		r0, r4, #18h
+	lsr		r0, #18h
+	add		r5, r0
+	b		@@render_message_loop_inc
+@@check_group83:
+	cmp		r0, #83h
+	bne		@@check_groupFA
+	lsl		r5, r4, #18h
+	lsr		r5, #18h
+	b		@@render_message_loop_inc
+@@check_groupFA:
+	cmp		r0, #0FAh
+	bne		@@get_char_width
+	ldr		r0, =PermanentUpgrades
+	ldrb	r1, [r0, PermanentUpgrades_InfantMetroids]
+	ldr		r0, =RequiredMetroidCount
+	ldrb	r0, [r0]
+	sub		r0, r1
+	add		r0, #50h
+	mov		r4, r0
+@@get_char_width:
+	mov		r0, r4
+	bl		GetCharWidth
+	mov		r2, r0
+	mov		r1, r7
+	asr		r0, r5, #3
+	lsl		r0, #5
+	add		r1, r0
+	mov		r0, #0
+	str		r0, [sp]
+	mov		r0, r4
+	lsl		r3, r5, #20h - 3
+	lsr		r3, #20h - 3
+	add		r5, r2
+	bl		RenderChar
+@@render_message_loop_inc:
+	ldr		r0, [r6]
+	add		r0, #2
+	str		r0, [r6]
+	b		@@render_message_loop
+@@return:
+	add		sp, #04h
+	pop		{ r4-r7, pc }
+	.pool
+.endfunc
+.endarea
+
 .org 0802A932h
 .area 0Ch, 0
 	; force check if message box sprite graphics are loaded
@@ -160,6 +247,7 @@
 	.dw		086B5170h	; plasma beam
 	.dw		086B51E6h	; ice beam
 	.dw		@EnglishMessage_InfantMetroid
+	.dw		@EnglishMessage_SecondLastInfantMetroid
 	.dw		@EnglishMessage_LastInfantMetroid
 	.dw		086B5984h	; is your objective clear?
 	.dw		086B59CCh	; confirm mission objective?
@@ -211,7 +299,15 @@
 .autoregion
 	.align 2
 @EnglishMessage_InfantMetroid:
-	.string 24, "[INDENT]Found an infant metroid.\n"
+	.stringn 24, "[INDENT]Found an infant metroid.\n"
+	.string  62, "[INDENT][METROIDS] more remain."
+.endautoregion
+
+.autoregion
+	.align 2
+@EnglishMessage_SecondLastInfantMetroid:
+	.stringn 24, "[INDENT]Found an infant metroid.\n"
+	.string  59, "[INDENT][METROIDS] more remains."
 .endautoregion
 
 .autoregion

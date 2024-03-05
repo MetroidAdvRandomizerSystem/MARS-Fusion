@@ -21,6 +21,9 @@ RemoveCollectedTanks equ 0806CE40h
 MinimapSetCollectedItems equ 08075884h
 MapScreenCountTanks equ 08075D28h
 
+GetCharWidth equ 08079118h
+RenderChar equ 08079438h
+
 CheckProjectiles equ 0808116Ch
 SpawnProjectile equ 080811BCh
 SpawnSecondaryProjectile equ 0808125Ch
