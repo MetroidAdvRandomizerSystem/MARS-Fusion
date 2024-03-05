@@ -1,16 +1,20 @@
 ; Reworks event 0 as a dummy event indicating no particular event is active.
 
+; TODO: add events for go mode and after defeating sa-x
+
 .org 086CE8B0h
-.area 402h
+.region 0BEA0h
 @DefaultDialogue:
 	.dh		0B003h
-	.stringn "Locate and acquire [COLOR=3]Missiles[/COLOR],\n"
-	.stringn "[COLOR=3]Charge Beam[/COLOR], and [COLOR=3]Plasma Beam[/COLOR],[NEXT]"
-	.stringn "and release [COLOR=1]Level 4 security\n"
-	.stringn "locks[/COLOR].[NEXT]"
-	.stringn "Then go to the [COLOR=2]Operations\n"
-	.stringn "Room[/COLOR] and modify the station's[NEXT]"
-	.stringn "orbit to collide with [COLOR=2]SR388[/COLOR].[NEXT]"
+	.stringn "The [COLOR=3]SA-X[/COLOR] has discovered and\n"
+	.stringn "destroyed a top secret[NEXT]"
+	.stringn "[COLOR=3]Metroid[/COLOR] breeding facility.[NEXT]"
+	.stringn "It released several infant\n"
+	.stringn "Metroids into the station.[NEXT]"
+	.stringn "Find and capture them, and use\n"
+	.stringn "them to lure out the SA-X.[NEXT]"
+	.stringn "Then initiate the station's\n"
+	.stringn "self-destruct sequence.[NEXT]"
 	.stringn "Uplink at [COLOR=2]Navigation Rooms[/COLOR]\n"
 	.stringn "along the way.[NEXT]"
 	.stringn "I can scan the station for\n"
@@ -19,9 +23,8 @@
 @DefaultConfirmDialogue:
 	.string  "Get going."
 @DefaultObjective:
-	.stringn "Find Charge Beam, Plasma Beam,\n"
-	.string  "Missiles, and Level 4 security."
-.endarea
+	.string  "Find the infant Metroids."
+.endregion
 
 .org 0879D50Ch
 	.dw		@DefaultDialogue
