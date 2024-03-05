@@ -403,6 +403,7 @@ LevelMeta_Spriteset2Id equ 34h
 LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
 LevelMeta_Music equ 3Ah
+LevelMeta_Size equ 3Ch
 .sym off
 
 MessagesByLanguage equ 0879CDF4h
