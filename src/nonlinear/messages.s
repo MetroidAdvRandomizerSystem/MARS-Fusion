@@ -3,7 +3,6 @@
 .org 08079654h
 .area 0ECh
 .func RenderMessage
-	; TODO: support required metroid counts greater than 10
 	push	{ r4-r7, lr }
 	sub		sp, #04h
 	mov		r6, r1
@@ -54,15 +53,37 @@
 	cmp		r0, #0FAh
 	bne		@@get_char_width
 	ldr		r0, =PermanentUpgrades
-	ldrb	r1, [r0, PermanentUpgrades_InfantMetroids]
-	ldr		r0, =RequiredMetroidCount
-	ldrb	r0, [r0]
-	sub		r0, r1
-	add		r0, #50h
-	mov		r4, r0
+	ldrb	r0, [r0, PermanentUpgrades_InfantMetroids]
+	ldr		r1, =RequiredMetroidCount
+	ldrb	r2, [r1]
+	sub		r2, r0
+@@metroid_count_tens:
+	mov		r0, #(1 << 11) / 10 + 1
+	mul		r0, r2
+	lsr		r1, r0, #11
+	lsl		r0, r4, #18h
+	lsr		r0, #18h
+	cmp		r0, #00
+	beq		@@metroid_count_ones
+	cmp		r1, #0
+	beq		@@render_message_loop_inc
+	add		r1, #50h
+	mov		r4, r1
+	mov		r0, r4
+	bl		GetCharWidth
+	lsr		r1, r0, #1
+	sub		r5, r1
+	b		@@render_char
+@@metroid_count_ones:
+	mov		r0, #10
+	mul		r1, r0
+	sub		r1, r2, r1
+	add		r1, #50h
+	mov		r4, r1
 @@get_char_width:
 	mov		r0, r4
 	bl		GetCharWidth
+@@render_char:
 	mov		r2, r0
 	mov		r1, r7
 	asr		r0, r5, #3
