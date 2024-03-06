@@ -26,21 +26,21 @@ Area_Debug1 equ 7
 Area_Debug2 equ 8
 Area_Debug3 equ 9
 
-MusicType_Transient equ 0		; only lasts one room
-MusicType_Briefing equ 1		; adam sector (de)briefings?
-MusicType_MainDeck equ 2		; first visit to Main Deck
-MusicType_SRX1 equ 3			; first visit to SRX
-MusicType_TRO1 equ 4			; first visit to TRO
-MusicType_AQA1 equ 5			; first visit to AQA
-MusicType_BossAmbience equ 6	; pre and post boss fight ambience
-MusicType_BossMusic equ 7		; boss fight music
-MusicType_Chase equ 8			; SA-X chase music??
-MusicType_Misc equ 10			; used all over the place, needs research
-MuicType_Elevators equ 11		; used frequently, needs research
-MusicType_GameIntro equ 13		; story intro sequence
-MusicType_TitleIntro equ 15		; teaser intro
-MusicType_TitleScreen equ 16	; self-explanatory
-MusicType_TitleDemo equ 17		; title screen demonstration
+MusicType_Transient equ 0       ; only lasts one room
+MusicType_Briefing equ 1        ; adam sector (de)briefings?
+MusicType_MainDeck equ 2        ; first visit to Main Deck
+MusicType_SRX1 equ 3            ; first visit to SRX
+MusicType_TRO1 equ 4            ; first visit to TRO
+MusicType_AQA1 equ 5            ; first visit to AQA
+MusicType_BossAmbience equ 6    ; pre and post boss fight ambience
+MusicType_BossMusic equ 7       ; boss fight music
+MusicType_Chase equ 8           ; SA-X chase music??
+MusicType_Misc equ 10           ; used all over the place, needs research
+MuicType_Elevators equ 11       ; used frequently, needs research
+MusicType_GameIntro equ 13      ; story intro sequence
+MusicType_TitleIntro equ 15     ; teaser intro
+MusicType_TitleScreen equ 16    ; self-explanatory
+MusicType_TitleDemo equ 17      ; title screen demonstration
 
 ; messages rearranged for nonlinear patches
 Message_SecurityLevel1 equ 00h
@@ -106,11 +106,11 @@ StandingFlag_Enemy equ 01h
 StandingFlag_Midair equ 02h
 StandingFlag_NoControl equ 03h
 
-SecurityLevel_Lv0 equ 0	; Gray doors
-SecurityLevel_Lv1 equ 1	; Blue doors
-SecurityLevel_Lv2 equ 2	; Green doors
-SecurityLevel_Lv3 equ 3	; Yellow doors
-SecurityLevel_Lv4 equ 4	; Red doors
+SecurityLevel_Lv0 equ 0 ; Gray doors
+SecurityLevel_Lv1 equ 1 ; Blue doors
+SecurityLevel_Lv2 equ 2 ; Green doors
+SecurityLevel_Lv3 equ 3 ; Yellow doors
+SecurityLevel_Lv4 equ 4 ; Red doors
 
 BeamUpgrade_ChargeBeam equ 0
 BeamUpgrade_WideBeam equ 1
