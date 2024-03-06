@@ -474,6 +474,38 @@
     .pool
 .endarea
 
+.autoregion
+    .align 2
+.func @InitCursorPosition
+    ldr     r2, =UpgradeLookup
+    mov     r1, #0
+@@find_first_upgrade_loop:
+    ldrb    r0, [r2, r1]
+    cmp     r0, #Upgrade_None
+    bne     @@set_cursor_pos
+    add     r1, #1
+    cmp     r1, #24
+    bge     @@return
+    b       @@find_first_upgrade_loop
+@@set_cursor_pos:
+    ldr     r2, =MenuSprites
+    lsr     r0, r1, #1
+    add     r0, #6
+    lsl     r0, #3
+    strh    r0, [r2, MenuSprite_YPos]
+    lsl     r1, #1Fh
+    lsr     r1, #1Fh
+    lsl     r0, r1, #3
+    add     r0, r1
+    lsl     r0, #4
+    add     r0, #08h
+    strh    r0, [r2, MenuSprite_XPos]
+@@return:
+    bx      lr
+    .pool
+.endfunc
+.endautoregion
+
 .org 0807E64Ch
 .area 2Ch
     ; init cursor
@@ -488,11 +520,7 @@
     mov     r0, #0
     mov     r1, #MenuSpriteGfx_CursorRight
     bl      0807486Ch
-    ldr     r1, =MenuSprites
-    mov     r0, #08h
-    strh    r0, [r1, MenuSprite_XPos]
-    mov     r0, #30h
-    strh    r0, [r1, MenuSprite_YPos]
+    bl      @InitCursorPosition
 @@return:
     pop     { pc }
     .pool
