@@ -604,6 +604,8 @@
 	.dh		2Ch		; main deck quarantine bay
 .org 083C2C4Ch + 48h * LevelMeta_Size + LevelMeta_Music
 	.dh		2Ch		; main deck western hub cache
+.org 083C2C4Ch + 49h * LevelMeta_Size + LevelMeta_Music
+	.dh		2Ch		; main deck main elevator
 .org 083C2C4Ch + 4Bh * LevelMeta_Size + LevelMeta_Music
 	.dh		2Ch		; main deck elevator to habitation deck
 .org 083C2C4Ch + 4Ch * LevelMeta_Size + LevelMeta_Music
