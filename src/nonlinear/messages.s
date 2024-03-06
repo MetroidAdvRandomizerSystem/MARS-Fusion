@@ -307,7 +307,7 @@
 	.align 2
 @EnglishMessage_SecondLastInfantMetroid:
 	.stringn 24, "[INDENT]Found an infant metroid.\n"
-	.string  59, "[INDENT][METROIDS] more remains."
+	.string  59, "[INDENT]1 more remains."
 .endautoregion
 
 .autoregion
