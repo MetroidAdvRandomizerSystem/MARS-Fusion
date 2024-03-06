@@ -410,6 +410,10 @@
 	bl		@SetSaxDefeatedFlag
 .endarea
 
+.org EnemyStats + 0C0h * EnemyStats_Size + EnemyStats_Weaknesses
+	; sa-x weaknesses
+	.db		(1 << EnemyWeakness_ChargeBeam) | (1 << EnemyWeakness_Freezable)
+
 .org 08045474h
 .area 18h, 0
 	; make zazabi take damage from any missile or charge beam projectile type

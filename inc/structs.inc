@@ -125,6 +125,18 @@ Enemy_Properties equ 34h
 Enemy_FreezePaletteOffset equ 35h
 .sym on
 
+EnemyStats equ 082E4D4Ch
+.sym off
+EnemyStats_Health equ 00h
+EnemyStats_Damage equ 02h
+EnemyStats_SuitDamageReduction equ 04h
+EnemyStats_Weaknesses equ 06h
+EnemyStats_YellowXWeight equ 08h
+EnemyStats_GreenXWeight equ 0Ah
+EnemyStats_RedXWeight equ 0Ch
+EnemyStats_Size equ 0Eh
+.sym on
+
 CurrentProjectile equ 03000B60h
 ProjectileList equ 03000960h
 .sym off
