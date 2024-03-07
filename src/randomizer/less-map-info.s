@@ -7,8 +7,11 @@
 .endregion
 
 .org 08075F40h
-.region 276h
+.area 10h, 0
     b       080761B4h
+.endarea
+    .skip 18h
+.region 24Ch, 0
 .endregion
 
 .org 08077FA0h
