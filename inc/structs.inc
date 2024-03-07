@@ -43,6 +43,7 @@ SubGameMode2 equ 03000BE2h
 
 CurrentClipdataAction equ 03000053h
 
+HeldInput equ 030011E8h
 ToggleInput equ 030011ECh
 
 LevelData equ 03000084h
@@ -170,10 +171,12 @@ SamusState_Pose equ 01h
 SamusState_ForcedMovement equ 03h
 SamusState_ArmCannonDirection equ 07h
 SamusState_SecondaryWeaponSelect equ 08h
+SamusState_ProjectileType equ 09h
 SamusState_ProjectileCooldown equ 0Ah
 SamusState_SoloWaveDirection equ 0Bh    ; non-vanilla
 SamusState_ChargeCounter equ 0Ch
 SamusState_DiagonalAim equ 0Dh
+SamusState_ArmSwing equ 0Eh
 SamusState_Direction equ 12h
 SamusState_PositionX equ 16h
 SamusState_PositionY equ 18h
@@ -208,6 +211,14 @@ SamusUpgrades_LowHealthFlag equ 0Fh
 .sym on
 
 TimeStopTimer equ 03001348h
+
+ButtonAssignments equ 03001450h
+.sym off
+ButtonAssignments_SecondaryWeaponSelect equ 00h
+ButtonAssignments_DiagonalAim equ 02h
+ButtonAssignments_Select equ 04h
+ButtonAssignments_Pause equ 06h
+.sym on
 
 ; commonly used menu sprite slots:
 ; next message cursor       01h

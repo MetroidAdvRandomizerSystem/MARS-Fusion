@@ -54,6 +54,7 @@ StartingLocation equ 087FF228h
 ; Patches providing non-essential but convenient features
 .if QOL
 .notice "Applying quality of life patches..."
+.include "src/qol/aim-lock.s"
 .include "src/qol/completion-seconds.s"
 .include "src/qol/cross-sector-maps.s"
 .include "src/qol/fast-doors.s"
