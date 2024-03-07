@@ -21,8 +21,8 @@
 
 StartingItems equ 0828D2ACh
 HintTargets equ 085766ECh
-ReservedSpace equ 087FE000h
-ReservedSpace_Len equ 1000h
+ReservedSpace equ 087F0000h
+ReservedSpace_Len equ 0F000h
 MinorLocations equ 087FF000h
 MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
