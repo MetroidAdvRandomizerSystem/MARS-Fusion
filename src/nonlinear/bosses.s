@@ -121,6 +121,19 @@
     .pool
 .endarea
 
+.org 080635DAh
+.area 08h, 0
+    ; water flashes when electrified in x-box arena
+    ldr     r0, =MiscProgress
+    ldr     r0, [r0, MiscProgress_MajorLocations]
+    lsr     r0, #MajorLocation_XBox + 1
+    bcc     0806367Eh
+.endarea
+    .skip 0Ah
+.area 04h
+    .pool
+.endarea
+
 .org 08060C90h
 .area 18h
     ; check if NOC data room is not destroyed
