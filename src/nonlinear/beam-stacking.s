@@ -105,8 +105,17 @@
     lsr     r2, 1Fh - BeamUpgrade_PlasmaBeam
     ldr     r0, =@BeamGfxIndex
     ldrb    r1, [r0, r2]
+    ; override bbox size if omega metroid is being fought
+    ldr     r0, =CurrEvent
+    ldrb    r0, [r0]
+    cmp     r0, #69h
+    blt     @@get_bbox_size
+    mov     r0, #0Ch
+    b       @@set_bbox_size
+@@get_bbox_size:
     ldr     r0, =@ChargedBeamBboxOffsets
     ldrb    r0, [r0, r1]
+@@set_bbox_size:
     strh    r0, [r3, Projectile_BboxBottom]
     strh    r0, [r3, Projectile_BboxRight]
     neg     r0, r0
@@ -176,8 +185,9 @@
 @@maxedStage:
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
-    lsl     r0, 1Fh - BeamUpgrade_PlasmaBeam
-    lsr     r0, #1Dh
+    lsl     r0, #1Fh - BeamUpgrade_PlasmaBeam
+    lsr     r0, #1Fh
+    lsl     r0, #2
     add     r0, #18h
     bl      Projectile_Move
     ldr     r1, =SamusUpgrades
@@ -238,8 +248,17 @@
     lsr     r2, 1Fh - BeamUpgrade_PlasmaBeam
     ldr     r0, =@BeamGfxIndex
     ldrb    r1, [r0, r2]
+    ; override bbox size if omega metroid is being fought
+    ldr     r0, =CurrEvent
+    ldrb    r0, [r0]
+    cmp     r0, #69h
+    blt     @@get_bbox_size
+    mov     r0, #0Ch
+    b       @@set_bbox_size
+@@get_bbox_size:
     ldr     r0, =@BeamBboxOffsets
     ldrb    r0, [r0, r1]
+@@set_bbox_size:
     strh    r0, [r3, Projectile_BboxBottom]
     strh    r0, [r3, Projectile_BboxRight]
     neg     r0, r0
@@ -309,8 +328,9 @@
 @@maxedStage:
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
-    lsl     r0, 1Fh - BeamUpgrade_PlasmaBeam
-    lsr     r0, #1Dh
+    lsl     r0, #1Fh - BeamUpgrade_PlasmaBeam
+    lsr     r0, #1Fh
+    lsl     r0, #2
     add     r0, #18h
     bl      Projectile_Move
     ldr     r1, =SamusUpgrades
@@ -372,8 +392,17 @@
     lsr     r2, 1Fh - BeamUpgrade_PlasmaBeam
     ldr     r0, =@BeamGfxIndex
     ldrb    r1, [r0, r2]
+    ; override bbox size if omega metroid is being fought
+    ldr     r0, =CurrEvent
+    ldrb    r0, [r0]
+    cmp     r0, #69h
+    blt     @@get_bbox_size
+    mov     r0, #0Ch
+    b       @@set_bbox_size
+@@get_bbox_size:
     ldr     r0, =@ChargedBeamBboxOffsets
     ldrb    r0, [r0, r1]
+@@set_bbox_size:
     strh    r0, [r3, Projectile_BboxBottom]
     strh    r0, [r3, Projectile_BboxRight]
     neg     r0, r0
@@ -423,14 +452,15 @@
 @@stageOver1:
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
-    lsl     r0, 1Fh - BeamUpgrade_PlasmaBeam
-    lsr     r0, #1Dh
+    lsl     r0, #1Fh - BeamUpgrade_PlasmaBeam
+    lsr     r0, #1Fh
+    lsl     r0, #2
     add     r0, #18h
     bl      Projectile_Move
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
-    lsl     r0, 1Fh - BeamUpgrade_IceBeam
-    lsr     r0, 1Fh - BeamUpgrade_PlasmaBeam
+    lsl     r0, #1Fh - BeamUpgrade_IceBeam
+    lsr     r0, #1Fh - BeamUpgrade_PlasmaBeam
     ldr     r1, =@BeamGfxIndex
     ldrb    r0, [r1, r0]
     add     r0, #11h
@@ -455,11 +485,11 @@
 .endregion
 
 .org WaveBeam_MoveParts
-.area 3Ch, 0
+.area 48h, 0
     push    { r4-r6, lr }
     ldr     r5, =CurrentProjectile
     ldrb    r0, [r5, Projectile_Timer]
-    mov     r4, #0Fh
+    mov     r4, #07h
     and     r4, r0
     ldr     r1, =0858B3CCh
     lsl     r0, r4, #1
@@ -470,38 +500,53 @@
     bcs     @@wideWave
     lsr     r6, #1
 @@wideWave:
-    mov     r0, 0CDh
-    mul     r0, r6
-    lsr     r0, #9
-    add     r3, r0, r6
     ldrb    r2, [r5, Projectile_Part]
+    cmp     r2, #0
+    beq     @@positive_offset
+    neg     r6, r6
+@@positive_offset:
+    lsl     r0, r6, #3
+    sub     r0, r6
+    mov     r1, #(1 << 10) / 5 + 1
+    mul     r0, r1
+    asr     r0, #10
+    lsr     r1, r0, #1Fh
+    add     r3, r0, r1
     b       0808257Ah
     .pool
 .endarea
 
 .org 08012B54h
-.area 2Ch
+.area 4Ch
     ; wave beam core-x beam movement
     push    { r4-r6, lr }
     ldr     r5, =CurrentEnemy
     mov     r0, #Enemy_Timer0
     ldrb    r0, [r5, r0]
-    mov     r4, #0Fh
+    mov     r4, #07h
     and     r4, r0
     ldr     r1, =0858B3CCh
     lsl     r0, r4, #1
     ldrsh   r6, [r1, r0]
-    mov     r0, #0CDh
-    mul     r0, r6
-    lsr     r0, #9
-    add     r3, r0, r6
     ldrb    r2, [r5, Enemy_RoomSlot]
+    cmp     r2, #0
+    beq     @@positive_offset
+    neg     r6, r6
+@@positive_offset:
+    lsl     r0, r6, #3
+    sub     r0, r6
+    mov     r1, #5
+    mov     r1, #(1 << 10) / 5 + 1
+    mul     r0, r1
+    asr     r0, #10
+    lsr     r1, r0, #1Fh
+    add     r3, r0, r1
     b       08012BA6h
     .pool
 .endarea
 
 .org 0858B3CCh
-    .dh     24, 16, 8, 4, -4, -8, -16, -24, -24, -16, -8, -4, 4, 8, 16, 24
+    .dh     24, 16, 8, 4, -4, -8, -16, -24
 
 .org 080864D4h
 .region 178h, 0
@@ -535,8 +580,17 @@
     lsr     r2, 1Fh - BeamUpgrade_PlasmaBeam
     ldr     r0, =@BeamGfxIndex
     ldrb    r1, [r0, r2]
+    ; override bbox size if omega metroid is being fought
+    ldr     r0, =CurrEvent
+    ldrb    r0, [r0]
+    cmp     r0, #69h
+    blt     @@get_bbox_size
+    mov     r0, #0Ch
+    b       @@set_bbox_size
+@@get_bbox_size:
     ldr     r0, =@BeamBboxOffsets
     ldrb    r0, [r0, r1]
+@@set_bbox_size:
     strh    r0, [r3, Projectile_BboxBottom]
     strh    r0, [r3, Projectile_BboxRight]
     neg     r0, r0
@@ -586,8 +640,9 @@
 @@stageOver1:
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
-    lsl     r0, 1Fh - BeamUpgrade_PlasmaBeam
-    lsr     r0, #1Dh
+    lsl     r0, #1Fh - BeamUpgrade_PlasmaBeam
+    lsr     r0, #1Fh
+    lsl     r0, #2
     add     r0, #18h
     bl      Projectile_Move
     ldr     r1, =SamusUpgrades
@@ -1044,9 +1099,11 @@
     lsl     r2, r0
     lsr     r0, r3, #BeamUpgrade_PlasmaBeam + 1
     bcc     @@return
-    mov     r0, #(3 << 8) / 5
+    lsl     r0, r2, #1
+    add     r2, r0
+    mov     r0, #(1 << 10) / 5 + 1
     mul     r2, r0
-    lsr     r2, #8
+    lsr     r2, #10
 @@return:
     mov     r0, r2
     bx      lr
@@ -1495,10 +1552,10 @@
 
 .autoregion
 @BeamBboxOffsets:
-    .db     10h, 0Ch, 0Ch, 14h
+    .db     10h, 0Ch, 14h, 10h
 .endautoregion
 
 .autoregion
 @ChargedBeamBboxOffsets:
-    .db     14h, 14h, 0Ch, 14h
+    .db     14h, 14h, 14h, 14h
 .endautoregion

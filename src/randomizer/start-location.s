@@ -128,7 +128,7 @@
     sub     r0, #2
     mov     r1, #(1 << 11) / 10 + 1
     mul     r0, r1
-    lsr     r5, r0, #13
+    lsr     r5, r0, #11
     ldr     r2, =0879B8BCh
     ldrb    r0, [r3, StartingLocation_Area]
     lsl     r0, #2
