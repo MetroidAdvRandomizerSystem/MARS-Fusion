@@ -116,6 +116,7 @@ Enemy_DrawOrder equ 22h
 Enemy_Pose equ 24h
 Enemy_SamusCollision equ 25h
 Enemy_IgnoreSamusCollisionTimer equ 26h
+Enemy_OnHitTimer equ 2Ch
 Enemy_Timer0 equ 2Eh
 Enemy_Timer1 equ 2Fh
 Enemy_VelocityX equ 30h

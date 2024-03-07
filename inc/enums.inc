@@ -142,6 +142,9 @@ EnvironmentalHazard_Heat equ 4
 EnvironmentalHazard_Subzero equ 5
 EnvironmentalHazard_Cold equ 6
 
+EnemyStatus_Exists equ 0
+EnemyStatus_FacingRight equ 9
+
 EnemyId_MessageBox equ 21h
 EnemyId_Arachnus_CoreXNucleus equ 3Fh
 EnemyId_Zazabi_CoreXNucleus equ 44h

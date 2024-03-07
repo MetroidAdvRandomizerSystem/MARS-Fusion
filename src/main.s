@@ -60,6 +60,7 @@ StartingLocation equ 087FF228h
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
 .include "src/qol/map-info.s"
+.include "src/qol/sax-softlock.s"
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
 .include "src/qol/skip-intro.s"
