@@ -665,3 +665,6 @@
     .dh     35h     ; sector 1 animorphs
 .org 083C40B0h + 34h * LevelMeta_Size + LevelMeta_Music
     .dh     35h     ; sector 1 animorphs cache
+
+.org 083C4D58h + 36h * LevelMeta_Size + LevelMeta_Music
+    .dh     06h     ; sector 2 crumble city
