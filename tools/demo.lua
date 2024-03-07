@@ -22,6 +22,8 @@ local addr = {
     ["GameMode"]          = 0x03000BDE,
     ["SubGameMode"]       = 0x03000BE0,
     ["CurrInput"]         = 0x030011E8,
+    ["RNG_8"]             = 0x03000BE5,
+    ["RNG_16"]            = 0x03000002,
 }
 
 
@@ -53,6 +55,13 @@ function Init()
     PrevInput = 0
     PrevFrames = 0
     SubGameMode = memory.read_u16_le(addr["SubGameMode"])
+end
+
+
+---This this is used to ensure consistent RNG between recording and playback of demos
+function ResetRNG()
+    memory.write_u8(addr["RNG_8"], 0)
+    memory.write_u16_le(addr["RNG_16"], 0)
 end
 
 
@@ -143,19 +152,21 @@ end
 gui.clearGraphics()
 
 
-::WaitForUnpause::
-GameMode = memory.read_u8(addr["GameMode"])
-if GameMode ~= 1 then
-    gui.pixelText(
-        0, 70,
-        "          Unpause the game to          \n"..
-        "         begin recording a demo",
-        "white",
-        "red",
-        "fceux"
-    )
-    emu.frameadvance()
-    goto WaitForUnpause
+while true do
+    GameMode = memory.read_u8(addr["GameMode"])
+    if GameMode ~= 1 then
+        gui.pixelText(
+            0, 70,
+            "          Unpause the game to          \n"..
+            "         begin recording a demo",
+            "white",
+            "red",
+            "fceux"
+        )
+        emu.frameadvance()
+    else
+        break
+    end
 end
 gui.clearGraphics()
 
@@ -170,6 +181,21 @@ gui.pixelText(
     "red"
 )
 
+--[[
+    This behavior mimics transitioning from title screen to demo playback.
+    Demo Playback resets RNG to 0 before playing each demo. Here we reset RNG
+    to 0 so that if a new room loads, RNG should be consistent during playback
+    of the new recording.
+]]
+while true do
+    SubGameMode = memory.read_u16_le(addr["SubGameMode"])
+    if SubGameMode ~= 1 then
+        emu.frameadvance()
+        ResetRNG()
+    else
+        break
+    end
+end
 
 DemoFinished = false
 while #InputQueue < 254 do
