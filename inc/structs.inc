@@ -125,6 +125,18 @@ Enemy_Properties equ 34h
 Enemy_FreezePaletteOffset equ 35h
 .sym on
 
+EnemyStats equ 082E4D4Ch
+.sym off
+EnemyStats_Health equ 00h
+EnemyStats_Damage equ 02h
+EnemyStats_SuitDamageReduction equ 04h
+EnemyStats_Weaknesses equ 06h
+EnemyStats_YellowXWeight equ 08h
+EnemyStats_GreenXWeight equ 0Ah
+EnemyStats_RedXWeight equ 0Ch
+EnemyStats_Size equ 0Eh
+.sym on
+
 CurrentProjectile equ 03000B60h
 ProjectileList equ 03000960h
 .sym off
@@ -169,7 +181,7 @@ SamusState_ForcedMovement equ 03h
 SamusState_ArmCannonDirection equ 07h
 SamusState_SecondaryWeaponSelect equ 08h
 SamusState_ProjectileCooldown equ 0Ah
-SamusState_SoloWaveDirection equ 0Bh	; non-vanilla
+SamusState_SoloWaveDirection equ 0Bh    ; non-vanilla
 SamusState_ChargeCounter equ 0Ch
 SamusState_DiagonalAim equ 0Dh
 SamusState_Direction equ 12h
@@ -209,32 +221,32 @@ SamusUpgrades_LowHealthFlag equ 0Fh
 TimeStopTimer equ 03001348h
 
 ; commonly used menu sprite slots:
-; next message cursor		01h
-; adam activity light		03h
-; textbox frame				04h
-; textbox background		05h
-; sector target marker		0Ah
-; station render			0Ch
-; objective button			0Dh
-; status button				10h
-; sleep button				11h
-; sector sign				12h
-; game timer				13h
-; e-tanks counter			14h
-; missile tanks counter		15h
-; pb tanks counter			16h
-; e-tanks complete			17h
-; missile tanks complete	18h
-; pb tanks complete			19h
-; lv1 locks					1Ah
-; lv2 locks					1Bh
-; lv3 locks					1Ch
-; lv4 locks					1Dh
-; nav target				1Fh
-; current room marker		20h
-; navigation console		25h
-; navigation hatch left		26h
-; navigation hatch right	27h
+; next message cursor       01h
+; adam activity light       03h
+; textbox frame             04h
+; textbox background        05h
+; sector target marker      0Ah
+; station render            0Ch
+; objective button          0Dh
+; status button             10h
+; sleep button              11h
+; sector sign               12h
+; game timer                13h
+; e-tanks counter           14h
+; missile tanks counter     15h
+; pb tanks counter          16h
+; e-tanks complete          17h
+; missile tanks complete    18h
+; pb tanks complete         19h
+; lv1 locks                 1Ah
+; lv2 locks                 1Bh
+; lv3 locks                 1Ch
+; lv4 locks                 1Dh
+; nav target                1Fh
+; current room marker       20h
+; navigation console        25h
+; navigation hatch left     26h
+; navigation hatch right    27h
 
 MenuSprites equ 030014B0h
 .sym off
@@ -340,7 +352,7 @@ SecurityUnlockEvent_Area equ 01h
 SecurityUnlockEvent_PrevEvent equ 02h
 SecurityUnlockEvent_NewEvent equ 03h
 SecurityUnlockEvent_SubEvent equ 04h
-SecurityUnlockEvent_Message equ 05h	; non-vanilla
+SecurityUnlockEvent_Message equ 05h ; non-vanilla
 SecurityUnlockEvent_Size equ 8
 .sym on
 
@@ -414,6 +426,7 @@ LevelMeta_Spriteset2Id equ 34h
 LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
 LevelMeta_Music equ 3Ah
+LevelMeta_Size equ 3Ch
 .sym off
 
 MessagesByLanguage equ 0879CDF4h

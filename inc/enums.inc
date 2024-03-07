@@ -26,21 +26,21 @@ Area_Debug1 equ 7
 Area_Debug2 equ 8
 Area_Debug3 equ 9
 
-MusicType_Transient equ 0		; only lasts one room
-MusicType_Briefing equ 1		; adam sector (de)briefings?
-MusicType_MainDeck equ 2		; first visit to Main Deck
-MusicType_SRX1 equ 3			; first visit to SRX
-MusicType_TRO1 equ 4			; first visit to TRO
-MusicType_AQA1 equ 5			; first visit to AQA
-MusicType_BossAmbience equ 6	; pre and post boss fight ambience
-MusicType_BossMusic equ 7		; boss fight music
-MusicType_Chase equ 8			; SA-X chase music??
-MusicType_Misc equ 10			; used all over the place, needs research
-MuicType_Elevators equ 11		; used frequently, needs research
-MusicType_GameIntro equ 13		; story intro sequence
-MusicType_TitleIntro equ 15		; teaser intro
-MusicType_TitleScreen equ 16	; self-explanatory
-MusicType_TitleDemo equ 17		; title screen demonstration
+MusicType_Transient equ 0       ; only lasts one room
+MusicType_Briefing equ 1        ; adam sector (de)briefings?
+MusicType_MainDeck equ 2        ; first visit to Main Deck
+MusicType_SRX1 equ 3            ; first visit to SRX
+MusicType_TRO1 equ 4            ; first visit to TRO
+MusicType_AQA1 equ 5            ; first visit to AQA
+MusicType_BossAmbience equ 6    ; pre and post boss fight ambience
+MusicType_BossMusic equ 7       ; boss fight music
+MusicType_Chase equ 8           ; SA-X chase music??
+MusicType_Misc equ 10           ; used all over the place, needs research
+MuicType_Elevators equ 11       ; used frequently, needs research
+MusicType_GameIntro equ 13      ; story intro sequence
+MusicType_TitleIntro equ 15     ; teaser intro
+MusicType_TitleScreen equ 16    ; self-explanatory
+MusicType_TitleDemo equ 17      ; title screen demonstration
 
 Sfx_Missile_Fired equ 0CEh
 Sfx_SuperMissile_Fired equ 0D1h
@@ -72,35 +72,36 @@ Message_WaveBeamUpgrade equ 13h
 Message_PlasmaBeamUpgrade equ 14h
 Message_IceBeamUpgrade equ 15h
 Message_InfantMetroid equ 16h
-Message_LastInfantMetroid equ 17h
-Message_ObjectiveClearPrompt equ 18h
-Message_ConfirmObjectivePrompt equ 19h
-Message_SleepModePrompt1 equ 1Ah
-Message_SleepModePrompt2 equ 1Bh
-Message_SleepModePrompt3 equ 1Ch
-Message_AtmosphericStabilizer1 equ 1Dh
-Message_AtmosphericStabilizer2 equ 1Eh
-Message_AtmosphericStabilizer3 equ 1Fh
-Message_AtmosphericStabilizer4 equ 20h
-Message_AtmosphericStabilizer5 equ 21h
-Message_WaterLowered equ 22h
-Message_BoilerCooling equ 23h
-Message_AnimalsFreed equ 24h
-Message_AuxiliaryPower equ 25h
-Message_RestrictedSectorDetachment equ 26h
-Message_EscapeSequence equ 27h
-Message_SavePrompt equ 28h
-Message_SaveComplete equ 29h
-Message_AdamUplinkPrompt equ 2Ah
-Message_ResupplyComplete equ 2Bh
-Message_EnergyRechargeComplete equ 2Ch
-Message_RechargeAllComplete equ 2Dh
-Message_EnergyTankUpgrade equ 2Eh
-Message_MissileTankUpgrade equ 2Fh
-Message_PowerBombTankUpgrade equ 30h
-Message_EnemyLocationAbnormal equ 31h
-Message_IceTrapUpgrade equ 32h
-Message_NothingUpgrade equ 33h
+Message_SecondLastInfantMetroid equ 17h
+Message_LastInfantMetroid equ 18h
+Message_ObjectiveClearPrompt equ 19h
+Message_ConfirmObjectivePrompt equ 1Ah
+Message_SleepModePrompt1 equ 1Bh
+Message_SleepModePrompt2 equ 1Ch
+Message_SleepModePrompt3 equ 1Dh
+Message_AtmosphericStabilizer1 equ 1Eh
+Message_AtmosphericStabilizer2 equ 1Fh
+Message_AtmosphericStabilizer3 equ 20h
+Message_AtmosphericStabilizer4 equ 21h
+Message_AtmosphericStabilizer5 equ 22h
+Message_WaterLowered equ 23h
+Message_BoilerCooling equ 24h
+Message_AnimalsFreed equ 25h
+Message_AuxiliaryPower equ 26h
+Message_RestrictedSectorDetachment equ 27h
+Message_EscapeSequence equ 28h
+Message_SavePrompt equ 29h
+Message_SaveComplete equ 2Ah
+Message_AdamUplinkPrompt equ 2Bh
+Message_ResupplyComplete equ 2Ch
+Message_EnergyRechargeComplete equ 2Dh
+Message_RechargeAllComplete equ 2Eh
+Message_EnergyTankUpgrade equ 2Fh
+Message_MissileTankUpgrade equ 30h
+Message_PowerBombTankUpgrade equ 31h
+Message_EnemyLocationAbnormal equ 32h
+Message_IceTrapUpgrade equ 33h
+Message_NothingUpgrade equ 34h
 
 Tank_Missiles equ 1
 Tank_Energy equ 2
@@ -111,11 +112,11 @@ StandingFlag_Enemy equ 01h
 StandingFlag_Midair equ 02h
 StandingFlag_NoControl equ 03h
 
-SecurityLevel_Lv0 equ 0	; Gray doors
-SecurityLevel_Lv1 equ 1	; Blue doors
-SecurityLevel_Lv2 equ 2	; Green doors
-SecurityLevel_Lv3 equ 3	; Yellow doors
-SecurityLevel_Lv4 equ 4	; Red doors
+SecurityLevel_Lv0 equ 0 ; Gray doors
+SecurityLevel_Lv1 equ 1 ; Blue doors
+SecurityLevel_Lv2 equ 2 ; Green doors
+SecurityLevel_Lv3 equ 3 ; Yellow doors
+SecurityLevel_Lv4 equ 4 ; Red doors
 
 BeamUpgrade_ChargeBeam equ 0
 BeamUpgrade_WideBeam equ 1
@@ -387,6 +388,7 @@ StoryFlag_BoilerCooling equ 4
 StoryFlag_AnimalsFreed equ 5
 StoryFlag_AuxiliaryPower equ 6
 StoryFlag_RestrictedSectorDetached equ 7
+StoryFlag_SaxDefeated equ 8
 
 ; alternate palette
 AltTankPal0 equ 0000h

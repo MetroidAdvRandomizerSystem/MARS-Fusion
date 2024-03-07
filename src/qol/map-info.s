@@ -2,4 +2,4 @@
 ; Normally requires a save file which has previously completed the game.
 
 .org 08077F60h
-	mov		r0, #1
+    mov     r0, #1

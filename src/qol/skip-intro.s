@@ -1,7 +1,7 @@
 ; Skips the intro cutscene, starting from the first Adam dialogue instead.
 
 .org 0808777Eh
-	mov		r0, #12
+    mov     r0, #12
 
 ; Unused functions after this patch:
 
