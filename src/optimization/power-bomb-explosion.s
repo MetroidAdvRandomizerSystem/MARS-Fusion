@@ -3,7 +3,7 @@
 
 .org 08068130h
 .area 28h
-    ; In vanilla, the game mutiplies by 0.95 using floating-point arithmetic.
+    ; In vanilla, the game multiplies by 0.95 using floating-point arithmetic.
     ; Instead, we can used fixed-point multiplication with 243/256, which
     ; equals 0.949219 for an error of 0.000781 (0.0822%)
     mov     r1, 243
