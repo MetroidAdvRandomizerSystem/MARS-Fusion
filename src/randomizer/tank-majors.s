@@ -29,6 +29,8 @@
     strb    r0, [r2, RoomTanks_Upgrade]
     ldrb    r4, [r3, MinorLocation_Sprite]
     strb    r4, [r2, RoomTanks_Sprite]
+    cmp     r4, #UpgradeSprite_SuperMissiles
+    beq     @@set_bg1
     cmp     r4, #UpgradeSprite_DiffusionMissiles
     beq     @@set_bg1
     cmp     r4, #UpgradeSprite_SecurityLevel1
@@ -104,6 +106,8 @@
     lsl     r0, #2
     add     r1, r0
     ldrb    r1, [r1, RoomTanks_Sprite]
+    cmp     r1, #UpgradeSprite_SuperMissiles
+    beq     @@set_alt_palette
     cmp     r1, #UpgradeSprite_DiffusionMissiles
     beq     @@set_alt_palette
     cmp     r1, #UpgradeSprite_SecurityLevel1

@@ -1,3 +1,9 @@
+; Changes all combinations of missile upgrades to function in an intuitive way.
+; Like beams, vanilla behavior expects all upgrades to be collected in a
+; fixed order.
+
+; TODO: easily configurable alternate missile sprites
+
 ; Type      Damage  Cooldown
 ; Normal     10      9
 ; Super     +20     +4
