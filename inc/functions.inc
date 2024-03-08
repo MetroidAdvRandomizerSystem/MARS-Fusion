@@ -45,6 +45,7 @@ Enemy_MakesDebrisWhenHit equ 08082FECh
 Enemy_CreateDebris equ 08083090h
 Enemy_CreatePlasmaDebris equ 080831C4h
 
+FixedPointMultiply equ 08000B10h
 Divide equ 080A3468h
 memcpy equ 080A4EF0h
 memset equ 080A4F50h

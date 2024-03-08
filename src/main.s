@@ -46,6 +46,7 @@ StartingLocation equ 087FF228h
 .if OPTIMIZE
 .notice "Applying optimization patches..."
 .include "src/optimization/item-check.s"
+.include "src/optimization/power-bomb-explosion.s"
 .elseif RANDOMIZER
 .include "src/optimization/item-check.s"
 .endif
