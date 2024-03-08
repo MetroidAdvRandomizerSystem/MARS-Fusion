@@ -29,6 +29,7 @@ SpawnProjectile equ 080811BCh
 SpawnSecondaryProjectile equ 0808125Ch
 LoadBeamGfx equ 08081E5Ch
 LoadMissileGfx equ 08082010h
+InitMissile equ 08084FA0h
 
 Projectile_Move equ 08082120h
 Projectile_UpdateClipdata equ 0808222Ch
@@ -37,7 +38,11 @@ Beam_MoveParts equ 08082464h
 Beam_SetTrail equ 080827E0h
 WaveBeam_MoveParts equ 0808252Ch
 WaveBeam_UpdateClipdata equ 080821ECh
+Missile_StartTumble equ 08084660h
+Missile_MoveTumbling equ 08085094h
+Missile_SetTrail equ 08082724h
 IceBeam_DamageEnemy equ 08083A4Ch
+IceMissile_DamageEnemy equ 08083788h
 
 Enemy_GetWeakness equ 08083044h
 Enemy_StartOnHitTimer equ 08083B78h

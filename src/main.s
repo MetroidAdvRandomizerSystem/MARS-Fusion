@@ -14,6 +14,7 @@
 .definelabel ABILITY_FROM_TANK, 0
 .definelabel BOMBLESS_PBS, 1
 
+.include "inc/constants.inc"
 .include "inc/enums.inc"
 .include "inc/functions.inc"
 .include "inc/macros.inc"
@@ -90,6 +91,7 @@ StartingLocation equ 087FF228h
 .include "src/nonlinear/major-completion.s"
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
+.include "src/nonlinear/missile-stacking.s"
 .include "src/nonlinear/music.s"
 .include "src/nonlinear/new-game-init.s"
 .include "src/nonlinear/null-event.s"

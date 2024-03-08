@@ -42,6 +42,12 @@ MusicType_TitleIntro equ 15     ; teaser intro
 MusicType_TitleScreen equ 16    ; self-explanatory
 MusicType_TitleDemo equ 17      ; title screen demonstration
 
+Sfx_Missile_Fired equ 0CEh
+Sfx_SuperMissile_Fired equ 0D1h
+Sfx_IceMissile_Fired equ 0D4h
+Sfx_DiffusionMissile_Fired equ 0D7h
+Sfx_ChargedDiffusionMissile_Fired equ 0DAh
+
 ; messages rearranged for nonlinear patches
 Message_SecurityLevel1 equ 00h
 Message_SecurityLevel2 equ 01h
@@ -202,6 +208,17 @@ ProjectileDir_ForwardUp equ 2
 ProjectileDir_ForwardDown equ 3
 ProjectileDir_Up equ 4
 ProjectileDir_Down equ 5
+
+Particle_Tink equ 07h
+Particle_MissileExplosion equ 08h
+Particle_SuperMissileExplosion equ 09h
+Particle_IceMissileExplosion equ 0Ah
+Particle_ChargedDiffusionMissileExplosion equ 0Ch
+Particle_MissileTrail equ 15h
+Particle_SuperMissileTrail equ 16h
+Particle_IceMissileTrail equ 17h
+Particle_DiffusionMissileTrail equ 18h
+Particle_ChargedDiffusionMissileTrail equ 19h
 
 ClipdataAction_RemoveSolid equ 1
 ClipdataAction_MakeSolid equ 2
