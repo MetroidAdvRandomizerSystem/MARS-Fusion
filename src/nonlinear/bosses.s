@@ -546,3 +546,52 @@
     b       0802DDF4h
     .pool
 .endarea
+
+; make all missile types fall during Nightmare fight
+.org Nightmare_MakeMissilesFall
+.area 058h
+    push    { r4, r5, lr }
+    mov     r3, #0
+    ldr     r4, =ProjectileList
+@@loop:
+    lsl     r0, r3, #5
+    add     r1, r0, r4
+    ldrb    r2, [r1, Projectile_Status]
+    mov     r0, 1 << ProjectileStatus_Exists
+    and     r0, r2
+    cmp     r0, #0
+    beq     @@continue
+    mov     r0, 1 << ProjectileStatus_AffectsClipdata
+    and     r0, r2
+    cmp     r0, #0
+    beq     @@continue
+    ldrb    r0, [r1, Projectile_Type]
+    sub     r0, Projectile_NormalMissile
+    cmp     r0, Projectile_ChargedDiffusionMissile - Projectile_NormalMissile
+    bhi     @@continue
+    ldrb    r2, [r1, Projectile_Part]
+    mov     r0, #3
+    and     r0, r2
+    cmp     r0, 0
+    bne     @@checkSpeed
+    add     r0, r2, #1
+    strb    r0, [r1, Projectile_Part]
+@@checkSpeed:
+    ldrb    r0, [r1, Projectile_Part]
+    mov     r2, #2Ah
+    cmp     r0, #29h
+    bhi     @@lowerMissile
+    mov     r2, r0
+@@lowerMissile:
+    ldrh    r0, [r1, Projectile_PosY]
+    add     r0, r2, r0
+    strh    r0, [r1, Projectile_PosY]
+@@continue:
+    add     r3, #1
+    cmp     r3, #0Fh
+    bls     @@loop
+    pop     { r4, r5 }
+    pop     { r0 }
+    bx      r0
+    .pool
+.endarea
