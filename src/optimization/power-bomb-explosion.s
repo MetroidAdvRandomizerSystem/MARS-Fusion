@@ -7,7 +7,7 @@
     ; Multiply by 19/20 using fixed-point reciprocal multiplication
     ldrb    r0, [r7, #2]
     lsl     r0, #3
-    ldr     r1, =#19 * (((1 << 20) - 1) / 20 + 1)
+    ldr     r1, =#19 * unsigned_reciprocal(20, 20)
     mul     r0, r1
     lsr     r0, #20
     mov     r6, r0

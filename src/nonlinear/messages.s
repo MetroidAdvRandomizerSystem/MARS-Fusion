@@ -58,7 +58,7 @@
     ldrb    r2, [r1]
     sub     r2, r0
 @@metroid_count_tens:
-    mov     r0, #(1 << 11) / 10 + 1
+    mov     r0, #unsigned_reciprocal(10, 11)
     mul     r0, r2
     lsr     r1, r0, #11
     lsl     r0, r4, #18h

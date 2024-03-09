@@ -120,13 +120,13 @@
     ldrh    r0, [r3, StartingLocation_XPos]
     lsr     r0, #6
     sub     r0, #2
-    ldr     r1, =(1 << 14) / 15 + 1
+    ldr     r1, =#unsigned_reciprocal(15, 14)
     mul     r0, r1
     lsr     r4, r0, #14
     ldrh    r0, [r3, StartingLocation_YPos]
     lsr     r0, #6
     sub     r0, #2
-    mov     r1, #(1 << 11) / 10 + 1
+    mov     r1, #unsigned_reciprocal(10, 11)
     mul     r0, r1
     lsr     r5, r0, #11
     ldr     r2, =0879B8BCh

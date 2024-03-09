@@ -47,3 +47,8 @@
 
 .expfunc pop(int), (int > 0) ? (int & 1) + pop(int >> 1) : 0
 .expfunc log2(int), (int > 1) ? 1 + log2(int >> 1) : 0
+
+; formulas for fixed-point reciprocals for division by constants
+; d = denominator, p = power of 2 of numerator
+.expfunc unsigned_reciprocal(d, p), ((1 << p) - 1) / d + 1
+.expfunc signed_reciprocal(d, p), (1 << p) / d + 1

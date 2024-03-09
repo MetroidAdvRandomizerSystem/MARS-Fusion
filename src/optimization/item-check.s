@@ -267,14 +267,14 @@
     ldrb    r0, [r3, LevelMeta_MapY - LevelMeta_MapX]
     ldrb    r1, [r4, MinorLocation_YPos]
     sub     r1, #2
-    mov     r2, #(1 << 11) / 10 + 1
+    mov     r2, #unsigned_reciprocal(10, 11)
     mul     r1, r2
     lsr     r1, #11
     add     r0, r1
     lsl     r0, #5
     ldrb    r1, [r4, MinorLocation_XPos]
     sub     r1, #2
-    mov     r2, #(1 << 11) / 15 + 1
+    mov     r2, #unsigned_reciprocal(15, 11)
     mul     r1, r2
     lsr     r1, #11
     add     r0, r1

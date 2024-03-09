@@ -507,7 +507,7 @@
 @@positive_offset:
     lsl     r0, r6, #3
     sub     r0, r6
-    mov     r1, #(1 << 10) / 5 + 1
+    mov     r1, #signed_reciprocal(5, 10)
     mul     r0, r1
     asr     r0, #10
     lsr     r1, r0, #1Fh
@@ -536,7 +536,7 @@
     lsl     r0, r6, #3
     sub     r0, r6
     mov     r1, #5
-    mov     r1, #(1 << 10) / 5 + 1
+    mov     r1, #signed_reciprocal(5, 10)
     mul     r0, r1
     asr     r0, #10
     lsr     r1, r0, #1Fh
@@ -1101,7 +1101,7 @@
     bcc     @@return
     lsl     r0, r2, #1
     add     r2, r0
-    mov     r0, #(1 << 10) / 5 + 1
+    mov     r0, #unsigned_reciprocal(5, 10)
     mul     r2, r0
     lsr     r2, #10
 @@return:
