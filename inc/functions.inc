@@ -6,6 +6,7 @@ Music_Play equ 08003538h
 Music_FadeOut equ 080036F0h
 
 SpawnPrimarySprite equ 0800FBC8h
+Nightmare_MakeMissilesFall equ 0805DD40h
 
 LockHatches equ 08063070h
 ChangeSuit equ 08063190h
