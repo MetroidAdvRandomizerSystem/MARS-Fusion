@@ -886,24 +886,29 @@
 .autoregion
     .align 2
 .func Beam_CalculateDamage
-    ; 2 * (1 + wave + ice)
-    ; accounts for missing bonus projectile from solo charge
+    ; 2 + 2 * wave + ice + wide
+    ; multiplies damage by 1.5 if firing a single projectile with charge
+    mov     r2, #2
     ldr     r0, =SamusUpgrades
     ldrb    r3, [r0, SamusUpgrades_BeamUpgrades]
     lsl     r0, r3, #1Fh - BeamUpgrade_WaveBeam
     lsr     r0, #1Fh
-    lsl     r1, r3, #1Fh - BeamUpgrade_IceBeam
-    lsr     r1, #1Fh
-    add     r0, r1
-    add     r0, #1
-    lsl     r2, r0, #1
+    lsl     r0, #1
+    add     r2, r0
+    lsl     r0, r3, #1Fh - BeamUpgrade_IceBeam
+    lsr     r0, #1Fh
+    add     r2, r0
+    lsl     r0, r3, #1Fh - BeamUpgrade_WideBeam
+    lsr     r0, #1Fh
+    add     r2, r0
     cmp     r3, #1 << BeamUpgrade_ChargeBeam
     beq     @@return
-    lsl     r0, r3, #1Fh - BeamUpgrade_ChargeBeam
-    lsl     r1, r3, #1Fh - BeamUpgrade_WideBeam
-    bic     r0, r1
-    lsr     r0, #1Fh
-    lsl     r2, r0
+    lsr     r0, r3, #BeamUpgrade_ChargeBeam + 1
+    bcc     @@return
+    lsr     r0, r3, #BeamUpgrade_WideBeam + 1
+    bcs     @@return
+    lsr     r0, r2, #1
+    add     r2, r0
 @@return:
     mov     r0, r2
     bx      lr
@@ -1076,27 +1081,33 @@
 .autoregion
     .align 2
 .func ChargedBeam_CalculateDamage
-    ; 5 * (2 + wave + ice) * (3 * plasma / 5)
-    ; accounts for missing bonus projectile from solo charge
+    ; floor(5 * (2 + wave + (ice + wide) / 2) * (3 * plasma / 5))
+    ; multiplies damage by 1.5 if firing a single projectile with charge
+    mov     r2, #4
     ldr     r0, =SamusUpgrades
     ldrb    r3, [r0, SamusUpgrades_BeamUpgrades]
     lsl     r0, r3, #1Fh - BeamUpgrade_WaveBeam
     lsr     r0, #1Fh
-    lsl     r1, r3, #1Fh - BeamUpgrade_IceBeam
-    lsr     r1, #1Fh
-    add     r0, r1
-    add     r0, #2
-    lsl     r1, r0, #2
-    add     r2, r0, r1
+    lsl     r0, #1
+    add     r2, r0
+    lsl     r0, r3, #1Fh - BeamUpgrade_IceBeam
+    lsr     r0, #1Fh
+    add     r2, r0
+    lsl     r0, r3, #1Fh - BeamUpgrade_WideBeam
+    lsr     r0, #1Fh
+    add     r2, r0
+    lsl     r0, r2, #2
+    add     r2, r0
     cmp     r3, #1 << BeamUpgrade_ChargeBeam
     beq     @@return
-    lsl     r0, r3, #1Fh - BeamUpgrade_ChargeBeam
-    lsl     r1, r3, #1Fh - BeamUpgrade_WideBeam
-    bic     r0, r1
-    lsl     r1, r3, #1Fh - BeamUpgrade_WaveBeam
-    bic     r0, r1
-    lsr     r0, #1Fh
-    lsl     r2, r0
+    lsr     r0, r3, #BeamUpgrade_ChargeBeam + 1
+    bcc     @@check_plasma
+    mov     r0, #(1 << BeamUpgrade_WideBeam) | (1 << BeamUpgrade_WaveBeam)
+    and     r0, r3
+    bne     @@check_plasma
+    lsr     r0, r2, #1
+    add     r2, r0
+@@check_plasma:
     lsr     r0, r3, #BeamUpgrade_PlasmaBeam + 1
     bcc     @@return
     lsl     r0, r2, #1
@@ -1105,7 +1116,7 @@
     mul     r2, r0
     lsr     r2, #10
 @@return:
-    mov     r0, r2
+    lsr     r0, r2, #1
     bx      lr
     .pool
 .endfunc
