@@ -425,14 +425,9 @@
     strb    r0, [r4, PermanentUpgrades_SuitUpgrades]
     bl      @InitUpgrades
     mov     r0, #5
-    ldrh    r1, [r5, SamusUpgrades_CurrEnergy]
-    mov     r2, #6
-    mov     r3, #0
-    bl      0807E754h
-    mov     r0, #6
     ldrh    r1, [r5, SamusUpgrades_MaxEnergy]
     mov     r2, #3
-    mov     r3, #1
+    mov     r3, #0
     bl      0807E754h
     ldrb    r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
     lsr     r0, #ExplosiveUpgrade_Missiles + 1
@@ -441,15 +436,10 @@
     bl      0807EC8Ch
     b       @@check_pbs
 @@write_missile_counts:
-    mov     r0, #7
-    ldrh    r1, [r5, SamusUpgrades_CurrMissiles]
-    mov     r2, #6
-    mov     r3, #0
-    bl      0807E754h
-    mov     r0, #8
+    mov     r0, #6
     ldrh    r1, [r5, SamusUpgrades_MaxMissiles]
     mov     r2, #3
-    mov     r3, #1
+    mov     r3, #0
     bl      0807E754h
 @@check_pbs:
     ldrb    r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
@@ -457,21 +447,87 @@
     bcs     @@write_pb_counts
     mov     r0, #2
     bl      0807EC8Ch
-    b       @@return
+    b       @@write_metroid_counts
 @@write_pb_counts:
-    mov     r0, #9
-    ldrb    r1, [r5, SamusUpgrades_CurrPowerBombs]
-    mov     r2, #6
+    mov     r0, #7
+    ldrb    r1, [r5, SamusUpgrades_MaxPowerBombs]
+    mov     r2, #3
     mov     r3, #0
     bl      0807E754h
-    mov     r0, #10
-    ldrb    r1, [r5, SamusUpgrades_MaxPowerBombs]
+@@write_metroid_counts:
+    mov     r0, #8
+    ldrb    r1, [r4, PermanentUpgrades_InfantMetroids]
+    mov     r2, #7
+    mov     r3, #0
+    bl      0807E754h
+    mov     r0, #9
+    ldr     r1, =RequiredMetroidCount
+    ldrb    r1, [r1]
     mov     r2, #3
     mov     r3, #1
     bl      0807E754h
 @@return:
     pop     { r4-r5, pc }
     .pool
+.endarea
+
+.org 0807E7BAh
+.area 16h, 0
+    ; draw ending zero in status counters
+    mov     r2, r0
+    bne     0807E7E0h
+    cmp     r7, #0
+    bne     0807E7DCh
+    cmp     r4, #1
+    beq     0807E7DCh
+@@draw_blank:
+    mov     r2, #8Ch
+    mov     r3, r10
+    cmp     r3, #0
+    beq     0807E7E4h
+    b       0807E7F6h
+.endarea
+
+.org 0858217Ch + 5 * 5
+.area 5 * 5
+    ; status screen counter info
+    ; max energy:
+    .db     03h     ; vram row
+    .db     00h     ; ??
+    .db     03h     ; vram column start
+    .db     06h     ; vram column end
+    .db     00h     ; ??
+    ; max missiles:
+    .db     03h     ; vram row
+    .db     00h     ; ??
+    .db     0Bh     ; vram column start
+    .db     0Dh     ; vram column end
+    .db     00h     ; ??
+    ; max power bombs:
+    .db     03h     ; vram row
+    .db     00h     ; ??
+    .db     11h     ; vram column start
+    .db     12h     ; vram column end
+    .db     00h     ; ??
+    ; current metroids:
+    .db     03h     ; vram row
+    .db     00h     ; ??
+    .db     17h     ; vram column start
+    .db     18h     ; vram column end
+    .db     00h     ; ??
+    ; required metroids:
+    .db     03h     ; vram row
+    .db     00h     ; ??
+    .db     1Ah     ; vram column start
+    .db     1Bh     ; vram column end
+    .db     00h     ; ??
+.endarea
+
+.org 085657A8h + 07h * 20h
+.area 20h
+    ; status screen metroid palette
+    .dh     7D4Ah, 7FFFh, 77BDh, 2BEAh, 0260h, 0160h, 02D6h, 0014h
+    .dh     043Fh, 43E2h, 3704h, 1DC2h, 0000h, 0000h, 2484h, 0000h
 .endarea
 
 .autoregion
