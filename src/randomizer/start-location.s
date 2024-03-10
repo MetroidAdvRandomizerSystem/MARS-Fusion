@@ -208,6 +208,11 @@
     .pool
 .endarea
 
+.org 08064600h
+.area 0Ch, 0
+    ; force recalculate bg position when loading save
+.endarea
+
 .org StartingLocation
 .area 08h
     .db     Area_MainDeck
