@@ -457,7 +457,7 @@
 @@write_metroid_counts:
     mov     r0, #8
     ldrb    r1, [r4, PermanentUpgrades_InfantMetroids]
-    mov     r2, #7
+    mov     r2, #6
     mov     r3, #0
     bl      0807E754h
     mov     r0, #9
@@ -486,6 +486,61 @@
     cmp     r3, #0
     beq     0807E7E4h
     b       0807E7F6h
+.endarea
+
+.org 0807EC8Ch
+.area 94h
+    ; write empty blocks over counters for unobtained items
+    push    { r4 }
+    sub     r1, r0, #1
+    cmp     r1, #2 - 1
+    bhi     @@return
+    ldr     r2, =085821D6h
+    lsl     r0, #2
+    add     r2, r0
+    ldrb    r0, [r2]
+    lsl     r0, #5
+    ldrb    r1, [r2, #2]
+    add     r0, r1
+    lsl     r0, #1
+    ldr     r3, =0600C800h
+    add     r3, r0
+    mov     r4, r3
+    add     r4, #40h
+    ldrb    r0, [r2, #2]
+    ldrb    r2, [r2, #3]
+    sub     r2, r0
+    lsl     r2, #1
+    ldr     r0, =#3196h
+    mov     r1, r0
+    add     r1, #20h
+    strh    r0, [r3, r2]
+    strh    r1, [r4, r2]
+    sub     r0, #1
+    sub     r1, #1
+    sub     r2, #2
+    beq     @@last_column
+@@loop:
+    strh    r0, [r3, r2]
+    strh    r1, [r4, r2]
+    sub     r2, #2
+    bne     @@loop
+@@last_column:
+    sub     r0, #1
+    sub     r1, #1
+    strh    r0, [r3, r2]
+    strh    r1, [r4, r2]
+@@return:
+    pop     { r4 }
+    bx      lr
+    .pool
+.endarea
+
+.org 085821D6h
+.area 3 * 4
+    .skip 4
+    .db     02h, 03h, 09h, 0Eh
+    .db     02h, 03h, 10h, 13h
 .endarea
 
 .org 0858217Ch + 5 * 5
