@@ -214,6 +214,7 @@ Particle_Tink equ 07h
 Particle_MissileExplosion equ 08h
 Particle_SuperMissileExplosion equ 09h
 Particle_IceMissileExplosion equ 0Ah
+Particle_DiffusionMissileExplosion equ 0Bh
 Particle_ChargedDiffusionMissileExplosion equ 0Ch
 Particle_MissileTrail equ 15h
 Particle_SuperMissileTrail equ 16h

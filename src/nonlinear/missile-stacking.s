@@ -17,7 +17,7 @@
 ; 4: 08 12 16 20 24 28 32
 
 ; Graphics
-; Super > Ice = Diffusion > Normal
+; Diffusion > Ice > Super > Normal
 
 ; Hitbox size
 ; Normal    16 x 16
@@ -26,13 +26,13 @@
 ; Diffusion 32 x 24
 
 ; Trail graphics
-; Ice > Super = Diffusion > Normal
+; Ice + Super > Ice > Super > Normal = Diffusion
 
 ; Fire sound
-; Charged > Ice > Super = Diffusion > Normal
+; Charged > Ice + Super > Ice > Super > Normal = Diffusion
 
 ; Hit effect
-; Charged > Ice > Super = Diffusion > Normal
+; Charged > Ice + Super > Ice > Super > Normal = Diffusion
 
 
 ; modified portion of UpdateArmCannonAndWeapons
@@ -103,27 +103,26 @@
     ldr     r0, =SamusUpgrades
     ldrb    r1, [r0, SamusUpgrades_ExplosiveUpgrades]
     mov     r2, r1
-    ; check super
-    mov     r0, 1 << ExplosiveUpgrade_SuperMissiles
+    ; check diffusion
+    mov     r0, 1 << ExplosiveUpgrade_DiffusionMissiles
     and     r0, r1
     cmp     r0, #0
-    beq     @@checkIceOrDiffusion
+    beq     @@checkIce
     ldr     r0, =DMA3
-    ldr     r1, =SuperMissileGfx0
+    ldr     r1, =DiffusionMissileGfx0
     str     r1, [r0, DMA_SAD]
     ldr     r1, =06011380h
     str     r1, [r0, DMA_DAD]
     ldr     r2, =80000040h
     str     r2, [r0, DMA_CNT]
     ldr     r1, [r0, DMA_CNT]
-    ldr     r1, =SuperMissileGfx1
+    ldr     r1, =DiffusionMissileGfx1
     b       @@secondDMA
-@@checkIceOrDiffusion:
-    mov     r0, (1 << ExplosiveUpgrade_IceMissiles) \
-        | (1 << ExplosiveUpgrade_DiffusionMissiles)
+@@checkIce:
+    mov     r0, 1 << ExplosiveUpgrade_IceMissiles
     and     r0, r1
     cmp     r0, #0
-    beq     @@checkNormal
+    beq     @@checkSuper
     ldr     r0, =DMA3
     ldr     r1, =IceMissileGfx0
     str     r1, [r0, DMA_SAD]
@@ -133,6 +132,21 @@
     str     r2, [r0, DMA_CNT]
     ldr     r1, [r0, DMA_CNT]
     ldr     r1, =IceMissileGfx1
+    b       @@secondDMA
+@@checkSuper:
+    mov     r0, 1 << ExplosiveUpgrade_SuperMissiles
+    and     r0, r1
+    cmp     r0, #0
+    beq     @@checkNormal
+    ldr     r0, =DMA3
+    ldr     r1, =SuperMissileGfx0
+    str     r1, [r0, DMA_SAD]
+    ldr     r1, =06011380h
+    str     r1, [r0, DMA_DAD]
+    ldr     r2, =80000040h
+    str     r2, [r0, DMA_CNT]
+    ldr     r1, [r0, DMA_CNT]
+    ldr     r1, =SuperMissileGfx1
     b       @@secondDMA
 @@checkNormal:
     mov     r0, 1 << ExplosiveUpgrade_Missiles
@@ -448,16 +462,24 @@ GetMissileDamage:
 GetMissileHitEffect:
     ; r0 = MissileStatus
     push    { lr }
+    ; check ice + super
+    mov     r2, (1 << ExplosiveUpgrade_SuperMissiles) \
+        | (1 << ExplosiveUpgrade_IceMissiles)
+    mov     r1, r2
+    and     r1, r0
+    cmp     r1, r2
+    bne     @@checkIce
+    mov     r0, Particle_DiffusionMissileExplosion
+    b       @@return
 @@checkIce:
     mov     r1, 1 << ExplosiveUpgrade_IceMissiles
     and     r1, r0
     cmp     r1, #0
-    beq     @@checkSuperOrDiffusion
+    beq     @@checkSuper
     mov     r0, Particle_IceMissileExplosion
     b       @@return
-@@checkSuperOrDiffusion:
-    mov     r1, (1 << ExplosiveUpgrade_SuperMissiles) \
-        | (1 << ExplosiveUpgrade_DiffusionMissiles)
+@@checkSuper:
+    mov     r1, 1 << ExplosiveUpgrade_SuperMissiles
     and     r1, r0
     cmp     r1, #0
     beq     @@normal
@@ -586,17 +608,25 @@ CombinedProcessMissile:
     strh    r0, [r4, Projectile_BboxBottom]
     strh    r0, [r4, Projectile_BboxRight]
 @@initialize:
-    ; check ice
+    ; check ice + super
+    mov     r0, (1 << ExplosiveUpgrade_SuperMissiles) \
+        | (1 << ExplosiveUpgrade_IceMissiles)
+    mov     r1, r0
+    and     r1, r2
+    cmp     r1, r0
+    bne     @@checkIce
+    mov     r0, #2
+    mov     r5, Sfx_DiffusionMissile_Fired
+@@checkIce:
     mov     r1, 1 << ExplosiveUpgrade_IceMissiles
     and     r1, r2
     cmp     r1, #0
-    beq     @@checkSuperOrDiffusionInit
+    beq     @@checkSuperInit
     mov     r0, #1
     mov     r5, Sfx_IceMissile_Fired
     b       @@finishInit
-@@checkSuperOrDiffusionInit:
-    mov     r1, (1 << ExplosiveUpgrade_SuperMissiles) \
-        | (1 << ExplosiveUpgrade_DiffusionMissiles)
+@@checkSuperInit:
+    mov     r1, 1 << ExplosiveUpgrade_SuperMissiles
     and     r1, r2
     cmp     r1, #0
     beq     @@normalInit
@@ -666,20 +696,29 @@ CombinedProcessMissile:
     bl      Projectile_Move
     ldrb    r0, [r4, Projectile_Timer]
     cmp     r0, #26
-    bhi     @@checkIceTrail ; if ProjTimer <= 26
+    bhi     @@checkIceSuperTrail ; if ProjTimer <= 26
     add     r0, #1
     strb    r0, [r4, Projectile_Timer]
+@@checkIceSuperTrail:
+    mov     r0, (1 << ExplosiveUpgrade_SuperMissiles) \
+        | (1 << ExplosiveUpgrade_IceMissiles)
+    mov     r1, r0
+    and     r1, r5
+    cmp     r1, r0
+    bne     @@checkIceTrail
+    mov     r0, Particle_DiffusionMissileTrail
+    mov     r1, #3
+    b       @@finishTrail
 @@checkIceTrail:
     mov     r0, 1 << ExplosiveUpgrade_IceMissiles
     and     r0, r5
     cmp     r0, #0
-    beq     @@checkSuperOrDiffusionTrail
+    beq     @@checkSuperTrail
     mov     r0, Particle_IceMissileTrail
     mov     r1, #3
     b       @@finishTrail
-@@checkSuperOrDiffusionTrail:
-    mov     r0, (1 << ExplosiveUpgrade_SuperMissiles) \
-        | (1 << ExplosiveUpgrade_DiffusionMissiles)
+@@checkSuperTrail:
+    mov     r0, 1 << ExplosiveUpgrade_SuperMissiles
     and     r0, r5
     cmp     r0, #0
     beq     @@normalTrail
@@ -698,9 +737,3 @@ CombinedProcessMissile:
     bx      r0
     .pool
 .endarea
-
-; missile graphics
-.org 0858D324h
-    .incbin "data/normal-missile.gfx"
-.org 0858D424h
-    .incbin "data/super-missile.gfx"

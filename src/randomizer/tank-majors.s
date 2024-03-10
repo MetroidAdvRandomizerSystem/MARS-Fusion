@@ -258,7 +258,7 @@
     .db     0   ; hi-jump boots
     .db     1   ; speedbooster
     .db     1   ; security level 2
-    .db     1   ; super missiles
+    .db     0   ; super missiles
     .db     0   ; varia suit
     .db     1   ; security level 3
     .db     0   ; ice missiles
