@@ -245,6 +245,7 @@
 .autoregion
     .align 4
 @EnglishMessages:
+    .dw     @EnglishMessage_SecurityLevel0
     .dw     086B489Ah   ; security level 1
     .dw     086B4906h   ; security level 2
     .dw     086B4974h   ; security level 3
@@ -303,6 +304,13 @@
     .dw     086B5912h   ; enemy location abnormal
     .dw     @EnglishMessage_IceTrap
     .dw     @EnglishMessage_Nothing
+.endautoregion
+
+.autoregion
+    .align 2
+@EnglishMessage_SecurityLevel0:
+    .stringn 21, "[INDENT]Security level 0 unlocked.\n"
+    .string  22, "[INDENT]Gray hatches now active."
 .endautoregion
 
 .autoregion

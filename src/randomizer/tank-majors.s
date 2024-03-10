@@ -29,22 +29,10 @@
     strb    r0, [r2, RoomTanks_Upgrade]
     ldrb    r4, [r3, MinorLocation_Sprite]
     strb    r4, [r2, RoomTanks_Sprite]
-    cmp     r4, #UpgradeSprite_SuperMissiles
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_DiffusionMissiles
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_SecurityLevel1
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_SecurityLevel2
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_SecurityLevel3
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_SecurityLevel4
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_Speedbooster
-    beq     @@set_bg1
-    cmp     r4, #UpgradeSprite_InfantMetroid
-    bne     @@load_tank_vram
+    ldr     r0, =@TankPalettes
+    ldrb    r0, [r0, r4]
+    cmp     r0, #0
+    beq     @@load_tank_vram
 @@set_bg1:
     ldr     r2, =LevelData + LevelData_Bg1
     ldrh    r0, [r2, LevelLayer_Stride]
@@ -106,22 +94,10 @@
     lsl     r0, #2
     add     r1, r0
     ldrb    r1, [r1, RoomTanks_Sprite]
-    cmp     r1, #UpgradeSprite_SuperMissiles
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_DiffusionMissiles
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_SecurityLevel1
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_SecurityLevel2
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_SecurityLevel3
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_SecurityLevel4
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_Speedbooster
-    beq     @@set_alt_palette
-    cmp     r1, #UpgradeSprite_InfantMetroid
-    bne     @@set_tile
+    ldr     r0, =@TankPalettes
+    ldrb    r0, [r0, r1]
+    cmp     r0, #0
+    beq     @@set_tile
 @@set_alt_palette:
     mov     r0, r5
     add     r0, #53h
@@ -268,6 +244,41 @@
     .align 4
 @TankTiles:
 .incbin "data/major-tanks.gfx"
+.endautoregion
+
+.autoregion
+@TankPalettes:
+    .db     0   ; empty
+    .db     0   ; security level 0
+    .db     0   ; missiles
+    .db     0   ; morph ball
+    .db     0   ; charge beam
+    .db     1   ; security level 1
+    .db     0   ; bombs
+    .db     0   ; hi-jump boots
+    .db     1   ; speedbooster
+    .db     1   ; security level 2
+    .db     1   ; super missiles
+    .db     0   ; varia suit
+    .db     1   ; security level 3
+    .db     0   ; ice missiles
+    .db     0   ; wide beam
+    .db     0   ; power bombs
+    .db     0   ; space jump
+    .db     1   ; plasma beam
+    .db     0   ; gravity suit
+    .db     1   ; security level 4
+    .db     1   ; diffusion missiles
+    .db     0   ; wave beam
+    .db     0   ; screw attack
+    .db     0   ; ice beam
+    .db     0   ; missile tank
+    .db     0   ; energy tank
+    .db     0   ; power bomb tank
+    .db     0   ; anonymous
+    .db     0   ; shiny missile tank
+    .db     0   ; shiny power bomb tank
+    .db     1   ; infant metroid
 .endautoregion
 
 ; tileset 08

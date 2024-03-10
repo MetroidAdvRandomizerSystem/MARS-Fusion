@@ -268,6 +268,10 @@ MajorUpgradeInfo:
     .db     00h
     .db     Message_NothingUpgrade
     .skip 1
+    .db     SamusUpgrades_SecurityLevel
+    .db     1 << SecurityLevel_Lv0
+    .db     Message_SecurityLevel0
+    .skip 1
     .db     SamusUpgrades_ExplosiveUpgrades
     .db     1 << ExplosiveUpgrade_Missiles
     .db     Message_MissileUpgrade
