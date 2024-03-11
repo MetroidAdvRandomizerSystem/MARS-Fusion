@@ -237,6 +237,11 @@
 .org 0807BB3Eh
     add     r0, #Message_SleepModePrompt3 * 4
 
+.org 0802C2A8h
+    ; make recharge use recharge all message for power bombs
+    mov     r0, #(1 << ExplosiveUpgrade_Missiles) \
+        | (1 << ExplosiveUpgrade_PowerBombs)
+
 .defineregion 0879C810h, 0C0h
 
 .org 0879CDFCh
