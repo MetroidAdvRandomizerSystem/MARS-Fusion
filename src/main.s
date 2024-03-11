@@ -13,6 +13,7 @@
 
 .definelabel ABILITY_FROM_TANK, 0
 .definelabel BOMBLESS_PBS, 1
+.definelabel MISSILES_WITHOUT_MAINS, 0
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"

@@ -239,8 +239,16 @@
 
 .org 0802C2A8h
     ; make recharge use recharge all message for power bombs
+.if MISSILES_WITHOUT_MAINS
+    mov     r0, #(1 << ExplosiveUpgrade_Missiles) \
+        | (1 << ExplosiveUpgrade_SuperMissiles) \
+        | (1 << ExplosiveUpgrade_IceMissiles) \
+        | (1 << ExplosiveUpgrade_DiffusionMissiles) \
+        | (1 << ExplosiveUpgrade_PowerBombs)
+.else
     mov     r0, #(1 << ExplosiveUpgrade_Missiles) \
         | (1 << ExplosiveUpgrade_PowerBombs)
+.endif
 
 .defineregion 0879C810h, 0C0h
 
