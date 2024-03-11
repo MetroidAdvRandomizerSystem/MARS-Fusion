@@ -1286,10 +1286,11 @@
 .endfunc
 .endautoregion
 
-.org 08084596h
-.area 2Eh
+.autoregion
+    .align 2
+.func @BeamFlare_CalculateDamage
     ; set beam flare damage
-    ; 3 * (2 + plasma + wave + ice)
+    ; 6 + 3 * (2 * (plasma + wave) + ice + wide) / 2
     ldr     r0, =SamusUpgrades
     ldrb    r2, [r0, SamusUpgrades_BeamUpgrades]
     lsl     r1, r2, #1Fh - BeamUpgrade_PlasmaBeam
@@ -1297,43 +1298,63 @@
     lsl     r0, r2, #1Fh - BeamUpgrade_WaveBeam
     lsr     r0, #1Fh
     add     r1, r0
+    lsl     r1, #1
     lsl     r0, r2, #1Fh - BeamUpgrade_IceBeam
     lsr     r0, #1Fh
     add     r1, r0
-    add     r1, #2
+    lsl     r0, r2, #1Fh - BeamUpgrade_WideBeam
+    lsr     r0, #1Fh
+    add     r1, r0
     lsl     r0, r1, #1
     add     r1, r0
-    b       080845C4h
+    lsr     r0, r1, #1
+    add     r0, #6
+    bx      lr
     .pool
+.endfunc
+.endautoregion
+
+.org 08084596h
+.area 2Eh
+    bl      @BeamFlare_CalculateDamage
+    mov     r1, r0
+    b       080845C4h
 .endarea
+
+.autoregion
+    .align 2
+.func @PseudoScrew_CalculateDamage
+    ; set pseudo-screw damage
+    ; 15 + 11 * (2 * (plasma + wave) + ice + wide) / 2
+    ldr     r0, =SamusUpgrades
+    ldrb    r2, [r0, SamusUpgrades_BeamUpgrades]
+    lsl     r1, r2, #1Fh - BeamUpgrade_PlasmaBeam
+    lsr     r1, #1Fh
+    lsl     r0, r2, #1Fh - BeamUpgrade_WaveBeam
+    lsr     r0, #1Fh
+    add     r1, r0
+    lsl     r1, #1
+    lsl     r0, r2, #1Fh - BeamUpgrade_IceBeam
+    lsr     r0, #1Fh
+    add     r1, r0
+    lsl     r0, r2, #1Fh - BeamUpgrade_WideBeam
+    lsr     r0, #1Fh
+    add     r1, r0
+    lsl     r0, r1, #1
+    add     r0, r1
+    lsl     r1, #3
+    add     r1, r0
+    lsr     r0, r1, #1
+    add     r0, #15
+    bx      lr
+    .pool
+.endfunc
+.endautoregion
 
 .org 080836FCh
 .area 1Ch
-    ; set pseudo-screw damage
-    ; 10 * (1.5 + plasma + wave + ice)
-    ldr     r0, =SamusUpgrades
-    ldrb    r2, [r0, SamusUpgrades_BeamUpgrades]
-    lsl     r1, r2, #1Fh - BeamUpgrade_PlasmaBeam
-    lsr     r1, #1Fh
-    lsl     r0, r2, #1Fh - BeamUpgrade_WaveBeam
-    lsr     r0, #1Fh
-    add     r1, r0
-    lsl     r0, r2, #1Fh - BeamUpgrade_IceBeam
-    lsr     r0, #1Fh
-    add     r1, r0
-    add     r1, #1
-    lsl     r1, #1
-    add     r1, #1
-    b       @@cont
-.endarea
-.area 0Ch
-    .skip 8
-    .pool
-.endarea
-.area 22h
-@@cont:
-    lsl     r0, r1, #2
-    add     r1, r0
+    bl      @PseudoScrew_CalculateDamage
+    mov     r1, r0
     b       08083746h
 .endarea
 
