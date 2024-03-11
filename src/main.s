@@ -4,16 +4,34 @@
 .table "data/text.tbl"
 
 ; Assembly-time flags
+.ifndef DEBUG
 .definelabel DEBUG, 1
+.endif
+.ifndef OPTIMIZE
 .definelabel OPTIMIZE, 1
+.endif
+.ifndef QOL
 .definelabel QOL, 1
+.endif
+.ifndef PHYSICS
 .definelabel PHYSICS, 0
+.endif
+.ifndef NONLINEAR
 .definelabel NONLINEAR, 1
+.endif
+.ifndef RANDOMIZER
 .definelabel RANDOMIZER, 1
+.endif
 
+.ifndef ABILITY_FROM_TANK
 .definelabel ABILITY_FROM_TANK, 0
+.endif
+.ifndef BOMBLESS_PBS
 .definelabel BOMBLESS_PBS, 1
+.endif
+.ifndef MISSILES_WITHOUT_MAINS
 .definelabel MISSILES_WITHOUT_MAINS, 0
+.endif
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"
