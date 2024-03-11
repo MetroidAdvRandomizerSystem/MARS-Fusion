@@ -1,4 +1,129 @@
-; Rewrite save metadata init to account for starting items and location.
+; Rewrite new game init to account for starting items and location.
+
+.org NewGameInit
+.area 14Ch
+    push    { lr }
+    sub     sp, #4
+    mov     r0, #10h
+    str     r0, [sp]
+    mov     r0, #3
+    mov     r1, #0
+    ldr     r2, =02037C00h
+    mov     r3, #380h >> 2
+    lsl     r3, #2
+    bl      BitFill
+    mov     r0, #10h
+    str     r0, [sp]
+    mov     r0, #3
+    ldr     r1, =#0FFFFh
+    ldr     r2, =02036000h
+    mov     r3, #1200h >> 5
+    lsl     r3, #5
+    bl      BitFill
+    mov     r0, #10h
+    str     r0, [sp]
+    mov     r0, #3
+    mov     r1, #0
+    ldr     r2, =TanksCollected
+    mov     r3, #900h >> 4
+    lsl     r3, #4
+    bl      BitFill
+    mov     r0, #0
+    mov     r1, #7
+    ldr     r2, =03000033h
+@@bitfill_loop:
+    strb    r0, [r2, r1]
+    sub     r1, #1
+    bpl     @@bitfill_loop
+    ldr     r1, =GameTimer
+    strb    r0, [r1, GameTimer_Hours]
+    strb    r0, [r1, GameTimer_Minutes]
+    strb    r0, [r1, GameTimer_Seconds]
+    strb    r0, [r1, GameTimer_Frames]
+    strb    r0, [r1, GameTimer_Maxed]
+    mov     r0, #1
+    ldr     r1, =0300134Ah
+    strb    r0, [r1]
+    ldr     r1, =StartingItems
+    ldr     r2, =PermanentUpgrades
+    ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
+    strb    r0, [r2, PermanentUpgrades_BeamUpgrades]
+    ldrb    r0, [r1, SamusUpgrades_ExplosiveUpgrades]
+    strb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
+    ldrb    r0, [r1, SamusUpgrades_SuitUpgrades]
+    strb    r0, [r2, PermanentUpgrades_SuitUpgrades]
+    mov     r0, #0
+    strb    r0, [r2, PermanentUpgrades_InfantMetroids]
+    ldr     r2, =SamusUpgrades
+    ldrb    r0, [r1, SamusUpgrades_SecurityLevel]
+    strb    r0, [r2, SamusUpgrades_SecurityLevel]
+    ldr     r3, =SecurityLevelFlash
+    strb    r0, [r3]
+    strb    r0, [r3, PowerOutageSecurityBackup - SecurityLevelFlash]
+    mov     r0, #0
+    strb    r0, [r2, SamusUpgrades_MapDownloads]
+    mov     r0, #0FFh
+    ldr     r1, =PrevSubEvent
+    strb    r0, [r1]
+    ldr     r1, =03000B86h
+    strb    r0, [r1]
+    strb    r0, [r1, PrevNavConversation - 03000B86h]
+    mov     r0, #0
+    ldr     r1, =0300004Ch
+    strb    r0, [r1]
+    strb    r0, [r1, #1]
+.if RANDOMIZER
+    ldr     r1, =StartingLocation
+    ldr     r2, =CurrArea
+    ldrb    r0, [r1, StartingLocation_Area]
+    strb    r0, [r2]
+    ldrb    r0, [r1, StartingLocation_Room]
+    strb    r0, [r2, CurrRoom - CurrArea]
+    ldrb    r0, [r1, StartingLocation_Door]
+    strb    r0, [r2, PrevDoor - CurrArea]
+    ldr     r2, =SamusState
+    mov     r3, r2
+    add     r3, #03001342h - SamusState
+    ldrh    r0, [r1, StartingLocation_XPos]
+    strh    r0, [r2, SamusState_PositionX]
+    strh    r0, [r3]
+    ldrh    r0, [r1, StartingLocation_YPos]
+    strh    r0, [r2, SamusState_PositionY]
+    strh    r0, [r3, #2]
+    ldrb    r0, [r1, StartingLocation_Area]
+    ldrb    r1, [r1, StartingLocation_Room]
+    orr     r0, r1
+    beq     @@init_map
+    mov     r0, #0
+    ldr     r1, =0300134Ah
+    strb    r0, [r1]
+.else
+    mov     r0, #0
+    ldr     r1, =CurrArea
+    strb    r0, [r1]
+    strb    r0, [r1, CurrRoom - CurrArea]
+    strb    r0, [r1, PrevDoor - CurrArea]
+    ldr     r1, =SamusState
+    mov     r2, r1
+    add     r2, #03001342h - SamusState
+    mov     r0, #640h >> 3
+    lsl     r0, #3
+    strh    r0, [r1, SamusState_PositionX]
+    strh    r0, [r2]
+    mov     r0, #0FFh
+    add     r0, #1DFh - 0FFh
+    strh    r0, [r1, SamusState_PositionY]
+    strh    r0, [r2, #2]
+.endif
+@@init_map:
+    bl      InitStartingMap
+    mov     r0, #0
+    ldr     r1, =03000B8Bh
+    strb    r0, [r1]
+    add     sp, #4
+    pop     { pc }
+    .pool
+.endarea
 
 .autoregion
     .align 2

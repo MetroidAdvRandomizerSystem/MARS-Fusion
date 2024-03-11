@@ -1,5 +1,6 @@
 InitializeAudio equ 08002298h
 Sfx_Play equ 0800270Ch
+BitFill equ 08002FECh
 Music_CheckSet equ 08003498h
 Music_CheckPlay equ 080034F4h
 Music_Play equ 08003538h
@@ -21,6 +22,8 @@ SetTankAsCollected equ 0806CCF8h
 RemoveCollectedTanks equ 0806CE40h
 MinimapSetCollectedItems equ 08075884h
 MapScreenCountTanks equ 08075D28h
+InitStartingMap equ 08074FFCh
+NewGameInit equ 080803E4h
 
 GetCharWidth equ 08079118h
 RenderChar equ 08079438h

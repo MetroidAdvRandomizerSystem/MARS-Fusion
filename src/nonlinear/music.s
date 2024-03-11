@@ -410,13 +410,6 @@
     strb    r0, [r1, PrevSubEvent - CurrSubEvent]
     add     r0, #1
     strb    r0, [r1]
-    ; this menu can set permanent upgrade flags from demo; remove all for safety
-    ; TODO: find a less hacky way to do this
-    ldr     r1, =PermanentUpgrades
-    mov     r0, #0
-    strb    r0, [r1, PermanentUpgrades_BeamUpgrades]
-    strb    r0, [r1, PermanentUpgrades_ExplosiveUpgrades]
-    strb    r0, [r1, PermanentUpgrades_SuitUpgrades]
     mov     r0, #2Ah
     mov     r1, MusicType_MainDeck
     b       @@playMusic

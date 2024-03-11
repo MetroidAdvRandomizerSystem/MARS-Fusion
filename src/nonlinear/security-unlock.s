@@ -45,22 +45,6 @@
 .endfunc
 .endarea
 
-; Fix security level during initial adam dialogue
-.org 08080454h
-.area 0Eh
-    ldr     r0, =StartingItems
-    ldrb    r0, [r0, SamusUpgrades_SecurityLevel]
-    strb    r0, [r2, SamusUpgrades_SecurityLevel]
-    ldr     r1, =0300001Ch
-    strb    r0, [r1]
-    strb    r0, [r1, #1]
-    nop
-.endarea
-    .skip 96h
-.area 08h
-    .pool
-.endarea
-
 ; SetEvent fixes
 .org 08074A72h
     mov     r0, 00000b

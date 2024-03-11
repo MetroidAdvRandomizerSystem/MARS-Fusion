@@ -34,6 +34,7 @@ CurrentNavRoom equ 03000048h
 SpritesetId equ 03000052h
 CurrSubEvent equ 03000060h
 PrevSubEvent equ 03000062h
+PrevNavConversation equ 03000B88h
 NonGameplayFlag equ 03000B84h
 CurrEvent equ 03000B87h
 SaveSlot equ 03000B8Dh

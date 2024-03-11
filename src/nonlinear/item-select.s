@@ -411,18 +411,6 @@
     push    { r4-r5, lr }
     ldr     r4, =PermanentUpgrades
     ldr     r5, =SamusUpgrades
-    ldrb    r0, [r4, PermanentUpgrades_BeamUpgrades]
-    ldrb    r1, [r5, SamusUpgrades_BeamUpgrades]
-    orr     r0, r1
-    strb    r0, [r4, PermanentUpgrades_BeamUpgrades]
-    ldrb    r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
-    ldrb    r1, [r5, SamusUpgrades_ExplosiveUpgrades]
-    orr     r0, r1
-    strb    r0, [r4, PermanentUpgrades_ExplosiveUpgrades]
-    ldrb    r0, [r4, PermanentUpgrades_SuitUpgrades]
-    ldrb    r1, [r5, SamusUpgrades_SuitUpgrades]
-    orr     r0, r1
-    strb    r0, [r4, PermanentUpgrades_SuitUpgrades]
     bl      @InitUpgrades
     mov     r0, #5
     ldrh    r1, [r5, SamusUpgrades_MaxEnergy]

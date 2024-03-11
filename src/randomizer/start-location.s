@@ -6,43 +6,6 @@
     ; Prevent new game init from wiping door id
     nop
 
-.org 0808046Ah
-.area 4Ch, 0
-    ldr     r2, =CurrArea
-    ldr     r3, =StartingLocation
-    mov     r5, #0
-    strh    r5, [r2, #0300004Ch - CurrArea]
-    ldrb    r0, [r3, StartingLocation_Area]
-    strb    r0, [r2]
-    ldr     r1, =03000B86h
-    strb    r0, [r1]
-    ldrb    r0, [r3, StartingLocation_Room]
-    strb    r0, [r2, CurrRoom - CurrArea]
-    ldrb    r0, [r3, StartingLocation_Door]
-    strb    r0, [r2, PrevDoor - CurrArea]
-    ldr     r1, =SamusState
-    mov     r2, r1
-    add     r2, #03001342h - SamusState
-    ldrh    r0, [r3, StartingLocation_XPos]
-    strh    r0, [r1, SamusState_PositionX]
-    strh    r0, [r2]
-    ldrh    r0, [r3, StartingLocation_YPos]
-    strh    r0, [r1, SamusState_PositionY]
-    strh    r0, [r2]
-    strb    r5, [r1]
-    ldrb    r0, [r3, StartingLocation_Area]
-    ldrb    r1, [r3, StartingLocation_Room]
-    orr     r0, r1
-    beq     080804B6h
-@@skip_ship_exit:
-    strb    r5, [r2, #0300134Ah - 03001342h]
-    b       080804B6h
-.endarea
-    .skip 4Eh
-.area 28h
-    .pool
-.endarea
-
 .autoregion
     .align 2
 .func SetSamusExitPos
@@ -98,7 +61,7 @@
     .pool
 .endarea
 
-.org 08074FFCh
+.org InitStartingMap
 .area 88h
     ; set starting minimap position
     push    { r4-r5, lr }
