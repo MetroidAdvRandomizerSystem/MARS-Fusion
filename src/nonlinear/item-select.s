@@ -610,8 +610,10 @@
     ; init cursor
     push    { lr }
     ldr     r2, =PermanentUpgrades
-    ldrb    r0, [r2, PermanentUpgrades_BeamUpgrades]
-    ldrb    r1, [r2, PermanentUpgrades_ExplosiveUpgrades]
+    ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
+    mov     r1, #(1 << ExplosiveUpgrade_Missiles) | (1 << ExplosiveUpgrade_Bombs)
+    bic     r0, r1
+    ldrb    r1, [r2, PermanentUpgrades_BeamUpgrades]
     ldrb    r2, [r2, PermanentUpgrades_SuitUpgrades]
     orr     r0, r1
     orr     r0, r2
@@ -769,8 +771,6 @@
     .align 2
 .func SamusStatusMenu_MoveCursor
     ; r0 = start x, r1 = start y, r2 = offset x, r3 = offset y
-    ; TODO: game hangs when moving horizontally between top row with missing
-    ; upgrades
     push    { r4-r7, lr }
     mov     r4, r0
     mov     r5, r1
