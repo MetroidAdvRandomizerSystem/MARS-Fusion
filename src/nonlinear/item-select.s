@@ -30,6 +30,24 @@
     cmp     r0, #0FFh
     beq     @@return
     add     r3, r0
+    add     r4, #1
+    ldrb    r0, [r4]
+    cmp     r0, #Upgrade_None
+    beq     @@loop_upgrade
+    lsl     r2, r0, #2
+    add     r2, r6
+    ldrb    r0, [r2, MajorUpgradeInfo_Offset]
+    sub     r0, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
+    ldrb    r0, [r5, r0]
+    ldrb    r1, [r2, MajorUpgradeInfo_Bitmask]
+    and     r0, r1
+    bne     @@loop_upgrade
+@@find_next_pool:
+    add     r4, #1
+    ldrb    r0, [r4]
+    cmp     r0, #0FFh
+    bne     @@find_next_pool
+    b       @@loop_pool_inc
 @@loop_upgrade:
     add     r4, #1
     ldrb    r2, [r4]
@@ -54,17 +72,17 @@
     .pool
     .align 4
 @@UpgradeOrder:
-    .db     0 + 0 * 2
+    .db     0 + 0 * 2, Upgrade_None
     .db     Upgrade_ChargeBeam, Upgrade_WideBeam, Upgrade_PlasmaBeam
     .db     Upgrade_WaveBeam, Upgrade_IceBeam, 0FFh
-    .db     0 + 8 * 2
+    .db     0 + 8 * 2, Upgrade_Missiles
     .db     Upgrade_SuperMissiles, Upgrade_IceMissiles
     .db     Upgrade_DiffusionMissiles, 0FFh
-    .db     1 + 0 * 2
+    .db     1 + 0 * 2, Upgrade_None
     .db     Upgrade_PowerBombs, 0FFh
-    .db     1 + 3 * 2
+    .db     1 + 3 * 2, Upgrade_None
     .db     Upgrade_VariaSuit, Upgrade_GravitySuit, 0FFh
-    .db     1 + 7 * 2
+    .db     1 + 7 * 2, Upgrade_None
     .db     Upgrade_MorphBall, Upgrade_HiJump, Upgrade_Speedbooster
     .db     Upgrade_SpaceJump, Upgrade_ScrewAttack, 0FFh
     .db     0FFh
@@ -609,15 +627,17 @@
 .area 2Ch
     ; init cursor
     push    { lr }
-    ldr     r2, =PermanentUpgrades
-    ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
-    mov     r1, #(1 << ExplosiveUpgrade_Missiles) | (1 << ExplosiveUpgrade_Bombs)
-    bic     r0, r1
-    ldrb    r1, [r2, PermanentUpgrades_BeamUpgrades]
-    ldrb    r2, [r2, PermanentUpgrades_SuitUpgrades]
+    ldr     r3, =UpgradeLookup
+    ldmia   r3!, { r0-r2 }
     orr     r0, r1
     orr     r0, r2
-    beq     @@return
+    bne     @@init_cursor
+    ldmia   r3!, { r0-r2 }
+    orr     r0, r1
+    orr     r0, r2
+    bne     @@init_cursor
+    b       @@return
+@@init_cursor:
     mov     r0, #0
     mov     r1, #MenuSpriteGfx_CursorRight
     bl      0807486Ch
