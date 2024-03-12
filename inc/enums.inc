@@ -397,6 +397,16 @@ StoryFlag_AuxiliaryPower equ 6
 StoryFlag_RestrictedSectorDetached equ 7
 StoryFlag_SaxDefeated equ 8
 
+CreditsLineType_Blue equ 00h
+CreditsLineType_Red equ 01h
+CreditsLineType_White equ 02h
+CreditsLineType_Skip equ 05h
+CreditsLineType_End equ 06h
+CreditsLineType_Copyright1 equ 0Ah
+CreditsLineType_Copyright2 equ 0Bh
+CreditsLineType_Copyright3 equ 0Ch
+CreditsLineType_Copyright4 equ 0Dh
+
 ; alternate palette
 AltTankPal0 equ 0000h
 AltTankPal1 equ 0000h

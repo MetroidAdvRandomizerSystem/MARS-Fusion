@@ -426,6 +426,16 @@ SaveData_TanksCollected equ 0F80h
 SaveData_Size equ 1200h
 .sym on
 
+Credits equ 0874B0B0h
+.sym off
+Credits_Len equ 136h
+CreditsLine_Type equ 00h
+CreditsLine_Skip equ 01h
+CreditsLine_Text equ 02h
+CreditsLine_TextSize equ 20h
+CreditsLine_Size equ 24h
+.sym on
+
 AreaLevels equ 0879B8BCh
 .sym on
 LevelMeta_Spriteset0 equ 20h

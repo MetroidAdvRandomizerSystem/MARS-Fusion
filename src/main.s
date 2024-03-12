@@ -132,6 +132,7 @@ StartingLocation equ 087FF228h
 ; Patches making randomization of the game possible
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
+.include "src/randomizer/credits.s"
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/start-warp.s"
