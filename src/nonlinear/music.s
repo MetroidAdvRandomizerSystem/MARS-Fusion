@@ -359,10 +359,15 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_XBox + 1
     bcs     @@case_areaSwitch_default
+    cmp     r4, #22h
+    bne     @@playXboxMusic
+    mov     r0, #3Eh
+    bl      LockHatches
+@@playXboxMusic:
     mov     r0, #1Bh
     mov     r1, MusicType_BossMusic
     mov     r2, #20
-    b       @@tryLock
+    b       @@tryPlay
 @@case_NOC_check19:
     ; NOC data room
     cmp     r6, #19h
