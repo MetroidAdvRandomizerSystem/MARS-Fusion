@@ -81,14 +81,14 @@
     .db     Upgrade_DiffusionMissiles, 0FFh
 .else
     .db     0 + 8 * 2, Upgrade_Missiles
-    .db     Upgrade_SuperMissiles, Upgrade_IceMissiles
+    .db     Upgrade_Missiles, Upgrade_SuperMissiles, Upgrade_IceMissiles
     .db     Upgrade_DiffusionMissiles, 0FFh
 .endif
     .db     1 + 0 * 2, Upgrade_None
-    .db     Upgrade_PowerBombs, 0FFh
-    .db     1 + 3 * 2, Upgrade_None
+    .db     Upgrade_Bombs, Upgrade_PowerBombs, 0FFh
+    .db     1 + 4 * 2, Upgrade_None
     .db     Upgrade_VariaSuit, Upgrade_GravitySuit, 0FFh
-    .db     1 + 7 * 2, Upgrade_None
+    .db     1 + 8 * 2, Upgrade_None
     .db     Upgrade_MorphBall, Upgrade_HiJump, Upgrade_Speedbooster
     .db     Upgrade_SpaceJump, Upgrade_ScrewAttack, 0FFh
     .db     0FFh
@@ -139,7 +139,8 @@
     strh    r0, [r1, #12]
     add     r0, #1
     strh    r0, [r1, #14]
-    add     r0, #0F3h - 110h
+    ldr     r0, =#0B18Ah
+    add     r0, #20h * 5
     add     r1, #40h
     ldr     r3, =SamusUpgrades
     ldrb    r3, [r3, SamusUpgrades_ExplosiveUpgrades]
@@ -176,7 +177,8 @@
     strh    r0, [r1, #16]
     add     r0, #1
     strh    r0, [r1, #18]
-    add     r0, #0F8h - 132h
+    ldr     r0, =#0B18Ah
+    add     r0, #20h * 5 + 05h
     add     r1, #40h
     ldr     r3, =SamusUpgrades
     ldrb    r3, [r3, SamusUpgrades_ExplosiveUpgrades]
@@ -188,9 +190,9 @@
     mov     r0, #(1 << SuitUpgrade_VariaSuit) | (1 << SuitUpgrade_GravitySuit)
     tst     r0, r2
     beq     @@init_misc
-    ldr     r0, =#0B0EAh
-    add     r0, #118h - 0EAh
-    ldr     r1, =#0600CA66h
+    ldr     r0, =#0B18Ah
+    add     r0, #20h * 7 + 05h
+    ldr     r1, =#0600CAA6h
     ldr     r3, =SamusUpgrades
     ldrb    r3, [r3, SamusUpgrades_SuitUpgrades]
     add     r4, =@@SuitOrder
@@ -205,7 +207,7 @@
     beq     @@return
     ldr     r0, =#0B0EAh
     add     r0, #80h
-    ldr     r1, =#0600CB26h
+    ldr     r1, =#0600CB66h
     strh    r0, [r1]
     add     r0, #1
     strh    r0, [r1, #2]
@@ -243,11 +245,14 @@
     .db     0FFh, 0FFh
     .align 4
 @@MissileOrder:
+    .db     ExplosiveUpgrade_Missiles, 4
     .db     ExplosiveUpgrade_SuperMissiles, 3
     .db     ExplosiveUpgrade_IceMissiles, 2
     .db     ExplosiveUpgrade_DiffusionMissiles, 5
     .db     0FFh, 0FFh
+    .align 4
 @@BombOrder:
+    .db     ExplosiveUpgrade_Bombs, 4
     .db     ExplosiveUpgrade_PowerBombs, 4
     .db     0FFh, 0FFh
     .align 4
@@ -281,15 +286,16 @@
     lsr     r0, r2
     lsr     r0, #1
     bcc     @@loop_inc
-    ldr     r0, =#0B22Ah
-    add     r0, #254h - 22Ah
+    ldr     r0, =#0B234h
+    add     r0, #254h - 234h
     strh    r0, [r4]
     mvn     r0, r6
     lsr     r0, r2
     lsl     r0, #1Fh
     lsr     r2, r0, #1Fh
-    ldr     r0, =#0B22Ah
+    ldr     r0, =#0B234h
     add     r0, r2
+    add     r0, #1
     strh    r0, [r4, #2]
     lsl     r1, r2, #0Ch
     add     r0, r3, r1
@@ -303,8 +309,8 @@
     add     r1, #1
     cmp     r1, r2
     blt     @@write_text_loop
-    ldr     r0, =#0B22Ah
-    add     r0, #2
+    ldr     r0, =#0B234h
+    add     r0, #21h
 @@write_empty_loop:
     cmp     r1, #5
     bge     @@write_last_col
@@ -321,8 +327,8 @@
     add     r7, #2
     b       @@loop
 @@write_last_row:
-    ldr     r0, =#0B22Ah
-    add     r0, #274h - 22Ah
+    ldr     r0, =#0B234h
+    add     r0, #274h - 234h
     strh    r0, [r4]
     add     r0, #5
     strh    r0, [r4, #2]
@@ -359,15 +365,16 @@
     lsr     r0, r2
     lsr     r0, #1
     bcc     @@loop_inc
-    ldr     r0, =#0B22Ah
-    add     r0, #254h - 22Ah
+    ldr     r0, =#0B234h
+    add     r0, #254h - 234h
     strh    r0, [r4]
     mvn     r0, r6
     lsr     r0, r2
     lsl     r0, #1Fh
     lsr     r2, r0, #1Fh
-    ldr     r0, =#0B22Ah
+    ldr     r0, =#0B234h
     add     r0, r2
+    add     r0, #1
     strh    r0, [r4, #2]
     lsl     r1, r2, #0Ch
     add     r0, r3, r1
@@ -391,8 +398,8 @@
     strh    r0, [r4]
     b       @@loop_inc_dest
 @@init_empty_loop:
-    ldr     r0, =#0B22Ah
-    add     r0, #2
+    ldr     r0, =#0B234h
+    add     r0, #21h
 @@write_empty_loop:
     cmp     r1, #7
     bge     @@write_last_col
@@ -410,8 +417,8 @@
     add     r7, #2
     b       @@loop
 @@write_last_row:
-    ldr     r0, =#0B22Ah
-    add     r0, #278h - 22Ah
+    ldr     r0, =#0B234h
+    add     r0, #278h - 234h
     strh    r0, [r4]
     add     r0, #1
     strh    r0, [r4, #2]
@@ -761,10 +768,10 @@
     add     r2, r0
     cmp     r1, #0
     bne     @@set_checked
-    ldr     r0, =#0B22Bh
+    ldr     r0, =#0B236h
     b       @@set_checkbox
 @@set_checked:
-    ldr     r0, =#0B22Ah
+    ldr     r0, =#0B235h
 @@set_checkbox:
     strh    r0, [r2]
     mov     r1, #0Bh ^ 0Ch
