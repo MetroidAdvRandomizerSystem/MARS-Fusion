@@ -453,6 +453,8 @@ LevelMeta_Size equ 3Ch
 
 MessagesByLanguage equ 0879CDF4h
 
+BLDCNT equ 04000050h
+
 DMA0 equ 040000B0h
 DMA1 equ 040000BCh
 DMA2 equ 040000C8h

@@ -79,8 +79,34 @@
     .pool
 .endarea
 
+.org 080A21C4h
+    ldr     r0, =03001484h
+.org 080A21E8h
+.area 30h
+    ldr     r1, =CreditsEndDelay
+    ldrh    r1, [r1]
+    cmp     r0, r1
+    bls     080A22D8h
+    ldr     r1, =BLDCNT
+    ldr     r3, =#1FDFh
+    strh    r3, [r1]
+    mov     r0, #0
+    ldr     r1, =0300121Eh
+    strh    r0, [r1]
+    strh    r0, [r2]
+    b       080A22C2h
+    .pool
+.endarea
+
 .org CreditsScrollSpeed
+.area 01h
     .db     9
+.endarea
+
+.org CreditsEndDelay
+.area 02h
+    .dh     512
+.endarea
 
 .org 080A22E0h
 .area 26Ch

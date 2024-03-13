@@ -51,7 +51,8 @@ MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
 RequiredMetroidCount equ 087FF227h
 StartingLocation equ 087FF228h
-CreditsScrollSpeed equ 087FF230h
+CreditsEndDelay equ 087FF230h
+CreditsScrollSpeed equ 087FF232h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h
