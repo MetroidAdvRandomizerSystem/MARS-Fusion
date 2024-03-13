@@ -66,16 +66,21 @@
     add     r0, #1
     strh    r0, [r4, #02h]
 @@increment_scroll_counter:
+    ldr     r1, =CreditsScrollSpeed
+    ldrb    r1, [r1]
     ldrb    r0, [r4, #08h]
-    add     r0, #9
+    add     r0, r1
     strb    r0, [r4, #08h]
-    ldr     r1, =03001226h
-    ldrh    r0, [r1]
-    add     r0, #9
-    strh    r0, [r1]
+    ldr     r2, =03001226h
+    ldrh    r0, [r2]
+    add     r0, r1
+    strh    r0, [r2]
     b       080A22D8h
     .pool
 .endarea
+
+.org CreditsScrollSpeed
+    .db     9
 
 .org 080A22E0h
 .area 26Ch

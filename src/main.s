@@ -41,6 +41,7 @@
 
 StartingItems equ 0828D2ACh
 HintTargets equ 085766ECh
+Credits equ 0874B0B0h
 ReservedSpace equ 087F0000h
 ReservedSpace_Len equ 0F000h
 MinorLocations equ 087FF000h
@@ -50,6 +51,7 @@ MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
 RequiredMetroidCount equ 087FF227h
 StartingLocation equ 087FF228h
+CreditsScrollSpeed equ 087FF230h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h

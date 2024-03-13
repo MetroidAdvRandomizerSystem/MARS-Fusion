@@ -426,7 +426,6 @@ SaveData_TanksCollected equ 0F80h
 SaveData_Size equ 1200h
 .sym on
 
-Credits equ 0874B0B0h
 .sym off
 Credits_Len equ 136h
 CreditsLine_Type equ 00h
