@@ -136,6 +136,7 @@ CreditsScrollSpeed equ 087FF232h
 .if RANDOMIZER
 .notice "Applying randomizer patches..."
 .include "src/randomizer/credits.s"
+.include "src/randomizer/hatch-fixes.s"
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/start-warp.s"

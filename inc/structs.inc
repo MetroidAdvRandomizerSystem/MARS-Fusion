@@ -299,6 +299,7 @@ MusicInfo_NextTrack equ 22h
 .sym on
 
 SpecialTileset equ 03004DE4h
+HatchData equ 0x3004DEC
 DestinationRoom equ 03004E3Ch
 
 RoomTanks equ 030053DCh
@@ -307,6 +308,10 @@ RoomTanks_AnimationDelay equ 00h
 RoomTanks_AnimationFrame equ 01h
 RoomTanks_Upgrade equ 02h
 RoomTanks_Sprite equ 03h
+.sym on
+
+.sym off
+DoorEntry_ExitDistanceX equ 07h
 .sym on
 
 VariableConnections equ 083C8C68h
