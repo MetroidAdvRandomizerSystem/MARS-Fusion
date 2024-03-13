@@ -49,6 +49,7 @@ MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
 TankIncrements equ 087FF220h
+TotalMetroidCount equ 087FF226h
 RequiredMetroidCount equ 087FF227h
 StartingLocation equ 087FF228h
 CreditsEndDelay equ 087FF230h

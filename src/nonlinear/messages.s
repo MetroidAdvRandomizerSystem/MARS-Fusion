@@ -281,8 +281,10 @@
     .dw     086B50FCh   ; wave beam
     .dw     086B5170h   ; plasma beam
     .dw     086B51E6h   ; ice beam
-    .dw     @EnglishMessage_InfantMetroid
+    .dw     @EnglishMessage_InfantMetroidsRemain
+    .dw     @EnglishMessage_InfantMetroidsNeeded
     .dw     @EnglishMessage_SecondLastInfantMetroid
+    .dw     @EnglishMessage_SufficientInfantMetroids
     .dw     @EnglishMessage_LastInfantMetroid
     .dw     086B5984h   ; is your objective clear?
     .dw     086B59CCh   ; confirm mission objective?
@@ -340,9 +342,16 @@
 
 .autoregion
     .align 2
-@EnglishMessage_InfantMetroid:
+@EnglishMessage_InfantMetroidsRemain:
     .stringn 24, "[INDENT]Found an infant metroid.\n"
     .string  62, "[INDENT][METROIDS] more remain."
+.endautoregion
+
+.autoregion
+    .align 2
+@EnglishMessage_InfantMetroidsNeeded:
+    .stringn 24, "[INDENT]Found an infant metroid.\n"
+    .string  61, "[INDENT][METROIDS] more needed."
 .endautoregion
 
 .autoregion
@@ -350,6 +359,13 @@
 @EnglishMessage_SecondLastInfantMetroid:
     .stringn 24, "[INDENT]Found an infant metroid.\n"
     .string  59, "[INDENT]1 more remains."
+.endautoregion
+
+.autoregion
+    .align 2
+@EnglishMessage_SufficientInfantMetroids:
+    .stringn 4,  "[INDENT]Enough infant metroids found.\n"
+    .string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
 
 .autoregion

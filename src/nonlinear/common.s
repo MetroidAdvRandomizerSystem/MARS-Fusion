@@ -48,16 +48,29 @@
     ldrb    r0, [r1, PermanentUpgrades_InfantMetroids]
     add     r0, #1
     strb    r0, [r1, PermanentUpgrades_InfantMetroids]
-    ldr     r1, =RequiredMetroidCount
+    ldr     r1, =TotalMetroidCount
     ldrb    r1, [r1]
-    sub     r1, #1
     cmp     r0, r1
-    bgt     @@lastMetroid
+    bge     @@lastMetroid
+    ldr     r2, =RequiredMetroidCount
+    ldrb    r2, [r2]
+    cmp     r0, r2
+    bge     @@sufficientMetroids
+    cmp     r1, r2
+    bne     @@metroidsNeeded
+    sub     r0, r2, r0
+    cmp     r0, #1
     beq     @@secondLastMetroid
-    mov     r0, #Message_InfantMetroid
+    mov     r0, #Message_InfantMetroidsRemain
+    b       @@setMessage
+@@metroidsNeeded:
+    mov     r0, #Message_InfantMetroidsNeeded
     b       @@setMessage
 @@secondLastMetroid:
     mov     r0, #Message_SecondLastInfantMetroid
+    b       @@setMessage
+@@sufficientMetroids:
+    mov     r0, #Message_SufficientInfantMetroids
     b       @@setMessage
 @@lastMetroid:
     ; the last metroid is in captivity. the galaxy is at peace.
@@ -203,8 +216,15 @@
     .pool
 .endarea
 
+.org TotalMetroidCount
+.area 01h
+    .db     5
+.endarea
+
 .org RequiredMetroidCount
+.area 01h
     .db     4
+.endarea
 
 .org MajorLocations
 .area 20h
@@ -232,7 +252,7 @@
 .endarea
 
 .org TankIncrements
-.area 10h
+.area 06h
     .dh     5   ; missile tank
     .dh     100 ; energy tank
     .dh     2   ; power bomb tank
