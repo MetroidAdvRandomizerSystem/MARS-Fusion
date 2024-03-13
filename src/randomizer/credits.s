@@ -1,5 +1,26 @@
 ; Rewrites the credits format for space optimization and more flexibility.
 
+.org 080A1EDCh
+.area 78h
+    ldr     r0, =@CreditsFont
+    str     r0, [r4, DMA_SAD]
+    mov     r0, #06h
+    lsl     r0, #18h
+    str     r0, [r4, DMA_DAD]
+    ldr     r0, =80001A00h
+    str     r0, [r4, DMA_CNT]
+    ldr     r0, [r4, DMA_CNT]
+    ldr     r0, =087478A0h
+    str     r0, [r4, DMA_SAD]
+    mov     r0, #05h
+    lsl     r0, #18h
+    str     r0, [r4, DMA_DAD]
+    ldr     r0, =80000030h
+    str     r0, [r4, DMA_CNT]
+    ldr     r0, [r4, DMA_CNT]
+    b       080A1F54h
+.endarea
+
 .org 080A2138h
 .area 8Ch
     ldrb    r1, [r4, #08h]
@@ -138,10 +159,11 @@
 .endif
     .align 2
 @@case_blue:
-    mov     r4, #0
+    mov     r4, #1
+    lsl     r4, #0Ch
     b       @@write_oneline
 @@case_red:
-    mov     r4, #1
+    mov     r4, #2
     lsl     r4, #0Ch
 @@write_oneline:
     add     r2, #CreditsLine_Text
@@ -154,30 +176,10 @@
     b       @@return_skip
 @@write_oneline_check_uppercase:
     mov     r0, r1
-    sub     r0, #41h
-    cmp     r0, #26
-    bhs     @@write_oneline_check2E
-    mov     r0, #0FCh
-    lsl     r0, #4
-    add     r0, r1
-    b       @@write_oneline_char
-@@write_oneline_check2E:
-    mov     r0, #10h
-    lsl     r0, #08h
-    cmp     r1, #2Eh
-    bne     @@write_oneline_check2C
-    add     r0, #1Bh
-    b       @@write_oneline_char
-@@write_oneline_check2C:
-    cmp     r1, #2Ch
-    bne     @@write_oneline_check26
-    add     r0, #1Ch
-    b       @@write_oneline_char
-@@write_oneline_check26:
-    cmp     r1, #26h
-    bne     @@write_oneline_loop_inc
-    add     r0, #1Dh
-@@write_oneline_char:
+    sub     r0, #20h
+    beq     @@write_oneline_loop_inc
+    cmp     r0, #7Eh - 20h
+    bhi     @@write_oneline_loop_inc
     add     r0, r4
     strh    r0, [r3]
 @@write_oneline_loop_inc:
@@ -198,47 +200,18 @@
     beq     @@return_twoline_skip
     ; check uppercase letters
     mov     r0, r1
-    sub     r0, #41h
-    cmp     r0, #26
-    bhs     @@write_twoline_check_lowercase
-    sub     r0, r1, #1
-    strh    r0, [r4]
     sub     r0, #20h
-    strh    r0, [r3]
-    b       @@write_twoline_loop_inc
-@@write_twoline_check_lowercase:
-    sub     r0, #20h
-    cmp     r0, #26
-    bhs     @@write_twoline_check2E
-    sub     r0, r1, #1
+    beq     @@write_twoline_loop_inc
+    cmp     r0, #7Eh - 20h
+    bhs     @@write_twoline_loop_inc
+    lsr     r1, r0, #5
+    lsl     r1, #6
+    lsl     r0, #20h - 5
+    lsr     r0, #20h - 5
+    add     r0, r1
+    add     r0, #60h
     strh    r0, [r3]
     add     r0, #20h
-    strh    r0, [r4]
-    b       @@write_twoline_loop_inc
-@@write_twoline_check2E:
-    cmp     r1, #2Eh
-    bne     @@write_twoline_check2C
-    mov     r0, #5Bh
-    strh    r0, [r4]
-    b       @@write_twoline_loop_inc
-@@write_twoline_check2C:
-    cmp     r1, #2Ch
-    bne     @@write_twoline_check2D
-    mov     r0, #5Ch
-    strh    r0, [r4]
-    b       @@write_twoline_loop_inc
-@@write_twoline_check2D:
-    cmp     r1, #2Dh
-    bne     @@write_twoline_check2B
-    mov     r0, #3Ah
-    strh    r0, [r3]
-    b       @@write_twoline_loop_inc
-@@write_twoline_check2B:
-    cmp     r1, #2Bh
-    bne     @@write_twoline_loop_inc
-    mov     r0, #7Ah
-    strb    r0, [r3]
-    mov     r0, #5Bh
     strh    r0, [r4]
 @@write_twoline_loop_inc:
     add     r2, #1
@@ -250,57 +223,59 @@
     neg     r0, r0
     b       @@return
 @@case_copyright1:
-    mov     r1, #8
+    mov     r1, #0
     ldr     r2, =03001484h
     add     r2, #1Ah
 @@case_copyright1_write_loop:
     mov     r0, r1
-    add     r0, #98h
+    add     r0, #0FFh
+    add     r0, #120h - 0FFh
     strh    r0, [r2]
     add     r1, #1
     add     r2, #2
-    cmp     r1, #15h
+    cmp     r1, #0Dh
     ble     @@case_copyright1_write_loop
     b       @@return_skip
 @@case_copyright2:
-    mov     r1, #6
+    mov     r1, #0
     ldr     r2, =03001484h
     add     r2, #16h
 @@case_copyright2_write_loop:
     mov     r0, r1
-    add     r0, #0BAh
+    add     r0, #0FFh
+    add     r0, #140h - 0FFh
     strh    r0, [r2]
     add     r1, #1
     add     r2, #2
-    cmp     r1, #17h
+    cmp     r1, #11h
     ble     @@case_copyright2_write_loop
     b       @@return_skip
 @@case_copyright3:
-    mov     r0, #0DCh
-    mov     r1, #4
+    mov     r1, #0
     ldr     r2, =03001484h
     add     r2, #12h
 @@case_copyright3_write_loop:
     mov     r0, r1
-    add     r0, #0DCh
+    add     r0, #0FFh
+    add     r0, #160h - 0FFh
     strh    r0, [r2]
     add     r1, #1
     add     r2, #2
-    cmp     r1, #19h
+    cmp     r1, #15h
     ble     @@case_copyright3_write_loop
     b       @@return_skip
 @@case_copyright4:
-    mov     r0, #0FAh
-    mov     r1, #6
+    mov     r1, #0
     ldr     r2, =03001484h
-    add     r2, #15h
+    add     r2, #17h
 @@case_copyright4_write_loop:
     mov     r0, r1
-    add     r0, #0FAh
+    add     r0, #0FFh
+    add     r0, #180h - 0FFh
     strh    r0, [r2]
     add     r1, #1
     add     r2, #2
-    cmp     r1, #17h
+    cmp     r1, #11h
     ble     @@case_copyright4_write_loop
     b       @@return_skip
 @@return_skip:
@@ -321,4 +296,12 @@
 .area 2B98h
 .incbin "data/credits.bin"
 .endarea
+
+.defineregion 08747900h, 1AC0h
+
+.autoregion
+    .align 2
+@CreditsFont:
+.incbin "data/credits-font.gfx"
+.endautoregion
 
