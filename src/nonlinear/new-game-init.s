@@ -62,10 +62,10 @@
     strb    r0, [r3, PowerOutageSecurityBackup - SecurityLevelFlash]
     mov     r0, #0
     strb    r0, [r2, SamusUpgrades_MapDownloads]
+    ldr     r1, =03000B86h
+    strb    r0, [r1]
     mov     r0, #0FFh
     ldr     r1, =PrevSubEvent
-    strb    r0, [r1]
-    ldr     r1, =03000B86h
     strb    r0, [r1]
     strb    r0, [r1, PrevNavConversation - 03000B86h]
     mov     r0, #0
