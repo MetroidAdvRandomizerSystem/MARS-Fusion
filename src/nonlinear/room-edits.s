@@ -3,7 +3,7 @@
 ; Main Deck - Operations Deck
 ; change operations room lv4 security door to lv0 security
 .org 08471668h
-.area 2E4h
+.area 2DBh
 .incbin "data/rooms/S0-0D-BG1.rlebg"
 .endarea
 .org 08471182h
@@ -14,7 +14,7 @@
 ; Main Deck - Maintenance Shaft
 ; repair maintenance crossing
 .org 08476337h
-.area 4A5h
+.area 492h
 .incbin "data/rooms/S0-23-BG1.rlebg"
 .endarea
 .org 08475E47h
@@ -25,7 +25,7 @@
 ; Main Deck - Maintenance Crossing
 ; repair so the crossing is traversable
 .org 0847690Fh
-.area 105h
+.area 100h
 .incbin "data/rooms/S0-24-BG1.rlebg"
 .endarea
 .org 0847683Dh
@@ -40,7 +40,7 @@
 ; Main Deck - Operations Room
 ; change lv4 security door to lv0 security
 .org 084814F8h
-.area 100h
+.area 0F8h
 .incbin "data/rooms/S0-52-BG1.rlebg"
 .endarea
 .org 08481382h
@@ -51,7 +51,7 @@
 ; Sector 2 - Central Shaft
 ;
 .org 084D0D55h
-.area 4FFh
+.area 4E1h
 .incbin "data/rooms/S2-0D-BG1.rlebg"
 .endarea
 .org 084D07ACh
@@ -62,11 +62,11 @@
 ; Sector 2 - Data Hub
 ; repair door to data hub access
 .org 084D5519h
-.area 42Bh
+.area 40Bh
 .incbin "data/rooms/S2-1F-BG1.rlebg"
 .endarea
 .org 084D526Eh
-.area 0F5h
+.area 0CEh
 .incbin "data/rooms/S2-1F-Clip.rlebg"
 .endarea
 
@@ -88,7 +88,7 @@
 ; Sector 3 - BOX Access
 ; repair door to bob's room
 .org 084FF05Fh
-.area 306h
+.area 300h
 .incbin "data/rooms/S3-16-BG1.rlebg"
 .endarea
 .org 084FEDE6h
@@ -99,7 +99,7 @@
 ; Sector 3 - BOX Arena
 ; repair door to data room
 .org 084FF5D1h
-.area 263h
+.area 256h
 .incbin "data/rooms/S3-17-BG1.rlebg"
 .endarea
 .org 084FF4AEh
@@ -110,7 +110,7 @@
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
 .org 0853F5C3h
-.area 5B1h
+.area 57Ah
 .incbin "data/rooms/S4-22-BG1.rlebg"
 .endarea
 .org 0853F25Ah
@@ -122,7 +122,7 @@
 ; restructure the room to have a speedbooster runway across the top
 ; add speedbooster blocks above the power bomb blocks
 .org 08514F18h
-.area 4ACh
+.area 486h
 .incbin "data/rooms/S5-03-BG1.rlebg"
 .endarea
 .org 085145A8h
@@ -133,7 +133,7 @@
 ; Sector 5 - Arctic Containment
 ; change the lv4 security door to crow's nest to a functional lv3 security door
 .org 08516C61h
-.area 687h
+.area 652h
 .incbin "data/rooms/S5-07-BG1.rlebg"
 .endarea
 .org 08516852h
@@ -144,7 +144,7 @@
 ; Sector 5 - Data Room
 ; seal off the destroyed upper half of the data room from the intact lower half
 .org 08519419h
-.area 1A7h
+.area 19Fh
 .incbin "data/rooms/S5-10-BG1.rlebg"
 .endarea
 .org 085191A4h
@@ -155,7 +155,7 @@
 ; Sector 5 - Security Shaft East
 ; repair the door to kago blockade
 .org 0851AC8Ah
-.area 306h
+.area 2EBh
 .incbin "data/rooms/S5-16-BG1.rlebg"
 .endarea
 .org 0851AA7Eh
@@ -166,7 +166,7 @@
 ; Sector 5 - Ripper Road
 ; replace lv0 door to arctic containment with an open hatch
 .org 0851BA76h
-.area 1C2h
+.area 1B3h
 .incbin "data/rooms/S5-1A-BG1.rlebg"
 .endarea
 .org 0851B9C4h
@@ -177,7 +177,7 @@
 ; Sector 5 - Crow's Nest
 ; repair the door to arctic containment into a lv3 security door
 .org 0851CC93h
-.area 27Dh
+.area 263h
 .incbin "data/rooms/S5-24-BG1.rlebg"
 .endarea
 .org 0851CAA6h
@@ -197,7 +197,7 @@
 ; Remove the crumble block into the long morph tunnel to prevent softlocks
 ; without power bombs
 .org 085554DDh
-.area 1F7h
+.area 1EFh
 .incbin "data/rooms/S6-1B-BG1.rlebg"
 .endarea
 .org 085553BAh
