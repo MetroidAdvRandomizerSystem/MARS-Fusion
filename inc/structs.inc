@@ -442,6 +442,11 @@ CreditsLine_Size equ 24h
 
 AreaLevels equ 0879B8BCh
 .sym on
+LevelMeta_Bg0 equ 08h
+LevelMeta_Bg1 equ 0Ch
+LevelMeta_Bg2 equ 10h
+LevelMeta_Clipdata equ 14h
+LevelMeta_Bg3 equ 18h
 LevelMeta_Spriteset0 equ 20h
 LevelMeta_Spriteset0Id equ 24h
 LevelMeta_Spriteset1Event equ 25h

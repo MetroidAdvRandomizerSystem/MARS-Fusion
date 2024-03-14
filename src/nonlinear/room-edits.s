@@ -235,10 +235,18 @@
 .area 40Bh
 .incbin "data/rooms/S2-1F-BG1.rlebg"
 .endarea
-.org 084D526Eh
-.area 0CEh
+
+.autoregion
+@S2_DataHub_Clipdata:
 .incbin "data/rooms/S2-1F-Clip.rlebg"
+.endautoregion
+
+.org Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S2_DataHub_Clipdata
 .endarea
+
+.defineregion 084D526Eh, 0CEh
 
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
@@ -261,10 +269,18 @@
 .area 300h
 .incbin "data/rooms/S3-16-BG1.rlebg"
 .endarea
-.org 084FEDE6h
-.area 0A5h
+
+.autoregion
+@S3_BoxAccess_Clipdata:
 .incbin "data/rooms/S3-16-Clip.rlebg"
+.endautoregion
+
+.org Sector3Levels + 16h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S3_BoxAccess_Clipdata
 .endarea
+
+.defineregion 084FEDE6h, 0A5h
 
 ; Sector 3 - BOX Arena
 ; repair door to data room
@@ -272,10 +288,18 @@
 .area 256h
 .incbin "data/rooms/S3-17-BG1.rlebg"
 .endarea
-.org 084FF4AEh
-.area 08Fh
+
+.autoregion
+@S3_BoxArena_Clipdata:
 .incbin "data/rooms/S3-17-Clip.rlebg"
+.endautoregion
+
+.org Sector3Levels + 17h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S3_BoxArena_Clipdata
 .endarea
+
+.defineregion 084FF4AEh, 08Fh
 
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
@@ -307,14 +331,25 @@
 ; Sector 5 - Nightmare Training Grounds
 ; restructure the room to have a speedbooster runway across the top
 ; add speedbooster blocks above the power bomb blocks
-.org 08514F18h
-.area 486h
+.autoregion
+@S5_NightmareTrainingGrounds_Bg1:
 .incbin "data/rooms/S5-03-BG1.rlebg"
-.endarea
-.org 085145A8h
-.area 212h
+.endautoregion
+
+.autoregion
+@S5_NightmareTrainingGrounds_Clipdata:
 .incbin "data/rooms/S5-03-Clip.rlebg"
+.endautoregion
+
+.org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1
+.area 10h
+    .dw     @S5_NightmareTrainingGrounds_Bg1
+    .skip 4
+    .dw     @S5_NightmareTrainingGrounds_Clipdata
 .endarea
+
+.defineregion 08514F18h, 486h
+.defineregion 085145A8h, 212h
 
 ; Sector 5 - Arctic Containment
 ; change the lv4 security door to crow's nest to a functional lv3 security door
@@ -322,10 +357,18 @@
 .area 652h
 .incbin "data/rooms/S5-07-BG1.rlebg"
 .endarea
-.org 08516852h
-.area 1AAh
+
+.autoregion
+@S5_ArcticContainment_Clipdata:
 .incbin "data/rooms/S5-07-Clip.rlebg"
+.endautoregion
+
+.org Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S5_ArcticContainment_Clipdata
 .endarea
+
+.defineregion 08516852h, 1AAh
 
 ; Sector 5 - Data Room
 ; merge the intact and destroyed data rooms into a single room
@@ -334,10 +377,18 @@
 .area 19Fh
 .incbin "data/rooms/S5-10-BG1.rlebg"
 .endarea
-.org 085191A4h
-.area 84h
+
+.autoregion
+@S5_DataRoom_Clipdata:
 .incbin "data/rooms/S5-10-Clip.rlebg"
+.endautoregion
+
+.org Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S5_DataRoom_Clipdata
 .endarea
+
+.defineregion 085191A4h, 84h
 
 .org 085195B8h
 .area 03h
@@ -355,10 +406,18 @@
 .area 2EBh
 .incbin "data/rooms/S5-16-BG1.rlebg"
 .endarea
-.org 0851AA7Eh
-.area 110h
+
+.autoregion
+@S5_SecurityShaftEast_Clipdata:
 .incbin "data/rooms/S5-16-Clip.rlebg"
+.endautoregion
+
+.org Sector5Levels + 16h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S5_SecurityShaftEast_Clipdata
 .endarea
+
+.defineregion 0851AA7Eh, 110h
 
 ; Sector 5 - Ripper Road
 ; replace lv0 door to arctic containment with an open hatch
@@ -377,17 +436,25 @@
 .area 263h
 .incbin "data/rooms/S5-24-BG1.rlebg"
 .endarea
-.org 0851CAA6h
-.area 0F0h
+
+.autoregion
+@S5_CrowsNest_Clipdata:
 .incbin "data/rooms/S5-24-Clip.rlebg"
+.endautoregion
+
+.org Sector5Levels + 24h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S5_CrowsNest_Clipdata
 .endarea
+
+.defineregion 0851CAA6h, 0F0h
 
 ; Sector 6 - Zozoro Wine Cellar
 ; change the reforming bomb block to a never reforming bomb block to prevent
 ; softlocking from running out of power bombs
 .org 085537C4h
 .area 033h
-.incbin "data/rooms/S6-0F-BG1.rlebg"
+.incbin "data/rooms/S6-0F-Clip.rlebg"
 .endarea
 
 ; Sector 6 - Big Shell 1
