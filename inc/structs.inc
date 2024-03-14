@@ -456,6 +456,14 @@ LevelMeta_Music equ 3Ah
 LevelMeta_Size equ 3Ch
 .sym off
 
+MainDeckLevels equ 083C2C4Ch
+Sector1Levels equ 083C40B0h
+Sector2Levels equ 083C4D58h
+Sector3Levels equ 083C5BA4h
+Sector5Levels equ 083C64C8h
+Sector4Levels equ 083C70F8h
+Sector6Levels equ 083C7C38h
+
 MessagesByLanguage equ 0879CDF4h
 
 BLDCNT equ 04000050h
