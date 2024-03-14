@@ -234,7 +234,7 @@
     sub     r0, #20h
     beq     @@write_twoline_loop_inc
     cmp     r0, #7Eh - 20h
-    bhs     @@write_twoline_loop_inc
+    bhi     @@write_twoline_loop_inc
     lsr     r1, r0, #5
     lsl     r1, #6
     lsl     r0, #20h - 5
