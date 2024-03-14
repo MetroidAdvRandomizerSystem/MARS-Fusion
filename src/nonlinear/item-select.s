@@ -21,6 +21,7 @@
     str     r0, [r1, #12]
     str     r0, [r1, #16]
     str     r0, [r1, #20]
+    strh    r0, [r1, #22]
     add     r4, =@@UpgradeOrder
     ldr     r5, =PermanentUpgrades
     ldr     r6, =MajorUpgradeInfo
@@ -630,7 +631,7 @@
     cmp     r0, #Upgrade_None
     bne     @@set_cursor_pos
     add     r1, #1
-    cmp     r1, #24
+    cmp     r1, #26
     bge     @@return
     b       @@find_first_upgrade_loop
 @@set_cursor_pos:
@@ -856,7 +857,7 @@
     add     r3, r7
 @@scroll_vertical_first:
     add     r0, r5, r3
-    cmp     r0, #12
+    cmp     r0, #13
     blo     @@scroll_vertical_loop
     b       @@return_prev
 @@find_closest:
@@ -886,13 +887,13 @@
     sub     r3, r0
 @@find_closest_first:
     add     r0, r5, r3
-    cmp     r0, #12
+    cmp     r0, #13
     blo     @@find_closest_loop
     asr     r0, r3, #1Fh
     mvn     r3, r3
     sub     r3, r0
     add     r0, r5, r3
-    cmp     r0, #12
+    cmp     r0, #13
     blo     @@find_closest_loop
 @@return_prev:
     mov     r0, r4
