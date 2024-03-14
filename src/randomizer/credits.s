@@ -173,8 +173,8 @@
 @@branch_table:
     .db     (@@case_blue - @@branch - 4) >> 1
     .db     (@@case_red - @@branch - 4) >> 1
-    .db     (@@case_white - @@branch - 4) >> 1
-    .db     (@@return_skip - @@branch - 4) >> 1
+    .db     (@@case_tallwhite - @@branch - 4) >> 1
+    .db     (@@case_smallwhite - @@branch - 4) >> 1
     .db     (@@return_skip - @@branch - 4) >> 1
     .db     (@@return_skip - @@branch - 4) >> 1
     .db     (@@case_end - @@branch - 4) >> 1
@@ -189,6 +189,9 @@
     .error "Branch table overflowed"
 .endif
     .align 2
+@@case_smallwhite:
+    mov     r4, #0
+    b       @@write_oneline
 @@case_blue:
     mov     r4, #1
     lsl     r4, #0Ch
@@ -217,7 +220,7 @@
     add     r2, #1
     add     r3, #2
     b       @@write_oneline_loop
-@@case_white:
+@@case_tallwhite:
     add     r2, #CreditsLine_Text
     ldr     r3, =03001484h
     mov     r0, #1

@@ -400,7 +400,8 @@ StoryFlag_SaxDefeated equ 8
 
 CreditsLineType_Blue equ 00h
 CreditsLineType_Red equ 01h
-CreditsLineType_White equ 02h
+CreditsLineType_TallWhite equ 02h
+CreditsLineType_ShortWhite equ 03h
 CreditsLineType_Skip equ 05h
 CreditsLineType_End equ 06h
 CreditsLineType_Copyright1 equ 0Ah
