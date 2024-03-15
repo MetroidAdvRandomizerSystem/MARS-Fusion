@@ -32,6 +32,10 @@
 .ifndef MISSILES_WITHOUT_MAINS
 .definelabel MISSILES_WITHOUT_MAINS, 0
 .endif
+.ifndef CUSTOM_DEMOS
+.definelabel CUSTOM_DEMOS, 0
+.endif
+
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"
@@ -110,6 +114,9 @@ CreditsScrollSpeed equ 087FF232h
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
 .include "src/nonlinear/demos.s"
+.if CUSTOM_DEMOS
+.include "src/demos/demos-combined.s"
+.endif
 .include "src/nonlinear/room-states.s"
 .include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"

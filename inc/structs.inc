@@ -324,6 +324,15 @@ VariableConnection_DestinationDoor equ 03h
 VariableConnection_Size equ 04h
 .sym on
 
+
+DemoInputData equ 083E3EACh
+.sym off
+DemoInputData_InputsPointer equ 00h
+DemoInputData_NumInputs equ 04h
+DemoInputData_DurationsPointer equ 08h
+DemoInputData_NumDurations equ 0Ch
+.sym on
+
 DemoMemory equ 083E3F6Ch
 .sym off
 ; modified from vanilla to account for nonlinear upgrades

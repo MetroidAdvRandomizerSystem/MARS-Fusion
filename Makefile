@@ -3,6 +3,8 @@ BASE := base
 OUT := m4rs
 
 OBJ_DIR := ./obj
+DEMO_DIR := ./src/demos
+DEMO_FILES := $(wildcard $(DEMO_DIR)/demo-*.s)
 
 FLIPS := ./tools/flips.exe
 AS := ./tools/armips-a8d71f0.exe
@@ -27,9 +29,13 @@ dist: $(IN).gba $(OUT).gba
 stat: $(IN).gba
 	$(AS) src/main.s -stat
 
+$(DEMO_DIR)/demos-combined.s: $(DEMO_FILES)
+	cat $(DEMO_FILES) >> $@
+
 clean:
 	$(RM) $(OBJ_DIR)/*
 	$(RM) $(OUT).gba
+	echo -n "" > $(DEMO_DIR)/demos-combined.s
 
-.PHONY: all check clean
+.PHONY: all check clean $(DEMO_DIR)/demos-combined.s
 .INTERMEDIATE: $(OBJS)
