@@ -469,6 +469,8 @@ Sector5Levels equ 083C64C8h
 Sector4Levels equ 083C70F8h
 Sector6Levels equ 083C7C38h
 
+SpritesetList equ 0879ADD8h
+
 MessagesByLanguage equ 0879CDF4h
 
 BLDCNT equ 04000050h
