@@ -1,5 +1,14 @@
 console.clear()
 memory.usememorydomain("System Bus")
+CWD = io.popen("cd"):read()
+MARS_DIR = CWD:gsub("tools$", "")
+
+if string.match(CWD, "(MARS[-]Fusion[\\|/]tools)$") == nil then
+    print([[
+This script is expected to run inside of the MARS-Fusion/tools directory.
+Demos will not be saved if the script is not loaded from the correct location.
+    ]])
+end
 
 local addr = {
     ["CurrArea"]          = 0x0300002C,
@@ -27,6 +36,19 @@ local addr = {
 }
 
 
+---Turns an table of u16le into table of u8
+---@param u16le_table table
+---@return table
+function table:u16le_to_u8(u16le_table)
+    local u8_table = {}
+    for n=1,(#u16le_table) do
+        u8_table[n*2], u8_table[(n*2) - 1] = u16le_table[n] >> 8, (u16le_table[n]) & 0xFF
+    end
+    return u8_table
+end
+
+
+---Loads relevant memory for saving to a demo
 local function LoadDemoMemory()
     CurrArea          = memory.read_u8(addr["CurrArea"])
     PrevDoor          = memory.read_u8(addr["PrevDoor"])
@@ -48,6 +70,7 @@ local function LoadDemoMemory()
 end
 
 
+---Initializes the script
 function Init()
     console.clear()
     InputQueue = {}
@@ -55,6 +78,37 @@ function Init()
     PrevInput = 0
     PrevFrames = 0
     SubGameMode = memory.read_u16_le(addr["SubGameMode"])
+    DemoNumber = 0
+    DemoFolderExists, _, _ = os.rename(MARS_DIR.."data\\demos", MARS_DIR.."data\\demos") -- Hack to check for existing directory
+    AsmFolderExists, _, _  = os.rename(MARS_DIR.."src\\demos", MARS_DIR.."src\\demos") -- Hack to check for existing directory
+
+    -- check for existing asm files, if found increment demo number and try again
+    while DemoNumber < 0xC do
+        -- break early if no demo folder
+        if DemoFolderExists == nil then
+            print("Could not find the demos data folder.")
+            break
+        elseif AsmFolderExists == nil then
+            print("Could not find the demos asm folder.")
+            break
+        end
+
+
+        local filename = io.open(string.format(MARS_DIR.."src\\demos\\demo-%X.s", DemoNumber), "r+")
+        if type(filename) == "userdata" then  -- bizhawk calls files "userdata" for some reason
+            DemoNumber = DemoNumber + 1
+            ---@diagnostic disable-next-line: undefined-field
+            filename:close()
+        else
+            print(string.format([[
+Demo files will be saved at ...
+* Inputs & Durations: %sdata\demos\
+* ASM: %ssrc\demos\]], MARS_DIR,MARS_DIR)
+            )
+            break
+        end
+    end
+
 end
 
 
@@ -68,21 +122,47 @@ end
 function OnExit(DemoFinished)
     gui.clearGraphics()
     if not DemoFinished then
+        print("This recording was not saved.")
+        return
+
+    -- If demo data storage has been expanded/repointed this can be modified
+    elseif DemoNumber == 0xD then
+        print("The maximum number of recordings has been reached. This recording was not saved.")
+        return
+
+        -- Demo or Asm folder was not found
+    elseif DemoFolderExists == nil or AsmFolderExists == nil then
         return
     end
 
-    local DemoInputDataStr = [[
-.org DemoInputData
-    .dw	DemoInputs
-    .dh	%d
-    .skip 2
-    .dw	DemoFrames
-    .dh	%d
-    .skip 2
-]]
+    local demoasmfile      = assert(io.open(string.format(MARS_DIR.."src\\demos\\demo-%X.s", DemoNumber), "wb"))
+    local demoinputfile    = assert(io.open(string.format(MARS_DIR.."data\\demos\\demo-%X-inputs.bin", DemoNumber), "wb"))
+    local demodurationfile = assert(io.open(string.format(MARS_DIR.."data\\demos\\demo-%X-durations.bin", DemoNumber), "wb"))
 
-    local DemoMemoryStr = [[
-.org DemoMemory
+    local DemoAsmStr = [[
+.autoregion
+.align 2
+@Demo]]..DemoNumber..[[Inputs:
+.incbin "data/demos/demo-]]..DemoNumber..[[-inputs.bin"
+.endautoregion
+
+.autoregion
+.align 2
+@Demo]]..DemoNumber..[[Durations:
+.incbin "data/demos/demo-]]..DemoNumber..[[-durations.bin"
+.endautoregion
+
+.org DemoInputData + ]]..DemoNumber..[[ * 10h
+.area 10h
+    .dw  @Demo]]..DemoNumber..[[Inputs
+    .dh  %04Xh
+    .skip 2
+    .dw  @Demo]]..DemoNumber..[[Durations
+    .dh  %04Xh
+    .skip 2
+.endarea
+
+.org DemoMemory + ]]..DemoNumber..[[ * 1Ch
     .db	%02Xh, %02Xh
     .db	%02Xh, %02Xh
     .db	%02Xh, %02Xh, %02Xh
@@ -94,43 +174,41 @@ function OnExit(DemoFinished)
     .dh	%04Xh, %04Xh, %04Xh
 ]]
 
-    print(
-        string.format(
-            DemoMemoryStr,
-            CurrArea, PrevDoor,
-            SecurityLevel, MapDownloads,
-            BeamUpgrades, ExplosiveUpgrades, SuitUpgrades,
-            StoryFlags,
-            MaxEnergy, CurrEnergy,
-            MaxMissiles, CurrMissiles,
-            MaxPowerBombs, CurrPowerBombs,
-            SamusDirection, SamusXPos, SamusYPos
-        )
-    )
-
-    local inputStr = ".org DemoInputs\n\t.dh\t"
-    local frameStr = ".org DemoFrames\n\t.dh\t"
     table.insert(InputQueue, PrevInput)
     table.insert(FrameQueue, PrevFrames)
 
-    for i = 1, #InputQueue - 1 do
-        inputStr = inputStr .. string.format("%04Xh, ", InputQueue[i])
-        frameStr = frameStr .. string.format("%d, ", FrameQueue[i])
-    end
+    local demoinputs = table:u16le_to_u8(InputQueue)
+    local demodurations = table:u16le_to_u8(FrameQueue)
 
-    inputStr = inputStr .. string.format("%04Xh", InputQueue[#InputQueue])
-    frameStr = frameStr .. string.format("%d", FrameQueue[#FrameQueue])
-    print(inputStr.."\n")
-    -- print(#InputQueue)
-    print(frameStr.."\n")
-    -- print(#FrameQueue)
-    print(
-        string.format(
-            DemoInputDataStr,
-            #InputQueue * 2,
-            #FrameQueue * 2
-        )
-  )
+
+    print("Writing Input file ...")
+    demoinputfile:write(string.char(table.unpack(demoinputs)))
+    demoinputfile:flush()
+    demoinputfile:close()
+    print("Done!")
+
+    print("Writing Duration file ...")
+    demodurationfile:write(string.char(table.unpack(demodurations)))
+    demodurationfile:flush()
+    demodurationfile:close()
+    print("Done!")
+
+    print("Writing asm file ...")
+    demoasmfile:write(string.format(
+        DemoAsmStr,
+        #demoinputs, #demodurations,
+        CurrArea, PrevDoor,
+        SecurityLevel, MapDownloads,
+        BeamUpgrades, ExplosiveUpgrades, SuitUpgrades,
+        StoryFlags,
+        MaxEnergy, CurrEnergy,
+        MaxMissiles, CurrMissiles,
+        MaxPowerBombs, CurrPowerBombs,
+        SamusDirection, SamusXPos, SamusYPos
+    ))
+    demoasmfile:flush()
+    demoasmfile:close()
+    print("Done!")
 end
 
 
@@ -172,29 +250,32 @@ gui.clearGraphics()
 
 
 Init()
-LoadDemoMemory()
-print("The Demo recording has started. Pause the game to stop the demo recording.")
-gui.pixelText(
-    168, 5,
-    " Recording\nin progress",
-    "white",
-    "red"
-)
 
---[[
-    This behavior mimics transitioning from title screen to demo playback.
-    Demo Playback resets RNG to 0 before playing each demo. Here we reset RNG
-    to 0 so that if a new room loads, RNG should be consistent during playback
-    of the new recording.
-]]
-while true do
-    SubGameMode = memory.read_u16_le(addr["SubGameMode"])
-    if SubGameMode ~= 1 then
-        emu.frameadvance()
-        ResetRNG()
-    else
-        break
+if DemoFolderExists ~= nil and AsmFolderExists ~= nil then -- no errors
+    LoadDemoMemory()
+    print("The Demo recording has started. Pause the game to stop the demo recording.")
+    gui.pixelText(
+        168, 5,
+        " Recording\nin progress",
+        "white",
+        "red"
+    )
+    --[[
+        This behavior mimics transitioning from title screen to demo playback.
+        Demo Playback resets RNG to 0 before playing each demo. Here we reset RNG
+        to 0 so that if a new room loads, RNG should be consistent during playback
+        of the new recording.
+    ]]
+    while true do
+        SubGameMode = memory.read_u16_le(addr["SubGameMode"])
+        if SubGameMode ~= 1 then
+            emu.frameadvance()
+            ResetRNG()
+        else
+            break
+        end
     end
+
 end
 
 DemoFinished = false
