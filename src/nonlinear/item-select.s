@@ -811,7 +811,16 @@
     eor     r0, r1
     strh    r0, [r2, #16]
 @@return:
-    pop     { r4-r7, pc }
+    ldr     r2, =ToggleInput
+    ldrh    r2, [r2]
+    mov     r0, #8
+    and     r0, r2
+    ; Convert start press to a 0/1 value
+    lsr     r0, #3
+    pop     { r4-r7 }
+    ; Directly write value to r6, that's where the return value of the caller is stored, which is used to determine whether or not to leave the pause menu
+    mov     r6, r0
+    pop     { pc }
     .pool
     .align 4
 .endfunc
