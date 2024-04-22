@@ -301,6 +301,13 @@ MenuSpriteGfx_PBTankComplete equ 3Ch
 MenuSpriteGfx_NavigationConsole equ 3Dh
 MenuSpriteGfx_SamusNavigationConsole equ 3Eh
 
+DoorType_AreaConnection equ 01h
+DoorType_NoHatch equ 02h
+DoorType_OpenHatch equ 03h
+DoorType_LockableHatch equ 04h
+DoorType_EventBasedTransition equ 20h
+DoorType_ShowsLocationName equ 40h
+
 ; non-vanilla enums
 
 Upgrade_None equ 0

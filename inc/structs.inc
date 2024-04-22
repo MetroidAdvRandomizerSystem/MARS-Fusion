@@ -310,8 +310,24 @@ RoomTanks_Upgrade equ 02h
 RoomTanks_Sprite equ 03h
 .sym on
 
+MainDeckDoors equ 083C0030h
+Sector1Doors equ 083C09D8h
+Sector2Doors equ 083C0F48h
+Sector3Doors equ 083C162Ch
+Sector5Doors equ 083C1A70h
+Sector4Doors equ 083C204Ch
+Sector6Doors equ 083C25E0h
 .sym off
+DoorEntry_Type equ 00h
+DoorEntry_SourceRoom equ 01h
+DoorEntry_XStart equ 02h
+DoorEntry_XEnd equ 03h
+DoorEntry_YStart equ 04h
+DoorEntry_YEnd equ 05h
+DoorEntry_Destination equ 06h
 DoorEntry_ExitDistanceX equ 07h
+DoorEntry_ExitDistanceY equ 08h
+DoorEntry_Size equ 0Ch
 .sym on
 
 VariableConnections equ 083C8C68h

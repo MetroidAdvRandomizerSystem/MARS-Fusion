@@ -1,6 +1,6 @@
 ; Room edits for open exploration, enemies, softlock prevention, etc.
 
-; TODO: add door and scroll changes
+; TODO: add scroll changes
 ; TODO: add pre-cocoon spriteset to S2-1B
 
 ; Debug room data
@@ -173,6 +173,11 @@
     .db     1Eh
 .endarea
 
+.org Sector2Doors + 02h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
 ; Sector 2 - Central Shaft
 ; make door to reo room functional
 ; remove hatch to ripper roost
@@ -214,6 +219,41 @@
     .db     1Eh
 .endarea
 
+.org Sector2Doors + 1Bh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 1Fh * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     0Dh
+.endarea
+
+.org Sector2Doors + 23h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 2Fh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 5Fh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 71h * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_ExitDistanceY - DoorEntry_Type + 1
+    .db     DoorType_OpenHatch
+    .skip   DoorEntry_SourceRoom - DoorEntry_Type - 1
+    .db     0Dh
+    .skip   DoorEntry_ExitDistanceX - DoorEntry_SourceRoom - 1
+    .db     18h
+    .db     00h
+.endarea
+
 ; Sector 2 - Dessgeega Dormitory
 ; add cocoon and kihunter spritesets to intact room state
 .org Sector2Levels + 0Eh * LevelMeta_Size + LevelMeta_Spriteset1Event
@@ -226,6 +266,11 @@
     .skip 2
     .dw     084D8E00h
     .db     1Eh
+.endarea
+
+.org Sector2Doors + 2Ah * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
 .endarea
 
 ; Sector 2 - Zazabi Access
@@ -315,7 +360,18 @@
     .dw     @S2_DataHub_Clipdata
 .endarea
 
+.org Sector2Doors + 10h * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     1Fh
+.endarea
+
+.org Sector2Doors + 11h * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     1Fh
+.endarea
+
 .defineregion 084D526Eh, 0CEh
+.defineregion Sector2Doors + 45h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
@@ -331,6 +387,22 @@
 .area 121h
 .incbin "data/rooms/S2-36-Clip.rlebg"
 .endarea
+
+; Sector 3 - Bob's Room
+; remove event-based transitions leading to wrecked room state
+.org Sector3Doors + 0Ch * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector3Doors + 14h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.defineregion Sector3Doors + 2Fh * DoorEntry_Size, DoorEntry_Size, 0FFh
+.defineregion Sector3Doors + 30h * DoorEntry_Size, DoorEntry_Size, 0FFh
+.defineregion Sector3Doors + 3Fh * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 3 - BOX Access
 ; repair door to bob's room
@@ -349,7 +421,13 @@
     .dw     @S3_BoxAccess_Clipdata
 .endarea
 
+.org Sector3Doors + 10h * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     16h
+.endarea
+
 .defineregion 084FEDE6h, 0A5h
+.defineregion Sector3Doors + 23h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 3 - BOX Arena
 ; repair door to data room
@@ -368,7 +446,23 @@
     .dw     @S3_BoxArena_Clipdata
 .endarea
 
+.org Sector3Doors + 1Dh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector3Doors + 2Bh * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     17h
+.endarea
+
+.org Sector3Doors + 2Dh * DoorEntry_Size + DoorEntry_Destination
+.area 1
+    .db     2Eh
+.endarea
+
 .defineregion 084FF4AEh, 08Fh
+.defineregion Sector3Doors + 24h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
@@ -400,6 +494,7 @@
 ; Sector 5 - Nightmare Training Grounds
 ; restructure the room to have a speedbooster runway across the top
 ; add speedbooster blocks above the power bomb blocks
+; TODO: move enemies on top of ladder pillar
 .autoregion
 @S5_NightmareTrainingGrounds_Bg1:
 .incbin "data/rooms/S5-03-BG1.rlebg"
@@ -415,6 +510,21 @@
     .dw     @S5_NightmareTrainingGrounds_Bg1
     .skip 4
     .dw     @S5_NightmareTrainingGrounds_Clipdata
+.endarea
+
+.org Sector5Doors + 03h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 0Ah * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 4Dh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
 .endarea
 
 .defineregion 08514F18h, 486h
@@ -437,6 +547,38 @@
     .dw     @S5_ArcticContainment_Clipdata
 .endarea
 
+.org Sector5Doors + 15h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 24h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 35h * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_SourceRoom - DoorEntry_Type + 1
+    .db     DoorType_LockableHatch
+    .skip DoorEntry_SourceRoom - DoorEntry_Type - 1
+    .db     07h
+.endarea
+
+.org Sector5Doors + 38h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_OpenHatch
+.endarea
+
+.org Sector5Doors + 55h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 64h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
 .defineregion 08516852h, 1AAh
 
 ; Sector 5 - Data Room
@@ -457,7 +599,23 @@
     .dw     @S5_DataRoom_Clipdata
 .endarea
 
+.org Sector5Doors + 56h * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_Destination - DoorEntry_Type + 1
+    .db     DoorType_LockableHatch
+    .skip DoorEntry_Destination - DoorEntry_Type - 1
+    .db     5Ch
+.endarea
+
+.org Sector5Doors + 59h * DoorEntry_Size + DoorEntry_SourceRoom
+.area DoorEntry_YEnd - DoorEntry_SourceRoom + 1
+    .db     10h
+    .db     10h, 10h
+    .db     0Fh, 12h
+.endarea
+
 .defineregion 085191A4h, 84h
+.defineregion Sector5Doors + 23h * DoorEntry_Size, DoorEntry_Size, 0FFh
+.defineregion Sector5Doors + 34h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 .org 085195B8h
 .area 03h
@@ -486,7 +644,20 @@
     .dw     @S5_SecurityShaftEast_Clipdata
 .endarea
 
+.org Sector5Doors + 28h * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_Destination - DoorEntry_Type + 1
+    .db     DoorType_LockableHatch
+    .skip DoorEntry_Destination - DoorEntry_Type - 1
+    .db     6Ch
+.endarea
+
+.org Sector5Doors + 2Ah * DoorEntry_Size + DoorEntry_SourceRoom
+.area 1
+    .db     16h
+.endarea
+
 .defineregion 0851AA7Eh, 110h
+.defineregion Sector5Doors + 29h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 5 - Ripper Road
 ; replace lv0 door to arctic containment with an open hatch
@@ -497,6 +668,11 @@
 .org 0851B9C4h
 .area 0A4h
 .incbin "data/rooms/S5-1A-Clip.rlebg"
+.endarea
+
+.org Sector5Doors + 37h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_OpenHatch
 .endarea
 
 ; Sector 5 - Crow's Nest
@@ -514,6 +690,11 @@
 .org Sector5Levels + 24h * LevelMeta_Size + LevelMeta_Clipdata
 .area 04h
     .dw     @S5_CrowsNest_Clipdata
+.endarea
+
+.org Sector5Doors + 57h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
 .endarea
 
 .defineregion 0851CAA6h, 0F0h
