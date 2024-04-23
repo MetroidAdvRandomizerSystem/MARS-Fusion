@@ -70,6 +70,7 @@
   * Add Kihunters and zoro cocoons to intact room state.
 * Changed: Dessgeega Dormitory: Add kihunters and zoro cocoons to intact room state.
 * Changed: Zazabi Access: Add Kihunters and zoro cocoons to intact room state.
+* Added: Entrance Hub Underside: Add pre-Zazabi room state with zoros.
 * Changed: Data Hub: Bomb block paths can be accessed freely without destroying the entrance hatch.
 * Changed: Ripper Roost: Move the bottom crumble block up one tile to prevent softlocks without bombs.
 * Changed: Crumble City: Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to prevent softlocks without bombs.

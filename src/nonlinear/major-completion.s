@@ -3,6 +3,7 @@
 ; major items and security level unlocks to the calculation.
 
 .autoregion
+    .align 2
 .func PopCount
     ; divide and conquer population count
     ldr     r2, =#55555555h

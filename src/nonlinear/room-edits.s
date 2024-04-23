@@ -148,7 +148,7 @@
 .org MainDeckDoors + 4Ah * DoorEntry_Size + DoorEntry_Type
 .area DoorEntry_Destination - DoorEntry_Type + 1
     .db     DoorType_LockableHatch
-    .skip DoorEntry_Destination - DoorEntry_Type + 1
+    .skip DoorEntry_Destination - DoorEntry_Type - 1
     .db     61h
 .endarea
 
@@ -363,6 +363,31 @@
 .area 08h
     .dw     @S2_ZazabiAccess_CocoonSpriteset
     .dw     @S2_ZazabiAccess_KihunterSpriteset
+.endarea
+
+; Sector 2 - Entrance Hub Underside
+; add room state with zoros
+.autoregion
+@S2_EntranceHubUnderside_Spriteset0:
+    .db     03h, 09h, 24h
+    .db     0Fh, 0Fh, 24h
+    .db     10h, 0Dh, 02h
+    .db     12h, 0Eh, 26h
+    .db     0FFh, 0FFh, 0FFh
+.endautoregion
+
+.org Sector2Levels + 1Bh * LevelMeta_Size + LevelMeta_Spriteset0
+.area LevelMeta_MapX - LevelMeta_Spriteset0
+    .dw     @S2_EntranceHubUnderside_Spriteset0
+    .db     12h
+    .db     19h
+    .skip 2
+    .dw     084D4B99h
+    .db     13h
+    .db     4Eh
+    .skip 2
+    .dw     084D49C3h
+    .db     1Eh
 .endarea
 
 ; Sector 2 - Data Hub
