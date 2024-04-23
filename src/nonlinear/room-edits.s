@@ -77,6 +77,13 @@
 .endarea
 .defineregion 08474195h, 27h
 
+; Main Deck - Main Elevator Shaft
+; remove event-based transition
+.org MainDeckDoors + 32h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_NoHatch
+.endarea
+
 ; Main Deck - Maintenance Shaft
 ; repair maintenance crossing and add a geron
 .org 08476337h
@@ -135,6 +142,21 @@
 .endarea
 
 .defineregion 08476A0Fh, 03h
+
+; Main Deck - Main Elevator Access
+; remove event-based transition
+.org MainDeckDoors + 4Ah * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_Destination - DoorEntry_Type + 1
+    .db     DoorType_LockableHatch
+    .skip DoorEntry_Destination - DoorEntry_Type + 1
+    .db     61h
+.endarea
+
+.org MainDeckDoors + 5Ch * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org MainDeckDoors + 5Dh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
 
 ; Main Deck - Silo Access
 ; move zoro cocoon
@@ -370,8 +392,10 @@
     .db     1Fh
 .endarea
 
+.org Sector2Doors + 45h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 084D526Eh, 0CEh
-.defineregion Sector2Doors + 45h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
@@ -400,9 +424,14 @@
     .db     DoorType_LockableHatch
 .endarea
 
-.defineregion Sector3Doors + 2Fh * DoorEntry_Size, DoorEntry_Size, 0FFh
-.defineregion Sector3Doors + 30h * DoorEntry_Size, DoorEntry_Size, 0FFh
-.defineregion Sector3Doors + 3Fh * DoorEntry_Size, DoorEntry_Size, 0FFh
+.org Sector3Doors + 2Fh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector3Doors + 30h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector3Doors + 3Fh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
 
 ; Sector 3 - BOX Access
 ; repair door to bob's room
@@ -426,8 +455,10 @@
     .db     16h
 .endarea
 
+.org Sector3Doors + 23h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 084FEDE6h, 0A5h
-.defineregion Sector3Doors + 23h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 3 - BOX Arena
 ; repair door to data room
@@ -456,13 +487,17 @@
     .db     17h
 .endarea
 
-.org Sector3Doors + 2Dh * DoorEntry_Size + DoorEntry_Destination
-.area 1
+.org Sector3Doors + 2Dh * DoorEntry_Size + DoorEntry_Type
+.area DoorEntry_Destination - DoorEntry_Type + 1
+    .db     DoorType_LockableHatch
+    .skip DoorEntry_Destination - DoorEntry_Type - 1
     .db     2Eh
 .endarea
 
+.org Sector3Doors + 24h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 084FF4AEh, 08Fh
-.defineregion Sector3Doors + 24h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
@@ -527,6 +562,18 @@
     .db     DoorType_LockableHatch
 .endarea
 
+.org Sector5Doors + 0Bh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 0Ch * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 0Dh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 50h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 08514F18h, 486h
 .defineregion 085145A8h, 212h
 
@@ -579,7 +626,51 @@
     .db     DoorType_LockableHatch
 .endarea
 
+.org Sector5Doors + 1Bh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 1Ch * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 1Dh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 1Fh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 39h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 46h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 08516852h, 1AAh
+
+; Sector 5 - Frozen Tower
+; remove event-based transitions
+.org Sector5Doors + 17h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 2Fh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_NoHatch
+.endarea
+
+.org Sector5Doors + 30h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org Sector5Doors + 5Eh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 5Fh * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 60h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
 
 ; Sector 5 - Data Room
 ; merge the intact and destroyed data rooms into a single room
@@ -613,9 +704,13 @@
     .db     0Fh, 12h
 .endarea
 
+.org Sector5Doors + 23h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
+.org Sector5Doors + 34h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 085191A4h, 84h
-.defineregion Sector5Doors + 23h * DoorEntry_Size, DoorEntry_Size, 0FFh
-.defineregion Sector5Doors + 34h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 .org 085195B8h
 .area 03h
@@ -656,8 +751,10 @@
     .db     16h
 .endarea
 
+.org Sector5Doors + 29h * DoorEntry_Size
+.fill DoorEntry_Size, 0FFh
+
 .defineregion 0851AA7Eh, 110h
-.defineregion Sector5Doors + 29h * DoorEntry_Size, DoorEntry_Size, 0FFh
 
 ; Sector 5 - Ripper Road
 ; replace lv0 door to arctic containment with an open hatch
