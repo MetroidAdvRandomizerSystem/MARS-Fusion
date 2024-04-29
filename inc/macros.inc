@@ -52,3 +52,6 @@
 ; d = denominator, p = power of 2 of numerator
 .expfunc unsigned_reciprocal(d, p), ((1 << p) - 1) / d + 1
 .expfunc signed_reciprocal(d, p), (1 << p) / d + 1
+
+; read pointer from source file
+.expfunc readptr(pos), readu32("metroid4.gba", pos & 0xFFFFFF)

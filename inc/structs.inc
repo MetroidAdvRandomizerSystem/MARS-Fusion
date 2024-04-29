@@ -486,6 +486,7 @@ Sector4Levels equ 083C70F8h
 Sector6Levels equ 083C7C38h
 
 SpritesetList equ 0879ADD8h
+NullSpriteset equ 083BF884h
 
 MessagesByLanguage equ 0879CDF4h
 

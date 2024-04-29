@@ -1,7 +1,21 @@
 ; Room edits for open exploration, enemies, softlock prevention, etc.
 
-; TODO: add scroll changes
-; TODO: add pre-cocoon spriteset to S2-1B
+; TODO: add scroll changes:
+; == accessible backwards ==
+; S1-0A: remove scroll
+; S4-18: extend top-left scroll
+; S5-2B: extend scroll
+; S6-1C: extend scroll
+; == entrance rando only ==
+; S1-26: remove scroll
+; S2-12: extend top scroll
+; S2-16: prevent access
+; S4-15: extend top scroll
+; S6-07: mirror extended scroll
+; == custom start only ==
+; S2-06: mirror extended scroll
+; S4-0D: scroll 0 (11, 02) -> (2E, 17), scroll 1 (02, 16) -> (2E, 1F)
+; S6-18: mirror extended scroll
 
 ; Debug room data
 .defineregion 083C2A48h, 3 * 90h
@@ -10,72 +24,77 @@
 
 ; Main Deck - Crew Quarters West
 ; remove power bomb geron
+.defineregion readptr(MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1), 0Fh
+
 .org MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     63h
     .skip 2
-    .dw     08470F0Ch
+    .dw     readptr(MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     33h
     .db     0
     .skip 2
-    .dw     083BF884h
+    .dw     NullSpriteset
     .db     0
 .endarea
-.defineregion 08470FB2h, 0Fh
 
 ; Main Deck - Operations Deck
 ; change operations room lv4 security door to lv0 security
-.org 08471668h
+.org readptr(MainDeckLevels + 0Dh * LevelMeta_Size + LevelMeta_Bg1)
 .area 2DBh
 .incbin "data/rooms/S0-0D-BG1.rlebg"
 .endarea
-.org 08471182h
+
+.org readptr(MainDeckLevels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 0C3h
 .incbin "data/rooms/S0-0D-Clip.rlebg"
 .endarea
 
 ; Main Deck - Central Hub
 ; keep power bomb geron always loaded
+.defineregion readptr(MainDeckLevels + 12h * LevelMeta_Size + LevelMeta_Spriteset0), 03h
+
 .org MainDeckLevels + 12h * LevelMeta_Size + LevelMeta_Spriteset0
 .area LevelMeta_Spriteset2Event - LevelMeta_Spriteset0
-    .dw     0847283Bh
+    .dw     readptr(MainDeckLevels + 12h * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     33h
     .db     0
     .skip 2
-    .dw     083BF884h
+    .dw     NullSpriteset
     .db     0
 .endarea
-.defineregion 08472AB0h, 03h
 
 ; Main Deck - Eastern Hub
 ; remove geron in front of recharge station
+.defineregion readptr(MainDeckLevels + 15h * LevelMeta_Size + LevelMeta_Spriteset0), 12h
+
 .org MainDeckLevels + 15h * LevelMeta_Size + LevelMeta_Spriteset0
 .area LevelMeta_MapX - LevelMeta_Spriteset0
-    .dw     0847344Fh
+    .dw     readptr(MainDeckLevels + 15h * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     19h
     .db     63h
     .skip 2
-    .dw     0847334Ch
+    .dw     readptr(MainDeckLevels + 15h * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     19h
     .db     0
     .skip 2
-    .dw     083BF884h
+    .dw     NullSpriteset
     .db     0
 .endarea
-.defineregion 084736C9h, 12h
 
 ; Main Deck - Sector Hub
 ; keep main elevator always active
+.defineregion readptr(MainDeckLevels + 17h * LevelMeta_Size + LevelMeta_Spriteset0), 27h
+
 .org MainDeckLevels + 18h * LevelMeta_Size + LevelMeta_Spriteset0
 .area LevelMeta_Spriteset2Event - LevelMeta_Spriteset0
-    .dw     08473F3Ah
+    .dw     readptr(MainDeckLevels + 17h * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     02h
     .db     0
     .skip 2
-    .dw     083BF884h
+    .dw     NullSpriteset
     .db     0
 .endarea
-.defineregion 08474195h, 27h
 
 ; Main Deck - Main Elevator Shaft
 ; remove event-based transition
@@ -86,14 +105,17 @@
 
 ; Main Deck - Maintenance Shaft
 ; repair maintenance crossing and add a geron
-.org 08476337h
+.org readptr(MainDeckLevels + 23h * LevelMeta_Size + LevelMeta_Bg1)
 .area 492h
 .incbin "data/rooms/S0-23-BG1.rlebg"
 .endarea
-.org 08475E47h
+
+.org readptr(MainDeckLevels + 23h * LevelMeta_Size + LevelMeta_Bg2)
 .area 4F0h
 .incbin "data/rooms/S0-23-BG2.rlebg"
 .endarea
+
+.defineregion readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Spriteset0), 12h
 
 .autoregion
 @MaintenanceShaft_Spriteset0:
@@ -112,22 +134,24 @@
     .db     19h
 .endarea
 
-.defineregion 084767C9h, 12h
-
 ; Main Deck - Maintenance Crossing
 ; repair so the crossing is traversable and add a geron
-.org 0847690Fh
+.org readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Bg1)
 .area 100h
 .incbin "data/rooms/S0-24-BG1.rlebg"
 .endarea
-.org 0847683Dh
+
+.org readptr(MainDeckLevels + 24h * LevelMeta_Size + LevelMeta_Bg2)
 .area 0D2h
 .incbin "data/rooms/S0-24-BG2.rlebg"
 .endarea
-.org 084767DCh
+
+.org readptr(MainDeckLevels + 24h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 61h
 .incbin "data/rooms/S0-24-Clip.rlebg"
 .endarea
+
+.defineregion readptr(MainDeckLevels + 24h * LevelMeta_Size + LevelMeta_Spriteset0), 03h
 
 .autoregion
 @MaintenanceCrossing_Spriteset0:
@@ -140,8 +164,6 @@
     .dw     @MaintenanceCrossing_Spriteset0
     .db     19h
 .endarea
-
-.defineregion 08476A0Fh, 03h
 
 ; Main Deck - Main Elevator Access
 ; remove event-based transition
@@ -160,23 +182,24 @@
 
 ; Main Deck - Silo Access
 ; move zoro cocoon
-.org 08479091h
+.org readptr(MainDeckLevels + 30h * LevelMeta_Size + LevelMeta_Spriteset0)
 .area 03h
     .db     15h, 05h, 14h
 .endarea
 
-.org 08478E46h
+.org readptr(MainDeckLevels + 30h * LevelMeta_Size + LevelMeta_Spriteset1)
 .area 03h
     .db     15h, 05h, 14h
 .endarea
 
 ; Main Deck - Operations Room
 ; change lv4 security door to lv0 security
-.org 084814F8h
+.org readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Bg1)
 .area 0F8h
 .incbin "data/rooms/S0-52-BG1.rlebg"
 .endarea
-.org 08481382h
+
+.org readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 3Ch
 .incbin "data/rooms/S0-52-Clip.rlebg"
 .endarea
@@ -187,11 +210,11 @@
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     19h
     .skip 2
-    .dw     084D5246h
+    .dw     readptr(Sector2Levels + 1Eh * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
     .db     47h
     .skip 2
-    .dw     084D50FCh
+    .dw     readptr(Sector2Levels + 1Eh * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
 .endarea
 
@@ -205,26 +228,27 @@
 ; remove hatch to ripper roost
 ; move zoro out of the way of ripper roost
 ; move cocoon and kihunter spritesets to intact room state
-.org 084D0D55h
+.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Bg1)
 .area 4E1h
 .incbin "data/rooms/S2-0D-BG1.rlebg"
 .endarea
-.org 084D07ACh
+
+.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 1F0h
 .incbin "data/rooms/S2-0D-Clip.rlebg"
 .endarea
 
-.org 084D1236h + 1 * 03h
+.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
 .area 03h
     .db     1Bh, 05h, 24h
 .endarea
 
-.org 084D9BDFh + 1 * 03h
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
 .area 03h
     .db     1Bh, 05h, 14h
 .endarea
 
-.org 084D96BEh + 2 * 03h
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 2 * 03h
 .area 03h
     .db     1Bh, 05h, 14h
 .endarea
@@ -233,11 +257,11 @@
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     19h
     .skip 2
-    .dw     084D9BDFh
+    .dw     readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
     .db     47h
     .skip 2
-    .dw     084D96BEh
+    .dw     readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
 .endarea
 
@@ -282,11 +306,11 @@
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     19h
     .skip 2
-    .dw     084D8F6Fh
+    .dw     readptr(Sector2Levels + 2Ch * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
     .db     47h
     .skip 2
-    .dw     084D8E00h
+    .dw     readptr(Sector2Levels + 2Ch * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
 .endarea
 
@@ -382,17 +406,19 @@
     .db     12h
     .db     19h
     .skip 2
-    .dw     084D4B99h
+    .dw     readptr(Sector2Levels + 1Bh * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
     .db     4Eh
     .skip 2
-    .dw     084D49C3h
+    .dw     readptr(Sector2Levels + 1Bh * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
 .endarea
 
 ; Sector 2 - Data Hub
 ; repair door to data hub access
-.org 084D5519h
+.defineregion readptr(Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Clipdata), 0CEh
+
+.org readptr(Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Bg1)
 .area 40Bh
 .incbin "data/rooms/S2-1F-BG1.rlebg"
 .endarea
@@ -420,11 +446,9 @@
 .org Sector2Doors + 45h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 084D526Eh, 0CEh
-
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
-.org 084DA9F0h
+.org readptr(Sector2Levels + 32h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 10Ah
 .incbin "data/rooms/S2-32-Clip.rlebg"
 .endarea
@@ -432,7 +456,7 @@
 ; Sector 2 - Crumble City
 ; replace one of the shot blocks in the morph tunnel below the top item
 ; with a crumble block to prevent softlocks without bombs
-.org 084DB404h
+.org readptr(Sector2Levels + 36h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 121h
 .incbin "data/rooms/S2-36-Clip.rlebg"
 .endarea
@@ -460,7 +484,9 @@
 
 ; Sector 3 - BOX Access
 ; repair door to bob's room
-.org 084FF05Fh
+.defineregion readptr(Sector3Levels + 16h * LevelMeta_Size + LevelMeta_Clipdata), 0A5h
+
+.org readptr(Sector3Levels + 16h * LevelMeta_Size + LevelMeta_Bg1)
 .area 300h
 .incbin "data/rooms/S3-16-BG1.rlebg"
 .endarea
@@ -483,11 +509,11 @@
 .org Sector3Doors + 23h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 084FEDE6h, 0A5h
-
 ; Sector 3 - BOX Arena
 ; repair door to data room
-.org 084FF5D1h
+.defineregion readptr(Sector3Levels + 17h * LevelMeta_Size + LevelMeta_Clipdata), 08Fh
+
+.org readptr(Sector3Levels + 17h * LevelMeta_Size + LevelMeta_Bg1)
 .area 256h
 .incbin "data/rooms/S3-17-BG1.rlebg"
 .endarea
@@ -522,39 +548,41 @@
 .org Sector3Doors + 24h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 084FF4AEh, 08Fh
-
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
-.org 0853F5C3h
+.org readptr(Sector4Levels + 22h * LevelMeta_Size + LevelMeta_Bg1)
 .area 57Ah
 .incbin "data/rooms/S4-22-BG1.rlebg"
 .endarea
-.org 0853F25Ah
+
+.org readptr(Sector4Levels + 22h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 1B1h
 .incbin "data/rooms/S4-22-Clip.rlebg"
 .endarea
 
 ; Sector 4 - Drain Pipe
 ; keep puffer always active
+.defineregion readptr(Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset1), 2Ah
+
 .org Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     20h
     .skip 2
-    .dw     0854032Eh
+    .dw     readptr(Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     23h
     .db     0
     .skip 2
-    .dw     083BF884h
+    .dw     NullSpriteset
     .db     0
 .endarea
-
-.defineregion 085403DBh, 2Ah
 
 ; Sector 5 - Nightmare Training Grounds
 ; restructure the room to have a speedbooster runway across the top
 ; add speedbooster blocks above the power bomb blocks
 ; TODO: move enemies on top of ladder pillar
+.defineregion readptr(Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1), 486h
+.defineregion readptr(Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Clipdata), 212h
+
 .autoregion
 @S5_NightmareTrainingGrounds_Bg1:
 .incbin "data/rooms/S5-03-BG1.rlebg"
@@ -599,12 +627,11 @@
 .org Sector5Doors + 50h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 08514F18h, 486h
-.defineregion 085145A8h, 212h
-
 ; Sector 5 - Arctic Containment
 ; change the lv4 security door to crow's nest to a functional lv3 security door
-.org 08516C61h
+.defineregion readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Clipdata), 1AAh
+
+.org readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Bg1)
 .area 652h
 .incbin "data/rooms/S5-07-BG1.rlebg"
 .endarea
@@ -669,8 +696,6 @@
 .org Sector5Doors + 46h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 08516852h, 1AAh
-
 ; Sector 5 - Frozen Tower
 ; remove event-based transitions
 .org Sector5Doors + 17h * DoorEntry_Size + DoorEntry_Type
@@ -700,7 +725,9 @@
 ; Sector 5 - Data Room
 ; merge the intact and destroyed data rooms into a single room
 ; seal off the destroyed upper half of the data room from the intact lower half
-.org 08519419h
+.defineregion readptr(Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Clipdata), 84h
+
+.org readptr(Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Bg1)
 .area 19Fh
 .incbin "data/rooms/S5-10-BG1.rlebg"
 .endarea
@@ -713,6 +740,16 @@
 .org Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Clipdata
 .area 04h
     .dw     @S5_DataRoom_Clipdata
+.endarea
+
+.org readptr(Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Spriteset0)
+.area 03h
+    .db     14h, 09h, 11h
+.endarea
+
+.org Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Spriteset0Id
+.area 01h
+    .db     0Ch
 .endarea
 
 .org Sector5Doors + 56h * DoorEntry_Size + DoorEntry_Type
@@ -735,21 +772,11 @@
 .org Sector5Doors + 34h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 085191A4h, 84h
-
-.org 085195B8h
-.area 03h
-    .db     14h, 09h, 11h
-.endarea
-
-.org Sector5Levels + 10h * LevelMeta_Size + LevelMeta_Spriteset0Id
-.area 01h
-    .db     0Ch
-.endarea
-
 ; Sector 5 - Security Shaft East
 ; repair the door to kago blockade
-.org 0851AC8Ah
+.defineregion readptr(Sector5Levels + 16h * LevelMeta_Size + LevelMeta_Clipdata), 110h
+
+.org readptr(Sector5Levels + 16h * LevelMeta_Size + LevelMeta_Bg1)
 .area 2EBh
 .incbin "data/rooms/S5-16-BG1.rlebg"
 .endarea
@@ -779,15 +806,14 @@
 .org Sector5Doors + 29h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.defineregion 0851AA7Eh, 110h
-
 ; Sector 5 - Ripper Road
 ; replace lv0 door to arctic containment with an open hatch
-.org 0851BA76h
+.org readptr(Sector5Levels + 1Ah * LevelMeta_Size + LevelMeta_Bg1)
 .area 1B3h
 .incbin "data/rooms/S5-1A-BG1.rlebg"
 .endarea
-.org 0851B9C4h
+
+.org readptr(Sector5Levels + 1Ah * LevelMeta_Size + LevelMeta_Clipdata)
 .area 0A4h
 .incbin "data/rooms/S5-1A-Clip.rlebg"
 .endarea
@@ -799,7 +825,9 @@
 
 ; Sector 5 - Crow's Nest
 ; repair the door to arctic containment into a lv3 security door
-.org 0851CC93h
+.defineregion readptr(Sector5Levels + 24h * LevelMeta_Size + LevelMeta_Clipdata), 0F0h
+
+.org readptr(Sector5Levels + 24h * LevelMeta_Size + LevelMeta_Bg1)
 .area 263h
 .incbin "data/rooms/S5-24-BG1.rlebg"
 .endarea
@@ -819,12 +847,10 @@
     .db     DoorType_LockableHatch
 .endarea
 
-.defineregion 0851CAA6h, 0F0h
-
 ; Sector 6 - Zozoro Wine Cellar
 ; change the reforming bomb block to a never reforming bomb block to prevent
 ; softlocking from running out of power bombs
-.org 085537C4h
+.org readptr(Sector6Levels + 0Fh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 033h
 .incbin "data/rooms/S6-0F-Clip.rlebg"
 .endarea
@@ -832,11 +858,12 @@
 ; Sector 6 - Big Shell 1
 ; Remove the crumble block into the long morph tunnel to prevent softlocks
 ; without power bombs
-.org 085554DDh
+.org readptr(Sector6Levels + 1Bh * LevelMeta_Size + LevelMeta_Bg1)
 .area 1EFh
 .incbin "data/rooms/S6-1B-BG1.rlebg"
 .endarea
-.org 085553BAh
+
+.org readptr(Sector6Levels + 1Bh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 0B5h
 .incbin "data/rooms/S6-1B-Clip.rlebg"
 .endarea
