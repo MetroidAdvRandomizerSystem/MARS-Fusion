@@ -457,7 +457,7 @@ CreditsLine_Size equ 24h
 .sym on
 
 AreaLevels equ 0879B8BCh
-.sym on
+.sym off
 LevelMeta_Bg0 equ 08h
 LevelMeta_Bg1 equ 0Ch
 LevelMeta_Bg2 equ 10h
@@ -475,7 +475,7 @@ LevelMeta_MapX equ 35h
 LevelMeta_MapY equ 36h
 LevelMeta_Music equ 3Ah
 LevelMeta_Size equ 3Ch
-.sym off
+.sym on
 
 MainDeckLevels equ 083C2C4Ch
 Sector1Levels equ 083C40B0h
@@ -487,6 +487,32 @@ Sector6Levels equ 083C7C38h
 
 SpritesetList equ 0879ADD8h
 NullSpriteset equ 083BF884h
+
+AreaScrolls equ 0879BB08h
+.sym off
+ScrollList_Room equ 00h
+ScrollList_Len equ 01h
+ScrollList_Array equ 02h
+ScrollList_HeaderSize equ 02h
+
+Scroll_XStart equ 00h
+Scroll_XEnd equ 01h
+Scroll_YStart equ 02h
+Scroll_YEnd equ 03h
+Scroll_XBreak equ 04h
+Scroll_YBreak equ 05h
+Scroll_Extend equ 06h
+Scroll_NewBound equ 07h
+Scroll_Size equ 08h
+.sym on
+
+MainDeckScrolls equ 0879B8E8h
+Sector1Scrolls equ 0879B96Ch
+Sector2Scrolls equ 0879B99Ch
+Sector3Scrolls equ 0879B9FCh
+Sector4Scrolls equ 0879BA84h
+Sector5Scrolls equ 0879BA38h
+Sector6Scrolls equ 0879BAB8h
 
 MessagesByLanguage equ 0879CDF4h
 

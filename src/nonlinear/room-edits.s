@@ -1,21 +1,7 @@
 ; Room edits for open exploration, enemies, softlock prevention, etc.
 
-; TODO: add scroll changes:
-; == accessible backwards ==
-; S1-0A: remove scroll
-; S4-18: extend top-left scroll
-; S5-2B: extend scroll
-; S6-1C: extend scroll
-; == entrance rando only ==
-; S1-26: remove scroll
-; S2-12: extend top scroll
-; S2-16: prevent access
-; S4-15: extend top scroll
-; S6-07: mirror extended scroll
-; == custom start only ==
-; S2-06: mirror extended scroll
-; S4-0D: scroll 0 (11, 02) -> (2E, 17), scroll 1 (02, 16) -> (2E, 1F)
-; S6-18: mirror extended scroll
+; TODO: patch scroll behavior such that if no scroll zones are found,
+; extended scrolls with unbroken tiles will be treated as fallbacks.
 
 ; Debug room data
 .defineregion 083C2A48h, 3 * 90h
@@ -204,6 +190,29 @@
 .incbin "data/rooms/S0-52-Clip.rlebg"
 .endarea
 
+; Sector 1 - Charge Core Exit
+; fix screen scroll when entering room from Charge Core Arena
+.defineregion readptr(Sector1Scrolls + 01h * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 1 - Sciser Playground
+; fix screen scroll when entering room from Charge Core Access
+.defineregion readptr(Sector1Scrolls + 07h * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 1 scroll table fixes
+.org Sector1Scrolls
+.area 30h
+    .dw     readptr(Sector1Scrolls + 00h * 4)
+    .dw     readptr(Sector1Scrolls + 02h * 4)
+    .dw     readptr(Sector1Scrolls + 03h * 4)
+    .dw     readptr(Sector1Scrolls + 04h * 4)
+    .dw     readptr(Sector1Scrolls + 05h * 4)
+    .dw     readptr(Sector1Scrolls + 06h * 4)
+    .dw     readptr(Sector1Scrolls + 08h * 4)
+    .dw     readptr(Sector1Scrolls + 09h * 4)
+    .dw     readptr(Sector1Scrolls + 0Ah * 4)
+    .dw     readptr(Sector1Scrolls + 0Bh * 4)
+.endarea
+
 ; Sector 2 - Data Hub Access
 ; move cocoon and kihunter spritesets to intact room state
 .org Sector2Levels + 03h * LevelMeta_Size + LevelMeta_Spriteset1Event
@@ -222,6 +231,9 @@
 .area 1
     .db     DoorType_LockableHatch
 .endarea
+
+; Sector 2 - Owtch Cache A
+; TODO: fix screen scroll when custom start is behind bomb blocks
 
 ; Sector 2 - Central Shaft
 ; make door to reo room functional
@@ -389,6 +401,17 @@
     .dw     @S2_ZazabiAccess_KihunterSpriteset
 .endarea
 
+; Sector 2 - Zazabi Arena
+; fix screen scroll when entering room from Zazabi Speedway
+.org readptr(Sector2Scrolls + 05h * 4) + ScrollList_HeaderSize
+.area Scroll_Size
+    .db     02h, 2Eh
+    .db     02h, 0Eh
+    .db     0FFh, 0FFh
+    .db     ScrollExtend_None
+    .db     0FFh
+.endarea
+
 ; Sector 2 - Entrance Hub Underside
 ; add room state with zoros
 .autoregion
@@ -547,6 +570,32 @@
 
 .org Sector3Doors + 24h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
+
+; Sector 4 - Serris Escape
+; TODO: fix screen scrolls when custom start is behind the bomb blocks
+; scroll 0 (11, 02) -> (2E, 17), scroll 1 (02, 16) -> (2E, 1F)
+
+; Sector 4 - Pump Control Access
+; fix screen scrolls when entering from Pump Control Save Room
+.org readptr(Sector4Scrolls + 03h * 4) + ScrollList_HeaderSize
+.area Scroll_Size
+    .db     02h, 10h
+    .db     02h, 29h
+    .db     0FFh, 0FFh
+    .db     ScrollExtend_None
+    .db     0FFh
+.endarea
+
+; Sector 4 - Cheddar Bay
+; fix screen scrolls when entering from Security Bypass
+.org readptr(Sector4Scrolls + 05h * 4) + ScrollList_HeaderSize + Scroll_Size * 1
+.area Scroll_Size
+    .db     02h, 20h
+    .db     02h, 0Ch
+    .db     0FFh, 0FFh
+    .db     ScrollExtend_None
+    .db     0FFh
+.endarea
 
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
@@ -847,6 +896,33 @@
     .db     DoorType_LockableHatch
 .endarea
 
+; Sector 5 - Groznyj Grad
+; fix screen scrolls when entering from Security Shaft East
+.defineregion readptr(Sector4Scrolls + 0Fh * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 5 scroll table fixes
+.org Sector5Scrolls
+.area 4Ch
+    .dw     readptr(Sector5Scrolls + 00h * 4)
+    .dw     readptr(Sector5Scrolls + 01h * 4)
+    .dw     readptr(Sector5Scrolls + 02h * 4)
+    .dw     readptr(Sector5Scrolls + 03h * 4)
+    .dw     readptr(Sector5Scrolls + 04h * 4)
+    .dw     readptr(Sector5Scrolls + 05h * 4)
+    .dw     readptr(Sector5Scrolls + 06h * 4)
+    .dw     readptr(Sector5Scrolls + 07h * 4)
+    .dw     readptr(Sector5Scrolls + 08h * 4)
+    .dw     readptr(Sector5Scrolls + 09h * 4)
+    .dw     readptr(Sector5Scrolls + 0Ah * 4)
+    .dw     readptr(Sector5Scrolls + 0Bh * 4)
+    .dw     readptr(Sector5Scrolls + 0Ch * 4)
+    .dw     readptr(Sector5Scrolls + 0Dh * 4)
+    .dw     readptr(Sector5Scrolls + 0Eh * 4)
+    .dw     readptr(Sector5Scrolls + 10h * 4)
+    .dw     readptr(Sector5Scrolls + 11h * 4)
+    .dw     readptr(Sector5Scrolls + 12h * 4)
+.endarea
+
 ; Sector 6 - Zozoro Wine Cellar
 ; change the reforming bomb block to a never reforming bomb block to prevent
 ; softlocking from running out of power bombs
@@ -854,6 +930,13 @@
 .area 033h
 .incbin "data/rooms/S6-0F-Clip.rlebg"
 .endarea
+
+; Sector 6 - Forbidden Entrance
+; fix screen scrolls when entering room from XBOX Access
+.defineregion readptr(Sector6Scrolls + 02h * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 6 - Missile Storage
+; TODO: fix screen scrolls when custom start is behind bomb blocks
 
 ; Sector 6 - Big Shell 1
 ; Remove the crumble block into the long morph tunnel to prevent softlocks
@@ -866,4 +949,31 @@
 .org readptr(Sector6Levels + 1Bh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 0B5h
 .incbin "data/rooms/S6-1B-Clip.rlebg"
+.endarea
+
+; Sector 6 - Big Shell 2
+; fix screen scrolls when entering room from Blue X Blockade
+.defineregion readptr(Sector6Scrolls + 0Fh * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 6 scroll table fixes
+.org Sector6Scrolls
+.area 50h
+    .dw     readptr(Sector6Scrolls + 00h * 4)
+    .dw     readptr(Sector6Scrolls + 01h * 4)
+    .dw     readptr(Sector6Scrolls + 03h * 4)
+    .dw     readptr(Sector6Scrolls + 04h * 4)
+    .dw     readptr(Sector6Scrolls + 05h * 4)
+    .dw     readptr(Sector6Scrolls + 06h * 4)
+    .dw     readptr(Sector6Scrolls + 07h * 4)
+    .dw     readptr(Sector6Scrolls + 08h * 4)
+    .dw     readptr(Sector6Scrolls + 09h * 4)
+    .dw     readptr(Sector6Scrolls + 0Ah * 4)
+    .dw     readptr(Sector6Scrolls + 0Bh * 4)
+    .dw     readptr(Sector6Scrolls + 0Ch * 4)
+    .dw     readptr(Sector6Scrolls + 0Dh * 4)
+    .dw     readptr(Sector6Scrolls + 0Eh * 4)
+    .dw     readptr(Sector6Scrolls + 10h * 4)
+    .dw     readptr(Sector6Scrolls + 11h * 4)
+    .dw     readptr(Sector6Scrolls + 12h * 4)
+    .dw     readptr(Sector6Scrolls + 13h * 4)
 .endarea

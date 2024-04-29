@@ -308,6 +308,12 @@ DoorType_LockableHatch equ 04h
 DoorType_EventBasedTransition equ 20h
 DoorType_ShowsLocationName equ 40h
 
+ScrollExtend_Left equ 00h
+ScrollExtend_Right equ 01h
+ScrollExtend_Top equ 02h
+ScrollExtend_Bottom equ 03h
+ScrollExtend_None equ 0FFh
+
 ; non-vanilla enums
 
 Upgrade_None equ 0
