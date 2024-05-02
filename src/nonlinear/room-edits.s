@@ -628,7 +628,6 @@
 ; Sector 5 - Nightmare Training Grounds
 ; restructure the room to have a speedbooster runway across the top
 ; add speedbooster blocks above the power bomb blocks
-; TODO: move enemies on top of ladder pillar
 .defineregion readptr(Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1), 486h
 .defineregion readptr(Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Clipdata), 212h
 
@@ -647,6 +646,12 @@
     .dw     @S5_NightmareTrainingGrounds_Bg1
     .skip 4
     .dw     @S5_NightmareTrainingGrounds_Clipdata
+.endarea
+
+.org readptr(Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Spriteset0)
+.area 06h
+    .db     10h, 1Ch, 25h
+    .db     10h, 23h, 25h
 .endarea
 
 .org Sector5Doors + 03h * DoorEntry_Size + DoorEntry_Type
