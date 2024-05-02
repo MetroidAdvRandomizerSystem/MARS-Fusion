@@ -1,5 +1,5 @@
 .gba
-.open "obj/base.gba", "m4rs.gba", 08000000h
+.open "metroid4.gba", "m4rs.gba", 08000000h
 
 .table "data/text.tbl"
 
@@ -110,6 +110,7 @@ CreditsScrollSpeed equ 087FF232h
 .include "src/nonlinear/bosses.s"
 .include "src/nonlinear/data-rooms.s"
 .include "src/nonlinear/demos.s"
+.include "src/nonlinear/room-edits.s"
 .include "src/nonlinear/room-states.s"
 .include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"

@@ -1,5 +1,4 @@
 IN ?= metroid4
-BASE := base
 OUT := m4rs
 
 OBJ_DIR := ./obj
@@ -12,10 +11,7 @@ all: $(OUT).gba
 $(OBJ_DIR):
 	mkdir $@
 
-$(OBJ_DIR)/$(BASE).gba: $(IN).gba $(OBJ_DIR)
-	$(FLIPS) -a data/room-edits.bps $< $@
-
-$(OUT).gba: check $(OBJ_DIR)/$(BASE).gba
+$(OUT).gba: check
 	$(AS) src/main.s
 
 check: $(IN).gba
