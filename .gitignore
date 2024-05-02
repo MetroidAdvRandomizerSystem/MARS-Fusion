@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/*
 flipscfg.bin
+*.[ib]ps
 *.gba
 *.exe
