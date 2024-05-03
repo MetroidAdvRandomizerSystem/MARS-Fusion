@@ -539,11 +539,15 @@ MajorUpgradeInfo_Message equ 02h
 .sym on
 
 .sym off
-MinorLocation_XPos equ 00h
-MinorLocation_YPos equ 01h
-MinorLocation_Upgrade equ 02h
-MinorLocation_Sprite equ 03h
-MinorLocation_Size equ 04h
+MinorLocation_Area equ 00h
+MinorLocation_Room equ 01h
+MinorLocation_RoomIndex equ 02h
+MinorLocation_XPos equ 03h
+MinorLocation_YPos equ 04h
+MinorLocation_Upgrade equ 05h
+MinorLocation_Sprite equ 06h
+MinorLocation_Message equ 07h
+MinorLocation_Size equ 08h
 .sym on
 
 .sym off

@@ -44,7 +44,7 @@ HintTargets equ 085766ECh
 Credits equ 0874B0B0h
 ReservedSpace equ 087F0000h
 ReservedSpace_Len equ 0F000h
-MinorLocations equ 087FF000h
+MinorLocationTable equ 087FF000h
 MinorLocations_Len equ 100
 MajorLocations equ 087FF200h
 MajorLocations_Len equ 21
