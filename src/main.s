@@ -1,5 +1,5 @@
 .gba
-.open "metroid4.gba", "m4rs.gba", 08000000h
+.open "metroid4.gba", "obj/m4rs.gba", 08000000h
 
 .table "data/text.tbl"
 
@@ -27,7 +27,7 @@
 .definelabel ABILITY_FROM_TANK, 0
 .endif
 .ifndef BOMBLESS_PBS
-.definelabel BOMBLESS_PBS, 1
+.definelabel BOMBLESS_PBS, 0
 .endif
 .ifndef MISSILES_WITHOUT_MAINS
 .definelabel MISSILES_WITHOUT_MAINS, 0
