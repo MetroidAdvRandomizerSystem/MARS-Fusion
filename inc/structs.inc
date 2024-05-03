@@ -539,6 +539,14 @@ MajorUpgradeInfo_Message equ 02h
 .sym on
 
 .sym off
+MajorLocations_Len equ 21
+MajorLocation_Upgrade equ 00h
+MajorLocation_Message equ 01h
+MajorLocation_Size equ 02h
+.sym on
+
+.sym off
+MinorLocations_Len equ 100
 MinorLocation_Area equ 00h
 MinorLocation_Room equ 01h
 MinorLocation_RoomIndex equ 02h
@@ -556,4 +564,5 @@ StartingLocation_Room equ 01h
 StartingLocation_Door equ 02h
 StartingLocation_XPos equ 04h
 StartingLocation_YPos equ 06h
+StartingLocation_Size equ 08h
 .sym on

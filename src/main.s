@@ -45,15 +45,13 @@ Credits equ 0874B0B0h
 ReservedSpace equ 087F0000h
 ReservedSpace_Len equ 0F000h
 MinorLocationTable equ 087FF000h
-MinorLocations_Len equ 100
-MajorLocations equ 087FF200h
-MajorLocations_Len equ 21
-TankIncrements equ 087FF220h
-TotalMetroidCount equ 087FF226h
-RequiredMetroidCount equ 087FF227h
-StartingLocation equ 087FF228h
-CreditsEndDelay equ 087FF230h
-CreditsScrollSpeed equ 087FF232h
+MajorLocations equ 087FF01Ch
+TankIncrements equ 087FF046h
+TotalMetroidCount equ 087FF04Ch
+RequiredMetroidCount equ 087FF04Dh
+StartingLocation equ 087FF04Eh
+CreditsEndDelay equ 087FF056h
+CreditsScrollSpeed equ 087FF058h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h
