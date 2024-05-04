@@ -9,9 +9,12 @@
 .autoregion
     .align 2
 .func LoadTankGfx
-    push    { r4-r5, lr }
-    mov     r3, r1
-    mov     r5, r0
+    push    { r4, lr }
+    mov     r1, r0
+    ldr     r3, MinorLocations
+    lsl     r0, log2(MinorLocation_Size)
+    add     r3, r0
+    ldrb    r0, [r3, MinorLocation_RoomIndex]
     ldr     r2, =RoomTanks
     lsl     r0, #2
     add     r2, r0
@@ -19,14 +22,13 @@
     ldrb    r0, [r0]
     cmp     r0, #GameMode_Demo
     bne     @@set_tank_info
-    mov     r0, #Upgrade_None
-    strb    r0, [r2, RoomTanks_Upgrade]
+    mov     r0, #MajorLocation_Invalid
+    strb    r0, [r2, RoomTanks_LocationIndex]
     mov     r4, #UpgradeSprite_Anonymous
     strb    r4, [r2, RoomTanks_Sprite]
     b       @@load_tank_vram
 @@set_tank_info:
-    ldrb    r0, [r3, MinorLocation_Upgrade]
-    strb    r0, [r2, RoomTanks_Upgrade]
+    strb    r1, [r2, RoomTanks_LocationIndex]
     ldrb    r4, [r3, MinorLocation_Sprite]
     strb    r4, [r2, RoomTanks_Sprite]
     ldr     r0, =@TankPalettes
@@ -47,7 +49,7 @@
     sub     r0, #40h
     cmp     r0, #10h
     bhs     @@load_tank_vram
-    mov     r0, r5
+    ldrb    r0, [r3, MinorLocation_RoomIndex]
     add     r0, #53h
     strh    r0, [r2]
 @@load_tank_vram:
@@ -68,7 +70,7 @@
     str     r0, [r2, DMA_CNT]
     ldr     r0, [r2, DMA_CNT]
 @@return:
-    pop     { r4-r5, pc }
+    pop     { r4, pc }
     .pool
 .endfunc
 .endautoregion
@@ -197,8 +199,8 @@
     sub     r0, r5, #1
     lsl     r0, #2
     add     r1, r0
-    ldrb    r0, [r1, RoomTanks_Upgrade]
-    bl      ObtainUpgrade
+    ldrb    r0, [r1, RoomTanks_LocationIndex]
+    bl      ObtainMinorLocation
     ldr     r1, =TimeStopTimer
     b       @@cont
     .pool

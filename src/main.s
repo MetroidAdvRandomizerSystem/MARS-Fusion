@@ -23,9 +23,6 @@
 .definelabel RANDOMIZER, 1
 .endif
 
-.ifndef ABILITY_FROM_TANK
-.definelabel ABILITY_FROM_TANK, 0
-.endif
 .ifndef BOMBLESS_PBS
 .definelabel BOMBLESS_PBS, 0
 .endif

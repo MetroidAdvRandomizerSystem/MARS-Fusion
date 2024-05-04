@@ -77,7 +77,7 @@
     cmp     r0, #0
     blt     @@fail
     lsl     r1, r0, log2(MinorLocation_Size)
-    ldr     r3, =@MinorLocations
+    ldr     r3, =MinorLocations
     add     r2, r3, r1
 @@lsearch:
     ldrb    r0, [r2, MinorLocation_XPos]
@@ -160,7 +160,7 @@
     mov     r5, r0
     cmp     r0, #0
     blt     @@exit
-    ldr     r4, =@MinorLocations
+    ldr     r4, =MinorLocations
     lsl     r0, r5, log2(MinorLocation_Size)
     add     r4, r0
 @@loop:
@@ -202,13 +202,12 @@
     b       @@loop_inc
 .if RANDOMIZER
 @@load_tank_gfx:
-    ldrb    r0, [r4, MinorLocation_RoomIndex]
-    mov     r1, r4
+    mov     r0, r5
     bl      LoadTankGfx
 .endif
 @@loop_inc:
     add     r5, #1
-    ldr     r4, =@MinorLocations
+    ldr     r4, =MinorLocations
     lsl     r0, r5, log2(MinorLocation_Size)
     add     r4, r0
     ldrb    r0, [r4, MinorLocation_RoomIndex]
@@ -230,7 +229,7 @@
     ldr     r1, [r1, r0]
     add     r1, #10h
     ldrb    r5, [r1]
-    ldr     r4, =@MinorLocations
+    ldr     r4, =MinorLocations
     lsl     r0, r5, log2(MinorLocation_Size)
     add     r4, r0
 @@loop:
@@ -277,7 +276,7 @@
     strh    r1, [r3, r0]
 @@loop_inc:
     add     r5, #1
-    ldr     r4, =@MinorLocations
+    ldr     r4, =MinorLocations
     lsl     r0, r5, log2(MinorLocation_Size)
     add     r4, r0
     ldrb    r0, [r4, MinorLocation_Area]
@@ -331,7 +330,7 @@
     lsr     r0, r1
     lsl     r0, #31
     lsr     r3, r0, #31
-    ldr     r1, =@MinorLocations
+    ldr     r1, =MinorLocations
     lsl     r0, r2, log2(MinorLocation_Size)
     add     r1, r0
     ldrb    r0, [r1, MinorLocation_Upgrade]
@@ -475,19 +474,19 @@
     .db     07h, 11h, 23h, 26h, 2Dh, 2Fh, 32h, 33h
     .db     39h, 45h, 48h, 49h, 54h
     .fill   16 - (. - @@Items_MainDeck), 0FFh
-    .db     (@Items_MainDeck_Room07 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room11 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room23 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room26 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room2D - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room2F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room32 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room33 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room39 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room45 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room48 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room49 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_MainDeck_Room54 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room07 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room11 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room23 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room26 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room2D - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room2F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room32 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room33 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room39 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room45 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room48 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room49 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_MainDeck_Room54 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -495,16 +494,16 @@
     .db     05h, 11h, 1Eh, 27h, 28h, 2Bh, 2Ch, 2Fh
     .db     32h, 34h
     .fill   16 - (. - @@Items_Sector1), 0FFh
-    .db     (@Items_Sector1_Room05 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room11 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room1E - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room27 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room28 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room2B - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room2C - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room2F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room32 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector1_Room34 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room05 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room11 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room1E - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room27 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room28 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room2B - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room2C - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room2F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room32 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector1_Room34 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -512,20 +511,20 @@
     .db     06h, 09h, 0Ah, 11h, 15h, 19h, 1Bh, 1Fh
     .db     21h, 2Ah, 2Fh, 32h, 36h, 37h
     .fill   16 - (. - @@Items_Sector2), 0FFh
-    .db     (@Items_Sector2_Room06 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room09 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room0A - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room11 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room15 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room19 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room1B - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room1F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room21 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room2A - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room2F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room32 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room36 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector2_Room37 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room06 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room09 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room0A - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room11 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room15 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room19 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room1B - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room1F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room21 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room2A - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room2F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room32 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room36 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector2_Room37 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -533,18 +532,18 @@
     .db     03h, 06h, 08h, 09h, 0Ch, 13h, 1Ch, 1Eh
     .db     21h, 22h, 23h, 25h
     .fill   16 - (. - @@Items_Sector3), 0FFh
-    .db     (@Items_Sector3_Room03 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room06 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room08 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room09 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room0C - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room13 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room1C - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room1E - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room21 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room22 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room23 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector3_Room25 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room03 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room06 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room08 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room09 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room0C - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room13 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room1C - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room1E - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room21 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room22 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room23 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector3_Room25 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -552,19 +551,19 @@
     .db     06h, 0Ah, 0Dh, 0Fh, 11h, 17h, 18h, 1Ch
     .db     21h, 24h, 26h, 29h, 2Eh
     .fill   16 - (. - @@Items_Sector4), 0FFh
-    .db     (@Items_Sector4_Room06 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room0A - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room0D - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room0F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room11 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room17 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room18 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room1C - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room21 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room24 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room26 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room29 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector4_Room2E - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room06 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room0A - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room0D - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room0F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room11 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room17 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room18 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room1C - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room21 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room24 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room26 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room29 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector4_Room2E - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -572,20 +571,20 @@
     .db     04h, 0Ch, 0Eh, 12h, 16h, 17h, 1Ah, 1Eh
     .db     21h, 22h, 24h, 2Fh, 32h, 33h
     .fill   16 - (. - @@Items_Sector5), 0FFh
-    .db     (@Items_Sector5_Room04 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room0C - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room0E - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room12 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room16 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room17 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room1A - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room1E - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room21 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room22 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room24 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room2F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room32 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector5_Room33 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room04 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room0C - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room0E - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room12 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room16 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room17 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room1A - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room1E - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room21 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room22 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room24 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room2F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room32 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector5_Room33 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
@@ -593,20 +592,20 @@
     .db     00h, 0Fh, 12h, 18h, 1Ah, 1Eh, 22h, 26h
     .db     27h
     .fill   16 - (. - @@Items_Sector6), 0FFh
-    .db     (@Items_Sector6_Room00 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room0F - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room12 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room18 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room1A - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room1E - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room22 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room26 - @MinorLocations) >> log2(MinorLocation_Size)
-    .db     (@Items_Sector6_Room27 - @MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room00 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room0F - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room12 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room18 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room1A - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room1E - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room22 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room26 - MinorLocations) >> log2(MinorLocation_Size)
+    .db     (@Items_Sector6_Room27 - MinorLocations) >> log2(MinorLocation_Size)
 .endautoregion
 
 .autoregion
     .align 2
-@MinorLocations:
+MinorLocations:
 @Items_MainDeck_Room07:
     .db     Area_MainDeck, 07h, 0
     .db     0Dh, 0Eh

@@ -13,12 +13,24 @@
     lsl     r0, log2(MajorLocation_Size)
     add     r1, r0
     ldrb    r0, [r1, MajorLocation_Upgrade]
+    ldrb    r1, [r1, MajorLocation_Message]
+    b       ObtainUpgrade
+    .pool
+.endfunc
+
+.func ObtainMinorLocation
+    ldr     r1, =MinorLocations
+    lsl     r0, log2(MinorLocation_Size)
+    add     r1, r0
+    ldrb    r0, [r1, MinorLocation_Upgrade]
+    ldrb    r1, [r1, MinorLocation_Message]
     b       ObtainUpgrade
     .pool
 .endfunc
 
 .func ObtainUpgrade
-    push    { r4, lr }
+    push    { r4-r5, lr }
+    mov     r5, r1
     cmp     r0, #Upgrade_None
     bne     @@checkIceTrap
     mov     r0, #Message_NothingUpgrade
@@ -29,7 +41,7 @@
     ldr     r0, =SamusUpgrades
     ldrb    r0, [r0, SamusUpgrades_SuitUpgrades]
     lsr     r0, #SuitUpgrade_VariaSuit + 1
-    bcs     @@skipFreeze
+    bcs     @@defaultMessage
     mov     r0, #146h >> 1
     lsl     r0, #1
     bl      08002854h
@@ -40,9 +52,7 @@
     ldr     r1, [r1, r0]
     mov     r0, #0FBh
     blx     r1
-@@skipFreeze:
-    mov     r0, #Message_IceTrapUpgrade
-    b       @@setMessage
+    b       @@defaultMessage
 @@checkMetroid:
     cmp     r0, #Upgrade_InfantMetroid
     bne     @@checkMajor
@@ -50,6 +60,10 @@
     ldrb    r0, [r1, PermanentUpgrades_InfantMetroids]
     add     r0, #1
     strb    r0, [r1, PermanentUpgrades_InfantMetroids]
+    cmp     r5, #Message_InfantMetroidsRemain
+    blo     @@defaultMessage
+    cmp     r5, #Message_LastInfantMetroid
+    bhi     @@defaultMessage
     ldr     r1, =TotalMetroidCount
     ldrb    r1, [r1]
     cmp     r0, r1
@@ -95,16 +109,14 @@
     bne     @@setUpgradeBackup
     ldr     r1, =SecurityLevelFlash
     strb    r0, [r1]
-    b       @@setMajorMessage
+    b       @@defaultMessage
 @@setUpgradeBackup:
     ldr     r3, =PermanentUpgrades
     sub     r2, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
     ldrb    r1, [r3, r2]
     orr     r0, r1
     strb    r0, [r3, r2]
-@@setMajorMessage:
-    ldrb    r0, [r4, MajorUpgradeInfo_Message]
-    b       @@setMessage
+    b       @@defaultMessage
 @@checkMinors:
     ldr     r3, =TankIncrements
     cmp     r0, Upgrade_PowerBombTank
@@ -132,19 +144,7 @@
     asr     r1, #1Fh
     orr     r0, r1
     strh    r0, [r4, SamusUpgrades_MaxMissiles]
-.if ABILITY_FROM_TANK
-    ldrb    r0, [r4, SamusUpgrades_ExplosiveUpgrades]
-    lsr     r1, r0, ExplosiveUpgrade_Missiles + 1
-    bcs     @@setMissileTankMessage
-    mov     r1, 1 << ExplosiveUpgrade_Missiles
-    orr     r0, r1
-    strb    r0, [r4, SamusUpgrades_ExplosiveUpgrades]
-    mov     r0, Message_MissileUpgrade
-    b       @@setMessage
-@@setMissileTankMessage:
-.endif
-    mov     r0, Message_MissileTankUpgrade
-    b       @@setMessage
+    b       @@defaultMessage
 @@checkETank:
     cmp     r0, Upgrade_EnergyTank
     bne     @@checkPBTank
@@ -163,7 +163,7 @@
     strh    r0, [r4, SamusUpgrades_MaxEnergy]
     strh    r0, [r4, SamusUpgrades_CurrEnergy]
     mov     r0, Message_EnergyTankUpgrade
-    b       @@setMessage
+    b       @@defaultMessage
 @@checkPBTank:
     cmp     r0, Upgrade_PowerBombTank
     bne     @@return
@@ -187,22 +187,13 @@
     asr     r1, #1Fh
     orr     r0, r1
     strb    r0, [r4, SamusUpgrades_MaxPowerBombs]
-.if ABILITY_FROM_TANK
-    ldrb    r0, [r4, SamusUpgrades_ExplosiveUpgrades]
-    lsr     r1, r0, ExplosiveUpgrade_PowerBombs + 1
-    bcs     @@setPBTankMessage
-    mov     r1, 1 << ExplosiveUpgrade_PowerBombs
-    orr     r0, r1
-    mov     r0, Message_PowerBombUpgrade
-    b       @@setMessage
-@@setPBTankMessage:
-.endif
-    mov     r0, Message_PowerBombTankUpgrade
+@@defaultMessage:
+    mov     r0, r5
 @@setMessage:
     ldr     r1, =LastAbility
     strb    r0, [r1]
 @@return:
-    pop     { r4, pc }
+    pop     { r4-r5, pc }
     .pool
 .endfunc
 .endautoregion
