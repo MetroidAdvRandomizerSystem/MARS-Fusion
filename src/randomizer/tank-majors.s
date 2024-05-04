@@ -11,7 +11,7 @@
 .func LoadTankGfx
     push    { r4, lr }
     mov     r1, r0
-    ldr     r3, MinorLocations
+    ldr     r3, =MinorLocations
     lsl     r0, log2(MinorLocation_Size)
     add     r3, r0
     ldrb    r0, [r3, MinorLocation_RoomIndex]

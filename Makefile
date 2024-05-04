@@ -15,7 +15,7 @@ PATCHES := $(OPTIONALS:%=$(BIN_DIR)/%.ips)
 
 all: $(BIN_DIR)/m4rs.gba
 
-$(OBJ_DIR) $(BIN_DIR) $(BIN_DIR):
+$(OBJ_DIR) $(BIN_DIR):
 	mkdir -p $@
 
 $(BIN_DIR)/$(OUT).gba: check | $(BIN_DIR)

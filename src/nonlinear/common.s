@@ -41,7 +41,7 @@
     ldr     r0, =SamusUpgrades
     ldrb    r0, [r0, SamusUpgrades_SuitUpgrades]
     lsr     r0, #SuitUpgrade_VariaSuit + 1
-    bcs     @@defaultMessage
+    bcs     @@skipFreeze
     mov     r0, #146h >> 1
     lsl     r0, #1
     bl      08002854h
@@ -52,6 +52,7 @@
     ldr     r1, [r1, r0]
     mov     r0, #0FBh
     blx     r1
+@@skipFreeze:
     b       @@defaultMessage
 @@checkMetroid:
     cmp     r0, #Upgrade_InfantMetroid
@@ -220,7 +221,7 @@
 .endarea
 
 .org MajorLocations
-.area 20h
+.area 2Ah
     .db     Upgrade_Missiles, Message_MissileUpgrade
     .db     Upgrade_MorphBall, Message_MorphBallUpgrade
     .db     Upgrade_ChargeBeam, Message_ChargeBeamUpgrade
