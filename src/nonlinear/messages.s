@@ -1,4 +1,5 @@
 ; Moves or removes all vanilla messages to make space for custom messages
+; TODO: rewrite message box handling to split message id from behavior
 
 .org 08079654h
 .area 0ECh

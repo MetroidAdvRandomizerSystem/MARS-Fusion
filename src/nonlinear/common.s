@@ -10,7 +10,9 @@
     orr     r1, r2
     str     r1, [r3, MiscProgress_MajorLocations]
     ldr     r1, =MajorLocations
-    ldrb    r0, [r1, r0]
+    lsl     r0, log2(MajorLocation_Size)
+    add     r1, r0
+    ldrb    r0, [r1, MajorLocation_Upgrade]
     b       ObtainUpgrade
     .pool
 .endfunc
@@ -228,27 +230,27 @@
 
 .org MajorLocations
 .area 20h
-    .db     Upgrade_Missiles
-    .db     Upgrade_MorphBall
-    .db     Upgrade_ChargeBeam
-    .db     Upgrade_SecurityLevel1
-    .db     Upgrade_Bombs
-    .db     Upgrade_HiJump
-    .db     Upgrade_Speedbooster
-    .db     Upgrade_SecurityLevel2
-    .db     Upgrade_SuperMissiles
-    .db     Upgrade_VariaSuit
-    .db     Upgrade_SecurityLevel3
-    .db     Upgrade_IceMissiles
-    .db     Upgrade_WideBeam
-    .db     Upgrade_PowerBombs
-    .db     Upgrade_SpaceJump
-    .db     Upgrade_PlasmaBeam
-    .db     Upgrade_GravitySuit
-    .db     Upgrade_SecurityLevel4
-    .db     Upgrade_DiffusionMissiles
-    .db     Upgrade_WaveBeam
-    .db     Upgrade_ScrewAttack
+    .db     Upgrade_Missiles, Message_MissileUpgrade
+    .db     Upgrade_MorphBall, Message_MorphBallUpgrade
+    .db     Upgrade_ChargeBeam, Message_ChargeBeamUpgrade
+    .db     Upgrade_SecurityLevel1, Message_SecurityLevel1
+    .db     Upgrade_Bombs, Message_BombUpgrade
+    .db     Upgrade_HiJump, Message_HiJumpUpgrade
+    .db     Upgrade_Speedbooster, Message_SpeedboosterUpgrade
+    .db     Upgrade_SecurityLevel2, Message_SecurityLevel2
+    .db     Upgrade_SuperMissiles, Message_SuperMissileUpgrade
+    .db     Upgrade_VariaSuit, Message_VariaSuitUpgrade
+    .db     Upgrade_SecurityLevel3, Message_SecurityLevel3
+    .db     Upgrade_IceMissiles, Message_IceMissileUpgrade
+    .db     Upgrade_WideBeam, Message_WideBeamUpgrade
+    .db     Upgrade_PowerBombs, Message_PowerBombUpgrade
+    .db     Upgrade_SpaceJump, Message_SpaceJumpUpgrade
+    .db     Upgrade_PlasmaBeam, Message_PlasmaBeamUpgrade
+    .db     Upgrade_GravitySuit, Message_GravitySuitUpgrade
+    .db     Upgrade_SecurityLevel4, Message_SecurityLevel4
+    .db     Upgrade_DiffusionMissiles, Message_DiffusionMissileUpgrade
+    .db     Upgrade_WaveBeam, Message_WaveBeamUpgrade
+    .db     Upgrade_ScrewAttack, Message_ScrewAttackUpgrade
 .endarea
 
 .org TankIncrements
