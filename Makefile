@@ -9,6 +9,7 @@ AS := ./tools/armips-a8d71f0.exe
 
 OPTIONALS := bombless_pbs
 OPTIONALS += missiles_without_mains
+OPTIONALS += anti_softlock
 
 OBJS := $(OPTIONALS:%=$(OBJ_DIR)/%.gba)
 PATCHES := $(OPTIONALS:%=$(BIN_DIR)/%.ips)

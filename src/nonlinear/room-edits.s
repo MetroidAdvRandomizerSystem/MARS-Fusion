@@ -471,18 +471,22 @@
 
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
+.if ANTI_SOFTLOCK
 .org readptr(Sector2Levels + 32h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 10Ah
 .incbin "data/rooms/S2-32-Clip.rlebg"
 .endarea
+.endif
 
 ; Sector 2 - Crumble City
 ; replace one of the shot blocks in the morph tunnel below the top item
 ; with a crumble block to prevent softlocks without bombs
+.if ANTI_SOFTLOCK
 .org readptr(Sector2Levels + 36h * LevelMeta_Size + LevelMeta_Clipdata)
 .area 121h
 .incbin "data/rooms/S2-36-Clip.rlebg"
 .endarea
+.endif
 
 ; Sector 3 - Security Access
 ; remove sidehoppers on speedbooster runway to prevent near softlock with neither charge nor missiles
@@ -613,6 +617,7 @@
 
 ; Sector 4 - Security Bypass
 ; prevent several softlocks without bombs
+.if ANTI_SOFTLOCK
 .org readptr(Sector4Levels + 22h * LevelMeta_Size + LevelMeta_Bg1)
 .area 57Ah
 .incbin "data/rooms/S4-22-BG1.rlebg"
@@ -622,6 +627,7 @@
 .area 1B1h
 .incbin "data/rooms/S4-22-Clip.rlebg"
 .endarea
+.endif
 
 ; Sector 4 - Drain Pipe
 ; keep puffer always active
@@ -945,10 +951,12 @@
 ; Sector 6 - Zozoro Wine Cellar
 ; change the reforming bomb block to a never reforming bomb block to prevent
 ; softlocking from running out of power bombs
+.if ANTI_SOFTLOCK
 .org readptr(Sector6Levels + 0Fh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 033h
 .incbin "data/rooms/S6-0F-Clip.rlebg"
 .endarea
+.endif
 
 ; Sector 6 - Forbidden Entrance
 ; fix screen scrolls when entering room from XBOX Access
@@ -960,6 +968,7 @@
 ; Sector 6 - Big Shell 1
 ; Remove the crumble block into the long morph tunnel to prevent softlocks
 ; without power bombs
+.if ANTI_SOFTLOCK
 .org readptr(Sector6Levels + 1Bh * LevelMeta_Size + LevelMeta_Bg1)
 .area 1EFh
 .incbin "data/rooms/S6-1B-BG1.rlebg"
@@ -969,6 +978,7 @@
 .area 0B5h
 .incbin "data/rooms/S6-1B-Clip.rlebg"
 .endarea
+.endif
 
 ; Sector 6 - Big Shell 2
 ; fix screen scrolls when entering room from Blue X Blockade

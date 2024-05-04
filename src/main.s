@@ -29,6 +29,9 @@
 .ifndef MISSILES_WITHOUT_MAINS
 .definelabel MISSILES_WITHOUT_MAINS, 0
 .endif
+.ifndef ANTI_SOFTLOCK
+.definelabel ANTI_SOFTLOCK, 0
+.endif
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"
