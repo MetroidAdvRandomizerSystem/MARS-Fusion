@@ -251,7 +251,7 @@
 .autoregion
 @TankPalettes:
     .db     0   ; empty
-    .db     0   ; security level 0
+    .db     1   ; security level 0
     .db     0   ; missiles
     .db     0   ; morph ball
     .db     0   ; charge beam
