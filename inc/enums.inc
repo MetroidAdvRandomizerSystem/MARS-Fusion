@@ -166,6 +166,8 @@ EnemyId_ChargeCoreXNucleus equ 56h
 EnemyId_WideCoreXNucleus equ 57h
 EnemyId_Nettori_CoreXNucleus equ 58h
 EnemyId_XBox_CoreXNucleus equ 59h
+EnemyId_SaxBoss_Samus equ 0C0h
+EnemyId_SaxBoss_Monster equ 0C1h
 
 EnemyProps_SolidForProjectiles equ 3
 EnemyProps_ImmuneToProjectiles equ 6

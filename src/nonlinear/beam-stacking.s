@@ -943,6 +943,13 @@
     bl      Enemy_GetWeakness
     lsr     r1, r0, EnemyWeakness_BeamOrBombs + 1
     bcs     @@hitEnemy
+    ldr     r2, =EnemyList
+    mov     r1, #38h
+    mul     r1, r7
+    add     r2, r1
+    ldrb    r1, [r2, Enemy_Id]
+    cmp     r1, #EnemyId_SaxBoss_Samus
+    beq     @@hitImmuneEnemy
     lsr     r1, r0, EnemyWeakness_Freezable + 1
     bcc     @@hitImmuneEnemy
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
@@ -1160,6 +1167,13 @@
     mov     r1, r0
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
     bcc     @@hitWithoutIce
+    ldr     r2, =EnemyList
+    mov     r0, #38h
+    mul     r0, r7
+    add     r2, r0
+    ldrb    r0, [r2, Enemy_Id]
+    cmp     r0, #EnemyId_SaxBoss_Samus
+    beq     @@hitWithoutIce
     mov     r2, r1
     mov     r0, r7
     mov     r1, #1
