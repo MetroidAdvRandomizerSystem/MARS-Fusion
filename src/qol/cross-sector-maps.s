@@ -94,3 +94,59 @@
     bl      CycleSectorMaps
     b       0807572Ch
 .endarea
+
+.autoregion
+    .align 2
+.func ShouldShowArrows
+    ; return a bool representing whether arrows should be shown in this sector,
+    ; or -1 if they should not be shown at all in this sub-gamemode.
+    push    { r4-r5 }
+    ldr     r0, =NonGameplayFlag
+    ldrb    r0, [r0]
+    cmp     r0, #2
+    bne     @@return_neg
+    ; check if sector map has been downloaded
+    ldr     r0, =SamusUpgrades
+    ldrb    r0, [r0, SamusUpgrades_MapDownloads]
+    ldr     r1, =03001696h
+    ldrb    r1, [r1]
+    lsr     r0, r1
+    lsr     r0, #1
+    bcs     @@return_true
+    ; check if any minimap tiles are explored
+    ldr     r4, =MinimapVisited
+    lsl     r1, #07h
+    add     r4, r1
+    mov     r5, r4
+    add     r5, #80h
+@@loop:
+    ldmia   r4!, { r0-r3 }
+    orr     r0, r1
+    orr     r2, r3
+    orr     r0, r2
+    bne     @@return_true
+    cmp     r4, r5
+    blt     @@loop
+    mov     r0, #0
+    b       @@return
+@@return_true:
+    mov     r0, #1
+    b       @@return
+@@return_neg:
+    mov     r0, #0
+    mvn     r0, r0
+@@return:
+    pop     { r4-r5 }
+    bx      lr
+    .pool
+.endfunc
+.endautoregion
+
+.org 08077CFCh
+.area 0Eh
+    bl      ShouldShowArrows
+    cmp     r0, #0
+    beq     08077D14h
+    bgt     08077D0Ah
+    b       08077E38h
+.endarea

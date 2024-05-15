@@ -1,5 +1,6 @@
 MinimapData equ 02034000h
 DecompressedMinimapData equ 02034800h
+MinimapVisited equ 02037C00h
 
 TanksCollected equ 02037200h
 
@@ -257,6 +258,10 @@ ButtonAssignments_Pause equ 06h
 ; lv4 locks                 1Dh
 ; nav target                1Fh
 ; current room marker       20h
+; big left arrow            21h
+; big right arrow           22h
+; big up arrow              23h
+; big down arrow            24h
 ; navigation console        25h
 ; navigation hatch left     26h
 ; navigation hatch right    27h
