@@ -34,7 +34,7 @@
     cmp     r0, #Upgrade_None
     bne     @@checkIceTrap
     mov     r0, #Message_NothingUpgrade
-    b       @@setMessage
+    b       @@checkAutoMessage
 @@checkIceTrap:
     cmp     r0, #Upgrade_IceTrap
     bne     @@checkMetroid
@@ -53,7 +53,8 @@
     mov     r0, #0FBh
     blx     r1
 @@skipFreeze:
-    b       @@defaultMessage
+    mov     r0, #Message_IceTrapUpgrade
+    b       @@checkAutoMessage
 @@checkMetroid:
     cmp     r0, #Upgrade_InfantMetroid
     bne     @@checkMajor
@@ -61,10 +62,8 @@
     ldrb    r0, [r1, PermanentUpgrades_InfantMetroids]
     add     r0, #1
     strb    r0, [r1, PermanentUpgrades_InfantMetroids]
-    cmp     r5, #Message_InfantMetroidsRemain
-    blo     @@defaultMessage
-    cmp     r5, #Message_LastInfantMetroid
-    bhi     @@defaultMessage
+    cmp     r5, #Message_Auto
+    bne     @@defaultMessage
     ldr     r1, =TotalMetroidCount
     ldrb    r1, [r1]
     cmp     r0, r1
@@ -110,20 +109,22 @@
     bne     @@setUpgradeBackup
     ldr     r1, =SecurityLevelFlash
     strb    r0, [r1]
-    b       @@defaultMessage
+    b       @@setMajorMessage
 @@setUpgradeBackup:
     ldr     r3, =PermanentUpgrades
     sub     r2, #SamusUpgrades_BeamUpgrades - PermanentUpgrades_BeamUpgrades
     ldrb    r1, [r3, r2]
     orr     r0, r1
     strb    r0, [r3, r2]
-    b       @@defaultMessage
+@@setMajorMessage:
+    ldrb    r0, [r4, MajorUpgradeInfo_Message]
+    b       @@checkAutoMessage
 @@checkMinors:
     ldr     r3, =TankIncrements
-    cmp     r0, Upgrade_PowerBombTank
+    cmp     r0, #Upgrade_PowerBombTank
     bhi     @@return
     ldr     r4, =SamusUpgrades
-    cmp     r0, Upgrade_MissileTank
+    cmp     r0, #Upgrade_MissileTank
     bne     @@checkETank
     mov     r0, #(Tank_Missiles - 1) << 1
     ldrsh   r3, [r3, r0]
@@ -145,9 +146,10 @@
     asr     r1, #1Fh
     orr     r0, r1
     strh    r0, [r4, SamusUpgrades_MaxMissiles]
-    b       @@defaultMessage
+    mov     r0, #Message_MissileTankUpgrade
+    b       @@checkAutoMessage
 @@checkETank:
-    cmp     r0, Upgrade_EnergyTank
+    cmp     r0, #Upgrade_EnergyTank
     bne     @@checkPBTank
     mov     r0, #(Tank_Energy - 1) << 1
     ldrsh   r3, [r3, r0]
@@ -163,10 +165,10 @@
     orr     r0, r1
     strh    r0, [r4, SamusUpgrades_MaxEnergy]
     strh    r0, [r4, SamusUpgrades_CurrEnergy]
-    mov     r0, Message_EnergyTankUpgrade
-    b       @@defaultMessage
+    mov     r0, #Message_EnergyTankUpgrade
+    b       @@checkAutoMessage
 @@checkPBTank:
-    cmp     r0, Upgrade_PowerBombTank
+    cmp     r0, #Upgrade_PowerBombTank
     bne     @@return
     mov     r0, #(Tank_PowerBombs - 1) << 1
     ldrsh   r3, [r3, r0]
@@ -188,6 +190,10 @@
     asr     r1, #1Fh
     orr     r0, r1
     strb    r0, [r4, SamusUpgrades_MaxPowerBombs]
+    mov     r0, #Message_PowerBombTankUpgrade
+@@checkAutoMessage:
+    cmp     r5, #Message_Auto
+    beq     @@setMessage
 @@defaultMessage:
     mov     r0, r5
 @@setMessage:
@@ -222,27 +228,27 @@
 
 .org MajorLocations
 .area 2Ah
-    .db     Upgrade_Missiles, Message_MissileUpgrade
-    .db     Upgrade_MorphBall, Message_MorphBallUpgrade
-    .db     Upgrade_ChargeBeam, Message_ChargeBeamUpgrade
-    .db     Upgrade_SecurityLevel1, Message_SecurityLevel1
-    .db     Upgrade_Bombs, Message_BombUpgrade
-    .db     Upgrade_HiJump, Message_HiJumpUpgrade
-    .db     Upgrade_Speedbooster, Message_SpeedboosterUpgrade
-    .db     Upgrade_SecurityLevel2, Message_SecurityLevel2
-    .db     Upgrade_SuperMissiles, Message_SuperMissileUpgrade
-    .db     Upgrade_VariaSuit, Message_VariaSuitUpgrade
-    .db     Upgrade_SecurityLevel3, Message_SecurityLevel3
-    .db     Upgrade_IceMissiles, Message_IceMissileUpgrade
-    .db     Upgrade_WideBeam, Message_WideBeamUpgrade
-    .db     Upgrade_PowerBombs, Message_PowerBombUpgrade
-    .db     Upgrade_SpaceJump, Message_SpaceJumpUpgrade
-    .db     Upgrade_PlasmaBeam, Message_PlasmaBeamUpgrade
-    .db     Upgrade_GravitySuit, Message_GravitySuitUpgrade
-    .db     Upgrade_SecurityLevel4, Message_SecurityLevel4
-    .db     Upgrade_DiffusionMissiles, Message_DiffusionMissileUpgrade
-    .db     Upgrade_WaveBeam, Message_WaveBeamUpgrade
-    .db     Upgrade_ScrewAttack, Message_ScrewAttackUpgrade
+    .db     Upgrade_Missiles, Message_Auto
+    .db     Upgrade_MorphBall, Message_Auto
+    .db     Upgrade_ChargeBeam, Message_Auto
+    .db     Upgrade_SecurityLevel1, Message_Auto
+    .db     Upgrade_Bombs, Message_Auto
+    .db     Upgrade_HiJump, Message_Auto
+    .db     Upgrade_Speedbooster, Message_Auto
+    .db     Upgrade_SecurityLevel2, Message_Auto
+    .db     Upgrade_SuperMissiles, Message_Auto
+    .db     Upgrade_VariaSuit, Message_Auto
+    .db     Upgrade_SecurityLevel3, Message_Auto
+    .db     Upgrade_IceMissiles, Message_Auto
+    .db     Upgrade_WideBeam, Message_Auto
+    .db     Upgrade_PowerBombs, Message_Auto
+    .db     Upgrade_SpaceJump, Message_Auto
+    .db     Upgrade_PlasmaBeam, Message_Auto
+    .db     Upgrade_GravitySuit, Message_Auto
+    .db     Upgrade_SecurityLevel4, Message_Auto
+    .db     Upgrade_DiffusionMissiles, Message_Auto
+    .db     Upgrade_WaveBeam, Message_Auto
+    .db     Upgrade_ScrewAttack, Message_Auto
 .endarea
 
 .org TankIncrements

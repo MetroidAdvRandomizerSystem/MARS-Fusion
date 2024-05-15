@@ -105,6 +105,7 @@ Message_PowerBombTankUpgrade equ 34h
 Message_EnemyLocationAbnormal equ 35h
 Message_IceTrapUpgrade equ 36h
 Message_NothingUpgrade equ 37h
+Message_Auto equ 0FFh
 
 Tank_Missiles equ 1
 Tank_Energy equ 2
