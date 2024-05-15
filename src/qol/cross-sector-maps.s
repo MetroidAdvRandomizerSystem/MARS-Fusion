@@ -39,12 +39,12 @@
 @@set_loc_flash:
     strb    r0, [r1]
     mov     r0, r4
-    ldr     r1, =02034000h
+    ldr     r1, =MinimapData
     bl      08077084h
     mov     r0, r4
     bl      0807576Ch
     ldr     r1, =DMA3
-    ldr     r0, =02034000h
+    ldr     r0, =MinimapData
     str     r0, [r1, DMA_SAD]
     ldr     r0, =0600E000h
     str     r0, [r1, DMA_DAD]

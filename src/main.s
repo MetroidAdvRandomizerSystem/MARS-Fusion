@@ -32,6 +32,9 @@
 .ifndef ANTI_SOFTLOCK
 .definelabel ANTI_SOFTLOCK, 0
 .endif
+.ifndef UNHIDDEN_MAP
+.definelabel UNHIDDEN_MAP, 0
+.endif
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"
@@ -87,6 +90,10 @@ CreditsScrollSpeed equ 087FF058h
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
 .include "src/qol/skip-intro.s"
+
+.if UNHIDDEN_MAP
+.include "src/qol/unhidden-map.s"
+.endif
 .endif
 
 ; Physics patches
