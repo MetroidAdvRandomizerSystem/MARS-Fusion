@@ -214,7 +214,7 @@
 
 ; Sector 1 - Atmospheric Stabilizer Northwest
 ; show metroid molt in go mode instead of after ridley
-.org readptr(Sector1Levels + 04h * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.org Sector1Levels + 04h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
     .db     63h
 .endarea
@@ -225,21 +225,21 @@
 
 ; Sector 1 - Moto Manor
 ; show metroid molt in go mode instead of after ridley
-.org readptr(Sector1Levels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.org Sector1Levels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
     .db     63h
 .endarea
 
 ; Sector 1 - Atmospheric Stabilizer Southeast
 ; show metroid molt in go mode instead of after ridley
-.org readptr(Sector1Levels + 0Fh * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.org Sector1Levels + 0Fh * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
     .db     63h
 .endarea
 
 ; Sector 1 - Lava Lake Annex
 ; show metroid molt in go mode instead of after ridley
-.org readptr(Sector1Levels + 14h * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.org Sector1Levels + 14h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
     .db     63h
 .endarea

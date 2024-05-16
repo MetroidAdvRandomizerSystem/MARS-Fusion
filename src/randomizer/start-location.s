@@ -74,7 +74,7 @@
     str     r4, [r1, DMA_SAD]
     ldr     r0, =DecompressedMinimapData
     str     r0, [r1, DMA_DAD]
-    ldr     r0, =#80000400
+    ldr     r0, =#80000400h
     str     r0, [r1, DMA_CNT]
     ldr     r0, [r1, DMA_CNT]
     ldrb    r0, [r5]
