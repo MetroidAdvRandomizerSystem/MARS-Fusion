@@ -20,6 +20,29 @@
     cmp     r0, #1
     bgt     0807A6E6h
 
+.autoregion
+    .align 2
+.func CheckNavRoomLocked
+    ldr     r1, =HintSecurityLevels
+    ldr     r0, =CurrentNavRoom
+    ldrb    r0, [r0]
+    ldrb    r1, [r1, r0]
+    ldr     r0, =SamusUpgrades
+    ldrb    r0, [r0, SamusUpgrades_SecurityLevel]
+    mvn     r0, r0
+    lsr     r0, r1
+    lsl     r0, #1Fh
+    lsr     r0, #1Fh
+    bx      lr
+    .pool
+.endfunc
+.endautoregion
+
+.org HintSecurityLevels
+.area 12
+    .fill 12, 0
+.endarea
+
 ; Placeholder hint
 .org 086CECB2h
 .area 8Ch

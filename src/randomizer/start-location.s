@@ -153,21 +153,18 @@
 .org 08060DF8h
 .area 24h
     ; check if navigation pad should start inactive
-    ldr     r1, =CurrEvent
-    ldrb    r0, [r1]
-    cmp     r0, #66h
-    bgt     @@return_true
-    add     r1, #03000BE3h - CurrEvent
-    ldrb    r0, [r1]
+    push    { lr }
+    ldr     r0, =03000BE3h
+    ldrb    r0, [r0]
     lsr     r0, #1
-    bcs     @@return
+    bcs     @@check_lock
     ldr     r1, =SamusState + SamusState_Pose
     mov     r0, #3Ah
     strb    r0, [r1]
-@@return_true:
-    mov     r0, #1
+@@check_lock:
+    bl      CheckNavRoomLocked
 @@return:
-    bx      lr
+    pop     { pc }
     .pool
 .endarea
 

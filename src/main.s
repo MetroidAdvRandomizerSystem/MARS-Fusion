@@ -55,6 +55,7 @@ RequiredMetroidCount equ 087FF04Dh
 StartingLocation equ 087FF04Eh
 CreditsEndDelay equ 087FF056h
 CreditsScrollSpeed equ 087FF058h
+HintSecurityLevels equ 087FF059h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h

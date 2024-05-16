@@ -582,10 +582,3 @@ StartingLocation_XPos equ 04h
 StartingLocation_YPos equ 06h
 StartingLocation_Size equ 08h
 .sym on
-
-.sym off
-NavRoom_Area equ 00h
-NavRoom_Room equ 01h
-NavRoom_SecurityLevel equ 02h
-NavRoom_Size equ 04h
-.sym on
