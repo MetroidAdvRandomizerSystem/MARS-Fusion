@@ -70,11 +70,11 @@
 
 ; Main Deck - Sector Hub
 ; keep main elevator always active
-.defineregion readptr(MainDeckLevels + 17h * LevelMeta_Size + LevelMeta_Spriteset0), 27h
+.defineregion readptr(MainDeckLevels + 18h * LevelMeta_Size + LevelMeta_Spriteset0), 27h
 
 .org MainDeckLevels + 18h * LevelMeta_Size + LevelMeta_Spriteset0
 .area LevelMeta_Spriteset2Event - LevelMeta_Spriteset0
-    .dw     readptr(MainDeckLevels + 17h * LevelMeta_Size + LevelMeta_Spriteset1)
+    .dw     readptr(MainDeckLevels + 18h * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     02h
     .db     0
     .skip 2
@@ -122,7 +122,7 @@
 
 ; Main Deck - Maintenance Crossing
 ; repair so the crossing is traversable and add a geron
-.org readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Bg1)
+.org readptr(MainDeckLevels + 24h * LevelMeta_Size + LevelMeta_Bg1)
 .area 100h
 .incbin "data/rooms/S0-24-BG1.rlebg"
 .endarea
