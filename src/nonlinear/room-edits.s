@@ -8,6 +8,20 @@
 .defineregion 083C2C10h, 3Ch
 .defineregion 083F1548h, 0C56h
 
+; Main Deck - Docking Bay Shaft
+; remove event-based transitions to wrecked Silo Access
+.if RANDOMIZER
+.org MainDeckDoors + 0Dh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
+.org MainDeckDoors + 0Fh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+.endif
+
 ; Main Deck - Crew Quarters West
 ; remove power bomb geron
 .defineregion readptr(MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1), 0Fh
@@ -180,6 +194,7 @@
 
 ; Main Deck - Operations Room
 ; change lv4 security door to lv0 security
+; remove event-based transition leading to wrecked Operations Deck
 .org readptr(MainDeckLevels + 52h * LevelMeta_Size + LevelMeta_Bg1)
 .area 0F8h
 .incbin "data/rooms/S0-52-BG1.rlebg"
@@ -190,10 +205,12 @@
 .incbin "data/rooms/S0-52-Clip.rlebg"
 .endarea
 
+.if RANDOMIZER
 .org MainDeckDoors + 0C2h * DoorEntry_Size + DoorEntry_Type
 .area 1
     .db     DoorType_LockableHatch
 .endarea
+.endif
 
 ; Sector 1 - Charge Core Exit
 ; fix screen scroll when entering room from Charge Core Arena

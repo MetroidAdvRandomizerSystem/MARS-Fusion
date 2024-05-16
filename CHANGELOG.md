@@ -1,7 +1,7 @@
 # Changelog
 ## [Unreleased]
 
-### Randomization
+### Randomizer
 * Changed: Allow all item locations (collectible tanks, security levels, data rooms, bosses) to be configured to contain any item.
 * Changed: Data rooms and security rooms can be used at any point in time.
 * Changed: Bosses can now be fought at any point in time, provided the player has access to the arena.
@@ -16,10 +16,12 @@
 * Changed: Navigation room terminals now provide configurable dialogue for the purpose of providing item location hints to the player.
 * Changed: Credits roll is now configurable, intended for adding text after the vanilla credits, ex. randomizer credits, major item locations, etc.
 * Changed: Initial energy, missile, and power bomb amounts and upgrade increments are now configurable.
+* Changed: Escape sequence countdown only starts on entering Docking Bay Hangar.
 * Added: Configurable start location and starting items.
 * Added: Ability to warp to the starting location at any time, replacing the sleep mode menu. All progress since the last save is lost when warping.
 * Removed: SA-X no longer patrols and chases the player through certain rooms.
 * Removed: Boiler meltdown and reactor shutdown events no longer occur.
+* Removed: Escape sequence no railroads the player towards the ship by locking doors.
 
 ### Gameplay modifications
 * Changed: Reimplemented beam upgrades to stack on top of each other instead of only considering the highest obtained beam upgrade. Beam graphics are modified such that each beam combination can be easily differentiated at a glance.
@@ -49,7 +51,7 @@
 #### Main Deck
 * Removed: Restricted sector is always detached.
 * Changed: Crew Quarters West: Remove power bomb geron to Elevator to Operations Deck.
-* Changed: Operations Deck: Replace lv4 security door to Operations Room with a lv0 security door.
+* Changed: Operations Deck:
 * Changed: Central Hub: Add power bomb geron to all room states.
 * Changed: Eastern Hub: Remove missile geron in front of recharge station.
 * Changed: Sector Hub: Keep main elevator active in all room states.
