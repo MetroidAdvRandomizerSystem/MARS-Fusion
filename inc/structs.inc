@@ -335,6 +335,17 @@ DoorEntry_ExitDistanceY equ 08h
 DoorEntry_Size equ 0Ch
 .sym on
 
+DoorLockEvents equ 083C8A5Ch
+.sym off
+DoorLockEvents_Len equ 0Fh
+DoorLockEvent_Event equ 00h
+DoorLockEvent_Area equ 01h
+DoorLockEvent_Room equ 02h
+DoorLockEvent_Bitmask equ 03h
+DoorLockEvent_Value equ 04h
+DoorLockEvent_Size equ 05h
+.sym on
+
 VariableConnections equ 083C8C68h
 .sym off
 VariableConnections_Len equ 3Ch

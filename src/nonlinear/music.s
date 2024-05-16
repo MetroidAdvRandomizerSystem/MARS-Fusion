@@ -108,16 +108,6 @@
 .endif
     .align 2
 @@case_MainDeck:
-    ; operations deck
-    cmp     r6, #0Dh
-    bne     @@case_MainDeck_check26
-    ldrh    r0, [r2, MiscProgress_StoryFlags]
-    lsr     r0, #StoryFlag_SaxDefeated + 1
-    bcs     @@case_MainDeck_break
-    mov     r0, #08h
-    bl      LockHatches
-    b       @@case_MainDeck_default
-@@case_MainDeck_check26:
     ; arachnus fight room
     cmp     r6, #26h
     bne     @@case_MainDeck_check36
@@ -127,11 +117,11 @@
     ldr     r1, =MusicInfo + MusicInfo_Type
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
-    beq     @@case_MainDeck_lockWithoutMusic
+    beq     @@case_MainDeck_break
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
+    b       @@tryPlay
 @@case_MainDeck_check36:
     cmp     r6, #36h
     bne     @@case_MainDeck_check4D
@@ -190,27 +180,23 @@
     mov     r0, #18h
     mov     r1, MusicType_Transient
     mov     r2, #50
-    b       @@tryLock
+    b       @@tryPlay
 @@case_MainDeck_default:
     b       @@case_areaSwitch_default
 @@case_MainDeck_break:
     b       @@areaSwitchDone
-@@case_MainDeck_lockWithoutMusic:
-    mov     r0, #3Fh
-    bl      LockHatches
-    b       @@areaSwitchDone
 @@case_SRX:
     ; charge core-x fight room
     cmp     r6, #28h
-    bne     @@case_SRX_check28
+    bne     @@case_SRX_check1B
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_ChargeCoreX + 1
     bcs     @@case_MainDeck_default
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
-@@case_SRX_check28:
+    b       @@tryPlay
+@@case_SRX_check1B:
     ; ridley fight room
     cmp     r6, #1Bh
     bne     @@case_MainDeck_default
@@ -220,30 +206,18 @@
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
+    b       @@tryPlay
 @@case_TRO:
     ; zazabi fight room
     cmp     r6, #12h
-    bne     @@case_TRO_check14
+    bne     @@case_TRO_check16
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Zazabi + 1
     bcs     @@case_MainDeck_default
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
-@@case_TRO_check14:
-    ; nettori backdoor
-    cmp     r6, #14h
-    bne     @@case_TRO_check16
-    cmp     r4, #22h
-    bne     @@case_MainDeck_default
-    ldr     r0, [r2, MiscProgress_MajorLocations]
-    lsr     r0, MajorLocation_Nettori + 1
-    bcs     @@case_MainDeck_default
-    mov     r0, #02h
-    bl      LockHatches
-    b       @@case_areaSwitch_default
+    b       @@tryPlay
 @@case_TRO_check16:
     ; nettori fight room
     cmp     r6, #16h
@@ -254,7 +228,7 @@
     mov     r0, #44h
     mov     r1, MusicType_BossMusic
     mov     r2, #50
-    b       @@tryLock
+    b       @@tryPlay
 @@case_PYR:
     ; box fight room
     cmp     r6, #17h
@@ -268,7 +242,7 @@
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
+    b       @@tryPlay
 @@case_PYR_check19:
     cmp     r6, #19h
     bne     @@case_areaSwitch_default
@@ -278,7 +252,7 @@
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
+    b       @@tryPlay
 @@case_AQA:
     cmp     r6, #0Ah
     bne     @@case_AQA_check1F
@@ -311,7 +285,7 @@
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #40
-    b       @@tryLock
+    b       @@tryPlay
 @@case_ARC:
     ; nightmare fight room
     cmp     r6, #14h
@@ -322,7 +296,7 @@
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #50
-    b       @@tryLock
+    b       @@tryPlay
 @@case_NOC:
     ; mega core-x eyedoor room
     cmp     r6, #0Ch
@@ -348,15 +322,11 @@
     ldr     r1, =MusicInfo + MusicInfo_Type
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
-    bne     @@startMegaCoreAmbience
-    cmp     r4, #22h
-    beq     @@lockWithoutMusic
-    b       @@areaSwitchDone
-@@startMegaCoreAmbience:
+    beq     @@areaSwitchDone
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
-    b       @@tryLock
+    b       @@tryPlay
 @@case_NOC_check10:
     ; xbox fight room
     cmp     r6, #10h
@@ -364,11 +334,6 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_XBox + 1
     bcs     @@case_areaSwitch_default
-    cmp     r4, #22h
-    bne     @@playXboxMusic
-    mov     r0, #3Eh
-    bl      LockHatches
-@@playXboxMusic:
     mov     r0, #1Bh
     mov     r1, MusicType_BossMusic
     mov     r2, #20
@@ -385,10 +350,6 @@
     bcs     @@areaSwitchDone
     cmp     r4, #22h
     bne     @@areaSwitchDone
-@@lockWithoutMusic:
-    mov     r0, #3Fh
-    bl      LockHatches
-    b       @@areaSwitchDone
 @@case_areaSwitch_default:
     ldr     r1, =MusicInfo + MusicInfo_Type
     ldr     r2, =GameMode
@@ -459,13 +420,6 @@
     mov     r1, MusicType_BossMusic
     mov     r2, #0
     b       @@tryPlay
-@@tryLock:
-    cmp     r4, #22h
-    bne     @@fadeOut
-    push    { r0-r2 }
-    mov     r0, #3Fh
-    bl      LockHatches
-    pop     { r0-r2 }
 @@tryPlay:
     cmp     r4, #21h
     beq     @@fadeOut

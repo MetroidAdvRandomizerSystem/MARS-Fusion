@@ -212,9 +212,37 @@
 .endarea
 .endif
 
+; Sector 1 - Atmospheric Stabilizer Northwest
+; show metroid molt in go mode instead of after ridley
+.org readptr(Sector1Levels + 04h * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.area 1
+    .db     63h
+.endarea
+
 ; Sector 1 - Charge Core Exit
 ; fix screen scroll when entering room from Charge Core Arena
 .defineregion readptr(Sector1Scrolls + 01h * 4), ScrollList_HeaderSize + Scroll_Size * 1
+
+; Sector 1 - Moto Manor
+; show metroid molt in go mode instead of after ridley
+.org readptr(Sector1Levels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.area 1
+    .db     63h
+.endarea
+
+; Sector 1 - Atmospheric Stabilizer Southeast
+; show metroid molt in go mode instead of after ridley
+.org readptr(Sector1Levels + 0Fh * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.area 1
+    .db     63h
+.endarea
+
+; Sector 1 - Lava Lake Annex
+; show metroid molt in go mode instead of after ridley
+.org readptr(Sector1Levels + 14h * LevelMeta_Size + LevelMeta_Spriteset1Event)
+.area 1
+    .db     63h
+.endarea
 
 ; Sector 1 - Sciser Playground
 ; fix screen scroll when entering room from Charge Core Access
@@ -661,6 +689,18 @@
     .skip 2
     .dw     readptr(Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     23h
+    .db     0
+    .skip 2
+    .dw     NullSpriteset
+    .db     0
+.endarea
+
+; Sector 4 - Aquarium Storage
+; make kago always block missile tank
+.defineregion readptr(Sector4Levels + 26h * LevelMeta_Size + LevelMeta_Spriteset1), 24h
+
+.org Sector4Levels + 26h * LevelMeta_Size + LevelMeta_Spriteset1Event
+.area LevelMeta_Spriteset2Event - LevelMeta_Spriteset1Event
     .db     0
     .skip 2
     .dw     NullSpriteset

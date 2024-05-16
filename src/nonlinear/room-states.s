@@ -1,5 +1,5 @@
-; Changes room state checks to check various progression flags instead of
-; comparing against the linear event counter.
+; Changes room state checks and door lock checks to check various
+; progression flags instead of comparing against the linear event counter.
 
 ; NOTES:
 ; uninterruptable sequences:
@@ -90,6 +90,94 @@
     .pool
 .endarea
 
+.org 08063D40h
+.area 0A8h
+    ; change door lock handling to call custom event function
+    push    { r4-r7, lr }
+    ldr     r4, =DoorLockEvents
+    mov     r5, #DoorLockEvents_Len
+    ldr     r0, =CurrArea
+    ldrb    r6, [r0]
+    ldr     r0, =CurrRoom
+    ldrb    r7, [r0]
+@@loop:
+    ldrb    r0, [r4, DoorLockEvent_Area]
+    cmp     r0, r6
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Room]
+    sub     r0, #1
+    cmp     r0, r7
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Event]
+    bl      CheckEvent
+    ldrb    r1, [r4, DoorLockEvent_Value]
+    cmp     r0, r1
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Bitmask]
+    lsl     r0, #20h - 6
+    lsr     r0, #20h - 6
+    bl      LockHatches
+    mov     r0, #1
+    b       @@return
+@@loop_inc:
+    add     r4, #DoorLockEvent_Size
+    sub     r5, #1
+    bne     @@loop
+    mov     r0, #0
+@@return:
+    pop     { r4-r7, pc }
+    .pool
+.endarea
+
+.org DoorLockEvents
+.region 12Ch
+    .db     0Ah
+    .db     Area_MainDeck, 26h + 1
+    .db     111111b, 0
+    .db     0Fh
+    .db     Area_SRX, 28h + 1
+    .db     111111b, 0
+    .db     19h
+    .db     Area_TRO, 12h + 1
+    .db     111111b, 0
+    .db     1Dh
+    .db     Area_AQA, 2Ah + 1
+    .db     111111b, 0
+    .db     28h
+    .db     Area_PYR, 17h + 1
+    .db     111111b, 0
+    .db     33h
+    .db     Area_NOC, 0Dh + 1
+    .db     111111b, 0
+    .db     3Dh
+    .db     Area_PYR, 19h + 1
+    .db     111111b, 0
+    .db     49h
+    .db     Area_MainDeck, 56h + 1
+    .db     111111b, 0
+    .db     4Eh
+    .db     Area_TRO, 0Ch + 1
+    .db     000010b, 0
+    .db     4Eh
+    .db     Area_TRO, 16h + 1
+    .db     111111b, 0
+    .db     51h
+    .db     Area_ARC, 14h + 1
+    .db     111111b, 0
+    .db     5Bh
+    .db     Area_NOC, 10h + 1
+    .db     111110b, 0
+    .db     60h
+    .db     Area_SRX, 1Bh + 1
+    .db     111111b, 0
+    .db     66h
+    .db     Area_MainDeck, 0Dh + 1
+    .db     001000b, 0
+    .db     67h
+    .db     Area_MainDeck, 3Fh + 1
+    .db     111111b, 1
+.endregion
+
 .autoregion
     .align 2
 .func CheckEvent
@@ -99,11 +187,11 @@
     bhi     @@case_default
     mov     r1, r0
     ldr     r3, =@@eventCases
-    mov     r2, #1 << (log2(29) - 1)
-    ldrb    r0, [r3, 29 - (1 << log2(29))]
+    mov     r2, #1 << (log2(35) - 1)
+    ldrb    r0, [r3, 35 - (1 << log2(35))]
     cmp     r0, r1
     bhi     @@bsearch_loop
-    add     r3, #29 - (1 << log2(29))
+    add     r3, #35 - (1 << log2(35))
 @@bsearch_loop:
     ldrb    r0, [r3, r2]
     cmp     r0, r1
@@ -127,11 +215,12 @@
     .pool
     .align 4
 @@eventCases:
-    .db     08h, 0Ah, 0Dh, 10h, 16h, 19h, 20h, 21h
-    .db     23h, 31h, 32h, 33h, 3Ah, 3Dh, 3Eh, 42h
-    .db     44h, 46h, 47h, 4Bh, 4Dh, 4Eh, 51h, 59h
-    .db     5Ch, 5Fh, 60h, 63h, 67h
-.if 29 != @@eventBranchTable - @@eventCases
+    .db     08h, 0Ah, 0Dh, 0Fh, 10h, 16h, 19h, 1Dh
+    .db     20h, 21h, 23h, 28h, 31h, 32h, 33h, 3Ah
+    .db     3Dh, 3Eh, 42h, 44h, 46h, 47h, 49h, 4Bh
+    .db     4Dh, 4Eh, 51h, 59h, 5Bh, 5Ch, 5Fh, 60h
+    .db     63h, 66h, 67h
+.if 35 != @@eventBranchTable - @@eventCases
     ; can't treat this as a variable b/c armips is really dumb
     .error "Binary search tree size not updated"
 .endif
@@ -139,12 +228,15 @@
     .db     (@@case_08 - @@branch - 4) >> 1
     .db     (@@case_0A - @@branch - 4) >> 1
     .db     (@@case_0D - @@branch - 4) >> 1
+    .db     (@@case_0F - @@branch - 4) >> 1
     .db     (@@case_10 - @@branch - 4) >> 1
     .db     (@@case_16 - @@branch - 4) >> 1
     .db     (@@case_19 - @@branch - 4) >> 1
+    .db     (@@case_1D - @@branch - 4) >> 1
     .db     (@@case_20 - @@branch - 4) >> 1
     .db     (@@case_21 - @@branch - 4) >> 1
     .db     (@@case_23 - @@branch - 4) >> 1
+    .db     (@@case_28 - @@branch - 4) >> 1
     .db     (@@case_31 - @@branch - 4) >> 1
     .db     (@@case_32 - @@branch - 4) >> 1
     .db     (@@case_33 - @@branch - 4) >> 1
@@ -155,15 +247,18 @@
     .db     (@@case_44 - @@branch - 4) >> 1
     .db     (@@case_46 - @@branch - 4) >> 1
     .db     (@@case_47 - @@branch - 4) >> 1
+    .db     (@@case_49 - @@branch - 4) >> 1
     .db     (@@case_4B - @@branch - 4) >> 1
     .db     (@@case_4D - @@branch - 4) >> 1
     .db     (@@case_4E - @@branch - 4) >> 1
     .db     (@@case_51 - @@branch - 4) >> 1
     .db     (@@case_59 - @@branch - 4) >> 1
+    .db     (@@case_5B - @@branch - 4) >> 1
     .db     (@@case_5C - @@branch - 4) >> 1
     .db     (@@case_5F - @@branch - 4) >> 1
     .db     (@@case_60 - @@branch - 4) >> 1
     .db     (@@case_63 - @@branch - 4) >> 1
+    .db     (@@case_66 - @@branch - 4) >> 1
     .db     (@@case_67 - @@branch - 4) >> 1
 .if ((@@case_67 - @@branch - 4) >> 1) >= (1 << 8)
     .error "Branch table overflowed"
@@ -178,8 +273,8 @@
     ; room states: S0-0D => S0-4A
 .if !RANDOMIZER
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsr     r1, r0, MajorLocation_MainDeckData
-    lsr     r0, MajorLocation_Arachnus
+    lsr     r1, r0, #MajorLocation_MainDeckData
+    lsr     r0, #MajorLocation_Arachnus
     bic     r0, r1
     mov     r1, #1
     and     r0, r1
@@ -190,9 +285,10 @@
 @@case_0A:
     ; arachnus defeated
     ; spritesets: S0-3C, S0-46
+    ; locks: S0-26
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r0, 1Fh - MajorLocation_Arachnus
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_Arachnus
+    lsr     r0, #1Fh
     bx      lr
 @@case_0D:
     ; TODO: main deck elevator door destroyed by SA-X
@@ -201,11 +297,18 @@
     mov     r0, #1
 .endif
     bx      lr
+@@case_0F:
+    ; charge core-x defeated
+    ; locks: S1-28
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_ChargeCoreX
+    lsr     r0, #1Fh
+    bx      lr
 @@case_10:
     ; all atmospheric stabilizers reactivated
     ; spritesets: S1-05, S1-07
     ldrb    r0, [r3, MiscProgress_AtmoStabilizers]
-    mov     r1, 11111b - 1
+    mov     r1, #11111b - 1
     sub     r0, r1, r0
     lsr     r0, #1Fh
     bx      lr
@@ -214,8 +317,8 @@
     ; room states: S2-03 => S2-1E, S2-07 => S2-1F
 .if !RANDOMIZER
     ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
-    lsl     r0, 1Fh - ExplosiveUpgrade_Bombs
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - ExplosiveUpgrade_Bombs
+    lsr     r0, #1Fh
 .else
     ; TODO: fixme
     mov     r0, #0
@@ -225,16 +328,24 @@
     ; zazabi defeated, zoros in cocoons
     ; spritesets: S2-00, S2-04, S2-05, S2-09, S2-0A, S2-11, S2-13, S2-1F
     ; room states: S2-0D => S2-2E, S2-0E => S2-2C
+    ; locks: S2-12
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r0, 1Fh - MajorLocation_Zazabi
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_Zazabi
+    lsr     r0, #1Fh
+    bx      lr
+@@case_1D:
+    ; serris defeated
+    ; locks: S4-2A
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_Serris
+    lsr     r0, #1Fh
     bx      lr
 @@case_20:
     ; sector 4 water level lowered
     ; spritesets: S4-03, S4-05, S4-06, S4-14, S4-15, S4-21, S4-24
     ldrh    r0, [r3, MiscProgress_StoryFlags]
-    lsl     r0, 1Fh - StoryFlag_WaterLowered
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - StoryFlag_WaterLowered
+    lsr     r0, #1Fh
     bx      lr
 @@case_21:
     ; TODO: sector 4 complete, gold crab locks inactive
@@ -251,9 +362,19 @@
 .else
     ldr     r1, =SamusUpgrades
     ldrb    r0, [r1, SamusUpgrades_SecurityLevel]
-    lsl     r0, 1Fh - SecurityLevel_Lv2
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - SecurityLevel_Lv2
+    lsr     r0, #1Fh
 .endif
+    bx      lr
+@@case_28:
+    ; box defeated
+    ; locks: S3-17
+    ldrh    r0, [r3, MiscProgress_StoryFlags]
+    lsl     r0, #1Fh - StoryFlag_BoxDefeated
+    ldr     r1, [r3, MiscProgress_MajorLocations]
+    lsl     r1, #1Fh - MajorLocation_XBox
+    orr     r0, r1
+    lsr     r0, #1Fh
     bx      lr
 @@case_31:
     ; TODO: escaped sector 6 SA-X
@@ -266,19 +387,20 @@
     ; sector 6 data room destroyed
     ; spritesets: S6-19
     ldr     r0, [r3, MiscProgress_StoryFlags]
-    lsl     r0, 1Fh - StoryFlag_NocDataDestroyed
+    lsl     r0, #1Fh - StoryFlag_NocDataDestroyed
     ldrh    r1, [r3, MiscProgress_MajorLocations]
-    lsl     r1, 1Fh - MajorLocation_MegaCoreX
+    lsl     r1, #1Fh - MajorLocation_MegaCoreX
     orr     r0, r1
-    lsr     r0, 1Fh
+    lsr     r0, #1Fh
     bx      lr
 @@case_33:
     ; defeated mega core-x
     ; spritesets: S6-03, S6-04, S6-05, S6-06, S6-07, S6-08, S6-0A
     ; room states: S6-09 => S6-21
+    ; locks: S6-0D
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r0, 1Fh - MajorLocation_MegaCoreX
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_MegaCoreX
+    lsr     r0, #1Fh
     bx      lr
 @@case_3A:
     ; downloaded ice missiles
@@ -292,9 +414,10 @@
     ; boiler cooling reactivated
     ; spritesets: S3-05, S3-0A, S5-00
     ; room states: S3-11 => S3-1D
+    ; locks: S3-19
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r0, 1Fh - MajorLocation_WideCoreX
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_WideCoreX
+    lsr     r0, #1Fh
     bx      lr
 @@case_3E:
     ; save the animals
@@ -308,8 +431,8 @@
     ; spritesets: S5-08, S5-09, S5-18
     ; room states: S5-15 => S5-16, S5-27 => S5-28
     ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
-    lsl     r0, 1Fh - ExplosiveUpgrade_PowerBombs
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - ExplosiveUpgrade_PowerBombs
+    lsr     r0, #1Fh
     bx      lr
 @@case_44:
     ; escaped sector 5 SA-X
@@ -333,11 +456,18 @@
 .if RANDOMIZER
     ; TODO: split off S0-06 and S0-30 to event 42h
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r1, r0, 1Fh - MajorLocation_Yakuza
-    lsl     r0, 1Fh - MajorLocation_Nettori
+    lsl     r1, r0, #1Fh - MajorLocation_Yakuza
+    lsl     r0, #1Fh - MajorLocation_Nettori
     orr     r0, r1
-    lsr     r0, 1Fh
+    lsr     r0, #1Fh
 .endif
+    bx      lr
+@@case_49:
+    ; yakuza defeated
+    ; locks: S0-56 -> S0-33
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_Yakuza
+    lsr     r0, #1Fh
     bx      lr
 @@case_4B:
     ; auxiliary power active
@@ -353,16 +483,18 @@
     ; nettori defeated
     ; spritesets: S2-1B, S2-1C
     ; room states: S0-31 => S0-3B, S2-20 => S2-23, S2-39 => S2-3A
+    ; locks: S2-0C -> S2-16, S2-16
     ldr     r0, [r3, MiscProgress_MajorLocations]
-    lsl     r0, 1Fh - MajorLocation_Nettori
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_Nettori
+    lsr     r0, #1Fh
     bx      lr
 @@case_51:
     ; nightmare defeated
-    ; spritesets: S4-24, S4-26
-.if RANDOMIZER
-    mov     r0, #1
-.endif
+    ; spritesets: S4-24, S4-26 (removed in rando)
+    ; locks: S5-14
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_Nightmare
+    lsr     r0, #1Fh
     bx      lr
 @@case_59:
     ; no entry without authorization
@@ -370,9 +502,16 @@
 .if RANDOMIZER
     ldr     r0, [r3, MiscProgress_MajorLocations]
     mvn     r0, r0
-    lsl     r0, 1Fh - MajorLocation_XBox
-    lsr     r0, 1Fh
+    lsl     r0, #1Fh - MajorLocation_XBox
+    lsr     r0, #1Fh
 .endif
+    bx      lr
+@@case_5B:
+    ; xbox defeated
+    ; locks: S6-10 -> S6-12, S6-10 -> S6-13
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_XBox
+    lsr     r0, #1Fh
     bx      lr
 @@case_5C:
     ; restricted sector invaded by sa-x (5C)
@@ -395,12 +534,12 @@
     bx      lr
 @@case_60:
     ; ridley defeated
-    ; spritesets: S1-04, S1-0C, S1-0F, S1-14
-.if !RANDOMIZER
-    mov     r0, #0
+    ; spritesets: S1-04, S1-0C, S1-0F, S1-14 (moved to event 63 in rando)
+    ; locks: S1-1B
+    ldr     r0, [r3, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_Ridley
+    lsr     r0, #1Fh
     bx      lr
-.endif
-    ; randomizer falls through to go mode check
 @@case_63:
     ; permission for orbit change granted
     ; spritesets: S0-0C, S0-0D, S0-0E, S0-15
@@ -416,6 +555,13 @@
 .else
     bx      lr
 .endif
+@@case_66:
+    ; sa-x defeated
+    ; locks: S0-06 -> S0-52
+    ldr     r0, [r3, MiscProgress_StoryFlags]
+    lsl     r0, #1Fh - StoryFlag_SaxDefeated
+    lsr     r0, #1Fh
+    bx      lr
 @@case_67:
     ; escape sequence
     ; spritesets: S0-06, S0-07, S0-26, S0-2E
@@ -423,7 +569,7 @@
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
     cmp     r0, #67h
-    beq     @@return_true
+    bhs     @@return_true
 @@return_false:
     mov     r0, #0
     bx      lr

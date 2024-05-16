@@ -46,20 +46,6 @@
     nop :: nop :: nop
 .endarea
 
-.org 083C8B1Ch
-.region 1Ah * 4
-    ; remove escape sequence event locks
-    .db     69h
-    .db     Area_MainDeck, 40h
-    .db     3Fh
-.endregion
-
-.org 08063D88h
-.area 02h
-    ; fix event lock table length
-    cmp     r4, #30h
-.endarea
-
 .org 0806331eh
 .area 02h
     ; remove escape sequence nav room event locks
