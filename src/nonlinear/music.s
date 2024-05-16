@@ -78,12 +78,17 @@
 @@checkTrigger:
     sub     r0, #21h
     cmp     r0, #1
-    bls     @@areaSwitch
-    bl      @@areaSwitchDone
-@@areaSwitch:
+    bhi     @@skipAreaSwitch
     ldr     r1, =DestinationRoom
     ldrb    r6, [r1]
     ldr     r2, =MiscProgress
+    ldr     r0, =CurrEvent
+    ldrb    r0, [r0]
+    cmp     r0, #67h
+    bne     @@areaSwitch
+@@skipAreaSwitch:
+    b       @@areaSwitchDone
+@@areaSwitch:
     add     r1, =@@areaBranchTable
     ldrb    r0, [r1, r5]
     lsl     r0, #1
@@ -445,6 +450,11 @@
     bne     @@return_true
     cmp     r6, #3Fh
     bne     @@return_true
+.if RANDOMIZER
+    bl      08072B4Ch
+.else
+    nop :: nop
+.endif
     mov     r0, #58h
     mov     r1, MusicType_BossMusic
     mov     r2, #0

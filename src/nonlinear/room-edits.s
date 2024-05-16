@@ -190,6 +190,11 @@
 .incbin "data/rooms/S0-52-Clip.rlebg"
 .endarea
 
+.org MainDeckDoors + 0C2h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
 ; Sector 1 - Charge Core Exit
 ; fix screen scroll when entering room from Charge Core Arena
 .defineregion readptr(Sector1Scrolls + 01h * 4), ScrollList_HeaderSize + Scroll_Size * 1

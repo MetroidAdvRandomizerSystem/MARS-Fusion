@@ -146,6 +146,7 @@ CreditsScrollSpeed equ 087FF058h
 .include "src/randomizer/hatch-fixes.s"
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
+.include "src/randomizer/open-escape.s"
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"

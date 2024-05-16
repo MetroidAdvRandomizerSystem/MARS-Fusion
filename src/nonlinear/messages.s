@@ -158,12 +158,22 @@
 .endarea
 
 .org 0802AAE0h
-.area 0Ch, 0
+.area 10h, 0
     ; spawn countdown for lategame messages
+.if RANDOMIZER
+    cmp     r6, #Message_EscapeSequence
+    beq     @@check_restricted_sector_detach
+    bl      StartEscapeSequence
+@@check_restricted_sector_detach:
+    cmp     r6, #Message_RestrictedSectorDetachment
+    bne     0802AAF0h
+    bl      08072B4Ch
+.else
     mov     r0, r6
     sub     r0, #Message_RestrictedSectorDetachment - (Message_AtmosphericStabilizer1 - 1)
     cmp     r0, #Message_EscapeSequence - Message_RestrictedSectorDetachment
     bhi     0802AAF0h
+.endif
 .endarea
 
 .org 0802AAF0h
@@ -307,7 +317,11 @@
     .dw     086B552Eh   ; animals freed
     .dw     086B5570h   ; auxiliary power
     .dw     086B55A8h   ; restricted sector detaching
+.if RANDOMIZER
+    .dw     @EnglishMessage_EscapeSequenceStart
+.else
     .dw     086B5612h   ; escape sequence starting
+.endif
     .dw     086B5674h   ; save prompt
     .dw     086B56A0h   ; save complete
     .dw     086B56C4h   ; adam uplink prompt
@@ -392,5 +406,12 @@
 @EnglishMessage_WarpToStartLine2:
     .stringn 20, "[INDENT]location, but your recent\n"
     .string  15, "[INDENT]progress will not be saved."
+.endautoregion
+
+.autoregion
+    .align 2
+@EnglishMessage_EscapeSequenceStart:
+    .stringn 19, "[INDENT]Orbit change implemented.\n"
+    .string  41, "[INDENT]Escape the station."
 .endautoregion
 .endif
