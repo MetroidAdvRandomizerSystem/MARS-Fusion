@@ -6,7 +6,7 @@
 ; TODO: test SA-X boss
 
 .defineregion 08085E44h, 280h, 0    ; wide beam update/init functions
-.defineregion 08083BACh, 988h, 0    ; beam hit enemy functions
+.defineregion 08083BACh, 988h, 0    ; beam hit sprite functions
 
 .org LoadBeamGfx
 .region 1B4h, 0
@@ -520,15 +520,15 @@
 .area 4Ch
     ; wave beam core-x beam movement
     push    { r4-r6, lr }
-    ldr     r5, =CurrentEnemy
-    mov     r0, #Enemy_Timer0
+    ldr     r5, =CurrentSprite
+    mov     r0, #Sprite_Work1
     ldrb    r0, [r5, r0]
     mov     r4, #07h
     and     r4, r0
     ldr     r1, =0858B3CCh
     lsl     r0, r4, #1
     ldrsh   r6, [r1, r0]
-    ldrb    r2, [r5, Enemy_RoomSlot]
+    ldrb    r2, [r5, Sprite_RoomSlot]
     cmp     r2, #0
     beq     @@positive_offset
     neg     r6, r6
@@ -918,7 +918,7 @@
 
 .autoregion
     .align 2
-.func Beam_HitEnemy
+.func Beam_HitSprite
     push    { r4-r7, lr }
     mov     r5, r8
     mov     r6, r9
@@ -930,31 +930,31 @@
     mov     r10, r3
     ldr     r1, =SamusUpgrades
     ldrb    r6, [r1, SamusUpgrades_BeamUpgrades]
-    ldr     r4, =EnemyList
+    ldr     r4, =SpriteList
     add     r4, #20h
     mov     r1, #38h
     mul     r1, r0
     add     r4, r1
-    ldrb    r1, [r4, Enemy_Properties - 20h]
-    lsr     r3, r1, EnemyProps_SolidForProjectiles + 1
+    ldrb    r1, [r4, Sprite_Properties - 20h]
+    lsr     r3, r1, SpriteProps_SolidForProjectiles + 1
     bcs     @@collideWithSolid
-    lsr     r3, r1, EnemyProps_ImmuneToProjectiles + 1
-    bcs     @@hitInvulnEnemy
-    bl      Enemy_GetWeakness
-    lsr     r1, r0, EnemyWeakness_BeamOrBombs + 1
-    bcs     @@hitEnemy
-    ldr     r2, =EnemyList
+    lsr     r3, r1, SpriteProps_ImmuneToProjectiles + 1
+    bcs     @@hitInvulnSprite
+    bl      Sprite_GetWeakness
+    lsr     r1, r0, SpriteWeakness_BeamOrBombs + 1
+    bcs     @@hitSprite
+    ldr     r2, =SpriteList
     mov     r1, #38h
     mul     r1, r7
     add     r2, r1
-    ldrb    r1, [r2, Enemy_Id]
-    cmp     r1, #EnemyId_SaxBoss_Samus
-    beq     @@hitImmuneEnemy
-    lsr     r1, r0, EnemyWeakness_Freezable + 1
-    bcc     @@hitImmuneEnemy
+    ldrb    r1, [r2, Sprite_Id]
+    cmp     r1, #SpriteId_SaxBoss_Samus
+    beq     @@hitImmuneSprite
+    lsr     r1, r0, SpriteWeakness_Freezable + 1
+    bcc     @@hitImmuneSprite
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
-    bcc     @@hitImmuneEnemy
-@@hitEnemy:
+    bcc     @@hitImmuneSprite
+@@hitSprite:
     bl      Beam_CalculateDamage
     mov     r1, r0
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
@@ -962,14 +962,14 @@
     mov     r2, r1
     mov     r0, r7
     mov     r1, #0
-    bl      IceBeam_DamageEnemy
+    bl      IceBeam_DamageSprite
     mov     r1, #2
     mov     r4, r1
     mov     r5, r0
     b       @@checkDebris
 @@hitWithoutIce:
     mov     r0, r7
-    bl      Projectile_DamageEnemy
+    bl      Projectile_DamageSprite
     mov     r1, #1
     mov     r4, r1
     mov     r5, r0
@@ -977,35 +977,35 @@
     lsr     r0, r6, BeamUpgrade_PlasmaBeam + 1
     bcs     @@plasmaDebris
     mov     r0, r7
-    bl      Enemy_MakesDebrisWhenHit
+    bl      Sprite_MakesDebrisWhenHit
     cmp     r0, #0
     beq     @@despawnWithHitParticle
     mov     r0, r4
     mov     r1, r5
     mov     r2, r9
     mov     r3, r10
-    bl      Enemy_CreateDebris
+    bl      Sprite_CreateDebris
     b       @@despawnWithHitParticle
 @@plasmaDebris:
     mov     r0, r7
-    bl      Enemy_MakesDebrisWhenHit
+    bl      Sprite_MakesDebrisWhenHit
     cmp     r0, #0
     beq     @@return
     mov     r0, r4
     mov     r1, r5
     mov     r2, r9
     mov     r3, r10
-    bl      Enemy_CreatePlasmaDebris
+    bl      Sprite_CreatePlasmaDebris
     b       @@return
-@@hitImmuneEnemy:
+@@hitImmuneSprite:
     mov     r0, r7
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
     mov     r0, r9
     mov     r1, r10
     mov     r2, #7
     bl      SpawnParticleEffect
     b       @@despawnIfNoPlasma
-@@hitInvulnEnemy:
+@@hitInvulnSprite:
     mov     r0, r9
     mov     r1, r10
     mov     r2, #7
@@ -1013,29 +1013,29 @@
     b       @@despawn
 @@collideWithSolid:
     mov     r0, r7
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
     mov     r0, r7
-    bl      Enemy_GetWeakness
-    lsr     r0, EnemyWeakness_Freezable + 1
+    bl      Sprite_GetWeakness
+    lsr     r0, SpriteWeakness_Freezable + 1
     bcc     @@checkWave
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
     bcc     @@checkWave
-    ldr     r2, =EnemyList
+    ldr     r2, =SpriteList
     mov     r1, #38h
     mul     r1, r7
     add     r2, r1
     mov     r3, r2
     add     r3, #20h
     mov     r0, #240
-    strb    r0, [r3, Enemy_FreezeTimer - 20h]
+    strb    r0, [r3, Sprite_FreezeTimer - 20h]
     mov     r0, #0
-    strb    r0, [r3, Enemy_StandingOnFlag - 20h]
+    strb    r0, [r3, Sprite_StandingOnFlag - 20h]
     mov     r0, #15
-    ldrb    r1, [r3, Enemy_FreezePaletteOffset - 20h]
+    ldrb    r1, [r3, Sprite_FreezePaletteOffset - 20h]
     sub     r0, r1
-    ldrb    r1, [r2, Enemy_SpritesetGfxSlot]
+    ldrb    r1, [r2, Sprite_SpritesetGfxSlot]
     sub     r0, r1
-    strb    r0, [r3, Enemy_Palette - 20h]
+    strb    r0, [r3, Sprite_PaletteRow - 20h]
 @@checkWave:
     lsr     r0, r6, BeamUpgrade_WaveBeam + 1
     bcs     @@return
@@ -1131,7 +1131,7 @@
 
 .autoregion
     .align 2
-.func ChargedBeam_HitEnemy
+.func ChargedBeam_HitSprite
     push    { r4-r7, lr }
     mov     r5, r8
     mov     r6, r9
@@ -1143,48 +1143,48 @@
     mov     r10, r3
     ldr     r1, =SamusUpgrades
     ldrb    r6, [r1, SamusUpgrades_BeamUpgrades]
-    ldr     r4, =EnemyList
+    ldr     r4, =SpriteList
     mov     r1, #38h
     mul     r1, r0
     add     r4, r1
-    mov     r1, Enemy_Properties
+    mov     r1, Sprite_Properties
     ldrb    r1, [r4, r1]
-    lsr     r3, r1, EnemyProps_SolidForProjectiles + 1
+    lsr     r3, r1, SpriteProps_SolidForProjectiles + 1
     bcs     @@collideWithSolid
-    lsr     r3, r1, EnemyProps_ImmuneToProjectiles + 1
-    bcs     @@hitInvulnEnemy
-    bl      Enemy_GetWeakness
-    lsr     r1, r0, EnemyWeakness_BeamOrBombs + 1
-    bcs     @@hitEnemy
-    lsr     r1, r0, EnemyWeakness_ChargeBeam + 1
-    bcs     @@hitEnemy
-    lsr     r1, r0, EnemyWeakness_Freezable + 1
-    bcc     @@hitImmuneEnemy
+    lsr     r3, r1, SpriteProps_ImmuneToProjectiles + 1
+    bcs     @@hitInvulnSprite
+    bl      Sprite_GetWeakness
+    lsr     r1, r0, SpriteWeakness_BeamOrBombs + 1
+    bcs     @@hitSprite
+    lsr     r1, r0, SpriteWeakness_ChargeBeam + 1
+    bcs     @@hitSprite
+    lsr     r1, r0, SpriteWeakness_Freezable + 1
+    bcc     @@hitImmuneSprite
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
-    bcc     @@hitImmuneEnemy
-@@hitEnemy:
+    bcc     @@hitImmuneSprite
+@@hitSprite:
     bl      ChargedBeam_CalculateDamage
     mov     r1, r0
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
     bcc     @@hitWithoutIce
-    ldr     r2, =EnemyList
+    ldr     r2, =SpriteList
     mov     r0, #38h
     mul     r0, r7
     add     r2, r0
-    ldrb    r0, [r2, Enemy_Id]
-    cmp     r0, #EnemyId_SaxBoss_Samus
+    ldrb    r0, [r2, Sprite_Id]
+    cmp     r0, #SpriteId_SaxBoss_Samus
     beq     @@hitWithoutIce
     mov     r2, r1
     mov     r0, r7
     mov     r1, #1
-    bl      IceBeam_DamageEnemy
+    bl      IceBeam_DamageSprite
     mov     r1, #2
     mov     r4, r1
     mov     r5, r0
     b       @@checkDebris
 @@hitWithoutIce:
     mov     r0, r7
-    bl      Projectile_DamageEnemy
+    bl      Projectile_DamageSprite
     mov     r1, #1
     mov     r4, r1
     mov     r5, r0
@@ -1192,35 +1192,35 @@
     lsr     r0, r6, BeamUpgrade_PlasmaBeam + 1
     bcs     @@plasmaDebris
     mov     r0, r7
-    bl      Enemy_MakesDebrisWhenHit
+    bl      Sprite_MakesDebrisWhenHit
     cmp     r0, #0
     beq     @@despawnWithHitParticle
     mov     r0, r4
     mov     r1, r5
     mov     r2, r9
     mov     r3, r10
-    bl      Enemy_CreateDebris
+    bl      Sprite_CreateDebris
     b       @@despawnWithHitParticle
 @@plasmaDebris:
     mov     r0, r7
-    bl      Enemy_MakesDebrisWhenHit
+    bl      Sprite_MakesDebrisWhenHit
     cmp     r0, #0
     beq     @@return
     mov     r0, r4
     mov     r1, r5
     mov     r2, r9
     mov     r3, r10
-    bl      Enemy_CreatePlasmaDebris
+    bl      Sprite_CreatePlasmaDebris
     b       @@return
-@@hitImmuneEnemy:
+@@hitImmuneSprite:
     mov     r0, r7
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
     mov     r0, r9
     mov     r1, r10
     mov     r2, #7
     bl      SpawnParticleEffect
     b       @@despawnIfNoPlasma
-@@hitInvulnEnemy:
+@@hitInvulnSprite:
     mov     r0, r9
     mov     r1, r10
     mov     r2, #7
@@ -1228,29 +1228,29 @@
     b       @@despawn
 @@collideWithSolid:
     mov     r0, r7
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
     mov     r0, r7
-    bl      Enemy_GetWeakness
-    lsr     r0, EnemyWeakness_Freezable + 1
+    bl      Sprite_GetWeakness
+    lsr     r0, SpriteWeakness_Freezable + 1
     bcc     @@checkWave
     lsr     r0, r6, BeamUpgrade_IceBeam + 1
     bcc     @@checkWave
-    ldr     r2, =EnemyList
+    ldr     r2, =SpriteList
     mov     r1, #38h
     mul     r1, r7
     add     r2, r1
     mov     r3, r2
     add     r3, #20h
     mov     r0, #240
-    strb    r0, [r3, Enemy_FreezeTimer - 20h]
+    strb    r0, [r3, Sprite_FreezeTimer - 20h]
     mov     r0, #0
-    strb    r0, [r3, Enemy_StandingOnFlag - 20h]
+    strb    r0, [r3, Sprite_StandingOnFlag - 20h]
     mov     r0, #15
-    ldrb    r1, [r3, Enemy_FreezePaletteOffset - 20h]
+    ldrb    r1, [r3, Sprite_FreezePaletteOffset - 20h]
     sub     r0, r1
-    ldrb    r1, [r2, Enemy_SpritesetGfxSlot]
+    ldrb    r1, [r2, Sprite_SpritesetGfxSlot]
     sub     r0, r1
-    strb    r0, [r3, Enemy_Palette - 20h]
+    strb    r0, [r3, Sprite_PaletteRow - 20h]
 @@checkWave:
     lsr     r0, r6, BeamUpgrade_WaveBeam + 1
     bcs     @@return
@@ -1379,11 +1379,11 @@
     mov     r6, #0
     mov     r7, #0
     mov     r8, r1
-    bl      Enemy_GetWeakness
+    bl      Sprite_GetWeakness
     mov     r3, r0
-    lsr     r0, r3, #EnemyWeakness_BeamOrBombs + 1
+    lsr     r0, r3, #SpriteWeakness_BeamOrBombs + 1
     bcs     08083A72h
-    lsr     r0, r3, #EnemyWeakness_ChargeBeam + 1
+    lsr     r0, r3, #SpriteWeakness_ChargeBeam + 1
     bcc     08083B2Ch
     mov     r0, r8
     cmp     r0, #0
@@ -1503,22 +1503,22 @@
 .endarea
 
 .org 08082CE6h
-    bl      Beam_HitEnemy
+    bl      Beam_HitSprite
 .org 08082D0Ch
-    bl      Beam_HitEnemy
+    bl      Beam_HitSprite
 .org 08082D36h
-    bl      Beam_HitEnemy
+    bl      Beam_HitSprite
 .org 08082D5Eh
-    bl      Beam_HitEnemy
+    bl      Beam_HitSprite
 
 .org 08082DACh
-    bl      ChargedBeam_HitEnemy
+    bl      ChargedBeam_HitSprite
 .org 08082DD4h
-    bl      ChargedBeam_HitEnemy
+    bl      ChargedBeam_HitSprite
 .org 08082E0Ah
-    bl      ChargedBeam_HitEnemy
+    bl      ChargedBeam_HitSprite
 .org 08082E30h
-    bl      ChargedBeam_HitEnemy
+    bl      ChargedBeam_HitSprite
 
 .org 0879C284h
     ; projectile update functions

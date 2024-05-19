@@ -331,7 +331,7 @@
     .dw     086B57CEh   ; energy tank
     .dw     086B5834h   ; missile tank
     .dw     086B589Eh   ; power bomb tank
-    .dw     086B5912h   ; enemy location abnormal
+    .dw     086B5912h   ; sprite location abnormal
     .dw     @EnglishMessage_IceTrap
     .dw     @EnglishMessage_Nothing
 .endautoregion

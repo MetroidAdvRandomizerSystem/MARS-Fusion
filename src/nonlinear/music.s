@@ -446,18 +446,18 @@
 ; Wide Core-X boss music
 .area 2Ch
     push    { lr }
-    ldr     r2, =CurrentEnemy
-    ldrh    r0, [r2, Enemy_Status]
+    ldr     r2, =CurrentSprite
+    ldrh    r0, [r2, Sprite_Status]
     ldr     r1, =#8020h
     orr     r0, r1
-    strh    r0, [r2, Enemy_Status]
+    strh    r0, [r2, Sprite_Status]
     mov     r0, #2Ch
-    strh    r0, [r2, Enemy_XParasiteTimer]
+    strh    r0, [r2, Sprite_XParasiteTimer]
     add     r2, #20h
     mov     r0, #46h
-    strb    r0, [r2, Enemy_Pose - 20h]
+    strb    r0, [r2, Sprite_Pose - 20h]
     mov     r0, #0
-    strb    r0, [r2, Enemy_SamusCollision - 20h]
+    strb    r0, [r2, Sprite_SamusCollision - 20h]
     mov     r0, #43h
     mov     r1, MusicType_BossMusic
     bl      Music_Play
@@ -469,32 +469,32 @@
 ; Wide Core-X defeated music
 .area 5Ch
     push    { lr }
-    ldr     r2, =CurrentEnemy
+    ldr     r2, =CurrentSprite
     mov     r3, r2
     add     r3, #20h
     mov     r0, #5Dh
-    strb    r0, [r3, Enemy_Pose - 20h]
+    strb    r0, [r3, Sprite_Pose - 20h]
     mov     r0, #0Ch
-    strb    r0, [r3, Enemy_SamusCollision - 20h]
+    strb    r0, [r3, Sprite_SamusCollision - 20h]
     mov     r1, #0
-    strh    r1, [r2, Enemy_Health]
+    strh    r1, [r2, Sprite_Health]
     ldr     r0, =0300007Ah
     ldrb    r0, [r0]
     lsl     r0, #20h - 2
     lsr     r0, #20h - 2
-    strb    r0, [r3, Enemy_BgPriority - 20h]
+    strb    r0, [r3, Sprite_BgPriority - 20h]
     mov     r0, #4
-    strb    r0, [r3, Enemy_DrawOrder - 20h]
-    strb    r1, [r3, Enemy_Palette - 20h]
-    strb    r1, [r3, Enemy_Timer0 - 20h]
-    strb    r1, [r3, Enemy_Timer1 - 20h]
+    strb    r0, [r3, Sprite_DrawOrder - 20h]
+    strb    r1, [r3, Sprite_PaletteRow - 20h]
+    strb    r1, [r3, Sprite_Work1 - 20h]
+    strb    r1, [r3, Sprite_Work2 - 20h]
     mov     r0, #1
-    strb    r0, [r3, Enemy_VelocityX - 20h]
-    strb    r0, [r3, Enemy_VelocityY - 20h]
-    strb    r0, [r3, Enemy_IgnoreSamusCollisionTimer - 20h]
+    strb    r0, [r3, Sprite_Work3 - 20h]
+    strb    r0, [r3, Sprite_Work4 - 20h]
+    strb    r0, [r3, Sprite_IgnoreSamusCollisionTimer - 20h]
     bl      08025270h
-    ldr     r0, =CurrentEnemy
-    ldrb    r0, [r0, Enemy_Id]
+    ldr     r0, =CurrentSprite
+    ldrb    r0, [r0, Sprite_Id]
     cmp     r0, #57h
     bne     @@return
     mov     r0, #18h

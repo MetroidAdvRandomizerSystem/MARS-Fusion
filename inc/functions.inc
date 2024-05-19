@@ -37,7 +37,7 @@ InitMissile equ 08084FA0h
 
 Projectile_Move equ 08082120h
 Projectile_UpdateClipdata equ 0808222Ch
-Projectile_DamageEnemy equ 080835F8h
+Projectile_DamageSprite equ 080835F8h
 Beam_MoveParts equ 08082464h
 Beam_SetTrail equ 080827E0h
 WaveBeam_MoveParts equ 0808252Ch
@@ -45,14 +45,14 @@ WaveBeam_UpdateClipdata equ 080821ECh
 Missile_StartTumble equ 08084660h
 Missile_MoveTumbling equ 08085094h
 Missile_SetTrail equ 08082724h
-IceBeam_DamageEnemy equ 08083A4Ch
-IceMissile_DamageEnemy equ 08083788h
+IceBeam_DamageSprite equ 08083A4Ch
+IceMissile_DamageSprite equ 08083788h
 
-Enemy_GetWeakness equ 08083044h
-Enemy_StartOnHitTimer equ 08083B78h
-Enemy_MakesDebrisWhenHit equ 08082FECh
-Enemy_CreateDebris equ 08083090h
-Enemy_CreatePlasmaDebris equ 080831C4h
+Sprite_GetWeakness equ 08083044h
+Sprite_StartOnHitTimer equ 08083B78h
+Sprite_MakesDebrisWhenHit equ 08082FECh
+Sprite_CreateDebris equ 08083090h
+Sprite_CreatePlasmaDebris equ 080831C4h
 
 Divide equ 080A3468h
 memcpy equ 080A4EF0h

@@ -100,45 +100,61 @@ MiscProgress_MajorLocations equ 08h
 MiscProgress_StoryFlags equ 0Ch
 .sym on
 
-CurrentEnemy equ 030006BCh
-EnemyList equ 03000140h
+CurrentSprite equ 030006BCh
+SpriteList equ 03000140h
 .sym off
-Enemy_Status equ 00h
-Enemy_XParasiteTimer equ 06h
-Enemy_Health equ 14h
-Enemy_Animation equ 16h
-Enemy_GfxPointer equ 18h
-Enemy_AnimationFrame equ 1Ch
-Enemy_Id equ 1Dh
-Enemy_RoomSlot equ 1Eh
-Enemy_SpritesetGfxSlot equ 1Fh
-Enemy_Palette equ 20h
-Enemy_BgPriority equ 21h
-Enemy_DrawOrder equ 22h
-Enemy_Pose equ 24h
-Enemy_SamusCollision equ 25h
-Enemy_IgnoreSamusCollisionTimer equ 26h
-Enemy_OnHitTimer equ 2Ch
-Enemy_Timer0 equ 2Eh
-Enemy_Timer1 equ 2Fh
-Enemy_VelocityX equ 30h
-Enemy_VelocityY equ 31h
-Enemy_FreezeTimer equ 32h
-Enemy_StandingOnFlag equ 33h
-Enemy_Properties equ 34h
-Enemy_FreezePaletteOffset equ 35h
+Sprite_Status equ 00h
+Sprite_PositionX equ 02h
+Sprite_PositionY equ 04h
+Sprite_XParasiteTimer equ 06h
+Sprite_Unk08 equ 08h
+Sprite_BboxTop equ 0Ah
+Sprite_BboxBottom equ 0Ch
+Sprite_BboxLeft equ 0Eh
+Sprite_BboxRight equ 10h
+Sprite_Scaling equ 12h
+Sprite_Health equ 14h
+Sprite_AnimationFrame equ 16h
+Sprite_OamPointer equ 18h
+Sprite_AnimationCounter equ 1Ch
+Sprite_Id equ 1Dh
+Sprite_RoomSlot equ 1Eh
+Sprite_SpritesetGfxSlot equ 1Fh
+Sprite_PaletteRow equ 20h
+Sprite_BgPriority equ 21h
+Sprite_DrawOrder equ 22h
+Sprite_PrimarySpriteSlot equ 23h
+Sprite_Pose equ 24h
+Sprite_SamusCollision equ 25h
+Sprite_IgnoreSamusCollisionTimer equ 26h
+Sprite_DrawDistanceTop equ 27h
+Sprite_DrawDistanceBottom equ 28h
+Sprite_DrawDistanceHorizontal equ 29h
+Sprite_SpritesetSlotAndProperties equ 2Ah
+Sprite_Rotation equ 2Bh
+Sprite_OnHitTimer equ 2Ch
+Sprite_Work0 equ 2Dh
+Sprite_Work1 equ 2Eh
+Sprite_Work2 equ 2Fh
+Sprite_Work3 equ 30h
+Sprite_Work4 equ 31h
+Sprite_FreezeTimer equ 32h
+Sprite_StandingOnFlag equ 33h
+Sprite_Properties equ 34h
+Sprite_FreezePaletteOffset equ 35h
+Sprite_Work5 equ 36h
 .sym on
 
-EnemyStats equ 082E4D4Ch
+SpriteStats equ 082E4D4Ch
 .sym off
-EnemyStats_Health equ 00h
-EnemyStats_Damage equ 02h
-EnemyStats_SuitDamageReduction equ 04h
-EnemyStats_Weaknesses equ 06h
-EnemyStats_YellowXWeight equ 08h
-EnemyStats_GreenXWeight equ 0Ah
-EnemyStats_RedXWeight equ 0Ch
-EnemyStats_Size equ 0Eh
+SpriteStats_Health equ 00h
+SpriteStats_Damage equ 02h
+SpriteStats_SuitDamageReduction equ 04h
+SpriteStats_Weaknesses equ 06h
+SpriteStats_YellowXWeight equ 08h
+SpriteStats_GreenXWeight equ 0Ah
+SpriteStats_RedXWeight equ 0Ch
+SpriteStats_Size equ 0Eh
 .sym on
 
 CurrentProjectile equ 03000B60h
@@ -272,7 +288,7 @@ MenuSprites_Len equ 28h
 MenuSprite_YPos equ 00h
 MenuSprite_XPos equ 02h
 MenuSprite_AnimationTick equ 08h
-MenuSprite_AnimationFrame equ 09h
+MenuSprite_AnimationCounter equ 09h
 MenuSprite_Graphic equ 0Ah
 MenuSprite_Priority equ 0Bh
 MenuSprite_Size equ 0Ch

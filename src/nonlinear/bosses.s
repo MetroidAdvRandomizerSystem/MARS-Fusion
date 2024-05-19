@@ -7,10 +7,10 @@
 .org 08025400h
 .area 38h, 0
     ; check arachnus and zazabi kill status before spawning
-    ldrb    r0, [r5, Enemy_Id]
-    cmp     r0, EnemyId_Arachnus_CoreXNucleus
+    ldrb    r0, [r5, Sprite_Id]
+    cmp     r0, SpriteId_Arachnus_CoreXNucleus
     beq     @@checkArachnus
-    cmp     r0, EnemyId_Zazabi_CoreXNucleus
+    cmp     r0, SpriteId_Zazabi_CoreXNucleus
     bne     08025438h
     mov     r0, MajorLocation_Zazabi
     mov     r4, #4Bh
@@ -32,8 +32,8 @@
 .org 0802D5E4h
 .area 28h, 0
     ; check charge core-x kill status before spawning
-    ldr     r4, =CurrentEnemy
-    mov     r0, Enemy_IgnoreSamusCollisionTimer
+    ldr     r4, =CurrentSprite
+    mov     r0, Sprite_IgnoreSamusCollisionTimer
     mov     r5, #1
     strb    r5, [r4, r0]
     mov     r3, #0
@@ -41,7 +41,7 @@
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_ChargeCoreX + 1
     bcc     0802D60Ch
-    strb    r3, [r4, Enemy_Status]
+    strb    r3, [r4, Sprite_Status]
     b       0802D6BCh
     .pool
 .endarea
@@ -69,8 +69,8 @@
 
 .org 0803A08Ah
 .area 2Ah, 0
-    ldr     r2, =CurrentEnemy
-    mov     r0, Enemy_IgnoreSamusCollisionTimer
+    ldr     r2, =CurrentSprite
+    mov     r0, Sprite_IgnoreSamusCollisionTimer
     mov     r5, #1
     strb    r5, [r2, r0]
     mov     r4, #0
@@ -83,12 +83,12 @@
 .area 20h, 0
     ; check nettori kill status before spawning
     mov     r7, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Nettori + 1
     bcc     08043D44h
-    strb    r7, [r4, Enemy_Status]
+    strb    r7, [r4, Sprite_Status]
     b       08043E44h
     .pool
 .endarea
@@ -97,12 +97,12 @@
 .area 20h, 0
     ; check serris kill status before spawning
     mov     r7, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Serris + 1
     bcc     08047840h
-    strb    r7, [r4, Enemy_Status]
+    strb    r7, [r4, Sprite_Status]
     b       0804797Ch
     .pool
 .endarea
@@ -111,12 +111,12 @@
 .area 20h, 0
     ; check x-box kill status before spawning
     mov     r7, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_XBox + 1
     bcc     08051ADCh
-    strb    r7, [r4, Enemy_Status]
+    strb    r7, [r4, Sprite_Status]
     b       08051C82h
     .pool
 .endarea
@@ -178,12 +178,12 @@
 .area 24h, 0
     ; check varia core-x kill status before spawning
     mov     r6, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_MegaCoreX + 1
     bcc     08057588h
-    strb    r6, [r4, Enemy_Status]
+    strb    r6, [r4, Sprite_Status]
     b       08057694h
     .pool
 .endarea
@@ -193,13 +193,13 @@
     ; check ridley kill status before spawning
     mov     r4, #0
     mov     r5, #8
-    ldr     r1, =CurrentEnemy
+    ldr     r1, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Ridley + 1
     bcc     0805B5B4h
     mov     r0, #0
-    strb    r0, [r1, Enemy_Status]
+    strb    r0, [r1, Sprite_Status]
     b       0805B5FCh
     .pool
 .endarea
@@ -208,12 +208,12 @@
 .area 20h, 0
     ; check yakuza kill status before spawning
     mov     r6, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Yakuza + 1
     bcc     0805BDD8h
-    strb    r6, [r4, Enemy_Status]
+    strb    r6, [r4, Sprite_Status]
     b       0805BEA0h
     .pool
 .endarea
@@ -261,12 +261,12 @@
 .area 20h, 0
     ; check nightmare kill status before spawning
     mov     r7, #0
-    ldr     r4, =CurrentEnemy
+    ldr     r4, =CurrentSprite
     ldr     r0, =MiscProgress
     ldr     r0, [r0, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Nightmare + 1
     bcc     0805DDF4h
-    strb    r7, [r4, Enemy_Status]
+    strb    r7, [r4, Sprite_Status]
     b       0805DFA0h
     .pool
 .endarea
@@ -274,24 +274,24 @@
 .org 080369A0h
 .area 3Ch
     ; set box kill status
-    ldr     r1, =CurrentEnemy
+    ldr     r1, =CurrentSprite
     mov     r2, r1
     add     r2, #20h
     ldr     r0, =08347BD8h
-    str     r0, [r1, Enemy_GfxPointer]
+    str     r0, [r1, Sprite_OamPointer]
     mov     r3, #0
-    strh    r3, [r1, Enemy_Animation]
-    strb    r3, [r1, Enemy_AnimationFrame]
-    strb    r3, [r2, Enemy_Timer0 - 20h]
-    strb    r3, [r2, Enemy_VelocityY - 20h]
+    strh    r3, [r1, Sprite_AnimationFrame]
+    strb    r3, [r1, Sprite_AnimationCounter]
+    strb    r3, [r2, Sprite_Work1 - 20h]
+    strb    r3, [r2, Sprite_Work4 - 20h]
     mov     r0, #44h
-    strb    r0, [r2, Enemy_Pose - 20h]
-    add     r2, #03000784h - CurrentEnemy - 20h
+    strb    r0, [r2, Sprite_Pose - 20h]
+    add     r2, #03000784h - CurrentSprite - 20h
     ldr     r0, =08342DF0h
     str     r0, [r2]
     strh    r3, [r2, #04h]
     strb    r3, [r2, #06h]
-    add     r1, #MiscProgress - CurrentEnemy
+    add     r1, #MiscProgress - CurrentSprite
     ldrh    r0, [r1, MiscProgress_StoryFlags]
     mov     r2, #1 << StoryFlag_BoxDefeated
     orr     r0, r2
@@ -423,9 +423,9 @@
     bl      @SetSaxDefeatedFlag
 .endarea
 
-.org EnemyStats + 0C0h * EnemyStats_Size + EnemyStats_Weaknesses
+.org SpriteStats + 0C0h * SpriteStats_Size + SpriteStats_Weaknesses
     ; sa-x weaknesses
-    .db     (1 << EnemyWeakness_ChargeBeam) | (1 << EnemyWeakness_Freezable)
+    .db     (1 << SpriteWeakness_ChargeBeam) | (1 << SpriteWeakness_Freezable)
 
 .org 08045474h
 .area 18h, 0
@@ -485,11 +485,11 @@
 .org 08025C52h
 .area 12h, 0
     add     r1, =@@BossLocations
-    ldrb    r0, [r4, Enemy_Id]
-    sub     r0, EnemyId_Arachnus_CoreXNucleus
+    ldrb    r0, [r4, Sprite_Id]
+    sub     r0, SpriteId_Arachnus_CoreXNucleus
     beq     @@obtainAbility
-    sub     r0, EnemyId_Zazabi_CoreXNucleus - EnemyId_Arachnus_CoreXNucleus
-    cmp     r0, EnemyId_Ridley_CoreXNucleus - EnemyId_Zazabi_CoreXNucleus
+    sub     r0, SpriteId_Zazabi_CoreXNucleus - SpriteId_Arachnus_CoreXNucleus
+    cmp     r0, SpriteId_Ridley_CoreXNucleus - SpriteId_Zazabi_CoreXNucleus
     bhi     08025CE6h
     add     r0, #1
     b       @@obtainAbility
@@ -518,9 +518,9 @@
 
 .org 0802DDA0h
 .area 10h, 0
-    ldrb    r0, [r4, Enemy_Id]
-    sub     r0, EnemyId_ChargeCoreXNucleus
-    cmp     r0, EnemyId_XBox_CoreXNucleus - EnemyId_ChargeCoreXNucleus
+    ldrb    r0, [r4, Sprite_Id]
+    sub     r0, SpriteId_ChargeCoreXNucleus
+    cmp     r0, SpriteId_XBox_CoreXNucleus - SpriteId_ChargeCoreXNucleus
     bhi     0802DDF4h
     add     r1, =@@BossLocations
     b       @@cont
@@ -537,8 +537,8 @@
     ldrb    r0, [r1, r0]
     bl      ObtainMajorLocation
     ; wide core-x lets the boiler console unlock doors
-    ldrb    r0, [r4, Enemy_Id]
-    cmp     r0, #EnemyId_WideCoreXNucleus
+    ldrb    r0, [r4, Sprite_Id]
+    cmp     r0, #SpriteId_WideCoreXNucleus
     beq     0802DDF4h
     mov     r0, #60
     ldr     r1, =DoorUnlockTimer

@@ -127,7 +127,7 @@
     cmp     r0, #0
     bne     @@return_false
     ldr     r1, =SamusState + 20h
-    mov     r0, #StandingFlag_Enemy
+    mov     r0, #StandingFlag_Sprite
     strb    r0, [r1, SamusState_StandingFlag - 20h]
 @@return_true:
     mov     r0, #1

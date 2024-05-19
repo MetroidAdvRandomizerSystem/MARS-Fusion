@@ -1,24 +1,24 @@
 ; Patches miscellaneous story flags to be tracked separately from events.
 
-; TODO: convert enemy set event checks to story flag checks
+; TODO: convert sprite set event checks to story flag checks
 ; TODO: set water lowered flag when exiting room with lowering event active
 
 .org 08041984h
 .area 38h, 0
     ; missile hatch idle
     push    { lr }
-    ldr     r2, =CurrentEnemy
+    ldr     r2, =CurrentSprite
     mov     r3, r2
     add     r3, #20h
     mov     r0, #1
-    strb    r0, [r3, Enemy_IgnoreSamusCollisionTimer - 20h]
-    ldrb    r0, [r2, Enemy_Health]
+    strb    r0, [r3, Sprite_IgnoreSamusCollisionTimer - 20h]
+    ldrb    r0, [r2, Sprite_Health]
     cmp     r0, #0
     bne     @@return
     mov     r0, #18h
-    strb    r0, [r3, Enemy_Pose - 20h]
+    strb    r0, [r3, Sprite_Pose - 20h]
     mov     r0, #0
-    strb    r0, [r3, Enemy_Timer0 - 20h]
+    strb    r0, [r3, Sprite_Work1 - 20h]
     ldr     r2, =MiscProgress
     ldrh    r1, [r2, MiscProgress_StoryFlags]
     mov     r0, 1 << StoryFlag_MissileHatch
@@ -39,8 +39,8 @@
     ldrh    r0, [r0, MiscProgress_StoryFlags]
     lsr     r0, StoryFlag_MissileHatch + 1
     bcc     08041904h
-    ldr     r1, =CurrentEnemy
-    strb    r4, [r1, Enemy_Status]
+    ldr     r1, =CurrentSprite
+    strb    r4, [r1, Sprite_Status]
     b       0804196Ah
     .pool
 .endarea
@@ -147,11 +147,11 @@
     ldrh    r0, [r0, MiscProgress_StoryFlags]
     lsr     r0, StoryFlag_WaterLowered + 1
     bcc     @@return
-    ldr     r1, =CurrentEnemy
-    ldrh    r0, [r1, Enemy_Animation]
+    ldr     r1, =CurrentSprite
+    ldrh    r0, [r1, Sprite_AnimationFrame]
     cmp     r0, #0
     bne     @@return
-    add     r1, Enemy_Pose
+    add     r1, Sprite_Pose
     mov     r0, #18h
     strb    r0, [r1]
     lsl     r0, #3
@@ -169,9 +169,9 @@
     ldrh    r0, [r0, MiscProgress_StoryFlags]
     lsr     r0, StoryFlag_WaterLowered + 1
     bcc     @@return
-    ldr     r1, =CurrentEnemy
+    ldr     r1, =CurrentSprite
     mov     r0, #0
-    strh    r0, [r1, Enemy_Status]
+    strh    r0, [r1, Sprite_Status]
 @@return:
     pop     { pc }
     .pool
@@ -184,9 +184,9 @@
     ldrh    r0, [r0, MiscProgress_StoryFlags]
     lsr     r0, StoryFlag_WaterLowered + 1
     bcc     @@return
-    ldr     r1, =CurrentEnemy
+    ldr     r1, =CurrentSprite
     mov     r0, #0
-    strh    r0, [r1, Enemy_Status]
+    strh    r0, [r1, Sprite_Status]
 @@return:
     pop     { pc }
     .pool
@@ -236,13 +236,13 @@
     push    { lr }
     sub     sp, #0Ch
     ldr     r2, =MiscProgress
-    ldr     r3, =CurrentEnemy + Enemy_Id
-    ldrb    r0, [r3, Enemy_Timer0 - Enemy_Id]
+    ldr     r3, =CurrentSprite + Sprite_Id
+    ldrb    r0, [r3, Sprite_Work1 - Sprite_Id]
     sub     r0, #1
-    strb    r0, [r3, Enemy_Timer0 - Enemy_Id]
+    strb    r0, [r3, Sprite_Work1 - Sprite_Id]
     bne     @@return
     mov     r0, #1Eh
-    strb    r0, [r3, Enemy_Pose - Enemy_Id]
+    strb    r0, [r3, Sprite_Pose - Sprite_Id]
     ldrb    r0, [r3]
     cmp     r0, #65h
     beq     @@lower_water_level

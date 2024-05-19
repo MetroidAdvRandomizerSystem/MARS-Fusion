@@ -192,45 +192,45 @@
     ldrb    r0, [r0, SamusUpgrades_ExplosiveUpgrades]
     mov     r8, r0
     ; check if sprite is solid
-    ldr     r1, =EnemyList
+    ldr     r1, =SpriteList
     lsl     r0, r4, #3
     sub     r0, r0, r4
     lsl     r0, r0, #3
     add     r0, r1, r0
-    add     r0, Enemy_Properties
+    add     r0, Sprite_Properties
     ldrb    r1, [r0]
-    mov     r0, 1 << EnemyProps_SolidForProjectiles
+    mov     r0, 1 << SpriteProps_SolidForProjectiles
     and     r0, r1
     cmp     r0, #0
     beq     @@checkSpriteImmune
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
     ; check for ice missiles
     mov     r0, r8  ; r0 = ExplosiveUpgrades
     mov     r1, 1 << ExplosiveUpgrade_IceMissiles
     and     r0, r1
     cmp     r0, #0
     beq     @@successfulHit
-    ; check if enemy isn't frozen
-    ldr     r1, =EnemyList
+    ; check if sprite isn't frozen
+    ldr     r1, =SpriteList
     lsl     r0, r4, #3
     sub     r0, r0, r4
     lsl     r0, r0, #3
     add     r0, r1, r0
     mov     r9, r0
-    add     r0, Enemy_FreezeTimer
+    add     r0, Sprite_FreezeTimer
     ldrb    r0, [r0]
     cmp     r0, #0
     bne     @@successfulHit
-    ; check if enemy can be frozen
+    ; check if sprite can be frozen
     mov     r0, r4
-    bl      Enemy_GetWeakness
-    mov     r1, 1 << EnemyWeakness_Freezable
+    bl      Sprite_GetWeakness
+    mov     r1, 1 << SpriteWeakness_Freezable
     and     r0, r1
     cmp     r0, #0
     beq     @@successfulHit
     mov     r0, r9  ; sprite data address
-    add     r0, Enemy_StandingOnFlag
+    add     r0, Sprite_StandingOnFlag
     mov     r1, #0
     strb    r1, [r0]
     mov     r1, #240
@@ -246,7 +246,7 @@
     strb    r1, [r0, #1]    ; Palette = 15 - (FrozenPaletteRow + SpritesetGfxSlot)
     b       @@successfulHit
 @@checkSpriteImmune:
-    mov     r0, 1 << EnemyProps_ImmuneToProjectiles
+    mov     r0, 1 << SpriteProps_ImmuneToProjectiles
     and     r0, r1
     cmp     r0, #0
     bne     @@missileTinked
@@ -257,15 +257,15 @@
     and     r0, r1
     cmp     r0, #0
     beq     @@checkLowerHealth
-    ; check if enemy weak to missiles
+    ; check if sprite weak to missiles
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Enemy_GetWeakness
-    mov     r1, 1 << EnemyWeakness_Missiles
+    bl      Sprite_GetWeakness
+    mov     r1, 1 << SpriteWeakness_Missiles
     and     r1, r0
     cmp     r1, #0
     bne     @@lowerHealthIce
-    ; check if enemy weak to super
-    mov     r1, 1 << EnemyWeakness_SuperMissiles
+    ; check if sprite weak to super
+    mov     r1, 1 << SpriteWeakness_SuperMissiles
     and     r1, r0
     cmp     r1, #0
     beq     @@checkCanFreeze
@@ -276,8 +276,8 @@
     cmp     r1, #0
     bne     @@lowerHealthIce
 @@checkCanFreeze:
-    ; check if enemy can be frozen
-    mov     r1, 1 << EnemyWeakness_Freezable
+    ; check if sprite can be frozen
+    mov     r1, 1 << SpriteWeakness_Freezable
     and     r0, r1
     cmp     r0, #0
     beq     @@checkLowerHealth
@@ -287,18 +287,18 @@
     mov     r2, r0
     mov     r0, r4  ; r0 = SpriteSlotNum
     mov     r1, r5  ; r1 = ProjectileSlotNum
-    bl      IceMissile_DamageEnemy
+    bl      IceMissile_DamageSprite
     b       @@checkDamageReduction
 @@checkLowerHealth:
-    ; check if enemy weak to missiles
+    ; check if sprite weak to missiles
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Enemy_GetWeakness
-    mov     r1, 1 << EnemyWeakness_Missiles
+    bl      Sprite_GetWeakness
+    mov     r1, 1 << SpriteWeakness_Missiles
     and     r1, r0
     cmp     r1, #0
     bne     @@lowerHealth
-    ; check if enemy weak to super
-    mov     r1, 1 << EnemyWeakness_SuperMissiles
+    ; check if sprite weak to super
+    mov     r1, 1 << SpriteWeakness_SuperMissiles
     and     r1, r0
     cmp     r1, #0
     beq     @@else
@@ -313,11 +313,11 @@
     bl      GetMissileDamage
     mov     r1, r0
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Projectile_DamageEnemy
+    bl      Projectile_DamageSprite
     b       @@checkDamageReduction
 @@else:
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Enemy_StartOnHitTimer
+    bl      Sprite_StartOnHitTimer
 @@missileTinked:
     ; tink effect
     mov     r0, r6  ; ProjectilePosY
@@ -333,7 +333,7 @@
     ; check damage reduction
     mov     r9, r0
     mov     r0, r4  ; r0 = SpriteSlotNum
-    bl      Enemy_MakesDebrisWhenHit
+    bl      Sprite_MakesDebrisWhenHit
     cmp     r0, #0
     beq     @@successfulHit
     ; check ice
@@ -345,7 +345,7 @@
     mov     r1, r9  ; r1 = FlashTimer
     mov     r2, r6  ; r2 = ProjectilePosY
     mov     r3, r7  ; r3 = ProjectilePosX
-    bl      Enemy_CreateDebris
+    bl      Sprite_CreateDebris
 @@successfulHit:
     ldr     r0, =ProjectileList
     lsl     r1, r5, #5

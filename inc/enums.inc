@@ -112,7 +112,7 @@ Tank_Energy equ 2
 Tank_PowerBombs equ 3
 
 StandingFlag_Ground equ 00h
-StandingFlag_Enemy equ 01h
+StandingFlag_Sprite equ 01h
 StandingFlag_Midair equ 02h
 StandingFlag_NoControl equ 03h
 
@@ -152,34 +152,34 @@ EnvironmentalHazard_Heat equ 4
 EnvironmentalHazard_Subzero equ 5
 EnvironmentalHazard_Cold equ 6
 
-EnemyStatus_Exists equ 0
-EnemyStatus_FacingRight equ 9
+SpriteStatus_Exists equ 0
+SpriteStatus_FacingRight equ 9
 
-EnemyId_MessageBox equ 21h
-EnemyId_Arachnus_CoreXNucleus equ 3Fh
-EnemyId_Zazabi_CoreXNucleus equ 44h
-EnemyId_Serris_CoreXNucleus equ 45h
-EnemyId_MegaCoreX_CoreXNucleus equ 46h
-EnemyId_Yakuza_CoreXNucleus equ 47h
-EnemyId_Nightmare_CoreXNucleus equ 48h
-EnemyId_Ridley_CoreXNucleus equ 49h
-EnemyId_ChargeCoreXNucleus equ 56h
-EnemyId_WideCoreXNucleus equ 57h
-EnemyId_Nettori_CoreXNucleus equ 58h
-EnemyId_XBox_CoreXNucleus equ 59h
-EnemyId_SaxBoss_Samus equ 0C0h
-EnemyId_SaxBoss_Monster equ 0C1h
+SpriteId_MessageBox equ 21h
+SpriteId_Arachnus_CoreXNucleus equ 3Fh
+SpriteId_Zazabi_CoreXNucleus equ 44h
+SpriteId_Serris_CoreXNucleus equ 45h
+SpriteId_MegaCoreX_CoreXNucleus equ 46h
+SpriteId_Yakuza_CoreXNucleus equ 47h
+SpriteId_Nightmare_CoreXNucleus equ 48h
+SpriteId_Ridley_CoreXNucleus equ 49h
+SpriteId_ChargeCoreXNucleus equ 56h
+SpriteId_WideCoreXNucleus equ 57h
+SpriteId_Nettori_CoreXNucleus equ 58h
+SpriteId_XBox_CoreXNucleus equ 59h
+SpriteId_SaxBoss_Samus equ 0C0h
+SpriteId_SaxBoss_Monster equ 0C1h
 
-EnemyProps_SolidForProjectiles equ 3
-EnemyProps_ImmuneToProjectiles equ 6
+SpriteProps_SolidForProjectiles equ 3
+SpriteProps_ImmuneToProjectiles equ 6
 
-EnemyWeakness_ChargeBeam equ 0
-EnemyWeakness_BeamOrBombs equ 1
-EnemyWeakness_SuperMissiles equ 2
-EnemyWeakness_Missiles equ 3
-EnemyWeakness_PowerBombs equ 4
-EnemyWeakness_SpeedboosterOrScrew equ 5
-EnemyWeakness_Freezable equ 6
+SpriteWeakness_ChargeBeam equ 0
+SpriteWeakness_BeamOrBombs equ 1
+SpriteWeakness_SuperMissiles equ 2
+SpriteWeakness_Missiles equ 3
+SpriteWeakness_PowerBombs equ 4
+SpriteWeakness_SpeedboosterOrScrew equ 5
+SpriteWeakness_Freezable equ 6
 
 Projectile_NormalBeam equ 0
 Projectile_ChargeBeam equ 1
