@@ -138,6 +138,17 @@
     .pool
 .endarea
 
+.org 08060D20h
+.area 18h
+    ; zoro cocoon event check
+    ldr     r0, =MiscProgress
+    ldr     r0, [r0, MiscProgress_MajorLocations]
+    lsl     r0, #1Fh - MajorLocation_Zazabi
+    lsr     r0, #1Fh
+    bx      lr
+    .pool
+.endarea
+
 .org 08030ECCh
 .area 34h, 0
     ; electric wire idle
