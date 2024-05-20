@@ -6,20 +6,20 @@
     ldr     r1, =CurrEvent
     ldrb    r1, [r1]
     mov     r0, r1
-    sub     r0, #3Bh
-    cmp     r0, #3Ch - 3Bh
+    sub     r0, #Event_BoilerMeltdown
+    cmp     r0, #Event_WideCoreXAbsorbed - Event_BoilerMeltdown
     bhi     @@check_restricted_sector_detach
     mov     r1, #1
     bx      lr
 @@check_restricted_sector_detach:
-    cmp     r1, #5Dh
+    cmp     r1, #Event_RestrictedSectorDetachment
     bne     @@check_escape_sequence
     mov     r1, #2
     bx      lr
 @@check_escape_sequence:
     mov     r0, r1
-    sub     r0, #69h
-    cmp     r0, #6Ch - 69h
+    sub     r0, #Event_OmegaFight
+    cmp     r0, #Event_OmegaDefeated - Event_OmegaFight
     bhi     @@return_zero
     mov     r0, #3
     bx      lr

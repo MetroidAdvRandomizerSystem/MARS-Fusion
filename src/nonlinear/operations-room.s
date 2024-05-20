@@ -5,7 +5,7 @@
     ; Init operations room pad
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #66h
+    cmp     r0, #Event_SaxDefeated
     bgt     08039A68h   ; escape already triggered
     mov     r1, #0
     mov     r5, #0

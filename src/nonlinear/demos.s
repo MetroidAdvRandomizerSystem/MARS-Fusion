@@ -22,7 +22,7 @@
     ldrb    r0, [r2, DemoMemory_PrevDoor]
     strb    r0, [r1, PrevDoor - CurrArea]
     ldr     r1, =CurrEvent
-    mov     r0, #0
+    mov     r0, #Event_GameStart
     strb    r0, [r1]
     ldr     r1, =CurrSubEvent
     mov     r0, #2

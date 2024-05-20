@@ -461,7 +461,7 @@
 .func CheckOmegaMetroidVulnerable
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    sub     r0, #6Bh
+    sub     r0, #Event_SaxAbsorbed
     blt     @@return_false
     mov     r0, #1
     bx      lr

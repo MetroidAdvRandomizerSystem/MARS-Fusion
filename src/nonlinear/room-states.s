@@ -131,49 +131,49 @@
 
 .org DoorLockEvents
 .region 12Ch
-    .db     0Ah
+    .db     Event_ArachnusAbsorbed
     .db     Area_MainDeck, 26h + 1
     .db     111111b, 0
-    .db     0Fh
+    .db     Event_ChargeCoreXAbsorbed
     .db     Area_SRX, 28h + 1
     .db     111111b, 0
-    .db     19h
+    .db     Event_ZazabiAbsorbed
     .db     Area_TRO, 12h + 1
     .db     111111b, 0
-    .db     1Dh
+    .db     Event_SerrisAbsorbed
     .db     Area_AQA, 2Ah + 1
     .db     111111b, 0
-    .db     28h
+    .db     Event_BoxDefeated
     .db     Area_PYR, 17h + 1
     .db     111111b, 0
-    .db     33h
+    .db     Event_MegaCoreXAbsorbed
     .db     Area_NOC, 0Dh + 1
     .db     111111b, 0
-    .db     3Dh
+    .db     Event_BoilerReactivated
     .db     Area_PYR, 19h + 1
     .db     111111b, 0
-    .db     49h
+    .db     Event_YakuzaAbsorbed
     .db     Area_MainDeck, 56h + 1
     .db     111111b, 0
-    .db     4Eh
+    .db     Event_NettoriAbsorbed
     .db     Area_TRO, 0Ch + 1
     .db     000010b, 0
-    .db     4Eh
+    .db     Event_NettoriAbsorbed
     .db     Area_TRO, 16h + 1
     .db     111111b, 0
-    .db     51h
+    .db     Event_NightmareAbsorbed
     .db     Area_ARC, 14h + 1
     .db     111111b, 0
-    .db     5Bh
+    .db     Event_XboxAbsorbed
     .db     Area_NOC, 10h + 1
     .db     111110b, 0
-    .db     60h
+    .db     Event_RidleyAbsorbed
     .db     Area_SRX, 1Bh + 1
     .db     111111b, 0
-    .db     66h
+    .db     Event_SaxDefeated
     .db     Area_MainDeck, 0Dh + 1
     .db     001000b, 0
-    .db     67h
+    .db     Event_EscapeSequence
     .db     Area_MainDeck, 3Fh + 1
     .db     111111b, 1
 .endregion
@@ -183,7 +183,7 @@
 .func CheckEvent
     ; Returns one if the passed event should be considered active or complete,
     ; otherwise returns zero.
-    cmp     r0, #6Dh
+    cmp     r0, #Event_GameEnd
     bhi     @@case_default
     mov     r1, r0
     ldr     r3, =@@eventCases
@@ -215,50 +215,46 @@
     .pool
     .align 4
 @@eventCases:
-    .db     08h, 0Ah, 0Dh, 0Fh, 10h, 16h, 19h, 1Dh
-    .db     20h, 21h, 23h, 28h, 31h, 32h, 33h, 3Ah
-    .db     3Dh, 3Eh, 42h, 44h, 46h, 47h, 49h, 4Bh
-    .db     4Dh, 4Eh, 51h, 59h, 5Bh, 5Ch, 5Fh, 60h
-    .db     63h, 66h, 67h
+    .db     Event_OperationsElevatorOutage, Event_ArachnusAbsorbed
+    .db     Event_MainElevatorOutage,       Event_ChargeCoreXAbsorbed
+    .db     Event_StabilizersOnline,        Event_BombsDownloaded
+    .db     Event_ZazabiAbsorbed,           Event_SerrisAbsorbed
+    .db     Event_WaterLevelLowered,        Event_SerrisDebrief
+    .db     Event_Lv2SecurityUnlock,        Event_BoxDefeated
+    .db     Event_NocSaxEscaped,            Event_NocDataDestroyed
+    .db     Event_MegaCoreXAbsorbed,        Event_IceMissilesDownloaded
+    .db     Event_BoilerReactivated,        Event_BoilerMeltdownDebrief
+    .db     Event_PowerBombsDownloaded,     Event_ArcSaxEscaped
+    .db     Event_TrappedInElevator,        Event_ReactorOutage
+    .db     Event_YakuzaAbsorbed,           Event_YakuzaDebrief
+    .db     Event_TroSaxEscaped,            Event_NettoriAbsorbed
+    .db     Event_NightmareAbsorbed,        Event_NoEntryWithoutAuthorization
+    .db     Event_XboxAbsorbed,             Event_RestrictedSectorBreached
+    .db     Event_RestrictedSectorDebrief,  Event_RidleyAbsorbed
+    .db     Event_GoMode,                   Event_SaxDefeated
+    .db     Event_EscapeSequence
 .if 35 != @@eventBranchTable - @@eventCases
     ; can't treat this as a variable b/c armips is really dumb
     .error "Binary search tree size not updated"
 .endif
 @@eventBranchTable:
-    .db     (@@case_08 - @@branch - 4) >> 1
-    .db     (@@case_0A - @@branch - 4) >> 1
-    .db     (@@case_0D - @@branch - 4) >> 1
-    .db     (@@case_0F - @@branch - 4) >> 1
-    .db     (@@case_10 - @@branch - 4) >> 1
-    .db     (@@case_16 - @@branch - 4) >> 1
-    .db     (@@case_19 - @@branch - 4) >> 1
-    .db     (@@case_1D - @@branch - 4) >> 1
-    .db     (@@case_20 - @@branch - 4) >> 1
-    .db     (@@case_21 - @@branch - 4) >> 1
-    .db     (@@case_23 - @@branch - 4) >> 1
-    .db     (@@case_28 - @@branch - 4) >> 1
-    .db     (@@case_31 - @@branch - 4) >> 1
-    .db     (@@case_32 - @@branch - 4) >> 1
-    .db     (@@case_33 - @@branch - 4) >> 1
-    .db     (@@case_3A - @@branch - 4) >> 1
-    .db     (@@case_3D - @@branch - 4) >> 1
-    .db     (@@case_3E - @@branch - 4) >> 1
-    .db     (@@case_42 - @@branch - 4) >> 1
-    .db     (@@case_44 - @@branch - 4) >> 1
-    .db     (@@case_46 - @@branch - 4) >> 1
-    .db     (@@case_47 - @@branch - 4) >> 1
-    .db     (@@case_49 - @@branch - 4) >> 1
-    .db     (@@case_4B - @@branch - 4) >> 1
-    .db     (@@case_4D - @@branch - 4) >> 1
-    .db     (@@case_4E - @@branch - 4) >> 1
-    .db     (@@case_51 - @@branch - 4) >> 1
-    .db     (@@case_59 - @@branch - 4) >> 1
-    .db     (@@case_5B - @@branch - 4) >> 1
-    .db     (@@case_5C - @@branch - 4) >> 1
-    .db     (@@case_5F - @@branch - 4) >> 1
-    .db     (@@case_60 - @@branch - 4) >> 1
-    .db     (@@case_63 - @@branch - 4) >> 1
-    .db     (@@case_66 - @@branch - 4) >> 1
+    .db     (@@case_08 - @@branch - 4) >> 1, (@@case_0A - @@branch - 4) >> 1
+    .db     (@@case_0D - @@branch - 4) >> 1, (@@case_0F - @@branch - 4) >> 1
+    .db     (@@case_10 - @@branch - 4) >> 1, (@@case_16 - @@branch - 4) >> 1
+    .db     (@@case_19 - @@branch - 4) >> 1, (@@case_1D - @@branch - 4) >> 1
+    .db     (@@case_20 - @@branch - 4) >> 1, (@@case_21 - @@branch - 4) >> 1
+    .db     (@@case_23 - @@branch - 4) >> 1, (@@case_28 - @@branch - 4) >> 1
+    .db     (@@case_31 - @@branch - 4) >> 1, (@@case_32 - @@branch - 4) >> 1
+    .db     (@@case_33 - @@branch - 4) >> 1, (@@case_3A - @@branch - 4) >> 1
+    .db     (@@case_3D - @@branch - 4) >> 1, (@@case_3E - @@branch - 4) >> 1
+    .db     (@@case_42 - @@branch - 4) >> 1, (@@case_44 - @@branch - 4) >> 1
+    .db     (@@case_46 - @@branch - 4) >> 1, (@@case_47 - @@branch - 4) >> 1
+    .db     (@@case_49 - @@branch - 4) >> 1, (@@case_4B - @@branch - 4) >> 1
+    .db     (@@case_4D - @@branch - 4) >> 1, (@@case_4E - @@branch - 4) >> 1
+    .db     (@@case_51 - @@branch - 4) >> 1, (@@case_59 - @@branch - 4) >> 1
+    .db     (@@case_5B - @@branch - 4) >> 1, (@@case_5C - @@branch - 4) >> 1
+    .db     (@@case_5F - @@branch - 4) >> 1, (@@case_60 - @@branch - 4) >> 1
+    .db     (@@case_63 - @@branch - 4) >> 1, (@@case_66 - @@branch - 4) >> 1
     .db     (@@case_67 - @@branch - 4) >> 1
 .if ((@@case_67 - @@branch - 4) >> 1) >= (1 << 8)
     .error "Branch table overflowed"
@@ -512,7 +508,7 @@
     ; S0-4E => S0-4F
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #5Ch
+    cmp     r0, #Event_RestrictedSectorBreached
     beq     @@return_true
     b       @@return_false
 @@case_5F:
@@ -561,7 +557,7 @@
     ; room states: S0-03 => S0-04, S0-30 => S0-53
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #67h
+    cmp     r0, #Event_EscapeSequence
     bhs     @@return_true
 @@return_false:
     mov     r0, #0

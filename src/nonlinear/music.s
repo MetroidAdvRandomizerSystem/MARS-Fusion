@@ -84,7 +84,7 @@
     ldr     r2, =MiscProgress
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #67h
+    cmp     r0, #Event_EscapeSequence
     bne     @@areaSwitch
 @@skipAreaSwitch:
     b       @@areaSwitchDone
@@ -139,9 +139,9 @@
     bne     @@case_MainDeck_check4F
     ldr     r1, =CurrEvent
     ldrb    r0, [r1]
-    cmp     r0, #5Dh
+    cmp     r0, #Event_RestrictedSectorDetachment
     blt     @@case_MainDeck_break
-    mov     r0, #0
+    mov     r0, #Event_GameStart
     strb    r0, [r1]
     b       @@case_MainDeck_break
 @@case_MainDeck_check4F:
@@ -149,7 +149,7 @@
     cmp     r6, #4Eh
     bne     @@case_MainDeck_check52
     ldr     r1, =CurrEvent
-    mov     r0, #5Bh
+    mov     r0, #Event_XboxAbsorbed
     strb    r0, [r1]
     b       @@case_MainDeck_break
 .endif
@@ -159,7 +159,7 @@
     bne     @@case_MainDeck_check54
     ldr     r1, =CurrEvent
     ldrb    r0, [r1]
-    cmp     r0, #65h
+    cmp     r0, #Event_SaxFight
     bgt     @@case_MainDeck_break
     b       @@case_MainDeck_default
 @@case_MainDeck_check54:

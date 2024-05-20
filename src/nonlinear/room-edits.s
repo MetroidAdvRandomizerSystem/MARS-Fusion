@@ -28,7 +28,7 @@
 
 .org MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     63h
+    .db     Event_GoMode
     .skip 2
     .dw     readptr(MainDeckLevels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     33h
@@ -216,7 +216,7 @@
 ; show metroid molt in go mode instead of after ridley
 .org Sector1Levels + 04h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
-    .db     63h
+    .db     Event_GoMode
 .endarea
 
 ; Sector 1 - Charge Core Exit
@@ -227,21 +227,21 @@
 ; show metroid molt in go mode instead of after ridley
 .org Sector1Levels + 0Ch * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
-    .db     63h
+    .db     Event_GoMode
 .endarea
 
 ; Sector 1 - Atmospheric Stabilizer Southeast
 ; show metroid molt in go mode instead of after ridley
 .org Sector1Levels + 0Fh * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
-    .db     63h
+    .db     Event_GoMode
 .endarea
 
 ; Sector 1 - Lava Lake Annex
 ; show metroid molt in go mode instead of after ridley
 .org Sector1Levels + 14h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area 1
-    .db     63h
+    .db     Event_GoMode
 .endarea
 
 ; Sector 1 - Sciser Playground
@@ -267,11 +267,11 @@
 ; move cocoon and kihunter spritesets to intact room state
 .org Sector2Levels + 03h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     19h
+    .db     Event_ZazabiAbsorbed
     .skip 2
     .dw     readptr(Sector2Levels + 1Eh * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
-    .db     47h
+    .db     Event_ReactorOutage
     .skip 2
     .dw     readptr(Sector2Levels + 1Eh * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
@@ -317,11 +317,11 @@
 
 .org Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     19h
+    .db     Event_ZazabiAbsorbed
     .skip 2
     .dw     readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
-    .db     47h
+    .db     Event_ReactorOutage
     .skip 2
     .dw     readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
@@ -366,11 +366,11 @@
 ; add cocoon and kihunter spritesets to intact room state
 .org Sector2Levels + 0Eh * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     19h
+    .db     Event_ZazabiAbsorbed
     .skip 2
     .dw     readptr(Sector2Levels + 2Ch * LevelMeta_Size + LevelMeta_Spriteset0)
     .db     13h
-    .db     47h
+    .db     Event_ReactorOutage
     .skip 2
     .dw     readptr(Sector2Levels + 2Ch * LevelMeta_Size + LevelMeta_Spriteset1)
     .db     1Eh
@@ -419,11 +419,11 @@
 
 .org Sector2Levels + 11h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     19h
+    .db     Event_ZazabiAbsorbed
     .skip 2
     .dw     @S2_ZazabiAccess_Spriteset1
     .db     68h
-    .db     47h
+    .db     Event_ReactorOutage
     .skip 2
     .dw     @S2_ZazabiAccess_Spriteset2
     .db     69h
@@ -690,7 +690,7 @@
 
 .org Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
-    .db     20h
+    .db     Event_WaterLevelLowered
     .skip 2
     .dw     readptr(Sector4Levels + 24h * LevelMeta_Size + LevelMeta_Spriteset2)
     .db     23h

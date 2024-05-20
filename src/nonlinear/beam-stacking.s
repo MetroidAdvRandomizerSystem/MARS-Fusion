@@ -106,7 +106,7 @@
     ; override bbox size if omega metroid is being fought
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #69h
+    cmp     r0, #Event_OmegaFight
     blt     @@get_bbox_size
     mov     r0, #0Ch
     b       @@set_bbox_size
@@ -249,7 +249,7 @@
     ; override bbox size if omega metroid is being fought
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #69h
+    cmp     r0, #Event_OmegaFight
     blt     @@get_bbox_size
     mov     r0, #0Ch
     b       @@set_bbox_size
@@ -393,7 +393,7 @@
     ; override bbox size if omega metroid is being fought
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #69h
+    cmp     r0, #Event_OmegaFight
     blt     @@get_bbox_size
     mov     r0, #0Ch
     b       @@set_bbox_size
@@ -581,7 +581,7 @@
     ; override bbox size if omega metroid is being fought
     ldr     r0, =CurrEvent
     ldrb    r0, [r0]
-    cmp     r0, #69h
+    cmp     r0, #Event_OmegaFight
     blt     @@get_bbox_size
     mov     r0, #0Ch
     b       @@set_bbox_size
