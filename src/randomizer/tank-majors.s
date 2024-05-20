@@ -36,7 +36,7 @@
     cmp     r0, #0
     beq     @@load_tank_vram
 @@set_bg1:
-    ldr     r2, =LevelData + LevelData_Bg1
+    ldr     r2, =LevelLayers + LevelLayers_Bg1
     ldrh    r0, [r2, LevelLayer_Stride]
     ldrb    r1, [r3, MinorLocation_YPos]
     mul     r0, r1

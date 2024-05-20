@@ -48,16 +48,28 @@ CurrentClipdataAction equ 03000053h
 HeldInput equ 030011E8h
 ToggleInput equ 030011ECh
 
-LevelData equ 03000084h
+LevelLayers equ 03000084h
 .sym off
-LevelData_Bg0 equ 00h
-LevelData_Bg1 equ 08h
-LevelData_Bg2 equ 10h
-LevelData_Clipdata equ 18h
+LevelLayers_Bg0 equ 00h
+LevelLayers_Bg1 equ 08h
+LevelLayers_Bg2 equ 10h
+LevelLayers_Clipdata equ 18h
 ; LevelLayer struct
 LevelLayer_Data equ 00h
 LevelLayer_Stride equ 04h
 LevelLayer_Rows equ 06h
+.sym on
+
+LevelData equ 030000A4h
+.sym off
+LevelData_Bg0Props equ 01h
+LevelData_Bg1Props equ 02h
+LevelData_Bg2Props equ 03h
+LevelData_Bg3Props equ 04h
+LevelData_Transparency equ 07h
+LevelData_RoomEffect equ 10h
+LevelData_RoomEffectHeight equ 12h
+LevelData_EnvironmentalEffect equ 14h
 .sym on
 
 BgPositions equ 030000C8h

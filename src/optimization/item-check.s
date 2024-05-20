@@ -177,16 +177,16 @@
 .endif
     ; item collected, delete from the loaded map
     ldrb    r0, [r4, MinorLocation_YPos]
-    ldr     r3, =LevelData
-    ldrh    r1, [r3, LevelData_Clipdata + LevelLayer_Stride]
+    ldr     r3, =LevelLayers
+    ldrh    r1, [r3, LevelLayers_Clipdata + LevelLayer_Stride]
     mul     r0, r1
     ldrb    r1, [r4, MinorLocation_XPos]
     add     r0, r1
     lsl     r2, r0, #1
-    ldr     r1, [r3, LevelData_Bg1 + LevelLayer_Data]
+    ldr     r1, [r3, LevelLayers_Bg1 + LevelLayer_Data]
     mov     r0, #0
     strh    r0, [r1, r2]
-    ldr     r3, [r3, LevelData_Clipdata + LevelLayer_Data]
+    ldr     r3, [r3, LevelLayers_Clipdata + LevelLayer_Data]
     ldrh    r0, [r3, r2]
     ldr     r1, =SpecialTileset
     ldrh    r1, [r1, r0]

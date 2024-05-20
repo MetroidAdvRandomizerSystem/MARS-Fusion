@@ -15,169 +15,6 @@
 ; sector 5 flooded (4F):
 ;   S5-03 => S5-06, S5-05 => S5-10, S5-07 => S5-0F, S5-0D => S5-2C
 
-.org 080648DAh
-.area 26h, 0
-    ; change spriteset handling to call custom event function
-    mov     r5, r1
-    cmp     r0, #0
-    beq     @@check_spriteset_1
-    bl      CheckEvent
-    cmp     r0, #0
-    beq     @@check_spriteset_1
-    mov     r0, #2
-    b       @@set_spriteset
-@@check_spriteset_1:
-    add     r0, sp, #20h
-    ldrb    r0, [r0, LevelMeta_Spriteset1Event - 20h]
-    cmp     r0, #0
-    beq     @@set_spriteset_0
-    bl      CheckEvent
-    cmp     r0, #0
-    beq     @@set_spriteset_0
-    mov     r0, #1
-    b       @@set_spriteset
-.endarea
-    .skip   0Ch
-.area 38h, 0
-@@set_spriteset_0:
-    mov     r0, #0
-@@set_spriteset:
-    strb    r0, [r4]
-    lsl     r0, #3
-    add     r1, sp, #20h
-    add     r1, r0
-    ldrb    r0, [r1, LevelMeta_Spriteset0Id - 20h]
-    ldr     r2, =SpritesetId
-    strb    r0, [r2]
-    ldr     r0, [r1, LevelMeta_Spriteset0 - 20h]
-    str     r0, [r5, #08h]
-    b       08064944h
-    .pool
-.endarea
-
-.org 08069508h
-.area 64h
-    ; change door transition to call custom event function
-    push    { r4-r7, lr }
-    lsl     r4, r0, #18h
-    lsr     r4, #18h
-    ldr     r5, =VariableConnections
-    mov     r6, #0
-    ldr     r0, =CurrArea
-    ldrb    r7, [r0]
-@@loop:
-    add     r1, r5, r6
-    ldrb    r0, [r1, VariableConnection_Area]
-    cmp     r0, r7
-    bne     @@loop_inc
-    ldrb    r0, [r1, VariableConnection_SourceDoor]
-    cmp     r0, r4
-    bne     @@loop_inc
-    ldrb    r0, [r1, VariableConnection_Event]
-    bl      CheckEvent
-    cmp     r0, #0
-    beq     @@loop_inc
-    add     r0, r5, r6
-    ldrb    r0, [r0, VariableConnection_DestinationDoor]
-    b       @@return
-@@loop_inc:
-    add     r6, #VariableConnection_Size
-    cmp     r6, #VariableConnections_Len * VariableConnection_Size
-    blt     @@loop
-    mov     r0, #0FFh
-@@return:
-    pop     { r4-r7, pc }
-    .pool
-.endarea
-
-.org 08063D40h
-.area 0A8h
-    ; change door lock handling to call custom event function
-    push    { r4-r7, lr }
-    ldr     r4, =DoorLockEvents
-    mov     r5, #DoorLockEvents_Len
-    ldr     r0, =CurrArea
-    ldrb    r6, [r0]
-    ldr     r0, =CurrRoom
-    ldrb    r7, [r0]
-@@loop:
-    ldrb    r0, [r4, DoorLockEvent_Area]
-    cmp     r0, r6
-    bne     @@loop_inc
-    ldrb    r0, [r4, DoorLockEvent_Room]
-    sub     r0, #1
-    cmp     r0, r7
-    bne     @@loop_inc
-    ldrb    r0, [r4, DoorLockEvent_Event]
-    bl      CheckEvent
-    ldrb    r1, [r4, DoorLockEvent_Value]
-    cmp     r0, r1
-    bne     @@loop_inc
-    ldrb    r0, [r4, DoorLockEvent_Bitmask]
-    lsl     r0, #20h - 6
-    lsr     r0, #20h - 6
-    bl      LockHatches
-    mov     r0, #1
-    b       @@return
-@@loop_inc:
-    add     r4, #DoorLockEvent_Size
-    sub     r5, #1
-    bne     @@loop
-    mov     r0, #0
-@@return:
-    pop     { r4-r7, pc }
-    .pool
-.endarea
-
-.org DoorLockEvents
-.region 12Ch
-    .db     Event_ArachnusAbsorbed
-    .db     Area_MainDeck, 26h + 1
-    .db     111111b, 0
-    .db     Event_ChargeCoreXAbsorbed
-    .db     Area_SRX, 28h + 1
-    .db     111111b, 0
-    .db     Event_ZazabiAbsorbed
-    .db     Area_TRO, 12h + 1
-    .db     111111b, 0
-    .db     Event_SerrisAbsorbed
-    .db     Area_AQA, 2Ah + 1
-    .db     111111b, 0
-    .db     Event_BoxDefeated
-    .db     Area_PYR, 17h + 1
-    .db     111111b, 0
-    .db     Event_MegaCoreXAbsorbed
-    .db     Area_NOC, 0Dh + 1
-    .db     111111b, 0
-    .db     Event_BoilerReactivated
-    .db     Area_PYR, 19h + 1
-    .db     111111b, 0
-    .db     Event_YakuzaAbsorbed
-    .db     Area_MainDeck, 56h + 1
-    .db     111111b, 0
-    .db     Event_NettoriAbsorbed
-    .db     Area_TRO, 0Ch + 1
-    .db     000010b, 0
-    .db     Event_NettoriAbsorbed
-    .db     Area_TRO, 16h + 1
-    .db     111111b, 0
-    .db     Event_NightmareAbsorbed
-    .db     Area_ARC, 14h + 1
-    .db     111111b, 0
-    .db     Event_XboxAbsorbed
-    .db     Area_NOC, 10h + 1
-    .db     111110b, 0
-    .db     Event_RidleyAbsorbed
-    .db     Area_SRX, 1Bh + 1
-    .db     111111b, 0
-    .db     Event_SaxDefeated
-    .db     Area_MainDeck, 0Dh + 1
-    .db     001000b, 0
-    .db     Event_EscapeSequence
-    .db     Area_MainDeck, 3Fh + 1
-    .db     111111b, 1
-.endregion
-
 .autoregion
     .align 2
 .func CheckEvent
@@ -568,3 +405,210 @@
     .pool
 .endfunc
 .endautoregion
+
+.org 080648DAh
+.area 26h, 0
+    ; change spriteset handling to call custom event function
+    mov     r5, r1
+    cmp     r0, #0
+    beq     @@check_spriteset_1
+    bl      CheckEvent
+    cmp     r0, #0
+    beq     @@check_spriteset_1
+    mov     r0, #2
+    b       @@set_spriteset
+@@check_spriteset_1:
+    add     r0, sp, #20h
+    ldrb    r0, [r0, LevelMeta_Spriteset1Event - 20h]
+    cmp     r0, #0
+    beq     @@set_spriteset_0
+    bl      CheckEvent
+    cmp     r0, #0
+    beq     @@set_spriteset_0
+    mov     r0, #1
+    b       @@set_spriteset
+.endarea
+    .skip   0Ch
+.area 38h, 0
+@@set_spriteset_0:
+    mov     r0, #0
+@@set_spriteset:
+    strb    r0, [r4]
+    lsl     r0, #3
+    add     r1, sp, #20h
+    add     r1, r0
+    ldrb    r0, [r1, LevelMeta_Spriteset0Id - 20h]
+    ldr     r2, =SpritesetId
+    strb    r0, [r2]
+    ldr     r0, [r1, LevelMeta_Spriteset0 - 20h]
+    str     r0, [r5, #08h]
+    b       08064944h
+    .pool
+.endarea
+
+.org 08069508h
+.area 64h
+    ; change door transition to call custom event function
+    push    { r4-r7, lr }
+    lsl     r4, r0, #18h
+    lsr     r4, #18h
+    ldr     r5, =VariableConnections
+    mov     r6, #0
+    ldr     r0, =CurrArea
+    ldrb    r7, [r0]
+@@loop:
+    add     r1, r5, r6
+    ldrb    r0, [r1, VariableConnection_Area]
+    cmp     r0, r7
+    bne     @@loop_inc
+    ldrb    r0, [r1, VariableConnection_SourceDoor]
+    cmp     r0, r4
+    bne     @@loop_inc
+    ldrb    r0, [r1, VariableConnection_Event]
+    bl      CheckEvent
+    cmp     r0, #0
+    beq     @@loop_inc
+    add     r0, r5, r6
+    ldrb    r0, [r0, VariableConnection_DestinationDoor]
+    b       @@return
+@@loop_inc:
+    add     r6, #VariableConnection_Size
+    cmp     r6, #VariableConnections_Len * VariableConnection_Size
+    blt     @@loop
+    mov     r0, #0FFh
+@@return:
+    pop     { r4-r7, pc }
+    .pool
+.endarea
+
+.org 08063D40h
+.area 0A8h
+    ; change door lock handling to call custom event function
+    push    { r4-r7, lr }
+    ldr     r4, =DoorLockEvents
+    mov     r5, #DoorLockEvents_Len
+    ldr     r0, =CurrArea
+    ldrb    r6, [r0]
+    ldr     r0, =CurrRoom
+    ldrb    r7, [r0]
+@@loop:
+    ldrb    r0, [r4, DoorLockEvent_Area]
+    cmp     r0, r6
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Room]
+    sub     r0, #1
+    cmp     r0, r7
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Event]
+    bl      CheckEvent
+    ldrb    r1, [r4, DoorLockEvent_Value]
+    cmp     r0, r1
+    bne     @@loop_inc
+    ldrb    r0, [r4, DoorLockEvent_Bitmask]
+    lsl     r0, #20h - 6
+    lsr     r0, #20h - 6
+    bl      LockHatches
+    mov     r0, #1
+    b       @@return
+@@loop_inc:
+    add     r4, #DoorLockEvent_Size
+    sub     r5, #1
+    bne     @@loop
+    mov     r0, #0
+@@return:
+    pop     { r4-r7, pc }
+    .pool
+.endarea
+
+.org DoorLockEvents
+.region 12Ch
+    .db     Event_ArachnusAbsorbed
+    .db     Area_MainDeck, 26h + 1
+    .db     111111b, 0
+    .db     Event_ChargeCoreXAbsorbed
+    .db     Area_SRX, 28h + 1
+    .db     111111b, 0
+    .db     Event_ZazabiAbsorbed
+    .db     Area_TRO, 12h + 1
+    .db     111111b, 0
+    .db     Event_SerrisAbsorbed
+    .db     Area_AQA, 2Ah + 1
+    .db     111111b, 0
+    .db     Event_BoxDefeated
+    .db     Area_PYR, 17h + 1
+    .db     111111b, 0
+    .db     Event_MegaCoreXAbsorbed
+    .db     Area_NOC, 0Dh + 1
+    .db     111111b, 0
+    .db     Event_BoilerReactivated
+    .db     Area_PYR, 19h + 1
+    .db     111111b, 0
+    .db     Event_YakuzaAbsorbed
+    .db     Area_MainDeck, 56h + 1
+    .db     111111b, 0
+    .db     Event_NettoriAbsorbed
+    .db     Area_TRO, 0Ch + 1
+    .db     000010b, 0
+    .db     Event_NettoriAbsorbed
+    .db     Area_TRO, 16h + 1
+    .db     111111b, 0
+    .db     Event_NightmareAbsorbed
+    .db     Area_ARC, 14h + 1
+    .db     111111b, 0
+    .db     Event_XboxAbsorbed
+    .db     Area_NOC, 10h + 1
+    .db     111110b, 0
+    .db     Event_RidleyAbsorbed
+    .db     Area_SRX, 1Bh + 1
+    .db     111111b, 0
+    .db     Event_SaxDefeated
+    .db     Area_MainDeck, 0Dh + 1
+    .db     001000b, 0
+    .db     Event_EscapeSequence
+    .db     Area_MainDeck, 3Fh + 1
+    .db     111111b, 1
+.endregion
+
+.autoregion
+    .align 2
+.func CheckLevelLayerOverrides
+    ; TODO: override bg0 for boiler meltdown
+    push    { r4, lr }
+    mov     r4, r0
+    ldr     r1, =CurrArea
+    ldrb    r0, [r1]
+    ldrb    r1, [r1, CurrRoom - CurrArea]
+    cmp     r0, #Area_AQA
+    bne     @@return
+    cmp     r1, #1Ch
+    bne     @@return
+    mov     r0, #Event_WaterLevelLowered
+    bl      CheckEvent
+    cmp     r0, #0
+    bne     @@return
+    ldr     r1, =LevelData
+    mov     r0, #46h
+    strb    r0, [r1, LevelData_Bg0Props]
+    ldr     r0, =08542384h
+    str     r0, [r4, LevelMeta_Bg0 + LevelLayer_Data]
+    mov     r0, #28h
+    strb    r0, [r1, LevelData_Transparency]
+    mov     r0, #01h
+    strb    r0, [r1, LevelData_RoomEffect]
+    mov     r0, #158h >> 1
+    lsl     r0, #1
+    strh    r0, [r1, LevelData_RoomEffectHeight]
+    b       @@return
+@@return:
+    pop     { r4, pc }
+    .pool
+.endfunc
+.endautoregion
+
+.org 0806499Ch
+.area 2Eh
+    ; override bg0 for certain rooms
+    mov     r0, sp
+    bl      CheckLevelLayerOverrides
+    b       080649CAh
+.endarea
