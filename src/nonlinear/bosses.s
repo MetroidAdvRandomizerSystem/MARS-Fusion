@@ -1,8 +1,6 @@
 ; Allows bosses to be fought, killed, and absorbed regardless of the event.
 
-; TODO: fix BOX spawning
 ; TODO: fix projectile vfx and sfx when hitting zazabi
-; TODO: test all bosses
 
 .org 08025400h
 .area 38h, 0

@@ -3,8 +3,6 @@
 ; causing behavior such as Plasma, Wave, and Ice firing three projectiles even
 ; without Wide Beam obtained.
 
-; TODO: test SA-X boss
-
 .defineregion 08085E44h, 280h, 0    ; wide beam update/init functions
 .defineregion 08083BACh, 988h, 0    ; beam hit sprite functions
 
@@ -731,8 +729,8 @@
     cmp     r0, #0
     beq     @@end
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #0
     bl      SpawnProjectile
     ; spawn secondary charge projectiles
@@ -747,13 +745,13 @@
     and     r0, r1
     str     r0, [sp, #0]
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #1
     bl      SpawnSecondaryProjectile
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #2
     bl      SpawnSecondaryProjectile
     b       @@cleanup
@@ -767,8 +765,8 @@
     sub     r6, #1
 @@spawnLoop:
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     add     r3, r6, r7
     bl      SpawnProjectile
     sub     r6, #1
@@ -777,8 +775,8 @@
     ldr     r1, =SamusState
     mov     r0, #7
     strb    r0, [r1, SamusState_ProjectileCooldown]
-    ldrh    r0, [r4, ArmCannonPos_X]
-    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r0, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_X]
     mov     r2, #2Bh
     bl      SpawnParticleEffect
 @@end:
@@ -827,8 +825,8 @@
     cmp     r0, #0
     beq     @@end
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #0
     bl      SpawnProjectile
     ; spawn secondary charge projectiles
@@ -843,13 +841,13 @@
     and     r0, r1
     str     r0, [sp, #0]
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #1
     bl      SpawnSecondaryProjectile
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #2
     bl      SpawnSecondaryProjectile
     b       @@cleanup
@@ -863,8 +861,8 @@
     sub     r6, #1
 @@spawnLoop:
     mov     r0, r5
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     add     r3, r6, r7
     bl      SpawnProjectile
     sub     r6, #1
@@ -874,8 +872,8 @@
     mov     r0, #3
     strb    r0, [r1, SamusState_ProjectileCooldown]
     mov     r0, Projectile_BeamFlare
-    ldrh    r1, [r4, ArmCannonPos_X]
-    ldrh    r2, [r4, ArmCannonPos_Y]
+    ldrh    r1, [r4, ArmCannonPos_Y]
+    ldrh    r2, [r4, ArmCannonPos_X]
     mov     r3, #0
     bl      SpawnProjectile
 @@end:

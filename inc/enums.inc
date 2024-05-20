@@ -167,6 +167,11 @@ SpriteId_ChargeCoreXNucleus equ 56h
 SpriteId_WideCoreXNucleus equ 57h
 SpriteId_Nettori_CoreXNucleus equ 58h
 SpriteId_XBox_CoreXNucleus equ 59h
+SpriteId_PumpControlPad equ 65h
+SpriteId_BoilerControlPad equ 66h
+SpriteId_AuxiliaryPowerPad equ 67h
+SpriteId_HabitationControlPad equ 68h
+SpriteId_OperationsRoomPad equ 69h
 SpriteId_SaxBoss_Samus equ 0C0h
 SpriteId_SaxBoss_Monster equ 0C1h
 

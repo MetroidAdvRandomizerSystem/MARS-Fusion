@@ -516,6 +516,11 @@
     .db     1Fh
 .endarea
 
+.org Sector2Doors + 13h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
 .org Sector2Doors + 45h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 

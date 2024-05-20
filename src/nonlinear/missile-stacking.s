@@ -2,8 +2,6 @@
 ; Like beams, vanilla behavior expects all upgrades to be collected in a
 ; fixed order.
 
-; TODO: easily configurable alternate missile sprites
-
 ; Type      Damage  Cooldown
 ; Normal     10      9
 ; Super     +20     +4
@@ -87,9 +85,8 @@
     strb    r5, [r1, SamusState_ProjectileCooldown]
     mov     r0, r4  ; r0 = type
     ldr     r2, =ArmCannonPos
-    ; TODO: replace these with ArmCannonPos_Y and ArmCannonPos_X
-    ldrh    r1, [r2, #0]
-    ldrh    r2, [r2, #2]
+    ldrh    r1, [r2, #ArmCannonPos_Y]
+    ldrh    r2, [r2, #ArmCannonPos_X]
     mov     r3, #0
     bl      SpawnProjectile
     b       080818E4h   ; return

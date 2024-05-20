@@ -291,7 +291,7 @@
     lsr     r0, #1Fh
     bx      lr
 @@case_0D:
-    ; TODO: main deck elevator door destroyed by SA-X
+    ; TODO (non-rando): main deck elevator door destroyed by SA-X
     ; room states: S0-29 => S0-2A, S0-4A => S0-0D
 .if RANDOMIZER
     mov     r0, #1
@@ -315,14 +315,9 @@
 @@case_16:
     ; downloaded bombs
     ; room states: S2-03 => S2-1E, S2-07 => S2-1F
-.if !RANDOMIZER
     ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
     lsl     r0, #1Fh - ExplosiveUpgrade_Bombs
     lsr     r0, #1Fh
-.else
-    ; TODO: fixme
-    mov     r0, #0
-.endif
     bx      lr
 @@case_19:
     ; zazabi defeated, zoros in cocoons
@@ -348,7 +343,7 @@
     lsr     r0, #1Fh
     bx      lr
 @@case_21:
-    ; TODO: sector 4 complete, gold crab locks inactive
+    ; TODO (non-rando): sector 4 complete, gold crab locks inactive
     ; spritesets: S4-05
 .if RANDOMIZER
     mov     r0, #1
@@ -377,7 +372,7 @@
     lsr     r0, #1Fh
     bx      lr
 @@case_31:
-    ; TODO: escaped sector 6 SA-X
+    ; TODO (non-rando): escaped sector 6 SA-X
     ; spritesets: S6-1C
 .if RANDOMIZER
     mov     r0, #1
@@ -454,7 +449,6 @@
     ; spritesets: S0-06, S0-30, S2-00, S2-04, S2-05, S2-09, S2-0A, S2-11,
     ;             S2-13, S2-1E, S2-1F, S2-2C, S2-2E
 .if RANDOMIZER
-    ; TODO: split off S0-06 and S0-30 to event 42h
     ldr     r0, [r3, MiscProgress_MajorLocations]
     lsl     r1, r0, #1Fh - MajorLocation_Yakuza
     lsl     r0, #1Fh - MajorLocation_Nettori
@@ -545,7 +539,6 @@
     ; spritesets: S0-0C, S0-0D, S0-0E, S0-15
     ; room states: S0-0D => S0-55
 .if RANDOMIZER
-    ; TODO: check for go mode
     ldrb    r0, [r2, PermanentUpgrades_InfantMetroids]
     ldr     r1, =RequiredMetroidCount
     ldrb    r1, [r1]

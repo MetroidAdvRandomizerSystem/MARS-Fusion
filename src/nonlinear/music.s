@@ -495,7 +495,7 @@
     bl      08025270h
     ldr     r0, =CurrentSprite
     ldrb    r0, [r0, Sprite_Id]
-    cmp     r0, #57h
+    cmp     r0, #SpriteId_WideCoreXNucleus
     bne     @@return
     mov     r0, #18h
     mov     r1, MusicType_BossAmbience

@@ -1,6 +1,5 @@
 ; Patches miscellaneous story flags to be tracked separately from events.
 
-; TODO: convert sprite set event checks to story flag checks
 ; TODO: set water lowered flag when exiting room with lowering event active
 
 .org 08041984h
@@ -244,13 +243,13 @@
     mov     r0, #1Eh
     strb    r0, [r3, Sprite_Pose - Sprite_Id]
     ldrb    r0, [r3]
-    cmp     r0, #65h
+    cmp     r0, #SpriteId_PumpControlPad
     beq     @@lower_water_level
-    cmp     r0, #66h
+    cmp     r0, #SpriteId_BoilerControlPad
     beq     @@boiler_cooling
-    cmp     r0, #67h
+    cmp     r0, #SpriteId_AuxiliaryPowerPad
     beq     @@auxiliary_power
-    cmp     r0, #68h
+    cmp     r0, #SpriteId_HabitationControlPad
     beq     @@animals_freed
     b       @@return
 @@lower_water_level:
@@ -294,7 +293,7 @@
     str     r0, [sp, #4]
     mov     r0, #0
     str     r0, [sp, #8]
-    mov     r0, #21h
+    mov     r0, #SpriteId_MessageBox
     mov     r2, #2
     mov     r3, #10h
     bl      SpawnPrimarySprite

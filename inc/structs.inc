@@ -74,8 +74,8 @@ BgPositions_Bg3Y equ 0Eh
 
 ArmCannonPos equ 03000B80h
 .sym off
-ArmCannonPos_X equ 00h
-ArmCannonPos_Y equ 02h
+ArmCannonPos_Y equ 00h
+ArmCannonPos_X equ 02h
 .sym on
 
 GameTimer equ 03000138h
