@@ -234,6 +234,7 @@ SamusTimers_SubzeroKnockback equ 05h
 SamusTimers_DiffusionMissileCharge equ 13h
 SamusTimers_EnvironmentalDamage equ 14h
 SamusTimers_EnvironmentalDamageSfx equ 15h
+SamusTimers_EnvironmentalDamageVfx equ 16h  ; probably unused field; investigate if this is in use
 .sym on
 
 SamusUpgrades equ 03001310h

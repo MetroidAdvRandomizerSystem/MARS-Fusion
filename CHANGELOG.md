@@ -40,6 +40,7 @@
 * Changed: Split the properties of varia suit and gravity suit. Damage reduction from enemies is incremental based on the number of suits obtained.
   * Varia Suit: Negates heat and cold damage, and reduces lava and acid damage by 40%. If gravity suit is also active, lava damage is negated.
   * Gravity Suit: Allows free movement in water and lava. Does not reduce environmental damage.
+* Added: Configurable environmental damage per second.
 * Added: Optional setting to allow use of power bombs without normal bombs.
 * Added: Optional setting to allow use of missiles without main missile data.
 * Added: Equipment enable/disable functionality to the Samus status menu.

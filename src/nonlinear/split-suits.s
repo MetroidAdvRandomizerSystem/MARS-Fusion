@@ -3,63 +3,149 @@
 ; Currently varia negates heat and cold damage, reduces lava and acid damage
 ; by 40%, and negates lava damage when gravity suit is also acquired.
 
-.org 080062BCh
-.area 1Ch
-    ; Environmental damage
-    cmp     r4, #EnvironmentalHazard_Water
-    bls     0800636Ah
-    add     r2, =@@DamageTimers
-    ldrb    r2, [r2, r4]
+; NOTE: Damage tick sfx can occur extremely often at higher values of heat,
+; subzero, or cold hazard damage. Worth looking into if problems with the
+; sound engine start occurring.
+
+.org 08006290h
+.area 168h
+    push    { r4-r5, lr }
+    ldr     r5, =SamusTimers
+    ldr     r1, =SamusState
+    ldrb    r0, [r1, SamusState_Pose]
+    cmp     r0, #3Eh
+    beq     @@return_false
+    ldrh    r0, [r1, SamusState_PositionY]
+    ldrh    r1, [r1, SamusState_PositionX]
+    bl      08068E70h
+    mov     r4, r0
+    sub     r0, #EnvironmentalHazard_Water + 1
+    blo     @@return_false
+    ldr     r1, =EnvironmentalHazardDps
+    ldrb    r2, [r1, r0]
+    ldrb    r3, [r5, SamusTimers_EnvironmentalDamage]
+    add     r3, r2
     ldr     r1, =SamusUpgrades
     ldrb    r1, [r1, SamusUpgrades_SuitUpgrades]
-    lsr     r0, r1, SuitUpgrade_VariaSuit + 1
-    bcc     @@check_timer
+    lsr     r0, r1, #SuitUpgrade_VariaSuit + 1
+    bcc     @@full_damage
     sub     r0, r4, #EnvironmentalHazard_Heat
-    cmp     r0, #EnvironmentalHazard_Cold
-    bls     0800636Ah
-    lsr     r1, SuitUpgrade_GravitySuit + 1
-    bcs     @@check_full_suit_lava
-    b       @@modify_timer
-.endarea
-.area 0Ch
-    .skip 8
-    .pool
-.endarea
-.area 86h
-    .align 4
-@@DamageTimers:
-    .db     0, 0, 3, 1, 10, 4, 10
-    .align 2
-@@check_full_suit_lava:
+    cmp     r0, #EnvironmentalHazard_Cold - EnvironmentalHazard_Heat
+    bls     @@return_false
+    lsr     r1, #SuitUpgrade_GravitySuit + 1
+    bcc     @@reduced_damage
     cmp     r4, #EnvironmentalHazard_Lava
-    beq     0800636Ah
-@@modify_timer:
-    lsl     r0, r2, #1
-    add     r2, #1
-    lsr     r2, #1
-    add     r2, r0
-@@check_timer:
-    mov     r6, #1
-    ldrb    r0, [r5, SamusTimers_EnvironmentalDamage]
-    cmp     r0, r2
-    blt     0800636Ah
-    mov     r7, #1
+    beq     @@return_false
+@@reduced_damage:
+    mov     r1, #150
+    b       @@divrem_damage
+@@full_damage:
+    mov     r1, #60
+@@divrem_damage:
+    mov     r0, #0
+    cmp     r3, r1
+    blt     @@decrement_energy
+@@divrem_damage_loop:
+    add     r0, #1
+    sub     r3, r1
+    cmp     r3, r1
+    bge     @@divrem_damage_loop
+@@decrement_energy:
+    strb    r3, [r5, SamusTimers_EnvironmentalDamage]
+    cmp     r0, #0
+    beq     @@check_infrequent_damage_sfx
+    ldr     r2, =SamusUpgrades
+    ldrh    r1, [r2, SamusUpgrades_CurrEnergy]
+    sub     r1, r0
+    asr     r0, r1, #1Fh
+    bic     r1, r0
+    strh    r1, [r2, SamusUpgrades_CurrEnergy]
+    ldrb    r0, [r5, SamusTimers_EnvironmentalDamageVfx]
+    cmp     r0, #0
+    bhi     @@check_damage_tick_sfx
+    mov     r0, #5
+    strb    r0, [r5, SamusTimers_EnvironmentalDamageVfx]
+@@check_damage_tick_sfx:
     sub     r0, r4, #EnvironmentalHazard_Heat
-    cmp     r0, #EnvironmentalHazard_Cold
-    bhi     0800636Ah
+    cmp     r0, #EnvironmentalHazard_Cold - EnvironmentalHazard_Heat
+    bhi     @@check_infrequent_damage_sfx
     mov     r0, #8Fh
     bl      Sfx_Play
+@@check_infrequent_damage_sfx:
+    ldrb    r1, [r5, SamusTimers_EnvironmentalDamageSfx]
+    add     r1, #1
+    strb    r1, [r5, SamusTimers_EnvironmentalDamageSfx]
+    sub     r0, r4, #EnvironmentalHazard_Lava
+    cmp     r0, #EnvironmentalHazard_Acid - EnvironmentalHazard_Lava
+    bhi     @@check_damage_grunt_sfx
+    cmp     r1, #1
+    beq     @@play_rapid_damage_sfx
+    cmp     r1, #26
+    bne     @@check_damage_grunt_sfx
+@@play_rapid_damage_sfx:
+    mov     r0, #8Bh
+    bl      Sfx_Play
+    b       @@check_knockback
+@@check_damage_grunt_sfx:
+    cmp     r1, #50
+    beq     @@play_damage_grunt_sfx
+    b       @@check_knockback
+@@play_damage_grunt_sfx:
+    mov     r0, #88h
+    bl      08003B78h
+    mov     r0, #0
+    strb    r0, [r5, SamusTimers_EnvironmentalDamageSfx]
+@@check_knockback:
     cmp     r4, #EnvironmentalHazard_Subzero
-    bne     0800636Ah
+    bne     @@check_hp
     ldrb    r0, [r5, SamusTimers_SubzeroKnockback]
     add     r0, #1
     strb    r0, [r5, SamusTimers_SubzeroKnockback]
     cmp     r0, #87
-    blt     0800636Ah
+    blt     @@check_hp
     mov     r0, #0
     strb    r0, [r5, SamusTimers_SubzeroKnockback]
-    mov     r8, r6
-    b       0800636Ah
+    b       @@return_true
+@@check_hp:
+    ldr     r1, =SamusUpgrades
+    ldrh    r0, [r1, SamusUpgrades_CurrEnergy]
+    cmp     r0, #0
+    bne     @@return_false
+@@return_true:
+    mov     r0, #1
+    b       @@return
+@@return_false:
+    mov     r0, #0
+@@return:
+    ldrb    r1, [r5, SamusTimers_EnvironmentalDamageVfx]
+    sub     r1, #1
+    asr     r2, r1, #1Fh
+    bic     r1, r2
+    strb    r1, [r5, SamusTimers_EnvironmentalDamageVfx]
+    pop     { r4-r5, lr }
+    .pool
+.endarea
+
+.org EnvironmentalHazardDps
+.area 05h
+    .db     20  ; lava
+    .db     60  ; acid
+    .db     6   ; heat
+    .db     15  ; subzero
+    .db     6   ; cold
+.endarea
+
+.org 0800BDB6h
+.area 0Ch, 0
+    ldrb    r0, [r3, SamusTimers_EnvironmentalDamageVfx]
+    cmp     r0, #0
+    bhi     0800BD74h
+    b       0800BDC2h
+.endarea
+
+.org 080055E0h
+.area 02h
+    nop
 .endarea
 
 .org 0800FE72h
