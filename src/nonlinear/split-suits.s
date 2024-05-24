@@ -14,13 +14,14 @@
     ldr     r1, =SamusState
     ldrb    r0, [r1, SamusState_Pose]
     cmp     r0, #3Eh
-    beq     @@return_false
+    beq     @@clear_timers
     ldrh    r0, [r1, SamusState_PositionY]
     ldrh    r1, [r1, SamusState_PositionX]
     bl      08068E70h
     mov     r4, r0
-    sub     r0, #EnvironmentalHazard_Water + 1
-    blo     @@return_false
+    sub     r0, #EnvironmentalHazard_Lava
+    cmp     r0, #EnvironmentalHazard_Cold - EnvironmentalHazard_Lava
+    bhi     @@clear_timers
     ldr     r1, =EnvironmentalHazardDps
     ldrb    r2, [r1, r0]
     ldrb    r3, [r5, SamusTimers_EnvironmentalDamage]
@@ -31,11 +32,11 @@
     bcc     @@full_damage
     sub     r0, r4, #EnvironmentalHazard_Heat
     cmp     r0, #EnvironmentalHazard_Cold - EnvironmentalHazard_Heat
-    bls     @@return_false
+    bls     @@clear_timers
     lsr     r1, #SuitUpgrade_GravitySuit + 1
     bcc     @@reduced_damage
     cmp     r4, #EnvironmentalHazard_Lava
-    beq     @@return_false
+    beq     @@clear_timers
 @@reduced_damage:
     mov     r1, #150
     b       @@divrem_damage
@@ -114,6 +115,11 @@
 @@return_true:
     mov     r0, #1
     b       @@return
+@@clear_timers:
+    mov     r0, #0
+    strb    r0, [r5, SamusTimers_EnvironmentalDamage]
+    strb    r0, [r5, SamusTimers_EnvironmentalDamageSfx]
+    strb    r0, [r5, SamusTimers_EnvironmentalDamageVfx]
 @@return_false:
     mov     r0, #0
 @@return:
