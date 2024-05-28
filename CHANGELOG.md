@@ -99,7 +99,7 @@
 * Changed: Zozoro Wine Cellar: (Optional) Change reforming bomb block in front of expansion tank to a never reforming bomb block to prevent being trapped by running out of power bombs.
 * Changed: Big Shell 1: (Optional) Remove the crumble block into the long morph tunnel to prevent softlocks without power bombs.
 * Changed: X-BOX Arena: Leave the top left door unlocked even if X-BOX has not been defeated.
-* Changed: X-BOX Arena: Add a bomb block above the crumble blocks to prevent accidentally being trapped in the arena.
+* Changed: X-BOX Arena: Add a shot block above the crumble blocks to prevent accidentally being trapped in the arena.
 
 ### Miscellaneous modifications
 * Changed: Rewrite demo functionality for more equipment customizability.
