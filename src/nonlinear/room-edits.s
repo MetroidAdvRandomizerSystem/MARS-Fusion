@@ -13,7 +13,7 @@
 .if RANDOMIZER
 .org MainDeckDoors + 0Dh * DoorEntry_Size + DoorEntry_Type
 .area 1
-    .db     DoorType_LockableHatch
+    .db     DoorType_NoHatch
 .endarea
 
 .org MainDeckDoors + 0Fh * DoorEntry_Size + DoorEntry_Type
@@ -350,6 +350,11 @@
 .org Sector2Doors + 5Fh * DoorEntry_Size + DoorEntry_Type
 .area 1
     .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 6Eh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_OpenHatch
 .endarea
 
 .org Sector2Doors + 71h * DoorEntry_Size + DoorEntry_Type
