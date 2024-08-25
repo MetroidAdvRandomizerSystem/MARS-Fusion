@@ -295,10 +295,10 @@
 .incbin "data/rooms/S2-0D-BG1.rlebg"
 .endarea
 
-.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata)
-.area 1F0h
+.autoregion
+@S2_CentralShaft_Clipdata:
 .incbin "data/rooms/S2-0D-Clip.rlebg"
-.endarea
+.endautoregion
 
 .autoregion
 @S2_CentralShaft_KihunterSpriteset:
@@ -318,8 +318,10 @@
 .endarea
 
 .org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
-.area 03h
+.area 09h
     .db     1Bh, 05h, 24h
+    .skip 3
+    .db     2Bh, 03h, 24h
 .endarea
 
 .org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
@@ -335,6 +337,11 @@
 .org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 6 * 03h
 .area 03h
     .db     2Ch, 03h, 17h
+.endarea
+
+.org Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S2_CentralShaft_Clipdata
 .endarea
 
 .org Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset1Event
@@ -388,6 +395,8 @@
     .db     18h
     .db     00h
 .endarea
+
+.defineregion readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata), 1F0h
 
 ; Sector 2 - Dessgeega Dormitory
 ; add cocoon and kihunter spritesets to intact room state
