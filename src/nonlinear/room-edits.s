@@ -192,6 +192,44 @@
     .db     15h, 05h, 14h
 .endarea
 
+; Main Deck - Central Reactor Core
+; add platform between door to Silo Access and door to Silo Scaffolding A
+.org readptr(MainDeckLevels + 31h * LevelMeta_Size + LevelMeta_Bg1)
+.area 4C3h
+.incbin "data/rooms/S0-31-BG1.rlebg"
+.endarea
+
+.autoregion
+@S0_WreckedCentralReactorCore_Clipdata:
+.incbin "data/rooms/S0-31-Clip.rlebg"
+.endautoregion
+
+.autoregion
+@S0_CentralReactorCore_BG1:
+.incbin "data/rooms/S0-3B-BG1.rlebg"
+.endautoregion
+
+.autoregion
+@S0_CentralReactorCore_Clipdata:
+.incbin "data/rooms/S0-3B-Clip.rlebg"
+.endautoregion
+
+.org MainDeckLevels + 31h * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S0_WreckedCentralReactorCore_Clipdata
+.endarea
+
+.org MainDeckLevels + 3Bh * LevelMeta_Size + LevelMeta_Bg1
+.area 0Ch
+    .dw     @S0_CentralReactorCore_BG1
+    .skip 4
+    .dw     @S0_CentralReactorCore_Clipdata
+.endarea
+
+.defineregion readptr(MainDeckLevels + 31h * LevelMeta_Size + LevelMeta_Clipdata), 1E2h
+.defineregion readptr(MainDeckLevels + 3Bh * LevelMeta_Size + LevelMeta_Bg1), 457h
+.defineregion readptr(MainDeckLevels + 3Bh * LevelMeta_Size + LevelMeta_Clipdata), 16Ah
+
 ; Main Deck - Operations Room
 ; change lv4 security door to lv0 security
 ; remove event-based transition leading to wrecked Operations Deck
@@ -290,6 +328,7 @@
 ; remove hatch to ripper roost
 ; move zoro out of the way of ripper roost
 ; move cocoon and kihunter spritesets to intact room state
+; limit zoro pathing to prevent climbing the room early with ice beam
 .org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Bg1)
 .area 4E1h
 .incbin "data/rooms/S2-0D-BG1.rlebg"
@@ -790,7 +829,7 @@
 .endautoregion
 
 .org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1
-.area 10h
+.area 0Ch
     .dw     @S5_NightmareTrainingGrounds_Bg1
     .skip 4
     .dw     @S5_NightmareTrainingGrounds_Clipdata

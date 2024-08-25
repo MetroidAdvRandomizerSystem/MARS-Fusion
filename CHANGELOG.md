@@ -61,20 +61,22 @@
 * Changed: Maintenance Shaft: Modify background tiles and add a missile geron to match the changes to Maintenance Crossing.
 * Changed: Maintenance Crossing: Is now repaired and traversible, blocked by a missile geron.
 * Changed: Silo Access: Move zoro cocoon out of the way of the path to reactor.
+* Changed: Central Reactor Core: Add a platform between the doors to Silo Access and Silo Scaffolding A.
 * Changed: Operations Room: Lv4 security door replaced with a Lv0 security door.
 #### Sector 1
 * Changed: Reactivating all atmospheric stabilizers changes the arrangements of some enemies.
 * Changed: Metroid husks appear after collecting the required number of infant metroids.
 #### Sector 2
 * Changed: Defeating Zazabi turns all zoros into cocoons, and defeating Yakuza or Nettori turns all zoros and cocoons into kihunters.
-* Changed: Data Hub Access: Add Kihunters and zoro cocoons to intact room state.
+* Changed: Data Hub Access: Add kihunters and zoro cocoons to intact room state.
 * Changed: Central Shaft:
   * Make door to Reo Room functional in intact room state.
   * Remove lv0 door to Ripper Roost with an open hatch.
   * Move zoro and zoro cocoon out of the way of Ripper Roost.
-  * Add Kihunters and zoro cocoons to intact room state.
+  * Add kihunters and zoro cocoons to intact room state.
+  * Limit zoro pathing to prevent climbing the room early with ice beam.
 * Changed: Dessgeega Dormitory: Add kihunters and zoro cocoons to intact room state.
-* Changed: Zazabi Access: Add Kihunters and zoro cocoons to intact room state.
+* Changed: Zazabi Access: Add kihunters and zoro cocoons to intact room state.
 * Added: Entrance Hub Underside: Add pre-Zazabi room state with zoros.
 * Changed: Data Hub: Bomb block paths can be accessed freely without destroying the entrance hatch.
 * Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to prevent softlocks without bombs.
