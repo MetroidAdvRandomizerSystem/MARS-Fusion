@@ -300,6 +300,23 @@
 .incbin "data/rooms/S2-0D-Clip.rlebg"
 .endarea
 
+.autoregion
+@S2_CentralShaft_KihunterSpriteset:
+    .db     3Eh, 00h
+    .db     5Eh, 01h
+    .db     36h, 08h
+    .db     8Ah, 02h
+    .db     5Bh, 03h
+    .db     5Ch, 03h
+    .db     89h, 06h
+    .db     0, 0
+.endautoregion
+
+.org SpritesetList + 1Eh * 04h
+.area 04h
+    .dw     @S2_CentralShaft_KihunterSpriteset
+.endarea
+
 .org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
 .area 03h
     .db     1Bh, 05h, 24h
@@ -313,6 +330,11 @@
 .org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 2 * 03h
 .area 03h
     .db     1Bh, 05h, 14h
+.endarea
+
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 6 * 03h
+.area 03h
+    .db     2Ch, 03h, 17h
 .endarea
 
 .org Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset1Event
