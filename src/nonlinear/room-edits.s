@@ -40,6 +40,7 @@
 
 ; Main Deck - Operations Deck
 ; change operations room lv4 security door to lv0 security
+; allow missile hatch to be destroyed from both sides
 .org readptr(MainDeckLevels + 0Dh * LevelMeta_Size + LevelMeta_Bg1)
 .area 2DBh
 .incbin "data/rooms/S0-0D-BG1.rlebg"
@@ -48,6 +49,11 @@
 .org readptr(MainDeckLevels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata)
 .area 0C3h
 .incbin "data/rooms/S0-0D-Clip.rlebg"
+.endarea
+
+.org 0804193Eh
+.area 02h
+    mov     r0, #60h
 .endarea
 
 ; Main Deck - Central Hub

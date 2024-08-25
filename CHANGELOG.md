@@ -55,6 +55,7 @@
 * Removed: Restricted sector is always detached.
 * Changed: Crew Quarters West: Remove power bomb geron to Elevator to Operations Deck.
 * Changed: Operations Deck: Replace lv4 security door to Operations Room with a lv0 security door.
+* Changed: Operations Deck: Allow missile hatch to be destroyed from both sides.
 * Changed: Central Hub: Add power bomb geron to all room states.
 * Changed: Eastern Hub: Remove missile geron in front of recharge station.
 * Changed: Sector Hub: Keep main elevator active in all room states.
