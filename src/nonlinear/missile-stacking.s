@@ -64,7 +64,8 @@
     add     r5, r5, DiffusionMissileCooldown
 @@checkNumber:
     mov     r0, r4  ; r0 = type
-    mov     r1, MissileLimit
+    ldr     r1, =MissileLimit
+    ldrb    r1, [r1]
     bl      CheckProjectiles
     cmp     r0, #0
     bne     @@underLimit
@@ -91,6 +92,11 @@
     bl      SpawnProjectile
     b       080818E4h   ; return
     .pool
+.endarea
+
+.org MissileLimit
+.area 01h
+    .db     3
 .endarea
 
 ; modified LoadMissileGfx function

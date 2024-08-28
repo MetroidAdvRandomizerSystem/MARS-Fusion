@@ -57,6 +57,7 @@ CreditsEndDelay equ 087FF056h
 CreditsScrollSpeed equ 087FF058h
 HintSecurityLevels equ 087FF059h
 EnvironmentalHazardDps equ 087FF065h
+MissileLimit equ 087FF06Ah
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h

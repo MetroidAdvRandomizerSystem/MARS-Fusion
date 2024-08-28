@@ -1,7 +1,5 @@
 ; non-vanilla constants
 
-MissileLimit equ 3
-
 MissileCooldown equ 9
 SuperMissileCooldown equ 4
 IceMissileCooldown equ 2
