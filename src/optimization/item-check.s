@@ -1192,3 +1192,8 @@ MinorLocations:
     .db     UpgradeSprite_PowerBombTank
     .db     Message_Auto
 .endautoregion
+
+.org MinorLocationsAddr
+.area 04h
+    .dw     MinorLocations
+.endarea
