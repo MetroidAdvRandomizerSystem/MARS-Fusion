@@ -359,35 +359,35 @@
 .autoregion
     .align 2
 @EnglishMessage_InfantMetroidsRemain:
-    .stringn 24, "[INDENT]Found an infant metroid.\n"
+    .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  62, "[INDENT][METROIDS] more remain."
 .endautoregion
 
 .autoregion
     .align 2
 @EnglishMessage_InfantMetroidsNeeded:
-    .stringn 24, "[INDENT]Found an infant metroid.\n"
+    .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  61, "[INDENT][METROIDS] more needed."
 .endautoregion
 
 .autoregion
     .align 2
 @EnglishMessage_SecondLastInfantMetroid:
-    .stringn 24, "[INDENT]Found an infant metroid.\n"
+    .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  59, "[INDENT]1 more remains."
 .endautoregion
 
 .autoregion
     .align 2
 @EnglishMessage_SufficientInfantMetroids:
-    .stringn 4,  "[INDENT]Enough infant metroids found.\n"
+    .stringn 4,  "[INDENT]Enough Infant Metroids found.\n"
     .string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
 
 .autoregion
     .align 2
 @EnglishMessage_LastInfantMetroid:
-    .stringn 3,  "[INDENT]Found the last infant metroid.\n"
+    .stringn 3,  "[INDENT]Found the last Infant Metroid.\n"
     .string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
 
