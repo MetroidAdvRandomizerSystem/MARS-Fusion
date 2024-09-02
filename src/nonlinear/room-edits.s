@@ -1094,6 +1094,13 @@
     .db     DoorType_LockableHatch
 .endarea
 
+; Sector 5 - Kago Blockade
+; remove event-based transition from Save Station South
+.org Sector5Doors + 2Dh * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_LockableHatch
+.endarea
+
 ; Sector 5 - Groznyj Grad
 ; fix screen scrolls when entering from Security Shaft East
 .defineregion readptr(Sector5Scrolls + 0Fh * 4), ScrollList_HeaderSize + Scroll_Size * 1
