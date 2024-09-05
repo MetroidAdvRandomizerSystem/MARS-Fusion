@@ -2,9 +2,9 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "ci" ]
+  #pull_request:
+    #branches: [ "main" ]
 
 jobs:
   build:
@@ -14,5 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: echo
-      run: echo "Hello World"
+    - name: Copy game file
+      run: cp $METROID_FUSION_U_PATH ./metroid4.gba
+
+    - name: Run make
+      run: make dist AS=armips FLIPS=flips
