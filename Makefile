@@ -5,15 +5,13 @@ OBJ_DIR := ./obj
 BIN_DIR := ./bin
 
 ifeq ($(OS),Windows_NT)
-	FLIPS_TMP := ./tools/flips.exe
-	AS_TMP := ./tools/armips-a8d71f0.exe
+	FLIPS := ./tools/flips.exe
+	AS := ./tools/armips-a8d71f0.exe
 else
 	# Assume unix just has it in PATH
-	FLIPS_TMP := flips
-	AS_TMP := armips
-
-FLIPS := FLIPS_TMP
-AS := AS_TMP
+	FLIPS := flips
+	AS := armips
+endif
 
 OPTIONALS := bombless_pbs
 OPTIONALS += missiles_without_mains
