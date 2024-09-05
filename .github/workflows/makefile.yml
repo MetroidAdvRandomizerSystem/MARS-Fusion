@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Copy game file
-      run: cp $METROID_FUSION_U_PATH ./metroid4.gba
+      run: cp --no-preserve=mode $METROID_FUSION_U_PATH ./metroid4.gba
 
     - name: Run make
       run: make dist AS=armips FLIPS=flips
