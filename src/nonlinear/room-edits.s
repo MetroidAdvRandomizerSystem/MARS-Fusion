@@ -904,10 +904,11 @@
 .endarea
 
 .org Sector5Doors + 35h * DoorEntry_Size + DoorEntry_Type
-.area DoorEntry_SourceRoom - DoorEntry_Type + 1
+.area DoorEntry_ExitDistanceX - DoorEntry_Type + 1
     .db     DoorType_LockableHatch
-    .skip DoorEntry_SourceRoom - DoorEntry_Type - 1
     .db     07h
+    .skip DoorEntry_ExitDistanceX - DoorEntry_SourceRoom - 1
+    .db     -20h
 .endarea
 
 .org Sector5Doors + 38h * DoorEntry_Size + DoorEntry_Type
@@ -1090,8 +1091,10 @@
 .endarea
 
 .org Sector5Doors + 57h * DoorEntry_Size + DoorEntry_Type
-.area 1
+.area DoorEntry_ExitDistanceX - DoorEntry_Type + 1
     .db     DoorType_LockableHatch
+    .skip DoorEntry_ExitDistanceX - DoorEntry_Type - 1
+    .db     20h
 .endarea
 
 ; Sector 5 - Kago Blockade
