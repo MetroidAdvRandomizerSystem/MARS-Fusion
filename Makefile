@@ -4,8 +4,14 @@ OUT := m4rs
 OBJ_DIR := ./obj
 BIN_DIR := ./bin
 
-FLIPS := ./tools/flips.exe
-AS := ./tools/armips-a8d71f0.exe
+ifeq ($(OS),Windows_NT)
+	FLIPS ?= ./tools/flips.exe
+	AS ?= ./tools/armips-a8d71f0.exe
+else
+	# Assume unix just has it in PATH
+	FLIPS ?= flips
+	AS ?= armips
+endif
 
 OPTIONALS := bombless_pbs
 OPTIONALS += missiles_without_mains
