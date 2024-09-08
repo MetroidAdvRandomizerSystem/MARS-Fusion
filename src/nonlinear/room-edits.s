@@ -624,6 +624,26 @@
 .endarea
 .endif
 
+
+; Sector 2 - Zoro Zig-Zag
+; moves zoro coocoons after defeating zazabi and nettori to prevent closing
+; paths that were once open to the player
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset1) + (3 * 7)
+.area 9
+    .db 25h, 17h, 14h
+    .db 2Ah, 1Bh, 14h
+    .db 32h, 1Bh, 14h
+.endarea
+
+
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset2) + (3 * 0Bh)
+.area 9
+    .db 26h, 17h, 14h
+    .db 2Ah, 1Bh, 14h
+    .db 32h, 1Bh, 14h
+.endarea
+
+
 ; Sector 3 - Security Access
 ; remove sidehoppers on speedbooster runway to prevent near softlock with neither charge nor missiles
 ; move sidehoppers below runway to prevent them from clipping into the wall
