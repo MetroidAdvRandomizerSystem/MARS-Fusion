@@ -84,9 +84,9 @@
 * Changed: Eastern Shaft: Add a ledge to allow climbing frozen enemies from middle doors to top doors.
 * Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to prevent softlocks without bombs.
 * Changed: Crumble City: (Optional) Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to prevent softlocks without bombs.
+* Changed: Zoro Zig-Zag: Zoro cocoons no longer block morph ball tunnels.
 #### Sector 3
 * Changed: Enemies which normally only spawn after unlocking lv2 security now always spawn.
-* Changed: Zoro Zig-Zag: Zoro cocoons no longer block morph ball tunnels.
 * Changed: Security Access: Sidehoppers do not spawn on the speedbooster runway.
 * Changed: BOX Access: Repair the door to Bob's Room in the destroyed room state.
 * Changed: BOX Arena: Repair the door to the Data Room in the destroyed room state.
