@@ -573,6 +573,21 @@ DMA_DAD equ 04h
 DMA_CNT equ 08h
 .sym on
 
+MinimapDataPointers equ 0879BE5Ch
+.sym off
+MainDeckMinimap equ 0
+Sector1Minimap equ 4
+Sector2Minimap equ 4*2
+Sector3Minimap equ 4*3
+Sector4Minimap equ 4*4
+Sector5Minimap equ 4*5
+Sector6Minimap equ 4*6
+Debug1Minimap equ 4*7
+Debug2Minimap equ 4*8
+Debug3Minimap equ 4*9
+Extra1Minimap equ 4*0Ah
+.sym on
+
 ; non-vanilla structs:
 
 UpgradeLookup equ 03001800h
