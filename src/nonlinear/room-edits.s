@@ -1017,9 +1017,6 @@
 .org Sector5Doors + 34h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
-.org Sector5Doors + 59h * DoorEntry_Size
-.fill DoorEntry_Size, 0FFh
-
 ; Sector 5 - Security Shaft East
 ; repair the door to kago blockade
 .defineregion readptr(Sector5Levels + 16h * LevelMeta_Size + LevelMeta_Clipdata), 110h
