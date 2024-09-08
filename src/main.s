@@ -154,6 +154,7 @@ MinorLocationsAddr equ 087FF06Ch
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
+.include "src/randomizer/minimap-fixes.s"
 .endif
 
 .close
