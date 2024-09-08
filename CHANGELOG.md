@@ -23,7 +23,7 @@
 * Added: Ability to warp to the starting location at any time, replacing the sleep mode menu. All progress since the last save is lost when warping.
 * Removed: SA-X no longer patrols and chases the player through certain rooms.
 * Removed: Boiler meltdown and reactor shutdown events no longer occur.
-* Removed: Escape sequence no railroads the player towards the ship by locking doors.
+* Removed: Escape sequence no longer railroads the player towards the ship by locking doors.
 
 ### Gameplay modifications
 * Changed: Reimplemented beam upgrades to stack on top of each other instead of only considering the highest obtained beam upgrade. Beam graphics are modified such that each beam combination can be easily differentiated at a glance.
