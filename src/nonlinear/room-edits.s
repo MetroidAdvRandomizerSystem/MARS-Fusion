@@ -605,6 +605,48 @@
 .org Sector2Doors + 45h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
+; Sector 2 - Eastern Shaft
+; add ledge to allow climbing frozen enemies from middle doors to top doors
+.defineregion readptr(Sector2Levels + 20h * LevelMeta_Size + LevelMeta_Clipdata), 21Fh
+.defineregion readptr(Sector2Levels + 23h * LevelMeta_Size + LevelMeta_Bg1), 46Ah
+
+.org readptr(Sector2Levels + 20h * LevelMeta_Size + LevelMeta_Bg1)
+.area 46Ah
+.incbin "data/rooms/S2-20-BG1.rlebg"
+.endarea
+
+.autoregion
+@S2_EasternShaftVines_Clipdata:
+.incbin "data/rooms/S2-20-Clip.rlebg"
+.endautoregion
+
+.org Sector2Levels + 20h * LevelMeta_Size + LevelMeta_Clipdata
+.area 4
+    .dw     @S2_EasternShaftVines_Clipdata
+.endarea
+
+.autoregion
+@S2_EasternShaft_Bg1:
+.incbin "data/rooms/S2-23-BG1.rlebg"
+.endautoregion
+
+.org readptr(Sector2Levels + 23h * LevelMeta_Size + LevelMeta_Clipdata)
+.area 1C3h
+.incbin "data/rooms/S2-23-Clip.rlebg"
+.endarea
+
+.org Sector2Levels + 23h * LevelMeta_Size + LevelMeta_Bg1
+.area 4
+    .dw     @S2_EasternShaft_Bg1
+.endarea
+
+; Sector 2 - Nettori Access
+; change winged kihunter below eyedoor into a grounded kihunter
+.org readptr(Sector2Levels + 22h * LevelMeta_Size + LevelMeta_Spriteset0) + 2 * 3
+.area 3
+    .db     11h, 15h, 26h
+.endarea
+
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
 .if ANTI_SOFTLOCK

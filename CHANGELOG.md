@@ -78,8 +78,10 @@
   * Limit zoro pathing to prevent climbing the room early with ice beam.
 * Changed: Dessgeega Dormitory: Add kihunters and zoro cocoons to intact room state.
 * Changed: Zazabi Access: Add kihunters and zoro cocoons to intact room state.
+* Changed: Nettori Access: Change winged kihunter below eyedoor to a grounded kihunter to allow climbing up frozen enemies to Nettori Arena.
 * Added: Entrance Hub Underside: Add pre-Zazabi room state with zoros.
 * Changed: Data Hub: Bomb block paths can be accessed freely without destroying the entrance hatch.
+* Changed: Eastern Shaft: Add a ledge to allow climbing frozen enemies from middle doors to top doors.
 * Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to prevent softlocks without bombs.
 * Changed: Crumble City: (Optional) Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to prevent softlocks without bombs.
 #### Sector 3
