@@ -70,6 +70,7 @@
 #### Sector 2
 * Changed: Defeating Zazabi turns all zoros into cocoons, and defeating Yakuza or Nettori turns all zoros and cocoons into kihunters.
 * Changed: Data Hub Access: Add kihunters and zoro cocoons to intact room state.
+* Changed: Zoro Zig-Zag: Zoro cocoons no longer block morph ball tunnels.
 * Changed: Central Shaft:
   * Make door to Reo Room functional in intact room state.
   * Remove lv0 door to Ripper Roost with an open hatch.
@@ -84,7 +85,6 @@
 * Changed: Eastern Shaft: Add a ledge to allow climbing frozen enemies from middle doors to top doors.
 * Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to prevent softlocks without bombs.
 * Changed: Crumble City: (Optional) Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to prevent softlocks without bombs.
-* Changed: Zoro Zig-Zag: Zoro cocoons no longer block morph ball tunnels.
 #### Sector 3
 * Changed: Enemies which normally only spawn after unlocking lv2 security now always spawn.
 * Changed: Security Access: Sidehoppers do not spawn on the speedbooster runway.

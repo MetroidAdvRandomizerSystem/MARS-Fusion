@@ -329,6 +329,22 @@
 ; Sector 2 - Owtch Cache A
 ; TODO: fix screen scroll when custom start is behind bomb blocks
 
+; Sector 2 - Zoro Zig-Zag
+; moves zoro coocoons to prevent blocking morph ball tunnels
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset1) + (3 * 7)
+.area 9
+    .db 25h, 17h, 14h
+    .db 2Ah, 1Bh, 14h
+    .db 32h, 1Bh, 14h
+.endarea
+
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset2) + (3 * 0Bh)
+.area 9
+    .db 26h, 17h, 14h
+    .db 2Ah, 1Bh, 14h
+    .db 32h, 1Bh, 14h
+.endarea
+
 ; Sector 2 - Central Shaft
 ; make door to reo room functional
 ; remove hatch to ripper roost
@@ -543,6 +559,18 @@
     .db     0FFh
 .endarea
 
+; Sector 2 - Nettori Access
+; change winged kihunter below eyedoor into a grounded kihunter
+.org readptr(Sector2Levels + 14h * LevelMeta_Size + LevelMeta_Spriteset0) + 3 * 3
+.area 3
+    .db     11h, 15h, 26h
+.endarea
+
+.org readptr(Sector2Levels + 22h * LevelMeta_Size + LevelMeta_Spriteset0) + 2 * 3
+.area 3
+    .db     11h, 15h, 26h
+.endarea
+
 ; Sector 2 - Entrance Hub Underside
 ; add room state with zoros
 .autoregion
@@ -640,13 +668,6 @@
     .dw     @S2_EasternShaft_Bg1
 .endarea
 
-; Sector 2 - Nettori Access
-; change winged kihunter below eyedoor into a grounded kihunter
-.org readptr(Sector2Levels + 22h * LevelMeta_Size + LevelMeta_Spriteset0) + 2 * 3
-.area 3
-    .db     11h, 15h, 26h
-.endarea
-
 ; Sector 2 - Ripper Roost
 ; move bottom crumble block up one to prevent softlocks without bombs
 .if ANTI_SOFTLOCK
@@ -665,22 +686,6 @@
 .incbin "data/rooms/S2-36-Clip.rlebg"
 .endarea
 .endif
-
-; Sector 2 - Zoro Zig-Zag
-; moves zoro coocoons to prevent blocking morph ball tunnels
-.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset1) + (3 * 7)
-.area 9
-    .db 25h, 17h, 14h
-    .db 2Ah, 1Bh, 14h
-    .db 32h, 1Bh, 14h
-.endarea
-
-.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset2) + (3 * 0Bh)
-.area 9
-    .db 26h, 17h, 14h
-    .db 2Ah, 1Bh, 14h
-    .db 32h, 1Bh, 14h
-.endarea
 
 ; Sector 3 - Security Access
 ; remove sidehoppers on speedbooster runway to prevent near softlock with neither charge nor missiles
