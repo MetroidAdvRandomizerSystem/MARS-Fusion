@@ -575,17 +575,17 @@ DMA_CNT equ 08h
 
 MinimapDataPointers equ 0879BE5Ch
 .sym off
-MainDeckMinimap equ 0
-Sector1Minimap equ 4
-Sector2Minimap equ 4*2
-Sector3Minimap equ 4*3
-Sector4Minimap equ 4*4
-Sector5Minimap equ 4*5
-Sector6Minimap equ 4*6
-Debug1Minimap equ 4*7
-Debug2Minimap equ 4*8
-Debug3Minimap equ 4*9
-Extra1Minimap equ 4*0Ah
+MainDeckMinimap equ 4 * Area_MainDeck
+Sector1Minimap equ 4 * Area_SRX
+Sector2Minimap equ 4 * Area_TRO
+Sector3Minimap equ 4 * Area_PYR
+Sector4Minimap equ 4 * Area_AQA
+Sector5Minimap equ 4 * Area_ARC
+Sector6Minimap equ 4 * Area_NOC
+Debug1Minimap equ 4 * Area_Debug1
+Debug2Minimap equ 4 * Area_Debug2
+Debug3Minimap equ 4 * Area_Debug3
+Extra1Minimap equ 4 * Area_Extra1
 .sym on
 
 ; non-vanilla structs:

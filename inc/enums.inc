@@ -25,6 +25,7 @@ Area_NOC equ 6
 Area_Debug1 equ 7
 Area_Debug2 equ 8
 Area_Debug3 equ 9
+Area_Extra1 equ 0Ah             ; Not a real area, but is used by minimaps
 
 MusicType_Transient equ 0       ; only lasts one room
 MusicType_Briefing equ 1        ; adam sector (de)briefings?

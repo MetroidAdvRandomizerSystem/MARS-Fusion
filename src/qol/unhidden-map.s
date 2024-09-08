@@ -24,8 +24,3 @@
 .area 1E3h
 .incbin "data/maps/sector3.lz77"
 .endarea
-
-.org readptr(MiniMapDataPointers + Sector5Minimap)
-.area 1F5h
-.incbin "data/maps/sector5.lz77"
-.endarea
