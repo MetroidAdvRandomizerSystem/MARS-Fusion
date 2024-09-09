@@ -26,7 +26,7 @@ all: $(BIN_DIR)/m4rs.gba
 $(OBJ_DIR) $(BIN_DIR):
 	mkdir -p $@
 
-$(BIN_DIR)/$(OUT).gba: check | $(BIN_DIR)
+$(BIN_DIR)/$(OUT).gba: check | $(OBJ_DIR) $(BIN_DIR)
 	$(AS) src/main.s
 	cp $(OBJ_DIR)/$(OUT).gba $@
 
