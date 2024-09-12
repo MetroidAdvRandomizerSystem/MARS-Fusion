@@ -532,6 +532,12 @@ Sector6Levels equ 083C7C38h
 
 SpritesetList equ 0879ADD8h
 NullSpriteset equ 083BF884h
+.sym off
+Spriteset_SpriteY equ 00h
+Spriteset_SpriteX equ 01h
+Spriteset_SpriteProp equ 02h
+Spriteset_SpriteSize equ 03h
+.sym on
 
 AreaScrolls equ 0879BB08h
 .sym off
