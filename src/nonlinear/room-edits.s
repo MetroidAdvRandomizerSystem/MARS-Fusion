@@ -814,6 +814,15 @@
     .db     0FFh
 .endarea
 
+; Sector 4 - Reservoir East
+; replace shot-blocks to power bomb tank with never-reform variant
+.if ANTI_SOFTLOCK
+.org readptr(Sector4Levels + 06h * LevelMeta_Size + LevelMeta_Clipdata)
+.area 1D1h
+.incbin "data/rooms/S4-06-Clip.rlebg"
+.endarea
+.endif
+
 ; Sector 4 - Waterway
 ; add flooded room state
 .autoregion
