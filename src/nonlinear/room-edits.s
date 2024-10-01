@@ -355,6 +355,20 @@
     .db 32h, 1Bh, 14h
 .endarea
 
+; Sector 2 - Cultivation Station
+; change bomb block to shot block to prevent softlock
+.if ANTI_SOFTLOCK
+.org readptr(Sector2Levels + 0Ah * LevelMeta_Size + LevelMeta_Bg1)
+.area 50Fh, 00h
+.incbin "data/rooms/S2-0A-BG1.rlebg"
+.endarea
+
+.org readptr(Sector2Levels + 0Ah * LevelMeta_Size + LevelMeta_Clipdata)
+.area 11Ah
+.incbin "data/rooms/S2-0A-Clip.rlebg"
+.endarea
+.endif
+
 ; Sector 2 - Central Shaft
 ; make door to reo room functional
 ; remove hatch to ripper roost
