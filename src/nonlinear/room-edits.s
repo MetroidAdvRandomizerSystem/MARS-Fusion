@@ -830,6 +830,17 @@
 .org Sector3Doors + 24h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
+; Extends upper scroll down by one tile for slightly better visibility after
+; defeating BOX without showing the exit during the fight
+.org readptr(Sector3Scrolls + 09h * 4) + ScrollList_HeaderSize
+.area Scroll_Size
+    .db     10h, 1Fh
+    .db     02h, 0Dh
+    .db     0FFh, 0FFh
+    .db     ScrollExtend_None
+    .db     0FFh
+.endarea
+
 ; Sector 4 - Serris Escape
 ; TODO: fix screen scrolls when custom start is behind the bomb blocks
 ; scroll 0 (11, 02) -> (2E, 17), scroll 1 (02, 16) -> (2E, 1F)
