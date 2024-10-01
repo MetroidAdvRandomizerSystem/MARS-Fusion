@@ -288,6 +288,16 @@
     .db     Event_GoMode
 .endarea
 
+; Sector 1 - Hornoad Housing
+; have hornoads spawn by x forming them
+.org readptr(Sector1Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0)
+.area 15
+    .skip 6
+    .db 07h, 08h, 16h
+    .skip 3
+    .db 07h, 0Ah, 16h
+.endarea
+
 ; Sector 1 - Sciser Playground
 ; fix screen scroll when entering room from Charge Core Access
 .defineregion readptr(Sector1Scrolls + 07h * 4), ScrollList_HeaderSize + Scroll_Size * 1
@@ -331,14 +341,14 @@
 
 ; Sector 2 - Zoro Zig-Zag
 ; moves zoro coocoons to prevent blocking morph ball tunnels
-.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset1) + (3 * 7)
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset1) + (7 * Spriteset_SpriteSize)
 .area 9
     .db 25h, 17h, 14h
     .db 2Ah, 1Bh, 14h
     .db 32h, 1Bh, 14h
 .endarea
 
-.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset2) + (3 * 0Bh)
+.org readptr(Sector2Levels + 09h * LevelMeta_Size + LevelMeta_Spriteset2) + (0Bh * Spriteset_SpriteSize)
 .area 9
     .db 26h, 17h, 14h
     .db 2Ah, 1Bh, 14h
@@ -801,6 +811,14 @@
     .db     0FFh, 0FFh
     .db     ScrollExtend_None
     .db     0FFh
+.endarea
+
+; Sector 4 - Pump Control Save Room
+; fix entering the room for the first time from morph tunnel
+; this should only be an issue for entrance rando
+.org Sector4Doors + 045h * DoorEntry_Size + DoorEntry_ExitDistanceX
+.area 1
+    .db 0E0h
 .endarea
 
 ; Sector 4 - Cheddar Bay
