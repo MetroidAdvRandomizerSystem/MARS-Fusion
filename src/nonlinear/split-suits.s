@@ -141,19 +141,6 @@
     .db     6   ; cold
 .endarea
 
-.org 0800BDB6h
-.area 0Ch, 0
-    ldrb    r0, [r3, SamusTimers_EnvironmentalDamageVfx]
-    cmp     r0, #0
-    bhi     0800BD74h
-    b       0800BDC2h
-.endarea
-
-.org 080055E0h
-.area 02h
-    nop
-.endarea
-
 .org 0800FE72h
 .area 1Ah
     ; Contact damage reduction
