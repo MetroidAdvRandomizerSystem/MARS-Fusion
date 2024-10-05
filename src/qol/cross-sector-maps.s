@@ -72,6 +72,15 @@
     .pool
     .align 4
 @@MapStartCoords:
+.if UNHIDDEN_MAP
+    .db     13, 8
+    .db     9, 6
+    .db     8, 8
+    .db     10, 6
+    .db     10, 7
+    .db     11, 6
+    .db     7, 7
+.else
     .db     13, 8
     .db     8, 4
     .db     5, 2
@@ -79,6 +88,7 @@
     .db     10, 7
     .db     6, 5
     .db     7, 6
+.endif
 .endfunc
 .endautoregion
 
