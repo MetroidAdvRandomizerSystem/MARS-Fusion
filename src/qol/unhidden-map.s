@@ -15,12 +15,7 @@
 .endarea
 
 ; map adjustments to match room adjustments
-.org readptr(MinimapDataPointers + MainDeckMinimap)
-.area 24Bh
-.incbin "data/maps/maindeck.lz77"
-.endarea
-
-.org readptr(MiniMapDataPointers + Sector3Minimap)
+.org readptr(MinimapDataPointers + Area_PYR * 4)
 .area 1E3h
 .incbin "data/maps/sector3.lz77"
 .endarea

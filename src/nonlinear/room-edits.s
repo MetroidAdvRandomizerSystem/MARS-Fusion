@@ -889,7 +889,7 @@
 .incbin "data/rooms/S5-07-Clip.rlebg"
 .endautoregion
 
-.org readptr(MiniMapDataPointers + Sector5Minimap)
+.org readptr(MinimapDataPointers + Area_ARC * 4)
 .area 1F5h
 .incbin "data/maps/sector5.lz77"
 .endarea

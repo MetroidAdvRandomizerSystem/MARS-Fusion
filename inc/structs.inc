@@ -559,6 +559,8 @@ Sector4Scrolls equ 0879BA84h
 Sector5Scrolls equ 0879BA38h
 Sector6Scrolls equ 0879BAB8h
 
+MinimapDataPointers equ 0879BE5Ch
+
 MessagesByLanguage equ 0879CDF4h
 
 BLDCNT equ 04000050h
@@ -571,21 +573,6 @@ DMA3 equ 040000D4h
 DMA_SAD equ 00h
 DMA_DAD equ 04h
 DMA_CNT equ 08h
-.sym on
-
-MinimapDataPointers equ 0879BE5Ch
-.sym off
-MainDeckMinimap equ 4 * Area_MainDeck
-Sector1Minimap equ 4 * Area_SRX
-Sector2Minimap equ 4 * Area_TRO
-Sector3Minimap equ 4 * Area_PYR
-Sector4Minimap equ 4 * Area_AQA
-Sector5Minimap equ 4 * Area_ARC
-Sector6Minimap equ 4 * Area_NOC
-Debug1Minimap equ 4 * Area_Debug1
-Debug2Minimap equ 4 * Area_Debug2
-Debug3Minimap equ 4 * Area_Debug3
-Extra1Minimap equ 4 * Area_Extra1
 .sym on
 
 ; non-vanilla structs:
