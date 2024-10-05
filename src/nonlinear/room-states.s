@@ -612,3 +612,25 @@
     bl      CheckLevelLayerOverrides
     b       080649CAh
 .endarea
+
+.org 08077084h
+.area 30h
+    ; change main deck minimap after lab detachment
+    push    { r4, lr }
+    mov     r4, r1
+    cmp     r0, #Area_MainDeck
+    bne     @@deflateMinimap
+    mov     r0, #Event_RestrictedSectorDebrief
+    bl      CheckEvent
+    cmp     r0, #0
+    beq     @@deflateMinimap
+    mov     r0, #Area_Debug3
+@@deflateMinimap:
+    ldr     r1, =MinimapDataPointers
+    lsl     r0, #2
+    ldr     r0, [r1, r0]
+    mov     r1, r4
+    bl      DeflateVram
+    pop     { r4, pc }
+    .pool
+.endarea

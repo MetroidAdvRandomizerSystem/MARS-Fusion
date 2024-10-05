@@ -1009,6 +1009,7 @@
 
 ; Sector 5 - Arctic Containment
 ; change the lv4 security door to crow's nest to a functional lv3 security door
+; change the minimap to reflect the new door
 .defineregion readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Clipdata), 1AAh
 
 .org readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Bg1)
@@ -1020,6 +1021,11 @@
 @S5_ArcticContainment_Clipdata:
 .incbin "data/rooms/S5-07-Clip.rlebg"
 .endautoregion
+
+.org readptr(MinimapDataPointers + Area_ARC * 4)
+.area 1F5h
+.incbin "data/maps/sector5.lz77"
+.endarea
 
 .org Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Clipdata
 .area 04h

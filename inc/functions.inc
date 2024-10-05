@@ -1,3 +1,4 @@
+DeflateVram equ 080009ECh
 InitializeAudio equ 08002298h
 Sfx_Play equ 0800270Ch
 BitFill equ 08002FECh
