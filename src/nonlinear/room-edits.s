@@ -375,6 +375,7 @@
 ; move zoro out of the way of ripper roost
 ; move cocoon and kihunter spritesets to intact room state
 ; limit zoro pathing to prevent climbing the room early with ice beam
+; move a stop-enemy block one tile lower to avoid glitchy sprite behavior
 .org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Bg1)
 .area 4E1h
 .incbin "data/rooms/S2-0D-BG1.rlebg"
