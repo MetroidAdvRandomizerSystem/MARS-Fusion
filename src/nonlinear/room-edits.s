@@ -671,6 +671,7 @@
 
 ; Sector 2 - Eastern Shaft
 ; add ledge to allow climbing frozen enemies from middle doors to top doors
+; removed 2 vine tiles to prevent dangerous nettori
 .defineregion readptr(Sector2Levels + 20h * LevelMeta_Size + LevelMeta_Clipdata), 21Fh
 .defineregion readptr(Sector2Levels + 23h * LevelMeta_Size + LevelMeta_Bg1), 46Ah
 
