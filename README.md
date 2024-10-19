@@ -15,7 +15,7 @@ To actually randomize things, you will need to use the [Python patcher](https://
 - Put [FLIPS](https://github.com/Alcaro/Flips/releases) into the `tools` folder as `flips.exe`
 
 #### Compiling
-To compile, simply run `make`.  This will spit out a new ROM into `bin/m4rs.gba`.  
+To compile, place your US copy of Metroid Fusion into the root of the repo as `metroid4.gba` and then run `make`. This will spit out a new ROM into `bin/m4rs.gba`.  
 By running `make dist` you will additionally get an IPS patch of the base patch, as well as for some optional changes.
 
 To get a list of all assembly flags, you can check out [this file](https://github.com/MetroidAdvRandomizerSystem/MARS-Fusion/blob/main/src/main.s).
