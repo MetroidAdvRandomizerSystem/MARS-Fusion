@@ -40,7 +40,7 @@
 .include "inc/enums.inc"
 .include "inc/functions.inc"
 .include "inc/macros.inc"
-.include "inc/sprite-stat-ids.inc"
+.include "inc/sprite-ids.inc"
 .include "inc/structs.inc"
 
 StartingItems equ 0828D2ACh
