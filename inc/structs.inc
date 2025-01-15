@@ -587,6 +587,151 @@ DMA_DAD equ 04h
 DMA_CNT equ 08h
 .sym on
 
+PauseScreenGfxOamPointer equ 08076B10h
+PauseScreenOamData equ 0879BEC0h
+.sym off
+PauseScreenOamData_Empty equ 000h
+PauseScreenOamData_DebugCursor equ 001h
+PauseScreenOamData_SelectionArrowRight equ 002h
+PauseScreenOamData_TextArrowDown equ 003h
+;PauseScreenOamData_PreviewCrosshair equ 004h ; Vanilla
+PauseScreenOamData_SelectMapChange equ 004h
+PauseScreenOamData_MapArrowUp equ 005h
+PauseScreenOamData_MapArrowDown equ 006h
+PauseScreenOamData_MapArrowLeft equ 007h
+PauseScreenOamData_MapArrowRight equ 008h
+PauseScreenOamData_DebugModifyNumberValue equ 009h
+PauseScreenOamData_SmallArrowDown equ 00Ah
+PauseScreenOamData_ConversationUnderdash equ 00Bh
+PauseScreenOamData_ConversationUnderdashBlinking equ 00Ch
+PauseScreenOamData_Unknown_0D equ 00Dh                              ; Seems to fit the size of Samus/Federation Portrait
+PauseScreenOamData_ElevatorUp equ 00Eh
+PauseScreenOamData_ElevatorDown equ 00Fh
+PauseScreenOamData_MapScanLine_Fade equ 010h                        ; Fades after 3 frames
+PauseScreenOamData_MapScanLine equ 011h
+PauseScreenOamData_MapTargetAbove equ 012h
+PauseScreenOamData_MapTargetBelow equ 013h
+PauseScreenOamData_MapTargetLeft equ 014h
+PauseScreenOamData_MapTargetRight equ 015h
+PauseScreenOamData_SectorTargetUp equ 016h
+PauseScreenOamData_SectorTargetDown equ 017h
+PauseScreenOamData_StartTextUp equ 018h
+PauseScreenOamData_StartTextDown equ 019h
+PauseScreenOamData_MainDeckText equ 01Ah
+PauseScreenOamData_MainDeckTextAnimated equ 01Bh
+PauseScreenOamData_Sector1Text equ 01Ch
+PauseScreenOamData_Sector1TextAnimated equ 01Dh
+PauseScreenOamData_Sector2Text equ 01Eh
+PauseScreenOamData_Sector2TextAnimated equ 01Fh
+PauseScreenOamData_Sector3Text equ 020h
+PauseScreenOamData_Sector3TextAnimated equ 021h
+PauseScreenOamData_Sector4Text equ 022h
+PauseScreenOamData_Sector4TextAnimated equ 023h
+PauseScreenOamData_Sector5Text equ 024h
+PauseScreenOamData_Sector5TextAnimated equ 025h
+PauseScreenOamData_Sector6Text equ 026h
+PauseScreenOamData_Sector6TextAnimated equ 027h
+PauseScreenOamData_StatusButton equ 028h
+PauseScreenOamData_StatusButtonSelected equ 029h
+PauseScreenOamData_SleepButton equ 02Ah                             ; repurposed for Warp Feature
+PauseScreenOamData_SleepButtonSelected equ 02Bh                     ; repurposed for Warp Feature
+PauseScreenOamData_L1Lock equ 02Ch
+PauseScreenOamData_L1Open equ 02Dh
+PauseScreenOamData_L2Lock equ 02Eh
+PauseScreenOamData_L2Open equ 02Fh
+PauseScreenOamData_L3Lock equ 030h
+PauseScreenOamData_L3Open equ 031h
+PauseScreenOamData_L4Lock equ 032h
+PauseScreenOamData_L4Open equ 033h
+PauseScreenOamData_ObjectiveButton equ 034h
+PauseScreenOamData_ObjectiveButtonAnimated equ 035h
+PauseScreenOamData_Timer equ 036h
+PauseScreenOamData_EnergyCollected equ 037h
+PauseScreenOamData_MissilesCollected equ 038h
+PauseScreenOamData_PowerBombsCollected equ 039h
+PauseScreenOamData_EnergyCompleted equ 03Ah
+PauseScreenOamData_MissilesCompleted equ 03Bh
+PauseScreenOamData_PowerBombsCompleted equ 03Ch
+PauseScreenOamData_NavStationPadEmpty equ 03Dh
+PauseScreenOamData_NavStationPadSamus equ 03Eh
+PauseScreenOamData_PinkDoorLeft equ 03Fh
+PauseScreenOamData_PinkDoorRight equ 040h
+PauseScreenOamData_IceXPopUpOpening equ 041h                        ; Stays Open
+PauseScreenOamData_IceXPopUpClosing equ 042h
+PauseScreenOamData_AdamTextOutlineOpening equ 043h
+PauseScreenOamData_AdamTextOutlineStatic equ 044h
+PauseScreenOamData_AdamTextOutlineClosing equ 045h
+PauseScreenOamData_AdamTextBackground equ 046h
+PauseScreenOamData_UnusedSystemText equ 047h
+PauseScreenOamData_UnusedSystemTextClosing equ 048h
+PauseScreenOamData_ComputerEye_49 equ 049h
+PauseScreenOamData_ComputerEye_4A equ 04Ah
+PauseScreenOamData_ComputerEye_4B equ 04Bh
+PauseScreenOamData_ComputerEyeAnimated equ 04Ch
+PauseScreenOamData_SamusTextOpening equ 04Dh
+PauseScreenOamData_SamusTextOutlineStatic equ 04Eh
+PauseScreenOamData_SamusTextOutlineClosing equ 04Fh
+PauseScreenOamData_SamusTextBackgroundOpening equ 050h
+PauseScreenOamData_SamusTextBackgroundStatic equ 051h
+PauseScreenOamData_SamusTextBackgroundClosing equ 052h
+PauseScreenOamData_FederationTextOutlineOpening equ 053h
+PauseScreenOamData_FederationTextOutlineStatic equ 054h
+PauseScreenOamData_FederationTextOutlineClosing equ 055h
+PauseScreenOamData_FederationTextBackgroundOpening equ 056h
+PauseScreenOamData_FederationTextBackgroundStatic equ 057h
+PauseScreenOamData_FederationTextBackgroundClosing equ 058h
+PauseScreenOamData_SamusTextOpening_Duplicate equ 059h              ; Same as SamusTextOpening?
+PauseScreenOamData_SamusTextOutlineStatic_Duplicate equ 05Ah        ; Same as SamusTextOutlineStatic?
+PauseScreenOamData_SamusTextOutlineClosing_Duplicate equ 05Bh       ; Same as SamusTextOutlineClosing?
+PauseScreenOamData_SamusTextBackgroundOpening_Duplicate equ 05Ch    ; Same as SamusTextBackgroundOpening?
+PauseScreenOamData_SamusTextBackgroundStatic_Duplicate equ 05Dh     ; Same as SamusTextBackgroundStatic?
+PauseScreenOamData_SamusTextBackgroundClosing_Duplicate equ 05Eh    ; Same as SamusTextBackgroundClosing?
+PauseScreenOamData_SamusPortraitOpening equ 05Fh
+PauseScreenOamData_SamusPortraitAnimated equ 060h
+PauseScreenOamData_SamusPortraitStatic equ 061h
+PauseScreenOamData_SamusPortraitClosing equ 062h
+PauseScreenOamData_FederationPortraitOpening equ 063h
+PauseScreenOamData_FederationPortraitStatic equ 064h
+PauseScreenOamData_FederationPortraitSpeaking equ 065h              ; returns to 064h
+PauseScreenOamData_FederationPortraitClosing equ 066h
+PauseScreenOamData_AnimatedScanlinesForPortrait equ 067h
+PauseScreenOamData_BSLRotationAnimation_68 equ 068h
+PauseScreenOamData_BSLRotationAnimation_69 equ 069h
+PauseScreenOamData_BSLRotationAnimation_6A equ 06Ah
+PauseScreenOamData_BSLRotationAnimation_6B equ 06Bh
+PauseScreenOamData_BSLRotationAnimation_6C equ 06Ch
+PauseScreenOamData_BSLRotationAnimation_6D equ 06Dh
+PauseScreenOamData_BSLRotationAnimation_6E equ 06Eh
+PauseScreenOamData_BSLRotationAnimation_6F equ 06Fh
+PauseScreenOamData_BSLRotationAnimation_70 equ 070h
+PauseScreenOamData_BSLRotationAnimation_71 equ 071h
+PauseScreenOamData_BSLRotationAnimation_72 equ 072h
+PauseScreenOamData_BSLRotationAnimation_73 equ 073h
+PauseScreenOamData_BSLRotationAnimation_74 equ 074h
+PauseScreenOamData_BSLRotationAnimation_75 equ 075h
+PauseScreenOamData_BSLRotationAnimation_76 equ 076h
+PauseScreenOamData_BSLRotationAnimation_77 equ 077h
+PauseScreenOamData_BSLRotationAnimation_78 equ 078h
+PauseScreenOamData_BSLRotationAnimation_79 equ 079h
+PauseScreenOamData_BSLRotationAnimation_7A equ 07Ah
+PauseScreenOamData_BSLRotationAnimation_7B equ 07Bh
+PauseScreenOamData_BSLRotationAnimation_7C equ 07Ch
+PauseScreenOamData_BSLRotationAnimation_7D equ 07Dh
+PauseScreenOamData_BSLRotationAnimation_7E equ 07Eh
+PauseScreenOamData_BSLRotationAnimation_7F equ 07Fh
+PauseScreenOamData_BSLRotationAnimation_80 equ 080h
+PauseScreenOamData_BSLRotationAnimation_81 equ 081h
+PauseScreenOamData_BSLRotationAnimation_82 equ 082h
+PauseScreenOamData_BSLRotationAnimation_83 equ 083h
+PauseScreenOamData_BSLRotationAnimation_84 equ 084h
+PauseScreenOamData_BSLRotationAnimation_85 equ 085h
+PauseScreenOamData_BSLRotationAnimation_86 equ 086h
+PauseScreenOamData_BSLRotationAnimation_87 equ 087h
+PauseScreenOamData_BSLRotationAnimation_88 equ 088h
+PauseScreenOamData_BSLRotationAnimation_89 equ 089h
+PauseScreenOamData_BSLRotationAnimation_8A equ 08Ah
+PauseScreenOamData_BSLRotationAnimation_8B equ 08Bh
+.sym on
 ; non-vanilla structs:
 
 UpgradeLookup equ 03001800h
