@@ -185,45 +185,45 @@
 .autoregion
     .aligna 4
 @SelectMapChangeOamData:
-    .dh 7
+    .dh     7
     ; Vanilla Objective (A)
     ;.dh 00F8h
-    .dh (OBJ0_YCoordinate & 0F8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
+    .dh     (OBJ0_YCoordinate & 0F8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
     ;.dh 41DBh
-    .dh (OBJ1_XCoordinate & 1DBh) | OBJ1_Size_16x16
+    .dh     (OBJ1_XCoordinate & 1DBh) | OBJ1_Size_16x16
     ;.dh 33AEh
-    .dh (OBJ2_Character   & 3AEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ2_Character   & 3AEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ; Vanilla "OBJEC"
-    .dh (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh (OBJ1_XCoordinate & 1E9h) | OBJ1_Size_32x8
-    .dh (OBJ2_Character   & 3D0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 1E9h) | OBJ1_Size_32x8
+    .dh     (OBJ2_Character   & 3D0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ; Vanilla "TIVE"
-    .dh (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh (OBJ1_XCoordinate & 009h) | OBJ1_Size_32x8
-    .dh (OBJ2_Character   & 3D4h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 009h) | OBJ1_Size_32x8
+    .dh     (OBJ2_Character   & 3D4h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ; 2x2 Select Button Graphic
     ;.notice tohex((OBJ0_YCoordinate & 040h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh (OBJ0_YCoordinate & 07Ah) | OBJ0_Mode_Normal | OBJ0_Shape_Square
-    .dh (OBJ1_XCoordinate & 13Ch) | OBJ1_Size_16x16
-    .dh (OBJ2_Character   & 3BEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 07Ah) | OBJ0_Mode_Normal | OBJ0_Shape_Square
+    .dh     (OBJ1_XCoordinate & 13Ch) | OBJ1_Size_16x16
+    .dh     (OBJ2_Character   & 3BEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ;.notice tohex((OBJ0_YCoordinate & 080h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh (OBJ0_YCoordinate & 07Dh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh (OBJ1_XCoordinate & 144h) | OBJ1_Size_32x8
-    .dh (OBJ2_Character   & 377h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 07Dh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 144h) | OBJ1_Size_32x8
+    .dh     (OBJ2_Character   & 377h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ;.notice tohex((OBJ0_YCoordinate & 0C0h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh (OBJ1_XCoordinate & 138h) | OBJ1_Size_32x8
-    .dh (OBJ2_Character   & 3B8h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 138h) | OBJ1_Size_32x8
+    .dh     (OBJ2_Character   & 3B8h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
     ;.notice tohex((OBJ0_YCoordinate & 0C0h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh (OBJ1_XCoordinate & 158h) | OBJ1_Size_16x8
-    .dh (OBJ2_Character   & 3BCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+    .dh     (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 158h) | OBJ1_Size_16x8
+    .dh     (OBJ2_Character   & 3BCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
 .endautoregion
 
@@ -234,11 +234,11 @@
 .autoregion
     .aligna 4
 @SelectChangeMapOamDataPointers:
-    .dw @SelectMapChangeOamData
-    .dw 0FFh
-    .dd 0
+    .dw     @SelectMapChangeOamData
+    .dw     0FFh
+    .dd     0
 .endautoregion
 
 ; Pointer to OAM Data Pointers
 .org PauseScreenOamData + (PauseScreenOamData_ObjectiveButton * 4)
-    .dw @SelectChangeMapOamDataPointers
+    .dw     @SelectChangeMapOamDataPointers
