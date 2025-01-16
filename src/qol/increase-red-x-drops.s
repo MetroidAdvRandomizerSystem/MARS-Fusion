@@ -224,3 +224,43 @@
     .dh 02C8h
     .dh 012Ch
     .dh 000Ch
+
+.autoregion
+    .align 4
+.func @CheckGuaranteedRedX
+    push    { r0-r3 }
+    ldr    r3, =SamusUpgrades
+    ;Energy
+    ldrh   r0, [r3]
+    ldrh   r1, [r3, SamusUpgrades_MaxEnergy]
+    cmp r0,r1
+    bne @@returnToDefaultLogic
+    ;Missiles
+    ldrh   r0, [r3, SamusUpgrades_CurrMissiles]
+    ldrh   r1, [r3, SamusUpgrades_MaxMissiles]
+    cmp r0,r1
+    bne @@returnToDefaultLogic
+    ;Power Bombs
+    ldrb   r0, [r3, SamusUpgrades_CurrPowerBombs]
+    ldrb   r1, [r3, SamusUpgrades_MaxPowerBombs]
+    cmp r0,r1
+    beq @@returnToDefaultLogic
+    ldr    r0, =RedX_OAMData
+    ldr    r1, =CurrentSprite
+    str    r0, [r1, Sprite_OamPointer] 
+    add    r1, Sprite_SamusCollision                                  
+    mov    r0,11h ;11h spawns Red-X from enemy when put in SamusCollision                                
+    strb   r0,[r1]                                 
+    pop     { r0-r3 }
+    bl DetermineXParasiteTypeFunction_End
+@@returnToDefaultLogic:
+    pop     { r0-r3 }
+    bl 80617F8h
+    .pool
+.endfunc
+.endautoregion
+
+.org 080617E8h
+.area 04h, 0
+    bl @CheckGuaranteedRedX
+.endarea
