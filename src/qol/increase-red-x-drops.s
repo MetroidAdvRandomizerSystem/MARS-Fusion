@@ -259,6 +259,10 @@
     and    r0, r1
     cmp    r0, #20h
     bne     @@return_to_default_logic
+    ; Check if Max PB != 0
+    ldrb   r0, [r3, SamusUpgrades_MaxPowerBombs]
+    cmp    r0, #0h
+    beq    @@return_to_default_logic
     ; Check if Current PB = 0
     ldrb   r0, [r3, SamusUpgrades_CurrPowerBombs]
     mov    r1, #0h
