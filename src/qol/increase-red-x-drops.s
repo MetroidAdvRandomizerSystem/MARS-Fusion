@@ -1,4 +1,8 @@
-; Increases the probability of Red X drops to a minimum of 1/256. Any enemy that is already more likely to drop a Red X will not be affected.
+; This file contains has two sets of changes. The first increases the normal probability of a Red-X spawning
+; The second is a function that augments the default X Spawn functionality. A Red-X is now guaranteed if
+; Energy and Missiles are maxed out, Power Bombs have been acquired, and Current Power Bombs = 0
+
+; Increases the probability of Red X drops to a minimum of 3/256. Any enemy that is already more likely to drop a Red X will not be affected.
 ; The probability calculations are out of 1024 (0x0400). For X Drops this must add up precisely - so take from Yellow X chance
 ; In the ROM Data, the Weights/Probabilities are laid out as YellowXWeight/GreenXWeight/RedXWeight
 ; In the following comments, "originally 337/C8/1" would mean that the sprites original drop rates were:
@@ -225,42 +229,60 @@
     .dh 012Ch
     .dh 000Ch
 
+; This function augments the existing DetermineXParasiteType function.
+; Before starting to check the probability tables, but after determining if this is a special spawn (I.E. Room Yellow X)
+; this function is called. If Current Energy = Max Energy, Current Missiles = Max Missiles, and Current Power Bombs = 0 (while having PB Upgrade),
+; force the spawn of a Red-X. Otherwise use the current logic.
+
 .autoregion
-    .align 4
+    .align 2
 .func @CheckGuaranteedRedX
+    ; Preserve original functionality - if r3 (Sprite Property) is not equal to 20h, fall back to the Error Handling Block. Otherwise execute the new code
+    cmp     r3, #20h
+    bne     @@default_error_handler
     push    { r0-r3 }
-    ldr    r3, =SamusUpgrades
+    ldr     r3, =SamusUpgrades
     ;Energy
-    ldrh   r0, [r3]
-    ldrh   r1, [r3, SamusUpgrades_MaxEnergy]
-    cmp r0,r1
-    bne @@returnToDefaultLogic
-    ;Missiles
-    ldrh   r0, [r3, SamusUpgrades_CurrMissiles]
-    ldrh   r1, [r3, SamusUpgrades_MaxMissiles]
-    cmp r0,r1
-    bne @@returnToDefaultLogic
-    ;Power Bombs
+    ldrh    r0, [r3, SamusUpgrades_CurrEnergy]
+    ldrh    r1, [r3, SamusUpgrades_MaxEnergy]
+    cmp     r0, r1
+    bne     @@return_to_default_logic
+    ; Missiles
+    ldrh    r0, [r3, SamusUpgrades_CurrMissiles]
+    ldrh    r1, [r3, SamusUpgrades_MaxMissiles]
+    cmp     r0, r1
+    bne     @@return_to_default_logic
+    ; Power Bombs
+    ; Ensure PB Upgrade has been acquired
+    ldrb   r0, [r3, SamusUpgrades_ExplosiveUpgrades]
+    mov    r1, #20h ; 5th bit is if PB Upgrade acquired
+    and    r0, r1
+    cmp    r0, #20h
+    bne     @@return_to_default_logic
+    ; Check if Current PB = 0
     ldrb   r0, [r3, SamusUpgrades_CurrPowerBombs]
-    ldrb   r1, [r3, SamusUpgrades_MaxPowerBombs]
-    cmp r0,r1
-    beq @@returnToDefaultLogic
+    mov    r1, #0h
+    cmp    r0, r1
+    bne    @@return_to_default_logic
     ldr    r0, =RedX_OAMData
     ldr    r1, =CurrentSprite
     str    r0, [r1, Sprite_OamPointer] 
-    add    r1, Sprite_SamusCollision                                  
-    mov    r0,11h ;11h spawns Red-X from enemy when put in SamusCollision                                
-    strb   r0,[r1]                                 
-    pop     { r0-r3 }
-    bl DetermineXParasiteTypeFunction_End
-@@returnToDefaultLogic:
-    pop     { r0-r3 }
-    bl 80617F8h
+    add    r1, Sprite_SamusCollision
+    mov    r0, #11h ;11h spawns Red-X from enemy when put in SamusCollision                                
+    strb   r0, [r1]                                 
+    pop    { r0-r3 }
+    bl     08061930h ; Return to the original function end
+@@return_to_default_logic:
+    pop    { r0-r3 }
+    bl     080617F8h ; Return to where the original function would have gone
+@@default_error_handler:
+    bl     0806192Ch ; Jump to the Error Handler secion of code in the original function
     .pool
 .endfunc
 .endautoregion
 
-.org 080617E8h
-.area 04h, 0
-    bl @CheckGuaranteedRedX
+; Hijack the original code location
+.org 080617E6h
+.area 06h, 0
+    bl     @CheckGuaranteedRedX
 .endarea
