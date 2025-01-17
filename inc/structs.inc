@@ -587,6 +587,22 @@ DMA_DAD equ 04h
 DMA_CNT equ 08h
 .sym on
 
+NonGameplayRam equ 03001484h
+.sym off
+NonGamePlayRam_OamData equ 02Ch
+NonGamePlayRam_OamDataSize equ 0Ch
+.sym on
+
+MenuOamData equ NonGameplayRam + NonGamePlayRam_OamData
+.sym off
+MenuOamData_YPosition equ 0
+MenuOamData_XPosition equ 2
+MenuOamData_AnimationDurationCounter equ 8
+MenuOamData_CurrentAnimationFrame equ 9
+MenuOamData_OamId     equ 0Ah
+MenuOamData_Status     equ 0Bh
+.sym on
+
 PauseScreenGfxOamPointer equ 08076B10h
 PauseScreenOamData equ 0879BEC0h
 .sym off

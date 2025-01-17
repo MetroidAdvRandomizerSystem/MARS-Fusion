@@ -185,25 +185,7 @@
 .autoregion
     .aligna 4
 @SelectMapChangeOamData:
-    .dh     7
-    ; Vanilla Objective (A)
-    ;.dh 00F8h
-    .dh     (OBJ0_YCoordinate & 0F8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
-    ;.dh 41DBh
-    .dh     (OBJ1_XCoordinate & 1DBh) | OBJ1_Size_16x16
-    ;.dh 33AEh
-    .dh     (OBJ2_Character   & 3AEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-
-    ; Vanilla "OBJEC"
-    .dh     (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 1E9h) | OBJ1_Size_32x8
-    .dh     (OBJ2_Character   & 3D0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-
-    ; Vanilla "TIVE"
-    .dh     (OBJ0_YCoordinate & 0FCh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 009h) | OBJ1_Size_32x8
-    .dh     (OBJ2_Character   & 3D4h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-
+    .dh     4
     ; 2x2 Select Button Graphic
     ;.notice tohex((OBJ0_YCoordinate & 040h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
     .dh     (OBJ0_YCoordinate & 07Ah) | OBJ0_Mode_Normal | OBJ0_Shape_Square
@@ -224,7 +206,6 @@
     .dh     (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
     .dh     (OBJ1_XCoordinate & 158h) | OBJ1_Size_16x8
     .dh     (OBJ2_Character   & 3BCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-
 .endautoregion
 
 ; OAM Data Pointer Format
@@ -239,6 +220,56 @@
     .dd     0
 .endautoregion
 
-; Pointer to OAM Data Pointers
-.org PauseScreenOamData + (PauseScreenOamData_ObjectiveButton * 4)
+; Replace "Preview Target" Oam
+.org PauseScreenOamData + (PauseScreenOamData_SelectMapChange * 4)
     .dw     @SelectChangeMapOamDataPointers
+
+.autoregion
+    .align 2
+    ; r3 should be set to NonGameplayRam at this point
+.func @ShowMapChangeOam
+    ldr     r3, =NonGameplayRam
+    mov     r0, NonGamePlayRam_OamDataSize
+    mov     r1, 1Eh
+    mul     r0, r1
+    add     r0, #NonGamePlayRam_OamData
+    add     r1, r3, r0
+    mov     r0, #PauseScreenOamData_SelectMapChange
+    strb    r0, [r1, MenuOamData_OamId]
+    mov     r0, #0CAh
+    strh    r0, [r1, MenuOamData_XPosition]
+    mov     r0, #08Eh
+    strh    r0, [r1, MenuOamData_YPosition]
+    mov     r0, #0
+    strb    r0, [r1, MenuOamData_AnimationDurationCounter]
+    strb    r0, [r1, MenuOamData_CurrentAnimationFrame]
+
+    ; this is vaguely how status is set for the "(A) OBJECTIVE" object in vanilla asm
+    ldrb    r2, [r1, #MenuOamData_Status]
+    mov     r0, #04
+    neg     r0, r0
+    and     r0, r2
+    mov     r2, #02
+    orr     r0, r2
+    mov     r2, #0Dh
+    neg     r2, r2
+    and     r0, r2
+    strb    r0, [r1, #MenuOamData_Status]
+
+    ldr     r0, =#08077C18h ; return to original place in jump table
+    mov     pc, r0
+    .pool
+.endfunc
+.endautoregion
+
+
+; Hijack jump table to jump to our own code
+.org 08077B0Ch
+.area 04h
+    .dw     @ShowMapChangeOam
+.endarea
+
+.org 0807846Ch
+.area 04h
+    .dw     0807868Ch
+.endarea
