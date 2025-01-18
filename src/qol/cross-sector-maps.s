@@ -181,6 +181,13 @@
 ; .dh ObjAttr1
 ; .dh ObjAttr2
 ; ... Repeat for as many objects in the frame
+; X/Y Coords are offsets of the coordinates set with initial positioning
+; Negatives are 2's compliment
+; Y Coord is caluclated as (OamYPosition + 4 + InitialPosition)
+; X Coord is calculated as
+;    ((*pauVar6)[1] & 0xfe00 | InitialPosition + OamXPosition + 4 & 0x1ff)
+;    this seems to roughly be (InitialPosition + OamXPosition + 4) & 01FFh, but
+;    does not seem to always calculate to this.
 
 .autoregion
     .aligna 4
@@ -188,23 +195,20 @@
     .dh     4
     ; 2x2 Select Button Graphic
     ;.notice tohex((OBJ0_YCoordinate & 040h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh     (OBJ0_YCoordinate & 07Ah) | OBJ0_Mode_Normal | OBJ0_Shape_Square
-    .dh     (OBJ1_XCoordinate & 13Ch) | OBJ1_Size_16x16
+    .dh     (OBJ0_YCoordinate & 007h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
+    .dh     (OBJ1_XCoordinate & 007h) | OBJ1_Size_16x16
     .dh     (OBJ2_Character   & 3BEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
-    ;.notice tohex((OBJ0_YCoordinate & 080h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh     (OBJ0_YCoordinate & 07Dh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 144h) | OBJ1_Size_32x8
+    .dh     (OBJ0_YCoordinate & 00Bh) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 010h) | OBJ1_Size_32x8
     .dh     (OBJ2_Character   & 377h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
-    ;.notice tohex((OBJ0_YCoordinate & 0C0h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh     (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 138h) | OBJ1_Size_32x8
+    .dh     (OBJ0_YCoordinate & 012h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 002h) | OBJ1_Size_32x8
     .dh     (OBJ2_Character   & 3B8h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
-    ;.notice tohex((OBJ0_YCoordinate & 0C0h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
-    .dh     (OBJ0_YCoordinate & 085h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 158h) | OBJ1_Size_16x8
+    .dh     (OBJ0_YCoordinate & 012h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 022h) | OBJ1_Size_16x8
     .dh     (OBJ2_Character   & 3BCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 .endautoregion
 
@@ -236,9 +240,8 @@
     add     r1, r3, r0
     mov     r0, #PauseScreenOamData_SelectMapChange
     strb    r0, [r1, MenuOamData_OamId]
-    mov     r0, #0CAh
+    mov     r0, #0h
     strh    r0, [r1, MenuOamData_XPosition]
-    mov     r0, #08Eh
     strh    r0, [r1, MenuOamData_YPosition]
     mov     r0, #0
     strb    r0, [r1, MenuOamData_AnimationDurationCounter]
