@@ -214,7 +214,7 @@ SamusState_ArmCannonDirection equ 07h
 SamusState_SecondaryWeaponSelect equ 08h
 SamusState_ProjectileType equ 09h
 SamusState_ProjectileCooldown equ 0Ah
-SamusState_SoloWaveDirection equ 0Bh    ; non-vanilla
+SamusState_Unk01 equ 0Bh
 SamusState_ChargeCounter equ 0Ch
 SamusState_DiagonalAim equ 0Dh
 SamusState_ArmSwing equ 0Eh

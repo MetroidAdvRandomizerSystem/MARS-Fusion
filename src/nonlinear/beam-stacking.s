@@ -706,20 +706,8 @@
     ; fire two projectiles with wave beam
     lsr     r0, r2, BeamUpgrade_WaveBeam + 1
     bcc     @@spawnProjectiles
-    ldr     r2, =SamusState
-    ldrb    r0, [r2, SamusState_SoloWaveDirection]
-    sub     r1, r0, #1
-    cmp     r1, #1
-    bhi     @@normalizeSoloWave
-    mov     r1, #3
-    eor     r0, r1
-    b       @@setWaveOptions
-@@normalizeSoloWave:
-    mov     r0, #1
-@@setWaveOptions:
-    strb    r0, [r2, SamusState_SoloWaveDirection]
-    mov     r6, r0
-    mov     r7, r0
+    mov     r6, #2
+    mov     r7, #1
     b       @@spawnProjectiles
 @@spawnPureCharge:
     ; spawn center charge projectile
