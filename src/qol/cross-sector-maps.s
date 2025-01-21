@@ -169,7 +169,6 @@
 @PauseScreenObjGfx:
 .incbin "data/pause-obj.gfx"
 .endautoregion
-
 .org PauseScreenGfxOamPointer
     .dw @PauseScreenObjGfx
 
@@ -190,11 +189,10 @@
 ;    does not seem to always calculate to this.
 
 .autoregion
-    .aligna 4
+    .aligna 2
 @SelectMapChangeOamData:
     .dh     4
     ; 2x2 Select Button Graphic
-    ;.notice tohex((OBJ0_YCoordinate & 040h) | OBJ0_Mode_Normal | OBJ0_Shape_Square)
     .dh     (OBJ0_YCoordinate & 007h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
     .dh     (OBJ1_XCoordinate & 007h) | OBJ1_Size_16x16
     .dh     (OBJ2_Character   & 3BEh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
@@ -218,7 +216,7 @@
 ; .dd 0 ; mark end with null DWORD
 .autoregion
     .aligna 4
-@SelectChangeMapOamDataPointers:
+@SelectMapChangeOamDataPointers:
     .dw     @SelectMapChangeOamData
     .dw     0FFh
     .dd     0
@@ -226,7 +224,7 @@
 
 ; Replace "Preview Target" Oam
 .org PauseScreenOamData + (PauseScreenOamData_SelectMapChange * 4)
-    .dw     @SelectChangeMapOamDataPointers
+    .dw     @SelectMapChangeOamDataPointers
 
 .autoregion
     .align 2
@@ -234,7 +232,7 @@
 .func @ShowMapChangeOam
     ldr     r3, =NonGameplayRam
     mov     r0, NonGamePlayRam_OamDataSize
-    mov     r1, 1Eh
+    mov     r1, 25h     ; Oam Slot
     mul     r0, r1
     add     r0, #NonGamePlayRam_OamData
     add     r1, r3, r0

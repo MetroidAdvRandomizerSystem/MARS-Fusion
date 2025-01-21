@@ -1,4 +1,4 @@
-; vanilla constants
+; GBA hardware constants
 OBJ0_YCoordinate equ 0b11111111 ; Bits 0-7 (0-255)
 OBJ0_Transform equ 1 << 8   ; For rotation or scaling
 OBJ0_DoubleSize equ 1 << 9  ; 0 = Normal, 1 = Double        ; When Transform bit set
