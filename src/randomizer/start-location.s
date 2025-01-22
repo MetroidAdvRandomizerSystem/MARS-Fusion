@@ -1,7 +1,5 @@
 ; Allows the start location to be changed from the hangar bay to another room.
 
-; TODO: fix sector in file select for new game save file
-
 .org 08064B84h
     ; Prevent new game init from wiping door id
     nop
@@ -182,3 +180,30 @@
     .dh     640h
     .dh     1DFh
 .endarea
+
+; Set the starting location area into Non-Gameplay RAM when drawing file select screen
+
+; Hijack the original code location - part of FileSelectDrawFileInfo
+.org 080A059Eh
+.area 0Ah, 0
+    bl     @SetTitleStartingArea
+.endarea
+
+.autoregion
+    .align 4
+.func @SetTitleStartingArea
+    push    { r0-r3 }
+    ldr     r0, =03001722h ; Non-Gameplay RAM Location where File Screen Code reads Starting Area
+    ldr     r1, =StartingLocation
+    ldrb    r2, [r1, StartingLocation_Area]
+    strb    r2, [r0]
+    ; Preserve original functionality
+    pop     { r0-r3}
+    mov     r3, #0A7h
+    lsl     r3, #2h
+    add     r3, r5
+    mov     r9, r3
+    bl      080A0694h ; Return to where the original function would have gone
+    .pool
+.endfunc
+.endautoregion
