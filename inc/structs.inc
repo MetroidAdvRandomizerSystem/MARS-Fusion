@@ -295,6 +295,11 @@ ButtonAssignments_Pause equ 06h
 ; navigation hatch left     26h
 ; navigation hatch right    27h
 
+NonGameplayRam equ 03001484h
+.sym off
+NonGamePlayRam_OamData equ 02Ch
+.sym on
+
 MenuSprites equ 030014B0h
 .sym off
 MenuSprites_Len equ 28h
@@ -585,22 +590,6 @@ DMA3 equ 040000D4h
 DMA_SAD equ 00h
 DMA_DAD equ 04h
 DMA_CNT equ 08h
-.sym on
-
-NonGameplayRam equ 03001484h
-.sym off
-NonGamePlayRam_OamData equ 02Ch
-NonGamePlayRam_OamDataSize equ 0Ch
-.sym on
-
-MenuOamData equ NonGameplayRam + NonGamePlayRam_OamData
-.sym off
-MenuOamData_YPosition equ 0
-MenuOamData_XPosition equ 2
-MenuOamData_AnimationDurationCounter equ 8
-MenuOamData_CurrentAnimationFrame equ 9
-MenuOamData_OamId     equ 0Ah
-MenuOamData_Status     equ 0Bh
 .sym on
 
 PauseScreenGfxOamPointer equ 08076B10h

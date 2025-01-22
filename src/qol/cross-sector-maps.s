@@ -228,25 +228,22 @@
 
 .autoregion
     .align 2
-    ; r3 should be set to NonGameplayRam at this point
 .func @ShowMapChangeOam
     ldr     r3, =NonGameplayRam
-    mov     r0, NonGamePlayRam_OamDataSize
+    mov     r0, MenuSprite_Size
     mov     r1, 25h     ; Oam Slot
     mul     r0, r1
     add     r0, #NonGamePlayRam_OamData
     add     r1, r3, r0
     mov     r0, #PauseScreenOamData_SelectMapChange
-    strb    r0, [r1, MenuOamData_OamId]
+    strb    r0, [r1, MenuSprite_Graphic]
     mov     r0, #0h
-    strh    r0, [r1, MenuOamData_XPosition]
-    strh    r0, [r1, MenuOamData_YPosition]
+    strh    r0, [r1, MenuSprite_XPos]
+    strh    r0, [r1, MenuSprite_YPos]
     mov     r0, #0
-    strb    r0, [r1, MenuOamData_AnimationDurationCounter]
-    strb    r0, [r1, MenuOamData_CurrentAnimationFrame]
-
-    ; this is vaguely how status is set for the "(A) OBJECTIVE" object in vanilla asm
-    ldrb    r2, [r1, #MenuOamData_Status]
+    strb    r0, [r1, MenuSprite_AnimationCounter]
+    strb    r0, [r1, MenuSprite_AnimationTick]
+    ldrb    r2, [r1, #MenuSprite_Priority]
     mov     r0, #04
     neg     r0, r0
     and     r0, r2
@@ -255,7 +252,7 @@
     mov     r2, #0Dh
     neg     r2, r2
     and     r0, r2
-    strb    r0, [r1, #MenuOamData_Status]
+    strb    r0, [r1, #MenuSprite_Priority]
 
     ldr     r0, =#08077C18h ; return to original place in jump table
     mov     pc, r0
