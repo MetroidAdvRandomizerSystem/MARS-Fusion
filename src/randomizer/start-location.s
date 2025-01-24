@@ -198,7 +198,7 @@
     ldrb    r2, [r1, StartingLocation_Area]
     strb    r2, [r0]
     ; Preserve original functionality
-    pop     { r0-r3}
+    pop     { r0-r3 }
     mov     r3, #0A7h
     lsl     r3, #2h
     add     r3, r5
