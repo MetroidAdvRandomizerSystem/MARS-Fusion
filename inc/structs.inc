@@ -610,6 +610,10 @@ MinorLocation_Size equ 08h
 .sym on
 
 .sym off
+CustomMessages_Maximum equ 0C8h ; 200 Custom Messages are available
+.sym on
+
+.sym off
 StartingLocation_Area equ 00h
 StartingLocation_Room equ 01h
 StartingLocation_Door equ 02h

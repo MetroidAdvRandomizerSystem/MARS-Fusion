@@ -264,7 +264,7 @@
 
 .defineregion 0879C810h, 0C0h
 
-.org 0879CDFCh
+.org EnglishMessageTableLookupAddr
     .dw     @EnglishMessages
 
 .autoregion
@@ -335,6 +335,7 @@
     .dw     086B5912h   ; sprite location abnormal
     .dw     @EnglishMessage_IceTrap
     .dw     @EnglishMessage_Nothing
+    .fill   4 * CustomMessages_Maximum ; Reserve space for custom messages
 .endautoregion
 
 .autoregion
