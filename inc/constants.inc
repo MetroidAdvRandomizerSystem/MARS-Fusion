@@ -9,3 +9,5 @@ MissileDamage equ 10
 SuperMissileDamage equ 20
 IceMissileDamage equ 10
 DiffusionMissileDamage equ 5
+
+CustomMessages_Maximum equ 200 ; 56 Messages are reserved by existing behavior, leaving 200 ids left
