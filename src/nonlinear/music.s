@@ -118,7 +118,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
     beq     @@case_MainDeck_break
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -128,7 +128,7 @@
     ldrh    r0, [r2, MiscProgress_StoryFlags]
     lsr     r0, StoryFlag_AuxiliaryPower + 1
     bcs     @@case_MainDeck_default
-    mov     r0, #0Fh
+    mov     r0, MusicTrack_DataRoom
     mov     r1, #MusicType_Transient
     mov     r2, #10
     b       @@tryPlay
@@ -177,7 +177,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Yakuza + 1
     bcs     @@case_MainDeck_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_Transient
     mov     r2, #50
     b       @@tryPlay
@@ -192,7 +192,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_ChargeCoreX + 1
     bcs     @@case_MainDeck_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -203,7 +203,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Ridley + 1
     bcs     @@case_MainDeck_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -214,7 +214,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Zazabi + 1
     bcs     @@case_MainDeck_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -225,7 +225,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Nettori + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #44h
+    mov     r0, MusicTrack_Nettori
     mov     r1, MusicType_BossMusic
     mov     r2, #50
     b       @@tryPlay
@@ -239,7 +239,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_XBox + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -249,7 +249,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_WideCoreX + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -271,7 +271,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_AQA1
     beq     @@areaSwitchDone
-    mov     r0, #5Fh
+    mov     r0, MusicTrack_EnvironmentalDisquiet
     mov     r1, MusicType_AQA1
     mov     r2, #60
     b       @@tryPlay
@@ -282,7 +282,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Serris + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBoss
     mov     r1, MusicType_BossAmbience
     mov     r2, #40
     b       @@tryPlay
@@ -293,7 +293,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Nightmare + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBoss
     mov     r1, MusicType_BossAmbience
     mov     r2, #50
     b       @@tryPlay
@@ -308,7 +308,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
     beq     @@areaSwitchDone
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBoss
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -323,7 +323,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
     beq     @@areaSwitchDone
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBoss
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -334,7 +334,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_XBox + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, #1Bh
+    mov     r0, MusicTrack_Box
     mov     r1, MusicType_BossMusic
     mov     r2, #20
     b       @@tryPlay
@@ -381,7 +381,7 @@
     strb    r0, [r1, PrevSubEvent - CurrSubEvent]
     add     r0, #1
     strb    r0, [r1]
-    mov     r0, #2Ah
+    mov     r0, MusicTrack_Briefing
     mov     r1, MusicType_MainDeck
     b       @@playMusic
 @@case_01:
@@ -391,13 +391,13 @@
     strb    r0, [r1, PrevSubEvent - CurrSubEvent]
     add     r0, #1
     strb    r0, [r1]
-    mov     r0, #1Eh
+    mov     r0, MusicTrack_BSLAmbience
     mov     r1, MusicType_Transient
     b       @@playMusic
 @@case_6B:
     cmp     r4, #0Bh
     bne     @@return_false
-    mov     r0, #2Eh
+    mov     r0, MusicTrack_ObservationDeck
     mov     r1, #MusicType_Misc
     b       @@playMusic
 @@case_9A:
@@ -416,7 +416,7 @@
 .else
     nop :: nop
 .endif
-    mov     r0, #58h
+    mov     r0, MusicTrack_EnvironmentalShock
     mov     r1, MusicType_BossMusic
     mov     r2, #0
     b       @@tryPlay
@@ -458,7 +458,7 @@
     strb    r0, [r2, Sprite_Pose - 20h]
     mov     r0, #0
     strb    r0, [r2, Sprite_SamusCollision - 20h]
-    mov     r0, #43h
+    mov     r0, MusicTrack_BeamCoreX
     mov     r1, MusicType_BossMusic
     bl      Music_Play
     pop     { pc }
@@ -497,7 +497,7 @@
     ldrb    r0, [r0, Sprite_Id]
     cmp     r0, #SpriteId_WideCoreXNucleus
     bne     @@return
-    mov     r0, #18h
+    mov     r0, MusicTrack_PreBoss
     mov     r1, MusicType_BossAmbience
     bl      Music_Play
 @@return:
@@ -512,121 +512,121 @@
 ; change default music in certain rooms
 
 .org 083C2C4Ch + 07h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck station entrance
+    .dh     MusicTrack_MainDeck     ; main deck station entrance
 .org 083C2C4Ch + 08h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck recharge room
+    .dh     MusicTrack_MainDeck     ; main deck recharge room
 .org 083C2C4Ch + 09h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck navigation room east
+    .dh     MusicTrack_MainDeck     ; main deck navigation room east
 .org 083C2C4Ch + 0Ah * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck crew quarters east
+    .dh     MusicTrack_MainDeck     ; main deck crew quarters east
 .org 083C2C4Ch + 0Bh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck habitation save room
+    .dh     MusicTrack_MainDeck     ; main deck habitation save room
 .org 083C2C4Ch + 0Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck crew quarters west
+    .dh     MusicTrack_MainDeck     ; main deck crew quarters west
 .org 083C2C4Ch + 0Eh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck maintenance corridor
+    .dh     MusicTrack_MainDeck     ; main deck maintenance corridor
 .org 083C2C4Ch + 0Fh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck habitation deck entrance
+    .dh     MusicTrack_MainDeck     ; main deck habitation deck entrance
 .org 083C2C4Ch + 10h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck navigation room west
+    .dh     MusicTrack_MainDeck     ; main deck navigation room west
 .org 083C2C4Ch + 12h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck central hub
+    .dh     MusicTrack_MainDeck     ; main deck central hub
 .org 083C2C4Ch + 14h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck western hub
+    .dh     MusicTrack_MainDeck     ; main deck western hub
 .org 083C2C4Ch + 15h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck eastern hub
+    .dh     MusicTrack_MainDeck     ; main deck eastern hub
 .org 083C2C4Ch + 16h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck habitation maintenance
+    .dh     MusicTrack_MainDeck     ; main deck habitation maintenance
 .org 083C2C4Ch + 17h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck quarantine access
+    .dh     MusicTrack_MainDeck     ; main deck quarantine access
 .org 083C2C4Ch + 21h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck save room
+    .dh     MusicTrack_MainDeck     ; main deck save room
 .org 083C2C4Ch + 23h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck maintenance shaft
+    .dh     MusicTrack_MainDeck     ; main deck maintenance shaft
 .org 083C2C4Ch + 24h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck maintenance crossing
+    .dh     MusicTrack_MainDeck     ; main deck maintenance crossing
 .org 083C2C4Ch + 25h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck crew quarters save room
+    .dh     MusicTrack_MainDeck     ; main deck crew quarters save room
 .org 083C2C4Ch + 26h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck arachnus arena
+    .dh     MusicTrack_MainDeck     ; main deck arachnus arena
 .org 083C2C4Ch + 28h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck main elevator
+    .dh     MusicTrack_MainDeck     ; main deck main elevator
 .org 083C2C4Ch + 2Ah * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck main elevator access
+    .dh     MusicTrack_MainDeck     ; main deck main elevator access
 .org 083C2C4Ch + 2Dh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck maintenance storage
+    .dh     MusicTrack_MainDeck     ; main deck maintenance storage
 .org 083C2C4Ch + 2Eh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck sub-zero containment
+    .dh     MusicTrack_MainDeck     ; main deck sub-zero containment
 .org 083C2C4Ch + 2Fh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck spitter speedway
+    .dh     MusicTrack_MainDeck     ; main deck spitter speedway
 .org 083C2C4Ch + 39h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck habitation storage
+    .dh     MusicTrack_MainDeck     ; main deck habitation storage
 .org 083C2C4Ch + 3Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck elevator to crew quarters
+    .dh     MusicTrack_MainDeck     ; main deck elevator to crew quarters
 .org 083C2C4Ch + 3Dh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck elevator to operations deck
+    .dh     MusicTrack_MainDeck     ; main deck elevator to operations deck
 .org 083C2C4Ch + 45h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck habitation deck
+    .dh     MusicTrack_MainDeck     ; main deck habitation deck
 .org 083C2C4Ch + 46h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck hornoad hallway
+    .dh     MusicTrack_MainDeck     ; main deck hornoad hallway
 .org 083C2C4Ch + 47h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck quarantine bay
+    .dh     MusicTrack_MainDeck     ; main deck quarantine bay
 .org 083C2C4Ch + 48h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck western hub cache
+    .dh     MusicTrack_MainDeck     ; main deck western hub cache
 .org 083C2C4Ch + 49h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck main elevator
+    .dh     MusicTrack_MainDeck     ; main deck main elevator
 .org 083C2C4Ch + 4Bh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck elevator to habitation deck
+    .dh     MusicTrack_MainDeck     ; main deck elevator to habitation deck
 .org 083C2C4Ch + 4Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck elevator to central hub
+    .dh     MusicTrack_MainDeck     ; main deck elevator to central hub
 .org 083C2C4Ch + 54h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Ch     ; main deck the attic
+    .dh     MusicTrack_MainDeck     ; main deck the attic
 
 .org 083C2C4Ch + 0Dh * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations deck
+    .dh     MusicTrack_ObservationDeck     ; main deck operations deck
 .org 083C2C4Ch + 20h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations deck navigation room
+    .dh     MusicTrack_ObservationDeck     ; main deck operations deck navigation room
 .org 083C2C4Ch + 27h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations deck data room
+    .dh     MusicTrack_ObservationDeck     ; main deck operations deck data room
 .org 083C2C4Ch + 2Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations deck save room
+    .dh     MusicTrack_ObservationDeck     ; main deck operations deck save room
 .org 083C2C4Ch + 36h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck auxiliary power station
+    .dh     MusicTrack_ObservationDeck     ; main deck auxiliary power station
 .org 083C2C4Ch + 51h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations deck recharge room
+    .dh     MusicTrack_ObservationDeck     ; main deck operations deck recharge room
 .org 083C2C4Ch + 52h * LevelMeta_Size + LevelMeta_Music
-    .dh     2Eh     ; main deck operations room
+    .dh     MusicTrack_ObservationDeck     ; main deck operations room
 
 .org 083C40B0h + 12h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian shaft east
+    .dh     MusicTrack_Tourian     ; sector 1 tourian shaft east
 .org 083C40B0h + 13h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian save room east
+    .dh     MusicTrack_Tourian     ; sector 1 tourian save room east
 .org 083C40B0h + 15h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian central hub
+    .dh     MusicTrack_Tourian     ; sector 1 tourian central hub
 .org 083C40B0h + 16h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 golden pirate crossing
+    .dh     MusicTrack_Tourian     ; sector 1 golden pirate crossing
 .org 083C40B0h + 17h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian hub west
+    .dh     MusicTrack_Tourian     ; sector 1 tourian hub west
 .org 083C40B0h + 18h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian save room west
+    .dh     MusicTrack_Tourian     ; sector 1 tourian save room west
 .org 083C40B0h + 19h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 genesis habitation
+    .dh     MusicTrack_Tourian     ; sector 1 genesis habitation
 .org 083C40B0h + 1Ah * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 ridley arena access
+    .dh     MusicTrack_Tourian     ; sector 1 ridley arena access
 .org 083C40B0h + 1Bh * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 ridley arena
+    .dh     MusicTrack_Tourian     ; sector 1 ridley arena
 .org 083C40B0h + 1Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian central checkpoint
+    .dh     MusicTrack_Tourian     ; sector 1 tourian central checkpoint
 .org 083C40B0h + 1Dh * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 ripper maze access
+    .dh     MusicTrack_Tourian     ; sector 1 ripper maze access
 .org 083C40B0h + 1Eh * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 ripper maze
+    .dh     MusicTrack_Tourian     ; sector 1 ripper maze
 .org 083C40B0h + 24h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 tourian entrance
+    .dh     MusicTrack_Tourian     ; sector 1 tourian entrance
 .org 083C40B0h + 33h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 animorphs
+    .dh     MusicTrack_Tourian     ; sector 1 animorphs
 .org 083C40B0h + 34h * LevelMeta_Size + LevelMeta_Music
-    .dh     35h     ; sector 1 animorphs cache
+    .dh     MusicTrack_Tourian     ; sector 1 animorphs cache
 
 .org 083C4D58h + 36h * LevelMeta_Size + LevelMeta_Music
-    .dh     06h     ; sector 2 crumble city
+    .dh     MusicTrack_Sector2     ; sector 2 crumble city
