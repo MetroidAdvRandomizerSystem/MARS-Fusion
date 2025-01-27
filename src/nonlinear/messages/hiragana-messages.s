@@ -2,68 +2,68 @@
     .align 4
 HiraganaMessages:
     .dw     @Message_SecurityLevel0
-    .dw     086B489Ah   ; security level 1
-    .dw     086B4906h   ; security level 2
-    .dw     086B4974h   ; security level 3
-    .dw     086B49E4h   ; security level 4
-    .dw     086B4A4Eh   ; main missiles
-    .dw     086B4AB0h   ; super missiles
-    .dw     086B4B1Eh   ; bombs
-    .dw     086B4B8Ch   ; main power bombs
-    .dw     086B4C08h   ; ice missiles
-    .dw     086B4C7Ch   ; diffusion missiles
-    .dw     086B4Cf6h   ; morph ball
-    .dw     086B4D68h   ; hi-jump
-    .dw     086B4DC0h   ; screw attack
-    .dw     086B4E34h   ; space jump
-    .dw     086B4EB2h   ; screw attack
-    .dw     086B4F2Ch   ; varia suit
-    .dw     086B4FA4h   ; gravity suit
-    .dw     086B5010h   ; charge beam
-    .dw     086B508Ah   ; wide beam
-    .dw     086B50FCh   ; wave beam
-    .dw     086B5170h   ; plasma beam
-    .dw     086B51E6h   ; ice beam
+    .dw     086B3C48h   ; security level 1
+    .dw     086B3C90h   ; security level 2
+    .dw     086B3CDAh   ; security level 3
+    .dw     086B3D24h   ; security level 4
+    .dw     086B3D6Ch   ; main missiles
+    .dw     086B3DACh   ; super missiles
+    .dw     086B3DF4h   ; bombs
+    .dw     086B3E38h   ; main power bombs
+    .dw     086B3E8Eh   ; ice missiles
+    .dw     086B3ED0h   ; diffusion missiles
+    .dw     086B3F2Eh   ; morph ball
+    .dw     086B3F6Ch   ; hi-jump
+    .dw     086B3FBCh   ; screw attack
+    .dw     086B400Ah   ; space jump
+    .dw     086B405Ah   ; screw attack
+    .dw     086B40A8h   ; varia suit
+    .dw     086B40FCh   ; gravity suit
+    .dw     086B4142h   ; charge beam
+    .dw     086B419Ch   ; wide beam
+    .dw     086B41D8h   ; wave beam
+    .dw     086B421Ah   ; plasma beam
+    .dw     086B4258h   ; ice beam
     .dw     @Message_InfantMetroidsRemain
     .dw     @Message_InfantMetroidsNeeded
     .dw     @Message_SecondLastInfantMetroid
     .dw     @Message_SufficientInfantMetroids
     .dw     @Message_LastInfantMetroid
-    .dw     086B5984h   ; is your objective clear?
-    .dw     086B59CCh   ; confirm mission objective?
+    .dw     086B45FCh   ; is your objective clear?
+    .dw     086B4622h   ; confirm mission objective?
 .if RANDOMIZER
     .dw     @Message_WarpToStartLine1
     .dw     @Message_WarpToStartLine2
 .else
-    .dw     086B5A18h   ; sleep mode line 1
-    .dw     086B5A78h   ; sleep mode line 2
+    .dw     086B4646h   ; sleep mode line 1
+    .dw     086B4686h   ; sleep mode line 2
 .endif
-    .dw     086B5AEAh   ; sleep mode line 3
-    .dw     086B5256h   ; atmospheric stabilizer 1
-    .dw     086B52D8h   ; atmospheric stabilizer 2
-    .dw     086B5352h   ; atmospheric stabilizer 3
-    .dw     086B53D4h   ; atmospheric stabilizer 4
-    .dw     086B5454h   ; atmospheric stabilizer 5
-    .dw     086B54C4h   ; water level lowered
-    .dw     086B54F4h   ; boiler cooling
-    .dw     086B552Eh   ; animals freed
-    .dw     086B5570h   ; auxiliary power
-    .dw     086B55A8h   ; restricted sector detaching
+    .dw     086B46C6h   ; sleep mode line 3
+    .dw     086B42A0h   ; atmospheric stabilizer 1
+    .dw     086B42CEh   ; atmospheric stabilizer 2
+    .dw     086B42FCh   ; atmospheric stabilizer 3
+    .dw     086B432Ah   ; atmospheric stabilizer 4
+    .dw     086B4358h   ; atmospheric stabilizer 5
+    .dw     086B437Eh   ; water level lowered
+    .dw     086B4398h   ; boiler cooling
+    .dw     086B43ACh   ; animals freed
+    .dw     086B43CCh   ; auxiliary power
+    .dw     086B43E8h   ; restricted sector detaching
 .if RANDOMIZER
     .dw     @Message_EscapeSequenceStart
 .else
-    .dw     086B5612h   ; escape sequence starting
+    .dw     086B4414h   ; escape sequence starting
 .endif
-    .dw     086B5674h   ; save prompt
-    .dw     086B56A0h   ; save complete
-    .dw     086B56C4h   ; adam uplink prompt
-    .dw     086B56FAh   ; ammunition resupply
-    .dw     086B5742h   ; energy recharge
-    .dw     086B5784h   ; ammo and energy recharge
-    .dw     086B57CEh   ; energy tank
-    .dw     086B5834h   ; missile tank
-    .dw     086B589Eh   ; power bomb tank
-    .dw     086B5912h   ; sprite location abnormal
+    .dw     086B4454h   ; save prompt
+    .dw     086B447Ah   ; save complete
+    .dw     086B448Ch   ; adam uplink prompt
+    .dw     086B44B8h   ; ammunition resupply
+    .dw     086B44D0h   ; energy recharge
+    .dw     086B44E8h   ; ammo and energy recharge
+    .dw     086B450Ch   ; energy tank
+    .dw     086B453Eh   ; missile tank
+    .dw     086B457Ch   ; power bomb tank
+    .dw     086B45B8h   ; sprite location abnormal
     .dw     @Message_IceTrap
     .dw     @Message_Nothing
     .fill   4 * CustomMessages_Maximum ; Reserve space for custom messages
