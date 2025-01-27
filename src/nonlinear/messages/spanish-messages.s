@@ -30,7 +30,7 @@ SpanishMessages:
     .dw     @Message_SufficientInfantMetroids
     .dw     @Message_LastInfantMetroid
     .dw     086BB3F4h   ; is your objective clear?
-    .dw        ; confirm mission objective?
+    .dw     086BB42Eh   ; confirm mission objective?
 .if RANDOMIZER
     .dw     @Message_WarpToStartLine1
     .dw     @Message_WarpToStartLine2
