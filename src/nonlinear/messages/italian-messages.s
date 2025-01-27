@@ -16,7 +16,7 @@ ItalianMessages:
     .dw     086B9140h   ; hi-jump
     .dw     086B919Ah   ; screw attack
     .dw     086B920Ch   ; space jump
-    .dw     086B9274h   ; screw attack
+    .dw     086B9274h   ; speed booster
     .dw     086B92E0h   ; varia suit
     .dw     086B9342h   ; gravity suit
     .dw     086B93B0h   ; charge beam

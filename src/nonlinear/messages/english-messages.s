@@ -1,7 +1,7 @@
 .autoregion
     .align 4
 EnglishMessages:
-    .dw     @EnglishMessage_SecurityLevel0
+    .dw     @Message_SecurityLevel0
     .dw     086B489Ah   ; security level 1
     .dw     086B4906h   ; security level 2
     .dw     086B4974h   ; security level 3
@@ -16,7 +16,7 @@ EnglishMessages:
     .dw     086B4D68h   ; hi-jump
     .dw     086B4DC0h   ; screw attack
     .dw     086B4E34h   ; space jump
-    .dw     086B4EB2h   ; screw attack
+    .dw     086B4EB2h   ; speed booster
     .dw     086B4F2Ch   ; varia suit
     .dw     086B4FA4h   ; gravity suit
     .dw     086B5010h   ; charge beam
@@ -24,16 +24,16 @@ EnglishMessages:
     .dw     086B50FCh   ; wave beam
     .dw     086B5170h   ; plasma beam
     .dw     086B51E6h   ; ice beam
-    .dw     @EnglishMessage_InfantMetroidsRemain
-    .dw     @EnglishMessage_InfantMetroidsNeeded
-    .dw     @EnglishMessage_SecondLastInfantMetroid
-    .dw     @EnglishMessage_SufficientInfantMetroids
-    .dw     @EnglishMessage_LastInfantMetroid
+    .dw     @Message_InfantMetroidsRemain
+    .dw     @Message_InfantMetroidsNeeded
+    .dw     @Message_SecondLastInfantMetroid
+    .dw     @Message_SufficientInfantMetroids
+    .dw     @Message_LastInfantMetroid
     .dw     086B5984h   ; is your objective clear?
     .dw     086B59CCh   ; confirm mission objective?
 .if RANDOMIZER
-    .dw     @EnglishMessage_WarpToStartLine1
-    .dw     @EnglishMessage_WarpToStartLine2
+    .dw     @Message_WarpToStartLine1
+    .dw     @Message_WarpToStartLine2
 .else
     .dw     086B5A18h   ; sleep mode line 1
     .dw     086B5A78h   ; sleep mode line 2
@@ -50,7 +50,7 @@ EnglishMessages:
     .dw     086B5570h   ; auxiliary power
     .dw     086B55A8h   ; restricted sector detaching
 .if RANDOMIZER
-    .dw     @EnglishMessage_EscapeSequenceStart
+    .dw     @Message_EscapeSequenceStart
 .else
     .dw     086B5612h   ; escape sequence starting
 .endif
@@ -64,61 +64,61 @@ EnglishMessages:
     .dw     086B5834h   ; missile tank
     .dw     086B589Eh   ; power bomb tank
     .dw     086B5912h   ; sprite location abnormal
-    .dw     @EnglishMessage_IceTrap
-    .dw     @EnglishMessage_Nothing
+    .dw     @Message_IceTrap
+    .dw     @Message_Nothing
     .fill   4 * CustomMessages_Maximum ; Reserve space for custom messages
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_SecurityLevel0:
+@Message_SecurityLevel0:
     .stringn 21, "[INDENT]Security level 0 unlocked.\n"
     .string  22, "[INDENT]Gray hatches now active."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_IceTrap:
+@Message_IceTrap:
     .string 56, "[INDENT]You are a FOOL!\n"
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_Nothing:
+@Message_Nothing:
     .string 50, "[INDENT]Nothing acquired.\n"
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_InfantMetroidsRemain:
+@Message_InfantMetroidsRemain:
     .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  62, "[INDENT][METROIDS] more remain."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_InfantMetroidsNeeded:
+@Message_InfantMetroidsNeeded:
     .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  61, "[INDENT][METROIDS] more needed."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_SecondLastInfantMetroid:
+@Message_SecondLastInfantMetroid:
     .stringn 24, "[INDENT]Found an Infant Metroid.\n"
     .string  59, "[INDENT]1 more remains."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_SufficientInfantMetroids:
+@Message_SufficientInfantMetroids:
     .stringn 4,  "[INDENT]Enough Infant Metroids found.\n"
     .string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_LastInfantMetroid:
+@Message_LastInfantMetroid:
     .stringn 3,  "[INDENT]Found the last Infant Metroid.\n"
     .string  14, "[INDENT]Return to Operations Deck."
 .endautoregion
@@ -129,21 +129,21 @@ EnglishMessages:
 
 .autoregion
     .align 2
-@EnglishMessage_WarpToStartLine1:
+@Message_WarpToStartLine1:
     .stringn 58, "[INDENT]Warp to start?\n"
     .string  7, "[INDENT]You will return to your start"
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_WarpToStartLine2:
+@Message_WarpToStartLine2:
     .stringn 20, "[INDENT]location, but your recent\n"
     .string  15, "[INDENT]progress will not be saved."
 .endautoregion
 
 .autoregion
     .align 2
-@EnglishMessage_EscapeSequenceStart:
+@Message_EscapeSequenceStart:
     .stringn 19, "[INDENT]Orbit change implemented.\n"
     .string  41, "[INDENT]Escape the station."
 .endautoregion

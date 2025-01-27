@@ -262,9 +262,8 @@
         | (1 << ExplosiveUpgrade_PowerBombs)
 .endif
 
-.defineregion 0879C810h, 0C0h
-
 .org MessageTableLookupAddr
+    ; Replace vanilla message tables with non-linear tables
     .dw     KanjiMessages
     .dw     HiraganaMessages
     .dw     EnglishMessages

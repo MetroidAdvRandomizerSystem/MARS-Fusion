@@ -16,7 +16,7 @@ KanjiMessages:
     .dw     086B32CEh   ; hi-jump
     .dw     086B331Eh   ; screw attack
     .dw     086B336Ch   ; space jump
-    .dw     086B33BCh   ; screw attack
+    .dw     086B33BCh   ; speed booster
     .dw     086B340Ah   ; varia suit
     .dw     086B345Eh   ; gravity suit
     .dw     086B34A4h   ; charge beam

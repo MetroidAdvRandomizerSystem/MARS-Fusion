@@ -16,7 +16,7 @@ SpanishMessages:
     .dw     086BA750h   ; hi-jump
     .dw     086BA7BAh   ; screw attack
     .dw     086BA82Ah   ; space jump
-    .dw     086BA8A2h   ; speed boost
+    .dw     086BA8A2h   ; speed booster
     .dw     086BA90Ah   ; varia suit
     .dw     086BA982h   ; gravity suit
     .dw     086BAA00h   ; charge beam

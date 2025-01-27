@@ -16,7 +16,7 @@ HiraganaMessages:
     .dw     086B3F6Ch   ; hi-jump
     .dw     086B3FBCh   ; screw attack
     .dw     086B400Ah   ; space jump
-    .dw     086B405Ah   ; screw attack
+    .dw     086B405Ah   ; speed booster
     .dw     086B40A8h   ; varia suit
     .dw     086B40FCh   ; gravity suit
     .dw     086B4142h   ; charge beam
