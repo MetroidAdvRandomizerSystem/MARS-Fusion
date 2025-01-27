@@ -40,6 +40,7 @@
 .include "inc/enums.inc"
 .include "inc/functions.inc"
 .include "inc/macros.inc"
+.include "inc/sprite-ids.inc"
 .include "inc/structs.inc"
 
 StartingItems equ 0828D2ACh
@@ -90,6 +91,7 @@ MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table its
 .include "src/qol/cross-sector-maps.s"
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
+.include "src/qol/increase-red-x-drops.s"
 .include "src/qol/map-info.s"
 .include "src/qol/sax-softlock.s"
 .include "src/qol/screw-unbonk.s"

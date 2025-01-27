@@ -617,3 +617,5 @@ StartingLocation_XPos equ 04h
 StartingLocation_YPos equ 06h
 StartingLocation_Size equ 08h
 .sym on
+
+RedX_OAMData equ 083BE2C0h

@@ -421,7 +421,7 @@
     bl      @SetSaxDefeatedFlag
 .endarea
 
-.org SpriteStats + 0C0h * SpriteStats_Size + SpriteStats_Weaknesses
+.org SpriteStats + SAXBoss_Id * SpriteStats_Size + SpriteStats_Weaknesses
     ; sa-x weaknesses
     .db     (1 << SpriteWeakness_ChargeBeam) | (1 << SpriteWeakness_Freezable)
 
