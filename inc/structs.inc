@@ -667,8 +667,10 @@ PauseScreenOamData_AdamTextOutlineOpening equ 043h
 PauseScreenOamData_AdamTextOutlineStatic equ 044h
 PauseScreenOamData_AdamTextOutlineClosing equ 045h
 PauseScreenOamData_AdamTextBackground equ 046h
-PauseScreenOamData_UnusedSystemText equ 047h
-PauseScreenOamData_UnusedSystemTextClosing equ 048h
+;PauseScreenOamData_UnusedSystemText equ 047h
+PauseScreenOamData_L0Lock equ 047h
+;PauseScreenOamData_UnusedSystemTextClosing equ 048h
+PauseScreenOamData_L0Open equ 048h
 PauseScreenOamData_ComputerEye_49 equ 049h
 PauseScreenOamData_ComputerEye_4A equ 04Ah
 PauseScreenOamData_ComputerEye_4B equ 04Bh

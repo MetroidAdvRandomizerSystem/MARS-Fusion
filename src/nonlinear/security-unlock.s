@@ -114,12 +114,25 @@
     mov     r6, #1
     and     r6, r0
 .endarea
-.org 08077E9Ch
-.area 0Ah, 0
+
+.org 08077E96h
+.area 0Eh, 0
+    mov     r3, #0
+@MapScreenLockLoop:
+; Vanilla code works, just needs to be moved by one instruction
+.incbin "metroid4.gba", 077E96h, 4
     lsr     r0, r3
     mov     r6, #1
     and     r6, r0
 .endarea
+.org 08077EA4h
+; Vanilla code works, just needs to be moved by one instruction
+.incbin "metroid4.gba", 077EA6h, 032h
+.org 08077ED6h
+    add     r3, r4, #1
+    mov     r4, r3
+    cmp     r3, #4
+    bls     @MapScreenLockLoop
 
 .org 0807D66Ah
 .area 12h, 0
@@ -163,3 +176,98 @@
     mov     r4, #9
 .endarea
 @@cont:
+
+
+.autoregion
+    .aligna 2
+@L0LockOamData:
+    .dh 3
+
+    ; L0 Sprite
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
+    .dh     (OBJ2_Character   & 0C0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
+
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
+    .dh     (OBJ1_XCoordinate & 1F8h) | OBJ1_Size_8x8
+    .dh     (OBJ2_Character   & 0C2h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
+
+    ; lock Text
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
+    .dh     (OBJ2_Character   & 1CCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+.endautoregion
+
+.autoregion
+    .aligna 2
+@L0OpenOamData:
+    .dh 3
+
+    ; L0 Sprite
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
+    .dh     (OBJ2_Character   & 1B0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
+
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
+    .dh     (OBJ1_XCoordinate & 1F8h) | OBJ1_Size_8x8
+    .dh     (OBJ2_Character   & 1B2h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
+
+    ; Open Text
+    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
+    .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
+    .dh     (OBJ2_Character   & 1ECh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
+.endautoregion
+
+.autoregion
+    .aligna 4
+@L0LockOamDataPointers:
+    .dw @L0LockOamData
+    .dw 0FFh
+    .dd 0
+.endautoregion
+
+.autoregion
+    .aligna 4
+@L0OpenOamDataPointers:
+    .dw @L0OpenOamData
+    .dw 0FFh
+    .dd 0
+.endautoregion
+
+; Replace "System (Unused)" Oam
+.org PauseScreenOamData + (PauseScreenOamData_L0Lock * 4)
+    .dw     @L0LockOamDataPointers
+
+; Replace "System Closing (Unused)" Oam
+.org PauseScreenOamData + (PauseScreenOamData_L0Open * 4)
+    .dw     @L0OpenOamDataPointers
+
+
+; Lock levels indicated by:
+;   .db OamSlot, OamId
+.autoregion
+    .align 2
+@MapScreenLockLevels:
+    .db 01Ah, PauseScreenOamData_L0Lock
+    .db 01Bh, PauseScreenOamData_L1Lock
+    .db 01Ch, PauseScreenOamData_L2Lock
+    .db 01Dh, PauseScreenOamData_L3Lock
+    .db 01Eh, PauseScreenOamData_L4Lock
+.endautoregion
+
+
+.org 08077EE8h
+    .dw @MapScreenLockLevels
+    .dw @MapScreenLockLevels + 1
+
+.org 08077F38h
+    .dw @MapScreenLockLevels
+
+;.org 08077EDAh
+;    cmp     r4, #4
+
+;.org 08077F28h
+;    cmp     r4, #4
+
+;.org 08077F56h
+;    cmp     r4, #4

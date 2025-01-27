@@ -253,8 +253,8 @@
     neg     r2, r2
     and     r0, r2
     strb    r0, [r1, #MenuSprite_Priority]
-
-    ldr     r0, =#08077C18h ; return to original place in jump table
+    ; return to original place in jump table
+    ldr     r0, =#readptr(08077B0Ch)
     mov     pc, r0
     .pool
 .endfunc

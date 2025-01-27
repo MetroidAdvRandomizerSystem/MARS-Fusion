@@ -55,3 +55,4 @@
 
 ; read pointer from source file
 .expfunc readptr(pos), readu32("metroid4.gba", pos & 0xFFFFFF)
+.expfunc readhword(pos), readu16("metroid4.gba", pos & 0xFFFFFF)
