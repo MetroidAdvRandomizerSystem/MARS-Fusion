@@ -81,13 +81,13 @@
     bhi     @@skipAreaSwitch
     ldr     r1, =DestinationRoom
     ldrb    r6, [r1]
-    ldr     r2, =MiscProgress
     mov     r0, #Event_GoMode
     bl      CheckEvent
     cmp     r0, #01
     beq     @@goModeMusic
     mov     r0, #Event_EscapeSequence
     bl      CheckEvent
+    ldr     r2, =MiscProgress
     cmp     r0, #01
     bne     @@areaSwitch
 @@skipAreaSwitch:
@@ -107,12 +107,12 @@
     ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
     lsl     r0, #1Fh
     lsr     r0, #1Fh
-    cmp     r0, #01h
+    cmp     r0, #1
     bne     @@areaSwitch
     ldrb    r0, [r1, SamusUpgrades_ExplosiveUpgrades]
     lsl     r0, #1Fh
     lsr     r0, #1Fh
-    cmp     r0, #01h
+    cmp     r0, #1
     bne     @@areaSwitch
     mov     r0, MusicTrack_FinalMission
     mov     r1, MusicType_MainDeck
