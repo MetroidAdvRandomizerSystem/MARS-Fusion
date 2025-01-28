@@ -111,13 +111,18 @@
 .area 0Eh, 0
     mov     r3, #0
 @MapScreenLockLoop0:
-; Vanilla code works, just needs to be moved by one instruction
+; The vanilla function works for setup of data, except it iterates at the beginning
+; of the loop. We offset the function 2 bytes and move the iterator to the end of
+; the loop instead.
 .incbin "metroid4.gba", 077E96h, 4
     lsr     r0, r3
     mov     r6, #1
     and     r6, r0
 .endarea
 .org 08077EA4h
+; The vanilla function works for setup of data, except it iterates at the beginning
+; of the loop. We offset the function 2 bytes and move the iterator to the end of
+; the loop instead.
 .incbin "metroid4.gba", 077EA6h, 032h
 .area 8h
 .org 08077ED6h
@@ -198,10 +203,26 @@
 
 
 .autoregion
+    .aligna 4
+@L0LockOamDataPointers:
+    .dw @L0LockOamData
+    .dw 0FFh
+    .dd 0
+@L0OpenOamDataPointers:
+    .dw @L0OpenOamData
+    .dw 0FFh
+    .dd 0
     .aligna 2
+@MapScreenLockLevels:
+; Lock levels indicated by:
+;   .db OamSlot, OamId
+    .db 01Ah, PauseScreenOamData_L0Lock
+    .db 01Bh, PauseScreenOamData_L1Lock
+    .db 01Ch, PauseScreenOamData_L2Lock
+    .db 01Dh, PauseScreenOamData_L3Lock
+    .db 01Eh, PauseScreenOamData_L4Lock
 @L0LockOamData:
     .dh 3
-
     ; L0 Sprite
     .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
     .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
@@ -215,13 +236,9 @@
     .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
     .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
     .dh     (OBJ2_Character   & 1CCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-.endautoregion
 
-.autoregion
-    .aligna 2
 @L0OpenOamData:
     .dh 3
-
     ; L0 Sprite
     .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
     .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
@@ -237,22 +254,6 @@
     .dh     (OBJ2_Character   & 1ECh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 .endautoregion
 
-.autoregion
-    .aligna 4
-@L0LockOamDataPointers:
-    .dw @L0LockOamData
-    .dw 0FFh
-    .dd 0
-.endautoregion
-
-.autoregion
-    .aligna 4
-@L0OpenOamDataPointers:
-    .dw @L0OpenOamData
-    .dw 0FFh
-    .dd 0
-.endautoregion
-
 ; Replace "System (Unused)" Oam
 .org PauseScreenOamData + (PauseScreenOamData_L0Lock * 4)
     .dw     @L0LockOamDataPointers
@@ -260,20 +261,6 @@
 ; Replace "System Closing (Unused)" Oam
 .org PauseScreenOamData + (PauseScreenOamData_L0Open * 4)
     .dw     @L0OpenOamDataPointers
-
-
-; Lock levels indicated by:
-;   .db OamSlot, OamId
-.autoregion
-    .align 2
-@MapScreenLockLevels:
-    .db 01Ah, PauseScreenOamData_L0Lock
-    .db 01Bh, PauseScreenOamData_L1Lock
-    .db 01Ch, PauseScreenOamData_L2Lock
-    .db 01Dh, PauseScreenOamData_L3Lock
-    .db 01Eh, PauseScreenOamData_L4Lock
-.endautoregion
-
 
 .org 08077EE8h
     .dw @MapScreenLockLevels
