@@ -485,7 +485,28 @@
 .defineregion readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Clipdata), 1F0h
 
 ; Sector 2 - Dessgeega Dormitory
+; add connection to Shadow Moses Island under hidden bomb blocks
 ; add cocoon and kihunter spritesets to intact room state
+.autoregion
+@S2_Dessgeega_Dormitory_Bg1:
+.incbin "data/rooms/S2-0E-BG1.rlebg"
+.endautoregion
+
+.autoregion
+@S2_Dessgeega_Dormitory_Clipdata:
+.incbin "data/rooms/S2-0E-Clip.rlebg"
+.endautoregion
+
+.org Sector2Levels + 0Eh * LevelMeta_Size + LevelMeta_Bg1
+.area 04h
+    .dw     @S2_Dessgeega_Dormitory_Bg1
+.endarea
+
+.org Sector2Levels + 0Eh * LevelMeta_Size + LevelMeta_Clipdata
+.area 04h
+    .dw     @S2_Dessgeega_Dormitory_Clipdata
+.endarea
+
 .org Sector2Levels + 0Eh * LevelMeta_Size + LevelMeta_Spriteset1Event
 .area LevelMeta_MapX - LevelMeta_Spriteset1Event
     .db     Event_ZazabiAbsorbed
@@ -501,6 +522,14 @@
 .org Sector2Doors + 2Ah * DoorEntry_Size + DoorEntry_Type
 .area 1
     .db     DoorType_LockableHatch
+.endarea
+
+.org Sector2Doors + 65h * DoorEntry_Size + DoorEntry_Type
+.area 6
+    .db     DoorType_NoHatch
+    .db     0Eh
+    .db     5, 6
+    .db     0Ch, 0Dh
 .endarea
 
 ; Sector 2 - Zazabi Access
@@ -671,6 +700,7 @@
 
 ; Sector 2 - Eastern Shaft
 ; add ledge to allow climbing frozen enemies from middle doors to top doors
+; removed 2 vine tiles to prevent dangerous nettori
 .defineregion readptr(Sector2Levels + 20h * LevelMeta_Size + LevelMeta_Clipdata), 21Fh
 .defineregion readptr(Sector2Levels + 23h * LevelMeta_Size + LevelMeta_Bg1), 46Ah
 
