@@ -82,12 +82,41 @@
     ldr     r1, =DestinationRoom
     ldrb    r6, [r1]
     ldr     r2, =MiscProgress
-    ldr     r0, =CurrEvent
-    ldrb    r0, [r0]
-    cmp     r0, #Event_EscapeSequence
+    mov     r0, #Event_GoMode
+    bl      CheckEvent
+    cmp     r0, #01
+    beq     @@goModeMusic
+    mov     r0, #Event_EscapeSequence
+    bl      CheckEvent
+    cmp     r0, #01
     bne     @@areaSwitch
 @@skipAreaSwitch:
     b       @@areaSwitchDone
+@@goModeMusic:
+; Checks if in Observation Deck to play pre-SAX ambience
+    cmp     r5, Area_MainDeck
+    bne     @@areaSwitch
+    cmp     r6, #0Dh
+    bne     @@finalMission
+    mov     r0, MusicTrack_SaxHiding
+    mov     r1, MusicType_BossAmbience
+    b       @@tryPlay
+; Checks if player has charge and missiles to signal true go mode
+@@finalMission:
+    ldr     r1, =SamusUpgrades
+    ldrb    r0, [r1, SamusUpgrades_BeamUpgrades]
+    lsl     r0, #1Fh
+    lsr     r0, #1Fh
+    cmp     r0, #01h
+    bne     @@areaSwitch
+    ldrb    r0, [r1, SamusUpgrades_ExplosiveUpgrades]
+    lsl     r0, #1Fh
+    lsr     r0, #1Fh
+    cmp     r0, #01h
+    bne     @@areaSwitch
+    mov     r0, MusicTrack_FinalMission
+    mov     r1, MusicType_MainDeck
+    b       @@playMusic
 @@areaSwitch:
     add     r1, =@@areaBranchTable
     ldrb    r0, [r1, r5]
@@ -282,7 +311,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Serris + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, MusicTrack_PreBoss
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #40
     b       @@tryPlay
@@ -293,7 +322,7 @@
     ldr     r0, [r2, MiscProgress_MajorLocations]
     lsr     r0, MajorLocation_Nightmare + 1
     bcs     @@case_areaSwitch_default
-    mov     r0, MusicTrack_PreBoss
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #50
     b       @@tryPlay
@@ -308,7 +337,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
     beq     @@areaSwitchDone
-    mov     r0, MusicTrack_PreBoss
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -323,7 +352,7 @@
     ldrb    r0, [r1]
     cmp     r0, MusicType_BossAmbience
     beq     @@areaSwitchDone
-    mov     r0, MusicTrack_PreBoss
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     mov     r2, #60
     b       @@tryPlay
@@ -497,7 +526,7 @@
     ldrb    r0, [r0, Sprite_Id]
     cmp     r0, #SpriteId_WideCoreXNucleus
     bne     @@return
-    mov     r0, MusicTrack_PreBoss
+    mov     r0, MusicTrack_PreBossAmbience
     mov     r1, MusicType_BossAmbience
     bl      Music_Play
 @@return:

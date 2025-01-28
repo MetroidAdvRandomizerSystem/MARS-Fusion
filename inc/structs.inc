@@ -334,6 +334,7 @@ MusicInfo_NextTrack equ 22h
 
 .sym off
 MusicTrack_Briefing equ 2Ah
+MusicTrack_FinalMission equ 5Bh
 MusicTrack_Tourian equ 35h
 MusicTrack_BSLAmbience equ 1Eh
 MusicTrack_MainDeck equ 2Ch
