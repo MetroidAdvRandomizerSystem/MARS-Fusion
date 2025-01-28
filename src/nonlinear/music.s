@@ -81,15 +81,15 @@
     bhi     @@skipAreaSwitch
     ldr     r1, =DestinationRoom
     ldrb    r6, [r1]
+    mov     r0, #Event_EscapeSequence
+    bl      CheckEvent
+    cmp     r0, #01
+    beq     @@skipAreaSwitch
     mov     r0, #Event_GoMode
     bl      CheckEvent
     cmp     r0, #01
     beq     @@goModeMusic
-    mov     r0, #Event_EscapeSequence
-    bl      CheckEvent
-    ldr     r2, =MiscProgress
-    cmp     r0, #01
-    bne     @@areaSwitch
+    b    @@areaSwitch
 @@skipAreaSwitch:
     b       @@areaSwitchDone
 @@goModeMusic:
@@ -118,6 +118,7 @@
     mov     r1, MusicType_MainDeck
     b       @@playMusic
 @@areaSwitch:
+    ldr     r2, =MiscProgress
     add     r1, =@@areaBranchTable
     ldrb    r0, [r1, r5]
     lsl     r0, #1
