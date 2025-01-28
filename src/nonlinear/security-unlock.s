@@ -107,18 +107,10 @@
     bcc     0806CBE2h
 .endarea
 
-.org 08077F04h
-.area 0Ah, 0
-    ; Check locks on map menu
-    lsr     r0, r3
-    mov     r6, #1
-    and     r6, r0
-.endarea
-
 .org 08077E96h
 .area 0Eh, 0
     mov     r3, #0
-@MapScreenLockLoop:
+@MapScreenLockLoop0:
 ; Vanilla code works, just needs to be moved by one instruction
 .incbin "metroid4.gba", 077E96h, 4
     lsr     r0, r3
@@ -126,13 +118,40 @@
     and     r6, r0
 .endarea
 .org 08077EA4h
-; Vanilla code works, just needs to be moved by one instruction
 .incbin "metroid4.gba", 077EA6h, 032h
+.area 8h
 .org 08077ED6h
     add     r3, r4, #1
     mov     r4, r3
     cmp     r3, #4
-    bls     @MapScreenLockLoop
+    bls     @MapScreenLockLoop0
+.endarea
+
+.org 08077F02h
+.area 0Ch, 0
+    mov     r3, #0
+    ; Check locks on map menu
+@MapScreenLockLoop1:
+    lsr     r0, r3
+    mov     r6, #1
+    and     r6, r0
+.endarea
+.org 08077F0Ch
+.incbin "metroid4.gba", 077F0Eh, 18h
+.area 8h
+    add     r3, r4, #1
+    mov     r4, r3
+    cmp     r3, #4
+    bls     @MapScreenLockLoop1
+.endarea
+
+; this func loops through the lock OAM slots and sets clears the OAM Graphic
+; this ensures all lock graphics are cleared
+.org 08077F56h
+.area 2
+    cmp     r4, #4
+.endarea
+
 
 .org 0807D66Ah
 .area 12h, 0
@@ -262,12 +281,3 @@
 
 .org 08077F38h
     .dw @MapScreenLockLevels
-
-;.org 08077EDAh
-;    cmp     r4, #4
-
-;.org 08077F28h
-;    cmp     r4, #4
-
-;.org 08077F56h
-;    cmp     r4, #4
