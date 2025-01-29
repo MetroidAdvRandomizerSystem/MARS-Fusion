@@ -524,12 +524,22 @@
     .db     DoorType_LockableHatch
 .endarea
 
+.org Sector2Doors + 60h * DoorEntry_Size + DoorEntry_Destination
+.area 1
+    .db     67h
+.endarea
+
 .org Sector2Doors + 65h * DoorEntry_Size + DoorEntry_Type
 .area 6
     .db     DoorType_NoHatch
     .db     0Eh
     .db     5, 6
     .db     0Ch, 0Dh
+.endarea
+
+.org Sector2Doors + 67h * DoorEntry_Size + DoorEntry_Destination
+.area 1
+    .db     60h
 .endarea
 
 ; Sector 2 - Zazabi Access
