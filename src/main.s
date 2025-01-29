@@ -60,6 +60,7 @@ HintSecurityLevels equ 087FF059h
 EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
+MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table itself. The pointers, offset by language, at this location will be the table location
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h
