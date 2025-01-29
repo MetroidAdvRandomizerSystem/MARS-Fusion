@@ -101,7 +101,7 @@
 * Changed: Security Shaft East: Repair the door to Kago Blockade.
 * Changed: Ripper Road: Replace lv0 door to Arctic Containment with an open hatch.
 * Changed: Crow's Nest: Repair the door to Arctic Containment into a lv3 security door.
-* Changed: Geron Checkpoint: Randomizer only, remove Geron, even when Power Bomb Data has been acquired.
+* Changed: Geron Checkpoint: (Randomizer only) Remove Geron, even when Power Bomb Data has been acquired.
 #### Sector 6
 * Changed: Zozoro Wine Cellar: (Optional) Change reforming bomb block in front of expansion tank to a never reforming bomb block to prevent being trapped by running out of power bombs.
 * Changed: Big Shell 1: (Optional) Remove the crumble block into the long morph tunnel to prevent softlocks without power bombs.
