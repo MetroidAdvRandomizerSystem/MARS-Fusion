@@ -332,40 +332,6 @@ MusicInfo_Type equ 21h
 MusicInfo_NextTrack equ 22h
 .sym on
 
-.sym off
-; Room specific music
-MusicTrack_Briefing equ 2Ah
-MusicTrack_NavRoom equ 0Bh
-MusicTrack_DataRoom equ 0Fh
-; Region specific music
-MusicTrack_MainDeck equ 2Ch
-MusicTrack_BSLAmbience equ 1Eh
-MusicTrack_ObservationDeck equ 2Eh
-MusicTrack_Sector1 equ 04h
-MusicTrack_Tourian equ 35h
-MusicTrack_Sector2 equ 06h
-MusicTrack_Sector3 equ 07h
-MusicTrack_Sector4 equ 08h
-MusicTrack_Sector5 equ 09h
-MusicTrack_Sector6 equ 0Ah
-MusicTrack_FinalMission equ 5Bh
-; Boss specific music
-MusicTrack_EnvironmentalDisquiet equ 5Fh
-MusicTrack_EnvironmentalShock equ 58h
-MusicTrack_PreBossAmbience equ 18h
-MusicTrack_Arachnus equ 19h
-MusicTrack_BeamCoreX equ 43h
-MusicTrack_Zazabi equ 1Ah
-MusicTrack_SerrisYakuza equ 3Fh
-MusicTrack_Box equ 1Bh
-MusicTrack_VariaCoreX equ 40h
-MusicTrack_Nettori equ 44h
-MusicTrack_Nightmare equ 41h
-MusicTrack_Ridley equ 42h
-MusicTrack_SaxHiding equ 15h
-MusicTrack_SaxFight equ 51h
-.sym on
-
 SpecialTileset equ 03004DE4h
 HatchData equ 0x3004DEC
 DestinationRoom equ 03004E3Ch
