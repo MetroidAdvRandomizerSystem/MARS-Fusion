@@ -30,7 +30,7 @@
 ; Charged > Ice > Super = Diffusion > Normal
 
 ; Hit effect
-; Charged > Ice > Super = Diffusion > Normal
+; Charged > Ice > Super > Diffusion = Normal
 
 
 ; modified portion of UpdateArmCannonAndWeapons
@@ -455,12 +455,11 @@ GetMissileHitEffect:
     mov     r1, 1 << ExplosiveUpgrade_IceMissiles
     and     r1, r0
     cmp     r1, #0
-    beq     @@checkSuperOrDiffusion
+    beq     @@checkSuper
     mov     r0, Particle_IceMissileExplosion
     b       @@return
-@@checkSuperOrDiffusion:
-    mov     r1, (1 << ExplosiveUpgrade_SuperMissiles) \
-        | (1 << ExplosiveUpgrade_DiffusionMissiles)
+@@checkSuper:
+    mov     r1, 1 << ExplosiveUpgrade_SuperMissiles
     and     r1, r0
     cmp     r1, #0
     beq     @@normal
