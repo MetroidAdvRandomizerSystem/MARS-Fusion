@@ -1372,4 +1372,4 @@
     .dw     readptr(Sector6Scrolls + 13h * 4)
 .endarea
 
-.include "src/nonlinear/room-edits/main-deck/quarantine-bay.s"
+.include "src/nonlinear/room-edits/main-deck/room-47.s"

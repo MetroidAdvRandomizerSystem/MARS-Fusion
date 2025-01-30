@@ -620,4 +620,4 @@ StartingLocation_Size equ 08h
 
 RedX_OAMData equ 083BE2C0h
 
-SpritePalettePtrs equ 0879A8D4h - 04h * 10h ; Offset by 10h so that this can be indexed with the Sprite_Id
+SpritePalettePtrs equ 0879A8D4h

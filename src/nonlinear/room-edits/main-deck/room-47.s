@@ -1,6 +1,7 @@
+; Quarantine Bay
 ; Changes: 
 ; - Always spawn Hornoad.
-; - Change Hornoad Palette to RoS themed
+; - Change Hornoad Palette to unused green/yellow palette
 ; - Hornoad always drops Red X
 
 
@@ -14,9 +15,10 @@
     bx  r1
 .endarea
 
-; Change QuarantineBayHornoad Palette
-.org SpritePalettePtrs + QuarantineBayHornoad_Id * 4
-    .dw 085A1E58h ; Unused Palette from Opening, RoS Themed Hornoad
+; Change QuarantineBayHornoad Palette - Palette pointers are offset by 10h, as the first 10h
+; Sprite_Ids do not use palettes
+.org SpritePalettePtrs + (QuarantineBayHornoad_Id - 10h) * 4
+    .dw 085A1E58h ; Unused Palette from Opening, green/yellow
 
 ; Adjust Red X Probability
 .org SpriteStats + QuarantineBayHornoad_Id * SpriteStats_Size + SpriteStats_YellowXWeight
