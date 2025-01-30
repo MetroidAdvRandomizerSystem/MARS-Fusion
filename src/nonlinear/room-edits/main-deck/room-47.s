@@ -10,24 +10,24 @@
 ; override this function to always spawn the hornoad.
 .org 08060DB2h
 .area 0Fh, 0
-    mov r0, #1
-    pop r1
-    bx  r1
+    mov     r0, #1
+    pop     r1
+    bx      r1
 .endarea
 
 ; Change QuarantineBayHornoad Palette - Palette pointers are offset by 10h, as the first 10h
 ; Sprite_Ids do not use palettes
 .org SpritePalettePtrs + (QuarantineBayHornoad_Id - 10h) * 4
-    .dw 085A1E58h ; Unused Palette from Opening, green/yellow
+    .dw     085A1E58h ; Unused Palette from Opening, green/yellow
 
 ; Adjust Red X Probability
 .org SpriteStats + QuarantineBayHornoad_Id * SpriteStats_Size + SpriteStats_YellowXWeight
-    .dh 0000h
-    .dh 0000h
-    .dh 0400h
+    .dh     0000h
+    .dh     0000h
+    .dh     0400h
 
 ; Adjust Hornoad Sprite Data Properties in Quarantine Bay to use X Probability table
 .org 0847F0D3h
-    .skip 3 ; Hornoad is second sprite in Quarantine Bay
-    .skip 2 ; Leave X/Y Position the same
-    .db 021h
+    .skip   3 ; Hornoad is second sprite in Quarantine Bay
+    .skip   2 ; Leave X/Y Position the same
+    .db     021h
