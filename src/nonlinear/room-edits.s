@@ -1131,6 +1131,19 @@
 .org Sector5Doors + 46h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
 
+.if RANDOMIZER
+; Sector 5 - Geron Checkpoint
+; Remove power bomb geron spriteset
+.defineregion readptr(Sector5Levels + 08h * LevelMeta_Size + LevelMeta_Spriteset2), 15h
+.org Sector5Levels + 08h * LevelMeta_Size + LevelMeta_Spriteset2Event
+.area LevelMeta_Spriteset2Id - LevelMeta_Spriteset1Id
+    .db     0
+    .skip   2
+    .dw     NullSpriteset
+    .db     0
+.endarea
+.endif
+
 ; Sector 5 - Frozen Tower
 ; remove event-based transitions
 .org Sector5Doors + 17h * DoorEntry_Size + DoorEntry_Type

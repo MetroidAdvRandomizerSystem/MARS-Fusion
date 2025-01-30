@@ -256,7 +256,7 @@
     bx      lr
 @@case_42:
     ; downloaded power bombs
-    ; spritesets: S5-08, S5-09, S5-18
+    ; spritesets: S5-08 (non-Randomized), S5-09, S5-18
     ; room states: S5-15 => S5-16, S5-27 => S5-28
     ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
     lsl     r0, #1Fh - ExplosiveUpgrade_PowerBombs
