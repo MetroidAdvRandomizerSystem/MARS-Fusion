@@ -619,3 +619,5 @@ StartingLocation_Size equ 08h
 .sym on
 
 RedX_OAMData equ 083BE2C0h
+
+SpritePalettePtrs equ 0879A8D4h

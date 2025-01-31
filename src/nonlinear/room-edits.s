@@ -1394,3 +1394,5 @@
     .dw     readptr(Sector6Scrolls + 12h * 4)
     .dw     readptr(Sector6Scrolls + 13h * 4)
 .endarea
+
+.include "src/nonlinear/room-edits/main-deck/room-47.s"
