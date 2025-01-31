@@ -13,9 +13,3 @@
     .dh     2A25h, 7FFFh, 39CEh, 39CEh, 4800h, 2484h, 7FFFh, 03FFh
     .dh     7C00h, 43E2h, 249Fh, 03FFh, 7C00h, 43E2h, 249Fh, 03FFh
 .endarea
-
-; map adjustments to match room adjustments
-.org readptr(MinimapDataPointers + Area_PYR * 4)
-.area 1E3h
-.incbin "data/maps/sector3.lz77"
-.endarea
