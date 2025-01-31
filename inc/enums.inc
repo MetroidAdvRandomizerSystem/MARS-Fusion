@@ -297,7 +297,7 @@ MenuSpriteGfx_None equ 00h
 MenuSpriteGfx_FlashingSquare equ 01h
 MenuSpriteGfx_CursorRight equ 02h
 MenuSpriteGfx_CursorDown equ 03h
-MenuSpriteGfx_PreviewMarker equ 04h
+MenuSpriteGfx_SelectMapChange equ 04h ; Vanilla is PreviewMarker
 MenuSpriteGfx_BigUpArrow equ 05h
 MenuSpriteGfx_BigDownArrow equ 06h
 MenuSpriteGfx_BigLeftArrow equ 07h
@@ -345,6 +345,7 @@ MenuSpriteGfx_Lv3Unlocked equ 31h
 MenuSpriteGfx_Lv4Locked equ 32h
 MenuSpriteGfx_Lv4Unlocked equ 33h
 MenuSpriteGfx_ObjectiveButton equ 34h
+MenuSpriteGfx_ObjectiveButtonTurningOn equ 35h
 MenuSpriteGfx_GameTimer equ 36h
 MenuSpriteGfx_ETankCounter equ 37h
 MenuSpriteGfx_MTankCounter equ 38h
@@ -354,6 +355,83 @@ MenuSpriteGfx_MTankComplete equ 3Bh
 MenuSpriteGfx_PBTankComplete equ 3Ch
 MenuSpriteGfx_NavigationConsole equ 3Dh
 MenuSpriteGfx_SamusNavigationConsole equ 3Eh
+MenuSpriteGfx_NavigationPinkDoorLeft equ 3Fh
+MenuSpriteGfx_NavigationPinkDoorRight equ 40h
+MenuSpriteGfx_IceXPopUpOpening equ 41h
+MenuSpriteGfx_IceXPopUpClosing equ 42h
+MenuSpriteGfx_AdamTextOutlineOpening equ 43h
+MenuSpriteGfx_AdamTextOutlineStatic equ 44h
+MenuSpriteGfx_AdamTextOutlineClosing equ 45h
+MenuSpriteGfx_AdamTextBackground equ 46h
+MenuSpriteGfx_Lv0Locked equ 47h ; vanilla is UnusedSystemText
+MenuSpriteGfx_Lv0Unlocked equ 48h ; vanilla is UnusedSystemTextClosing
+MenuSpriteGfx_ComputerEye_49 equ 49h
+MenuSpriteGfx_ComputerEye_4A equ 4Ah
+MenuSpriteGfx_ComputerEye_4B equ 4Bh
+MenuSpriteGfx_ComputerEyeAnimated equ 4Ch
+MenuSpriteGfx_SamusTextOpening equ 4Dh
+MenuSpriteGfx_SamusTextOutlineStatic equ 4Eh
+MenuSpriteGfx_SamusTextOutlineClosing equ 4Fh
+MenuSpriteGfx_SamusTextBackgroundOpening equ 50h
+MenuSpriteGfx_SamusTextBackgroundStatic equ 51h
+MenuSpriteGfx_SamusTextBackgroundClosing equ 52h
+MenuSpriteGfx_FederationTextOutlineOpening equ 53h
+MenuSpriteGfx_FederationTextOutlineStatic equ 54h
+MenuSpriteGfx_FederationTextOutlineClosing equ 55h
+MenuSpriteGfx_FederationTextBackgroundOpening equ 56h
+MenuSpriteGfx_FederationTextBackgroundStatic equ 57h
+MenuSpriteGfx_FederationTextBackgroundClosing equ 58h
+MenuSpriteGfx_SamusTextOpening_Duplicate equ 59h ; Same as SamusTextOpening?
+MenuSpriteGfx_SamusTextOutlineStatic_Duplicate equ 5Ah ; Same as SamusTextOutlineStatic?
+MenuSpriteGfx_SamusTextOutlineClosing_Duplicate equ 5Bh ; Same as SamusTextOutlineClosing?
+MenuSpriteGfx_SamusTextBackgroundOpening_Duplicate equ 5Ch ; Same as SamusTextBackgroundOpening?
+MenuSpriteGfx_SamusTextBackgroundStatic_Duplicate equ 5Dh ; Same as SamusTextBackgroundStatic?
+MenuSpriteGfx_SamusTextBackgroundClosing_Duplicate equ 5Eh ; Same as SamusTextBackgroundClosing?
+MenuSpriteGfx_SamusPortraitOpening equ 5Fh
+MenuSpriteGfx_SamusPortraitAnimated equ 60h
+MenuSpriteGfx_SamusPortraitStatic equ 61h
+MenuSpriteGfx_SamusPortraitClosing equ 62h
+MenuSpriteGfx_FederationPortraitOpening equ 63h
+MenuSpriteGfx_FederationPortraitStatic equ 64h
+MenuSpriteGfx_FederationPortraitSpeaking equ 65h
+MenuSpriteGfx_FederationPortraitClosing equ 66h
+MenuSpriteGfx_AnimatedScanlinesForPortrait equ 67h
+MenuSpriteGfx_BSLRotationAnimation_68 equ 68h
+MenuSpriteGfx_BSLRotationAnimation_69 equ 69h
+MenuSpriteGfx_BSLRotationAnimation_6A equ 6Ah
+MenuSpriteGfx_BSLRotationAnimation_6B equ 6Bh
+MenuSpriteGfx_BSLRotationAnimation_6C equ 6Ch
+MenuSpriteGfx_BSLRotationAnimation_6D equ 6Dh
+MenuSpriteGfx_BSLRotationAnimation_6E equ 6Eh
+MenuSpriteGfx_BSLRotationAnimation_6F equ 6Fh
+MenuSpriteGfx_BSLRotationAnimation_70 equ 70h
+MenuSpriteGfx_BSLRotationAnimation_71 equ 71h
+MenuSpriteGfx_BSLRotationAnimation_72 equ 72h
+MenuSpriteGfx_BSLRotationAnimation_73 equ 73h
+MenuSpriteGfx_BSLRotationAnimation_74 equ 74h
+MenuSpriteGfx_BSLRotationAnimation_75 equ 75h
+MenuSpriteGfx_BSLRotationAnimation_76 equ 76h
+MenuSpriteGfx_BSLRotationAnimation_77 equ 77h
+MenuSpriteGfx_BSLRotationAnimation_78 equ 78h
+MenuSpriteGfx_BSLRotationAnimation_79 equ 79h
+MenuSpriteGfx_BSLRotationAnimation_7A equ 7Ah
+MenuSpriteGfx_BSLRotationAnimation_7B equ 7Bh
+MenuSpriteGfx_BSLRotationAnimation_7C equ 7Ch
+MenuSpriteGfx_BSLRotationAnimation_7D equ 7Dh
+MenuSpriteGfx_BSLRotationAnimation_7E equ 7Eh
+MenuSpriteGfx_BSLRotationAnimation_7F equ 7Fh
+MenuSpriteGfx_BSLRotationAnimation_80 equ 80h
+MenuSpriteGfx_BSLRotationAnimation_81 equ 81h
+MenuSpriteGfx_BSLRotationAnimation_82 equ 82h
+MenuSpriteGfx_BSLRotationAnimation_83 equ 83h
+MenuSpriteGfx_BSLRotationAnimation_84 equ 84h
+MenuSpriteGfx_BSLRotationAnimation_85 equ 85h
+MenuSpriteGfx_BSLRotationAnimation_86 equ 86h
+MenuSpriteGfx_BSLRotationAnimation_87 equ 87h
+MenuSpriteGfx_BSLRotationAnimation_88 equ 88h
+MenuSpriteGfx_BSLRotationAnimation_89 equ 89h
+MenuSpriteGfx_BSLRotationAnimation_8A equ 8Ah
+MenuSpriteGfx_BSLRotationAnimation_8B equ 8Bh
 
 DoorType_AreaConnection equ 01h
 DoorType_NoHatch equ 02h

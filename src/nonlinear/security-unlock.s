@@ -204,24 +204,24 @@
 
 .autoregion
     .aligna 4
-@L0LockOamDataPointers:
-    .dw @L0LockOamData
+@Lv0LockedOamDataPointers:
+    .dw @Lv0LockedOamData
     .dw 0FFh
     .dd 0
-@L0OpenOamDataPointers:
-    .dw @L0OpenOamData
+@Lv0UnlockedOamDataPointers:
+    .dw @Lv0UnlockedOamData
     .dw 0FFh
     .dd 0
     .aligna 2
 @MapScreenLockLevels:
 ; Lock levels indicated by:
 ;   .db OamSlot, OamId
-    .db 01Ah, PauseScreenOamData_L0Lock
-    .db 01Bh, PauseScreenOamData_L1Lock
-    .db 01Ch, PauseScreenOamData_L2Lock
-    .db 01Dh, PauseScreenOamData_L3Lock
-    .db 01Eh, PauseScreenOamData_L4Lock
-@L0LockOamData:
+    .db 01Ah, MenuSpriteGfx_Lv0Locked
+    .db 01Bh, MenuSpriteGfx_Lv1Locked
+    .db 01Ch, MenuSpriteGfx_Lv2Locked
+    .db 01Dh, MenuSpriteGfx_Lv3Locked
+    .db 01Eh, MenuSpriteGfx_Lv4Locked
+@Lv0LockedOamData:
     .dh 3
     ; L0 Sprite
     .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
@@ -237,7 +237,7 @@
     .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
     .dh     (OBJ2_Character   & 1CCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 
-@L0OpenOamData:
+@Lv0UnlockedOamData:
     .dh 3
     ; L0 Sprite
     .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
@@ -255,12 +255,12 @@
 .endautoregion
 
 ; Replace "System (Unused)" Oam
-.org PauseScreenOamData + (PauseScreenOamData_L0Lock * 4)
-    .dw     @L0LockOamDataPointers
+.org PauseScreenOamData + (MenuSpriteGfx_Lv0Locked * 4)
+    .dw     @Lv0LockedOamDataPointers
 
 ; Replace "System Closing (Unused)" Oam
-.org PauseScreenOamData + (PauseScreenOamData_L0Open * 4)
-    .dw     @L0OpenOamDataPointers
+.org PauseScreenOamData + (MenuSpriteGfx_Lv0Unlocked * 4)
+    .dw     @Lv0UnlockedOamDataPointers
 
 .org 08077EE8h
     .dw @MapScreenLockLevels

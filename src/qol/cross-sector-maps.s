@@ -223,7 +223,7 @@
 .endautoregion
 
 ; Replace "Preview Target" Oam
-.org PauseScreenOamData + (PauseScreenOamData_SelectMapChange * 4)
+.org PauseScreenOamData + (MenuSpriteGfx_SelectMapChange * 4)
     .dw     @SelectMapChangeOamDataPointers
 
 .autoregion
@@ -235,7 +235,7 @@
     mul     r0, r1
     add     r0, #NonGamePlayRam_OamData
     add     r1, r3, r0
-    mov     r0, #PauseScreenOamData_SelectMapChange
+    mov     r0, #MenuSpriteGfx_SelectMapChange
     strb    r0, [r1, MenuSprite_Graphic]
     mov     r0, #0h
     strh    r0, [r1, MenuSprite_XPos]
