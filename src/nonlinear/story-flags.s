@@ -202,6 +202,14 @@
     .pool
 .endarea
 
+; Override event based water lowering. Vanilla code checks if the Event is > 1Fh
+; If so it will lower the water, even if the Pump Station hasn't been triggered.
+; The escape sequence sets Event to 67h
+.org 08063754h
+.area 0Ah, 0
+    b       80637FEh  
+.endarea
+
 .org 08063956h
 .area 52h, 0
     ; update water lowered flag

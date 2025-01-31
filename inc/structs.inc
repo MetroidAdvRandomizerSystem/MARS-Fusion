@@ -502,7 +502,13 @@ CreditsLine_Size equ 24h
 .sym on
 
 AreaLevels equ 0879B8BCh
+NullBg equ 083BF850h
 .sym off
+LevelMeta_Tileset equ 00h
+LevelMeta_Bg0Properties equ 01h
+LevelMeta_Bg1Properties equ 02h
+LevelMeta_Bg2Properties equ 03h
+LevelMeta_Bg3Properties equ 04h
 LevelMeta_Bg0 equ 08h
 LevelMeta_Bg1 equ 0Ch
 LevelMeta_Bg2 equ 10h
