@@ -60,6 +60,7 @@ HintSecurityLevels equ 087FF059h
 EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
+RoomNamesAddr equ 087FF070h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h
@@ -152,6 +153,7 @@ MinorLocationsAddr equ 087FF06Ch
 .include "src/randomizer/hatch-fixes.s"
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
+.include "src/randomizer/room-name-display.s"
 .include "src/randomizer/open-escape.s"
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
