@@ -1021,6 +1021,12 @@
 .incbin "data/rooms/S5-03-Clip.rlebg"
 .endautoregion
 
+; Remove Nightmare flying around by removing BG0
+.org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg0Properties
+    .db     0
+.org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg0
+    .dw     NullBg
+
 .org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1
 .area 0Ch
     .dw     @S5_NightmareTrainingGrounds_Bg1
