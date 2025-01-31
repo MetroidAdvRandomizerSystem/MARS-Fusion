@@ -571,6 +571,8 @@ Sector4Scrolls equ 0879BA84h
 Sector5Scrolls equ 0879BA38h
 Sector6Scrolls equ 0879BAB8h
 
+MinimapDataPointers equ 0879BE5Ch
+
 MessagesByLanguage equ 0879CDF4h
 
 BLDCNT equ 04000050h

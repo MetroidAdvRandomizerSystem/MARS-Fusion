@@ -126,6 +126,7 @@ MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table its
 .include "src/nonlinear/room-states.s"
 .include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"
+.include "src/nonlinear/minimap-edits.s"
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/missile-stacking.s"
