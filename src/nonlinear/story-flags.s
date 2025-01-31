@@ -204,7 +204,7 @@
 
 ; Override event based water lowering. Vanilla code, presumably in some failsafe
 ; or development function checks if the Event is > 1Fh in any room.
-; If so it will trigger lowing the water, even if the Pump Station hasn't been triggered.
+; If so it will trigger lowering the water, even if the Pump Station hasn't been triggered.
 ; The escape sequence sets Event to 67h. Change the code to always branch to the 
 ; code location used when Event <= 1Fh
 .org 08063754h
