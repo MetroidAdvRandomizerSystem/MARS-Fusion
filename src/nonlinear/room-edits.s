@@ -876,7 +876,6 @@
 
 ; Sector 5 - Arctic Containment
 ; change the lv4 security door to crow's nest to a functional lv3 security door
-; change the minimap to reflect the new door
 .defineregion readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Clipdata), 1AAh
 
 .org readptr(Sector5Levels + 07h * LevelMeta_Size + LevelMeta_Bg1)
