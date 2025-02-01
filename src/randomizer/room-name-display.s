@@ -4,22 +4,29 @@
 
 .autoregion
     .align 2
-; Load the current room name. When the code is hijacked, it expects both r2 and r7 to contain the
-; address to the text. The code will use r2 to iterate along the text string, but r7 needs the 
-; original address
+; Load the current room name. The lines we are hijacking are:
+; ldr     r2, [r7]
+; mov     r1, #0FFh
+; r7 is a pointer to the text to show for the Objective/Room Name message box.
+; Loading the desired pointer to r7, then running the original lines will get 
+; the room name text to be loaded
+
 .func @LoadRoomName
-    push    { r0, r1, r3 }
+    push    { r0 }
     ldr     r2, =RoomNamesAddr
-    ldr     r3, =CurrArea
-    ldrb    r3, [r3]
-    lsl     r3, #2
-    ldr     r3, [r2, r3] ; Address of Area Name Table
+    ldr     r0, =CurrArea
+    ldrb    r0, [r0]
+    lsl     r0, #2
+    ldr     r0, [r2, r0] ; Address of Area Name Table
     ldr     r2, =CurrRoom
     ldrb    r2, [r2]
     lsl     r2, #2
-    ldr     r7, [r3, r2]
+    ldr     r7, [r0, r2]
+    pop     { r0 }
+    ; Original Lines
     ldr     r2, [r7]
-    pop     { r0, r1, r3 }
+    mov     r1, #0FFh
+    ; Return to hijacked location
     bx      lr
 
 .endfunc
