@@ -6,7 +6,7 @@
 * Changed: Data rooms and security rooms can be used at any point in time.
 * Changed: Bosses can now be fought at any point in time, provided the player has access to the arena.
 * Added: Unique collectible tank sprites for every item, including shiny variants of the missile tank and power bomb tank.
-* Added: Collectible tank sprites can differ from the item the actually provide.
+* Added: Collectible tank sprites can differ from the item they actually provide.
 * Changed: Collectible tanks can display a configurable pickup fanfare message when collected.
 * Changed: Anonymize all collectible tanks in demos.
 * Added: Infant metroid item, a configurable number of which are required to spawn SA-X on Operations Deck and complete the game.
@@ -30,7 +30,7 @@
   * Charge Beam: Allows the player to charge the beam, and buffs beam damage if only shooting one projectile.
   * Wide Beam: Shoots three beam projectiles, and adds a minor amount of damage.
   * Plasma Beam: Allows the beam to pierce enemies, reducing initial damage in favor of damage per tick.
-  * Wave Beam: Allows the beam to pass through walls, and adds a significant amount of damage. Charged shot without wide beam fires two projectiles instead of one.
+  * Wave Beam: Allows the beam to pass through walls, and adds a significant amount of damage. Shots without wide beam also fire two projectiles instead of one.
   * Ice Beam: Freezes most enemies on contact, and adds a minor amount of damage.
 * Changed: Reimplemented missile upgrades to stack on top of each other instead of only considering the highest obtained missile upgrade. Missile graphics are modified such that basic missiles have a purple tip, super missiles have a green tip, and super missiles take priority over the ice and diffusion missile graphics.
   * Main Missile Data: Allows the player to shoot missiles.
@@ -49,6 +49,7 @@
 * Changed: Sped up door transitions and elevators.
 * Fixed: Vanilla aim lock bug where Samus's aim would get locked into a diagonal direction without holding the diagonal aim button.
 * Fixed: Vanilla SA-X invulnerability softlocks in both Samus form and monster form.
+* Changed: Slightly rework how Red-X drops work. Their chances for enemies have been bumped to 1.117%, and there is now a guaranteed drop when you ran out of PBs but have max health/missiles.
 
 ### Room modifications
 #### Main Deck
@@ -67,6 +68,7 @@
 #### Sector 1
 * Changed: Reactivating all atmospheric stabilizers changes the arrangements of some enemies.
 * Changed: Metroid husks appear after collecting the required number of infant metroids.
+* Changed: Hornoad Housing: The Hornoads aren't spawned in initially and instead have X flying in to form them.
 #### Sector 2
 * Changed: Defeating Zazabi turns all zoros into cocoons, and defeating Yakuza or Nettori turns all zoros and cocoons into kihunters.
 * Changed: Data Hub Access: Add kihunters and zoro cocoons to intact room state.
@@ -78,21 +80,27 @@
   * Add kihunters and zoro cocoons to intact room state.
   * Limit zoro pathing to prevent climbing the room early with ice beam.
 * Changed: Dessgeega Dormitory: Add kihunters and zoro cocoons to intact room state.
+* Changed: Dessgeega Dormitory: Add a connection guarded by bomb blocks that leads into Shadow Moses Island.
 * Changed: Zazabi Access: Add kihunters and zoro cocoons to intact room state.
 * Changed: Nettori Access: Change winged kihunter below eyedoor to a grounded kihunter to allow climbing up frozen enemies to Nettori Arena.
+* Changed: Nettori Access: Change the vines in the top part slightly to prevent kihunters from jumping through solid walls.
 * Added: Entrance Hub Underside: Add pre-Zazabi room state with zoros.
 * Changed: Data Hub: Bomb block paths can be accessed freely without destroying the entrance hatch.
 * Changed: Eastern Shaft: Add a ledge to allow climbing frozen enemies from middle doors to top doors.
-* Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to prevent softlocks without bombs.
-* Changed: Crumble City: (Optional) Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to prevent softlocks without bombs.
+* Changed: Eastern Shaft: In the middle part, remove the bottom 2 vine blocks to make climbing up the room consistent with the Post-Nettori state.
+* Changed: Ripper Roost: (Optional) Move the bottom crumble block up one tile to pr softlocks without bombs.
+* Changed: Crumble City: (Optional) Replace one of the shot blocks in the morph tunnel below the top item with a crumble block to pr softlocks without bombs.
+* Changed: Cultivation Station: (Optional) Change the single bomb block next to the Zoros to a shot block to pr a softlock without morph bombs.
 #### Sector 3
 * Changed: Enemies which normally only spawn after unlocking lv2 security now always spawn.
 * Changed: Security Access: Sidehoppers do not spawn on the speedbooster runway.
 * Changed: BOX Access: Repair the door to Bob's Room in the destroyed room state.
 * Changed: BOX Arena: Repair the door to the Data Room in the destroyed room state.
+* Changed: BOX Arena: Jumping up on the pillar after the fight now has slightly better visibility on the exit without Hi-Jump.
 #### Sector 4
-* Changed: Security Bypass: (Optional) Prevent several softlocks without morph bombs.
+* Changed: Security Bypass: (Optional) Pr several softlocks without morph bombs.
 * Changed: Drain Pipe: Spawn puffer in all room states.
+* Changed: Reservoir East: (Optional) Pr several softlocks without morph bombs.
 #### Sector 5
 * Removed: Sector 5 is no longer wrecked by Nightmare; several specific rooms are changed to compromise the intact and wrecked states.
 * Changed: Nightmare Training Grounds: Added speedbooster runway at the top of the room in the intact room state.
@@ -101,6 +109,7 @@
 * Changed: Security Shaft East: Repair the door to Kago Blockade.
 * Changed: Ripper Road: Replace lv0 door to Arctic Containment with an open hatch.
 * Changed: Crow's Nest: Repair the door to Arctic Containment into a lv3 security door.
+* Changed: Geron Checkpoint: (Randomizer only) Remove Geron, even when Power Bomb Data has been acquired.
 #### Sector 6
 * Changed: Zozoro Wine Cellar: (Optional) Change reforming bomb block in front of expansion tank to a never reforming bomb block to prevent being trapped by running out of power bombs.
 * Changed: Big Shell 1: (Optional) Remove the crumble block into the long morph tunnel to prevent softlocks without power bombs.
@@ -111,7 +120,7 @@
 * Changed: Rewrite demo functionality for more equipment customizability.
 * Changed: Always show in-game time on the map menu.
 * Added: Pressing select on the map menu rotates through the maps of each sector in numerical order.
-* Added: Optional setting to reveal full map information after downloading the sector's map, including hidden tiles, collectibles, and security doors.
+* Added: Optional setting to reveal full map information after downloading the sector's map, including hidden tiles, collectibles, and security doors. It will also center the map when paused.
 * Changed: Credits roll now has full ASCII support.
 * Removed: Item collection counters no longer appear on pause menu.
 * Added: Game completion time in credits now displays seconds.
