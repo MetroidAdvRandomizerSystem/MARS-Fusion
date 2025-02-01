@@ -256,7 +256,7 @@
     bx      lr
 @@case_42:
     ; downloaded power bombs
-    ; spritesets: S5-08, S5-09, S5-18
+    ; spritesets: S5-08 (non-Randomized), S5-09, S5-18
     ; room states: S5-15 => S5-16, S5-27 => S5-28
     ldrb    r0, [r2, PermanentUpgrades_ExplosiveUpgrades]
     lsl     r0, #1Fh - ExplosiveUpgrade_PowerBombs
@@ -611,4 +611,26 @@
     mov     r0, sp
     bl      CheckLevelLayerOverrides
     b       080649CAh
+.endarea
+
+.org 08077084h
+.area 30h
+    ; change main deck minimap after lab detachment
+    push    { r4, lr }
+    mov     r4, r1
+    cmp     r0, #Area_MainDeck
+    bne     @@deflateMinimap
+    mov     r0, #Event_RestrictedSectorDebrief
+    bl      CheckEvent
+    cmp     r0, #0
+    beq     @@deflateMinimap
+    mov     r0, #Area_Debug3
+@@deflateMinimap:
+    ldr     r1, =MinimapDataPointers
+    lsl     r0, #2
+    ldr     r0, [r1, r0]
+    mov     r1, r4
+    bl      DeflateVram
+    pop     { r4, pc }
+    .pool
 .endarea

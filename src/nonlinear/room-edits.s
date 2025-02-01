@@ -524,12 +524,22 @@
     .db     DoorType_LockableHatch
 .endarea
 
+.org Sector2Doors + 60h * DoorEntry_Size + DoorEntry_Destination
+.area 1
+    .db     67h
+.endarea
+
 .org Sector2Doors + 65h * DoorEntry_Size + DoorEntry_Type
 .area 6
     .db     DoorType_NoHatch
     .db     0Eh
     .db     5, 6
     .db     0Ch, 0Dh
+.endarea
+
+.org Sector2Doors + 67h * DoorEntry_Size + DoorEntry_Destination
+.area 1
+    .db     60h
 .endarea
 
 ; Sector 2 - Zazabi Access
@@ -1011,6 +1021,12 @@
 .incbin "data/rooms/S5-03-Clip.rlebg"
 .endautoregion
 
+; Remove Nightmare flying around by removing BG0
+.org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg0Properties
+    .db     0
+.org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg0
+    .dw     NullBg
+
 .org Sector5Levels + 03h * LevelMeta_Size + LevelMeta_Bg1
 .area 0Ch
     .dw     @S5_NightmareTrainingGrounds_Bg1
@@ -1120,6 +1136,19 @@
 
 .org Sector5Doors + 46h * DoorEntry_Size
 .fill DoorEntry_Size, 0FFh
+
+.if RANDOMIZER
+; Sector 5 - Geron Checkpoint
+; Remove power bomb geron spriteset
+.defineregion readptr(Sector5Levels + 08h * LevelMeta_Size + LevelMeta_Spriteset2), 15h
+.org Sector5Levels + 08h * LevelMeta_Size + LevelMeta_Spriteset2Event
+.area LevelMeta_Spriteset2Id - LevelMeta_Spriteset1Id
+    .db     0
+    .skip   2
+    .dw     NullSpriteset
+    .db     0
+.endarea
+.endif
 
 ; Sector 5 - Frozen Tower
 ; remove event-based transitions
@@ -1371,3 +1400,5 @@
     .dw     readptr(Sector6Scrolls + 12h * 4)
     .dw     readptr(Sector6Scrolls + 13h * 4)
 .endarea
+
+.include "src/nonlinear/room-edits/main-deck/room-47.s"

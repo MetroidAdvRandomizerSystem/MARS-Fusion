@@ -502,7 +502,13 @@ CreditsLine_Size equ 24h
 .sym on
 
 AreaLevels equ 0879B8BCh
+NullBg equ 083BF850h
 .sym off
+LevelMeta_Tileset equ 00h
+LevelMeta_Bg0Properties equ 01h
+LevelMeta_Bg1Properties equ 02h
+LevelMeta_Bg2Properties equ 03h
+LevelMeta_Bg3Properties equ 04h
 LevelMeta_Bg0 equ 08h
 LevelMeta_Bg1 equ 0Ch
 LevelMeta_Bg2 equ 10h
@@ -565,6 +571,8 @@ Sector4Scrolls equ 0879BA84h
 Sector5Scrolls equ 0879BA38h
 Sector6Scrolls equ 0879BAB8h
 
+MinimapDataPointers equ 0879BE5Ch
+
 MessagesByLanguage equ 0879CDF4h
 
 BLDCNT equ 04000050h
@@ -619,3 +627,5 @@ StartingLocation_Size equ 08h
 .sym on
 
 RedX_OAMData equ 083BE2C0h
+
+SpritePalettePtrs equ 0879A8D4h

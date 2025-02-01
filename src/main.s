@@ -60,6 +60,7 @@ HintSecurityLevels equ 087FF059h
 EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
+MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table itself. The pointers, offset by language, at this location will be the table location
 RoomNamesAddr equ 087FF070h
 
 ; Mark end-of-file padding as free space
@@ -126,6 +127,7 @@ RoomNamesAddr equ 087FF070h
 .include "src/nonlinear/room-states.s"
 .include "src/nonlinear/main-missiles.s"
 .include "src/nonlinear/major-completion.s"
+.include "src/nonlinear/minimap-edits.s"
 .include "src/nonlinear/messages.s"
 .include "src/nonlinear/misc-progress.s"
 .include "src/nonlinear/missile-stacking.s"
