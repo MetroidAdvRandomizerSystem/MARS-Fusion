@@ -83,6 +83,12 @@ RoomNamesAddr equ 087FF070h
 .include "src/optimization/item-check.s"
 .endif
 
+; Prerequesits for certain changes
+.if NONLINEAR || RANDOMIZER || QOL
+.notice "Applying prerequistes..."
+.include "src/menu-edits.s"
+.endif
+
 ; Quality of life patches
 ; Patches providing non-essential but convenient features
 .if QOL

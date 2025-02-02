@@ -254,11 +254,9 @@
     .dh     (OBJ2_Character   & 1ECh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 .endautoregion
 
-; Replace "System (Unused)" Oam
 .org PauseScreenOamData + (MenuSpriteGfx_Lv0Locked * 4)
     .dw     @Lv0LockedOamDataPointers
 
-; Replace "System Closing (Unused)" Oam
 .org PauseScreenOamData + (MenuSpriteGfx_Lv0Unlocked * 4)
     .dw     @Lv0UnlockedOamDataPointers
 

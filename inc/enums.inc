@@ -297,7 +297,7 @@ MenuSpriteGfx_None equ 00h
 MenuSpriteGfx_FlashingSquare equ 01h
 MenuSpriteGfx_CursorRight equ 02h
 MenuSpriteGfx_CursorDown equ 03h
-MenuSpriteGfx_SelectMapChange equ 04h ; Vanilla is PreviewMarker
+MenuSpriteGfx_PreviewMarker equ 04h
 MenuSpriteGfx_BigUpArrow equ 05h
 MenuSpriteGfx_BigDownArrow equ 06h
 MenuSpriteGfx_BigLeftArrow equ 07h
@@ -363,8 +363,8 @@ MenuSpriteGfx_AdamTextOutlineOpening equ 43h
 MenuSpriteGfx_AdamTextOutlineStatic equ 44h
 MenuSpriteGfx_AdamTextOutlineClosing equ 45h
 MenuSpriteGfx_AdamTextBackground equ 46h
-MenuSpriteGfx_Lv0Locked equ 47h ; vanilla is UnusedSystemText
-MenuSpriteGfx_Lv0Unlocked equ 48h ; vanilla is UnusedSystemTextClosing
+MenuSpriteGfx_AdamTextSystemGraphicOpening equ 47h
+MenuSpriteGfx_AdamTextSystemGraphicClosing equ 48h
 MenuSpriteGfx_ComputerEye_49 equ 49h
 MenuSpriteGfx_ComputerEye_4A equ 4Ah
 MenuSpriteGfx_ComputerEye_4B equ 4Bh
@@ -432,6 +432,11 @@ MenuSpriteGfx_BSLRotationAnimation_88 equ 88h
 MenuSpriteGfx_BSLRotationAnimation_89 equ 89h
 MenuSpriteGfx_BSLRotationAnimation_8A equ 8Ah
 MenuSpriteGfx_BSLRotationAnimation_8B equ 8Bh
+MenuSpriteGfx_SelectMapChange equ 8Ch
+MenuSpriteGfx_Lv0Locked equ 8Dh
+MenuSpriteGfx_Lv0Unlocked equ 8Eh
+; If you add more pause screen sprites increase the value below
+MenuSpriteGfx_Size equ 8Eh
 
 DoorType_AreaConnection equ 01h
 DoorType_NoHatch equ 02h

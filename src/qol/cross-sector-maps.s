@@ -222,7 +222,6 @@
     .dd     0
 .endautoregion
 
-; Replace "Preview Target" Oam
 .org PauseScreenOamData + (MenuSpriteGfx_SelectMapChange * 4)
     .dw     @SelectMapChangeOamDataPointers
 

@@ -593,7 +593,7 @@ DMA_CNT equ 08h
 .sym on
 
 PauseScreenGfxOamPointer equ 08076B10h
-PauseScreenOamData equ 0879BEC0h
+VanillaPauseScreenOamData equ 0879BEC0h
 
 ; non-vanilla structs:
 
