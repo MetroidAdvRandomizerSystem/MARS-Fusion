@@ -31,7 +31,7 @@
 
 .endfunc
 @UnknownRoom:
-    .string  "Unknown Room"
+    .string  "Room name not provided"
 .pool
 .endautoregion
 
