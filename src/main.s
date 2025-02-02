@@ -61,6 +61,7 @@ EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
 MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table itself. The pointers, offset by language, at this location will be the table location
+RoomNamesAddr equ 087FF070h
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879FAC8h ; 0879ECC8h
@@ -154,6 +155,7 @@ MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table its
 .include "src/randomizer/hatch-fixes.s"
 .include "src/randomizer/hints.s"
 .include "src/randomizer/less-map-info.s"
+.include "src/randomizer/room-name-display.s"
 .include "src/randomizer/open-escape.s"
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
