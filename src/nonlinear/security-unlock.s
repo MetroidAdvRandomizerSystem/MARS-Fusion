@@ -203,15 +203,6 @@
 
 
 .autoregion
-    .aligna 4
-@Lv0LockedOamDataPointers:
-    .dw @Lv0LockedOamData
-    .dw 0FFh
-    .dd 0
-@Lv0UnlockedOamDataPointers:
-    .dw @Lv0UnlockedOamData
-    .dw 0FFh
-    .dd 0
     .aligna 2
 @MapScreenLockLevels:
 ; Lock levels indicated by:
@@ -221,44 +212,7 @@
     .db 01Ch, MenuSpriteGfx_Lv2Locked
     .db 01Dh, MenuSpriteGfx_Lv3Locked
     .db 01Eh, MenuSpriteGfx_Lv4Locked
-@Lv0LockedOamData:
-    .dh 3
-    ; L0 Sprite
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
-    .dh     (OBJ2_Character   & 0C0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
-
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
-    .dh     (OBJ1_XCoordinate & 1F8h) | OBJ1_Size_8x8
-    .dh     (OBJ2_Character   & 0C2h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
-
-    ; lock Text
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
-    .dh     (OBJ2_Character   & 1CCh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
-
-@Lv0UnlockedOamData:
-    .dh 3
-    ; L0 Sprite
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 1E8h) | OBJ1_Size_16x8
-    .dh     (OBJ2_Character   & 1B0h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
-
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Square
-    .dh     (OBJ1_XCoordinate & 1F8h) | OBJ1_Size_8x8
-    .dh     (OBJ2_Character   & 1B2h) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 08h) << OBJ2_Palette)
-
-    ; Open Text
-    .dh     (OBJ0_YCoordinate & 0E8h) | OBJ0_Mode_Normal | OBJ0_Shape_Horizontal
-    .dh     (OBJ1_XCoordinate & 000h) | OBJ1_Size_16x8
-    .dh     (OBJ2_Character   & 1ECh) | OBJ2_Priority_Highest | ((OBJ2_PaletteMask & 03h) << OBJ2_Palette)
 .endautoregion
-
-.org PauseScreenOamData + (MenuSpriteGfx_Lv0Locked * 4)
-    .dw     @Lv0LockedOamDataPointers
-
-.org PauseScreenOamData + (MenuSpriteGfx_Lv0Unlocked * 4)
-    .dw     @Lv0UnlockedOamDataPointers
 
 .org 08077EE8h
     .dw @MapScreenLockLevels

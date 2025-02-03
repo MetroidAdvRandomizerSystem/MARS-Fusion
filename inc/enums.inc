@@ -435,8 +435,9 @@ MenuSpriteGfx_BSLRotationAnimation_8B equ 8Bh
 MenuSpriteGfx_SelectMapChange equ 8Ch
 MenuSpriteGfx_Lv0Locked equ 8Dh
 MenuSpriteGfx_Lv0Unlocked equ 8Eh
-; If you add more pause screen sprites increase the value below
-MenuSpriteGfx_Size equ 8Eh
+; If you add more pause screen sprites increase the value below. It should
+; always be n+1 of the last enum in the list.
+MenuSpriteGfx_Size equ 8Fh
 
 DoorType_AreaConnection equ 01h
 DoorType_NoHatch equ 02h
