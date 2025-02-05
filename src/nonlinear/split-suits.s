@@ -64,7 +64,7 @@
     ldrb    r0, [r5, SamusTimers_EnvironmentalDamageVfx]
     cmp     r0, #0
     bhi     @@check_damage_tick_sfx
-    mov     r0, #5
+    mov     r0, #0Ah
     strb    r0, [r5, SamusTimers_EnvironmentalDamageVfx]
 @@check_damage_tick_sfx:
     sub     r0, r4, #EnvironmentalHazard_Heat
@@ -140,6 +140,10 @@
     .db     15  ; subzero
     .db     6   ; cold
 .endarea
+
+; Repoint VFX check to actually look at the VFX RAM value
+.org 0800BDB6h
+    ldrb    r0, [r3, SamusTimers_EnvironmentalDamageVfx]
 
 .org 0800FE72h
 .area 1Ah
