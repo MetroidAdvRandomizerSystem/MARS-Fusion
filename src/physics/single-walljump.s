@@ -10,12 +10,18 @@
     ldrb    r0, [r2, SamusState_Pose]
     cmp     r0, #16h
     bne     @@default
+    ; Do not set if space jump is active
+    ldr     r1, =SamusUpgrades
+    ldrb    r1, [r1, SamusUpgrades_SuitUpgrades]
+    mov     r0, 1 << SuitUpgrade_SpaceJump
+    and     r0, r1
+    bne     @@default
     mov     r0, #1
     ldr     r2, =ScrewAttackWJFlag
     strb    r0, [r2]
-    ldr     r2, =SamusState
 @@default:
     ; Always set Pose to Screw
+    ldr     r2, =SamusState
     mov     r0, #1Eh
     strb    r0, [r2, SamusState_Pose]
     pop     { r0-r3 }
@@ -76,12 +82,17 @@
 ; r2 is cleared after this function, it is not necessary to push it
 .func @UseIncreasedVelocityDuringScrewWJ
     push    { r0 }
-    ; Turn ScrewWJ flag off if Y Velocity <= 0
+    ; Turn ScrewWJ flag off if Y Velocity <= 0 and A button is not down
     ldr     r2,=SamusState
     mov     r0, SamusState_VelocityY
     ldrsh   r0, [r2, r0]
     cmp     r0, #0h
     bgt     @@checkIfScrewWJ
+    ldr     r0, =HeldInput
+    mov     r1, 1 << Button_A
+    ldrh    r0, [r0]
+    and     r0, r1
+    bne     @@checkIfScrewWJ
     mov     r0, #0
     ldr     r2, =ScrewAttackWJFlag
     strb    r0, [r2]
