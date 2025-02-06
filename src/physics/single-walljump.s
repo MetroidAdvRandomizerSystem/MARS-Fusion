@@ -27,7 +27,13 @@
 ; Hijack Spinning Pose Velocity Code. If the ScrewWJ flag is set, do not allow change of directions
 ; Until Vertical Velocity is <= 0
 .org 080072D4h
-    bl     @PreventDirectionChangeDuringScrewWJ
+    bl      @PreventDirectionChangeDuringScrewWJ
+
+.org 0800733Ch
+.area 06h, 0
+    bl      @UseIncreasedVelocityDuringScrewWJ
+.endarea
+
 .autoregion
 .align 2
 .func @PreventDirectionChangeDuringScrewWJ
@@ -43,7 +49,7 @@
     cmp     r2, #1
     bne     @@allow
     ldr     r2,=SamusState
-    mov     r0, #1Ch
+    mov     r0, SamusState_VelocityY
     ldrsh   r0, [r2, r0]
     cmp     r0, #0h
     bgt     @@prevent
@@ -54,15 +60,45 @@
     strb    r0, [r2]
 @@allow:
     mov     r0, #0
-    strh    r3, [r6, 12h]
-    strh    r0, [r6, 1Ah]
+    strh    r3, [r6, SamusState_Direction]
+    strh    r0, [r6, SamusState_VelocityX]
     b       @@return
 @@prevent:
-    ldrh    r3, [r6, 12h]
+    ldrh    r3, [r6, SamusState_Direction]
 @@return:
-    ldrh    r1, [r6, 10h]
+    ldrh    r1, [r6, SamusState_WallJumpDirection]
     pop    { r2 }
-    bl      080072DCh
+    bl      080072DCh ; Return to original code flow
+    .pool
+.endfunc
+
+; Returns r1 = Acceleration
+; r2 is cleared after this function, it is not necessary to push it
+.func @UseIncreasedVelocityDuringScrewWJ
+    push    { r0 }
+    ; Turn ScrewWJ flag off if Y Velocity <= 0
+    ldr     r2,=SamusState
+    mov     r0, SamusState_VelocityY
+    ldrsh   r0, [r2, r0]
+    cmp     r0, #0h
+    bgt     @@checkIfScrewWJ
+    mov     r0, #0
+    ldr     r2, =ScrewAttackWJFlag
+    strb    r0, [r2]
+@@checkIfScrewWJ:
+    ldr     r0, =ScrewAttackWJFlag
+    ldrb    r0, [r0]
+    cmp     r0, #1
+    bne     @@default
+    mov     r1, #40h
+    b       @@return
+@@default:
+    ldr     r1, =SamusPhysics
+    mov     r2, SamusPhysics_MidairXVelocityCap
+    ldrsh   r1, [r1, r2]
+@@return:
+    pop     { r0 }
+    bl      08007342h ;Return to original code flow
     .pool
 .endfunc
 .endautoregion
