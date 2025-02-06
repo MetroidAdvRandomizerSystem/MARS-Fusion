@@ -25,8 +25,10 @@ PATCHES := $(OPTIONALS:%=$(BIN_DIR)/%.ips)
 BUILD_TYPE := debug
 ifeq ($(BUILD_TYPE), debug)
     BUILD_SYMBOL := -definelabel DEBUG 1
+	SYMBOL_DATA_ARMIPS_OPTION := -sym2 $(BIN_DIR)/$(OUT).sym
 else
     BUILD_SYMBOL = -definelabel DEBUG 0
+    SYMBOL_DATA_ARMIPS_OPTION :=
 endif
 
 OPTIMIZE := true
@@ -62,6 +64,7 @@ else
     NONLINEAR_SYMBOL := -definelabel NONLINEAR 0
 endif
 
+
 ALL_SYMBOLS = $(BUILD_SYMBOL) $(OPTIMIZE_SYMBOL) $(QOL_SYMBOL) $(PHYSICS_SYMBOL) $(RANDOMIZER_SYMBOL) $(NONLINEAR_SYMBOL)
 
 all: $(BIN_DIR)/m4rs.gba
@@ -70,14 +73,14 @@ $(OBJ_DIR) $(BIN_DIR):
 	mkdir -p $@
 
 $(BIN_DIR)/$(OUT).gba: check | $(OBJ_DIR) $(BIN_DIR)
-	$(AS) $(ALL_SYMBOLS) src/main.s
+	$(AS) $(SYMBOL_DATA_ARMIPS_OPTION) $(ALL_SYMBOLS) src/main.s
 	cp $(OBJ_DIR)/$(OUT).gba $@
 
 $(OBJ_DIR)/base.gba: $(BIN_DIR)/$(OUT).gba | $(OBJ_DIR)
 	cp $< $@
 
 $(OBJ_DIR)/%.gba: check | $(OBJ_DIR)
-	$(AS) $(ALL_SYMBOLS) -definelabel $* 1 src/main.s
+	$(AS) $(SYMBOL_DATA_ARMIPS_OPTION) $(ALL_SYMBOLS) -definelabel $* 1 src/main.s
 	mv $(OBJ_DIR)/$(OUT).gba $@
 
 $(BIN_DIR)/%.ips: $(OBJ_DIR)/%.gba $(OBJ_DIR)/base.gba
@@ -105,11 +108,11 @@ help:
 	@echo "  help		- Displays this help message."
 	@echo ""
 	@echo "Build Options:"
-	@echo "  BUILD_TYPE		- Sets the build type. Possible values are debug and release."
-	@echo "  OPTIMIZE		- Sets whether to optimize certain routines. Only change is higher performance. Possible values are true and false."
-	@echo "  QOL			- Sets whether to apply non-essential but convenient features. Possible values are true and false."
-	@echo "  PHYSICS_CHANGES 	- Sets whether to apply Physics changes which alter Samus movement drastically. Possible values are true and false."
-	@echo "  MODIFICATION_MODE	- Sets what kind of modifications should be applied. Possible values are randomizer, nonlinear and vanilla."
+	@echo "  BUILD_TYPE		- Sets the build type. Possible values are debug and release. Defaults to debug."
+	@echo "  OPTIMIZE		- Sets whether to optimize certain routines. Only change is higher performance. Possible values are true and false. Defaults to true."
+	@echo "  QOL			- Sets whether to apply non-essential but convenient features. Possible values are true and false. Defaults to true."
+	@echo "  PHYSICS_CHANGES 	- Sets whether to apply Physics changes which alter Samus movement drastically. Possible values are true and false. Defaults to false."
+	@echo "  MODIFICATION_MODE	- Sets what kind of modifications should be applied. Possible values are randomizer, nonlinear and vanilla. Defaults to randomizer."
 	@echo ""
 
 .PHONY: all check clean dist
