@@ -68,8 +68,7 @@ MinorLocationsAddr equ 087FF06Ch
 RoomNamesAddr equ 087FF070h
 
 ; Mark end-of-file padding as free space
-; TODO: Determine why 0879ECC8h isn't used
-@@EOF equ 0879FAC8h ; 0879ECC8h
+@@EOF equ 0879ECC8h
 .defineregion @@EOF, PatcherReservedSpace - @@EOF, 0FFh
 
 ; Debug mode patch
