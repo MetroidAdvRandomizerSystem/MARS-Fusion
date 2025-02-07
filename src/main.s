@@ -46,8 +46,13 @@
 StartingItems equ 0828D2ACh
 HintTargets equ 085766ECh
 Credits equ 0874B0B0h
-ReservedSpace equ 087F0000h
-ReservedSpace_Len equ 0F000h
+MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table itself. The pointers, offset by language, at this location will be the table location
+
+; Reserved space addresses. The first address here should be used below when
+; defining the free space region for the asm to use
+PatcherReservedSpace equ 087E0000h
+AsmReservedSpace equ 087F0000h ; TODO: Determine what this is for
+AsmReservedSpace_Len equ 0F000h
 MinorLocationTable equ 087FF000h
 MajorLocations equ 087FF01Ch
 TankIncrements equ 087FF046h
@@ -60,12 +65,12 @@ HintSecurityLevels equ 087FF059h
 EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
-MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table itself. The pointers, offset by language, at this location will be the table location
 RoomNamesAddr equ 087FF070h
 
 ; Mark end-of-file padding as free space
+; TODO: Determine why 0879ECC8h isn't used
 @@EOF equ 0879FAC8h ; 0879ECC8h
-.defineregion @@EOF, ReservedSpace - @@EOF, 0FFh
+.defineregion @@EOF, PatcherReservedSpace - @@EOF, 0FFh
 
 ; Debug mode patch
 .if DEBUG
