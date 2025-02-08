@@ -89,18 +89,36 @@
     bl      CheckEvent
     cmp     r0, #01
     beq     @@goModeMusic
-    b    @@areaSwitch
+    b       @@areaSwitch
 @@skipAreaSwitch:
     b       @@areaSwitchDone
 @@goModeMusic:
 ; Checks if in Observation Deck to play pre-SAX ambience
     cmp     r5, Area_MainDeck
     bne     @@areaSwitch
-    cmp     r6, #0Dh
-    bne     @@finalMission
+    cmp     r6, #0Dh ; operations room
+    beq     @@preSaxMusic
+    cmp     r6, #52h ; operations room
+    beq     @@preSaxMusic
+    cmp     r6, #27h ; operations deck data room
+    beq     @@preSaxMusic
+    cmp     r6, #20h ; operations deck nav room
+    beq     @@preSaxMusic
+    cmp     r6, #51h ; operations deck recharge room
+    beq     @@preSaxMusic
+    cmp     r6, #2Ch ; operations deck save room
+    beq     @@preSaxMusic
+    cmp     r6, #3Ch ; elevator to crew quarters
+    beq     @@preSaxMusic
+    b       @@finalMission
+@@preSaxMusic:
+    mov     r0, #Event_SaxDefeated
+    bl      CheckEvent
+    cmp     r0, #01
+    beq     @@areaSwitch
     mov     r0, MusicTrack_SaxHiding
     mov     r1, MusicType_BossAmbience
-    b       @@tryPlay
+    b       @@playMusic
 ; Checks if player has charge and missiles to signal true go mode
 @@finalMission:
     ldr     r1, =SamusUpgrades
@@ -591,8 +609,6 @@
     .dh     MusicTrack_MainDeck     ; main deck spitter speedway
 .org 083C2C4Ch + 39h * LevelMeta_Size + LevelMeta_Music
     .dh     MusicTrack_MainDeck     ; main deck habitation storage
-.org 083C2C4Ch + 3Ch * LevelMeta_Size + LevelMeta_Music
-    .dh     MusicTrack_MainDeck     ; main deck elevator to crew quarters
 .org 083C2C4Ch + 3Dh * LevelMeta_Size + LevelMeta_Music
     .dh     MusicTrack_MainDeck     ; main deck elevator to operations deck
 .org 083C2C4Ch + 45h * LevelMeta_Size + LevelMeta_Music
@@ -622,6 +638,8 @@
     .dh     MusicTrack_ObservationDeck     ; main deck operations deck save room
 .org 083C2C4Ch + 36h * LevelMeta_Size + LevelMeta_Music
     .dh     MusicTrack_ObservationDeck     ; main deck auxiliary power station
+.org 083C2C4Ch + 3Ch * LevelMeta_Size + LevelMeta_Music
+    .dh     MusicTrack_ObservationDeck     ; main deck elevator to crew quarters
 .org 083C2C4Ch + 51h * LevelMeta_Size + LevelMeta_Music
     .dh     MusicTrack_ObservationDeck     ; main deck operations deck recharge room
 .org 083C2C4Ch + 52h * LevelMeta_Size + LevelMeta_Music
