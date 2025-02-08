@@ -35,6 +35,9 @@
 .ifndef UNHIDDEN_MAP
 .definelabel UNHIDDEN_MAP, 0
 .endif
+.ifndef UNHIDDEN_BREAKABLE_TILES
+.definelabel UNHIDDEN_BREAKABLE_TILES, 1 ; CHANGE ME BEFORE PR
+.endif
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"
@@ -106,6 +109,9 @@ RoomNamesAddr equ 087FF070h
 
 .if UNHIDDEN_MAP
 .include "src/qol/unhidden-map.s"
+.endif
+.if UNHIDDEN_BREAKABLE_TILES
+.include "src/qol/unhidden-breakable-tiles.s"
 .endif
 .endif
 
