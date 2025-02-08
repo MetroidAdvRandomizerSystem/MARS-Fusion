@@ -160,3 +160,45 @@
     bgt     08077D0Ah
     b       08077E38h
 .endarea
+
+
+.autoregion
+    .align 2
+.func @ShowMapChangeOam
+    ldr     r3, =NonGameplayRam
+    mov     r0, MenuSprite_Size
+    mov     r1, 25h     ; Oam Slot
+    mul     r0, r1
+    add     r0, #NonGamePlayRam_OamData
+    add     r1, r3, r0
+    mov     r0, #MenuSpriteGfx_SelectMapChange
+    strb    r0, [r1, MenuSprite_Graphic]
+    mov     r0, #0h
+    strh    r0, [r1, MenuSprite_XPos]
+    strh    r0, [r1, MenuSprite_YPos]
+    mov     r0, #0
+    strb    r0, [r1, MenuSprite_AnimationCounter]
+    strb    r0, [r1, MenuSprite_AnimationTick]
+    ldrb    r2, [r1, #MenuSprite_Priority]
+    mov     r0, #04
+    neg     r0, r0
+    and     r0, r2
+    mov     r2, #02
+    orr     r0, r2
+    mov     r2, #0Dh
+    neg     r2, r2
+    and     r0, r2
+    strb    r0, [r1, #MenuSprite_Priority]
+    ; return to original place in jump table
+    ldr     r0, =#readptr(08077B0Ch)
+    mov     pc, r0
+    .pool
+.endfunc
+.endautoregion
+
+
+; Hijack jump table to jump to our own code
+.org 08077B0Ch
+.area 04h
+    .dw     @ShowMapChangeOam
+.endarea
