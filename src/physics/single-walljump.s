@@ -73,7 +73,7 @@
     ldrh    r3, [r6, SamusState_Direction]
 @@return:
     ldrh    r1, [r6, SamusState_WallJumpDirection]
-    pop    { r2 }
+    pop     { r2 }
     bl      080072DCh ; Return to original code flow
     .pool
 .endfunc
@@ -134,8 +134,8 @@
     strb    r0, [r2]
 @@return:
     ; default behavior
-    pop     { r0, r2}
-    pop     { r4, r5}
+    pop     { r0, r2 }
+    pop     { r4, r5 }
     pop     { r1 }
     bx      r1
     .pool
