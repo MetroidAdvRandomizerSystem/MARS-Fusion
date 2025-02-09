@@ -141,8 +141,10 @@ RoomNamesAddr equ 087FF070h
 .include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
+.include "src/physics/single-walljump.s"
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"
+
 
 .if !DEBUG
 .include "src/nonlinear/item-select.s"
