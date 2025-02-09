@@ -452,6 +452,22 @@ ScrollExtend_Top equ 02h
 ScrollExtend_Bottom equ 03h
 ScrollExtend_None equ 0FFh
 
+ClipdataTile_Air equ 0000h
+ClipdataTile_Solid equ 0010h
+ClipdataTile_DoorTransition equ 0020h
+ClipdataTile_Crumble equ 005Ah
+ClipdataTile_BombNeverRevorm equ 0055h
+ClipdataTile_BombReform equ 0056h
+ClipdataTile_SpeedNoReform equ 0058h
+ClipdataTile_SpeedReform equ 006Bh
+ClipdataTile_MissileNeverReform equ 0054h
+ClipdataTile_MissileNoReform equ 005Eh
+ClipdataTile_PBomb equ 0057h
+ClipdataTile_ScrewAttack equ 0059h
+ClipdataTile_MissileTankHidden equ 0064h
+ClipdataTile_EngergyTankHidden equ 0065h
+ClipdataTile_PBombTankHidden equ 0069h
+
 ; non-vanilla enums
 
 Upgrade_None equ 0

@@ -39,20 +39,37 @@
     mov     r6, #0
 
 @@loop:
-    mov     r1, r7
+    mov     r1, r7          ; clipdata
     ldr     r3, [sp]
     mov     r2, r6
     mul     r2, r3          ; height * room width
     add     r2, r2, r5      ; + width
     lsl     r2, #1
-    add     r1, r2
+    add     r0, r1, r2
+    ldr     r1, =3001h
+    cmp     r1, r2          ; don't read past Clipdata RAM
+    beq     @@return
     ldrh    r0, [r7, r2]    ; tile pos = tile + (width + (height * room width))
-    cmp     r0, #00h        ; Skip Air Block
+    cmp     r0, #ClipdataTile_Air
     beq     @@inc_width
-    cmp     r0, #10h        ; Skip Solid Block
+    cmp     r0, #ClipdataTile_Solid
     beq     @@inc_width
+    cmp     r0, #ClipdataTile_DoorTransition
+    beq     @@inc_width
+    bl      @SearchForHiddenBlocks
+    mov     r1, #0
+    mvn     r1, r1
+    lsl     r1, 10h
+    lsr     r1, 10h
+    cmp     r1, r0  ; if not FFFF
+    bne     @@reveal_hidden_block
+    b       @@inc_width
 
-
+@@reveal_hidden_block:
+    mov     r0, #40h    ; value
+    mov     r1, r6      ; Y Pos
+    mov     r2, r5      ; X Pos
+    bl      SetSpecialBg1Tile
 
 @@inc_width:
     add     r5, #1
@@ -64,23 +81,17 @@
     ldr     r0, [sp, #4]
     cmp     r6, r0
     beq     @@return
-    ldr     r5, [sp]
+    mov     r5, #1
     b       @@loop
 
 @@return:
-
-    mov    r0, #40h
-    mov     r1, 5
-    mov     r2, 5
-    bl      SetBg1Tile
-
     add     sp, #8
     pop     { r4-r7 }
     mov     r11, r7
     mov     r10, r6
     mov     r9, r5
     mov     r8, r4
-    pop     { r4 - r7}
+    pop     { r4-r7 }
     pop     { r0 }
     bx      r0
     .pool
@@ -91,14 +102,64 @@
     .align 2
 @ClipDataReplacements:
    ;.db Clip to check, replacement clip
-    .db 5Ah, 40h    ; Crumble Blocks
-    .db 55h, 41h    ; Bomb Block (never reform)
-    .db 56h, 41h    ; Bomb Block (reform)
-    .db 58h, 42h    ; Speed Block (no reform)
-    .db 6Bh, 42h    ; Speed Block (reform)
-    .db 54h, 43h    ; Missile Block (never reform)
-    .db 5Eh, 43h    ; Missile Block (no reform)
-    .db 57h, 44h    ; PBomb Block
-    .db 59h, 45h    ; Screw Attack Block
-    .dh 0FFFFh ;
+    .dh ClipdataTile_Crumble,            8000h  ;40h
+    .dh ClipdataTile_BombNeverRevorm,    8000h  ;41h
+    .dh ClipdataTile_BombReform,         8005h  ;41h
+    .dh ClipdataTile_SpeedNoReform,      8008h  ;42h
+    .dh ClipdataTile_SpeedReform,        8009h  ;42h
+    .dh ClipdataTile_MissileNeverReform, 8000h  ;43h
+    .dh ClipdataTile_MissileNoReform,    8000h  ;43h
+    .dh ClipdataTile_PBomb,              8007h  ;44h
+    .dh ClipdataTile_ScrewAttack,        800Ah  ;45h
+
+    .dh ClipdataTile_MissileTankHidden,  8000h
+    .dh ClipdataTile_EngergyTankHidden,  8000h
+    .dh ClipdataTile_PBombTankHidden,    801Eh
+    .dh 0FFFFh, 0FFFFh
+.endautoregion
+
+
+.autoregion
+; input
+; r0 = Block to Search For
+; output
+; ???
+.align 2
+.func @SearchForHiddenBlocks
+    push    { r1-r4, lr }
+    sub     sp, #4
+    mov     r3, #0
+    str     r3, [sp]
+@@search:
+    ldr     r3, [sp]
+    lsl     r3, #1
+    ldr     r4, =@ClipDataReplacements
+    add     r4, r4, r3
+    ldrh    r2, [r4]
+    mov     r1, #0
+    mvn     r1, r1
+    lsl     r1, r1, 10h
+    lsr     r1, r1, 10h     ; 0FFFFh
+    cmp     r0, r1
+    beq     @@return_none        ; return if end of list
+    ; increment counter
+
+
+
+@@return_replacement:
+    ldr     r2, =@ClipDataReplacements+2
+    ;mov     r2, r4
+    add     r2, r2, r3
+    ldrh    r2, [r2, #0]
+    add     sp, #4
+    pop     { r1-r4, pc }
+
+
+
+@@return_none:
+    ldr     r0, =0FFFFh
+    add     sp, #4
+    pop     { r1-r4, pc }
+
+.endfunc
 .endautoregion
