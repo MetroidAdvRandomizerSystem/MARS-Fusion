@@ -107,6 +107,20 @@
     bcc     0806CBE2h
 .endarea
 
+.if RANDOMIZER
+.org 08077E96h
+.area 0Eh, 0
+    mov     r3, #0
+@MapScreenLockLoop0:
+; The vanilla function works for setup of data, except it iterates at the beginning
+; of the loop. We offset the function 2 bytes and move the iterator to the end of
+; the loop instead.
+.incbin "metroid4.gba", 077E96h, 4
+    lsr     r0, r3
+    mov     r6, #1
+    and     r6, r0
+.endarea
+.else
 .org 08077F04h
 .area 0Ah, 0
     ; Check locks on map menu
@@ -114,12 +128,54 @@
     mov     r6, #1
     and     r6, r0
 .endarea
+.endif
+
+.if RANDOMIZER
+.org 08077EA4h
+; The vanilla function works for setup of data, except it iterates at the beginning
+; of the loop. We offset the function 2 bytes and move the iterator to the end of
+; the loop instead.
+.incbin "metroid4.gba", 077EA6h, 032h
+.area 8h
+.org 08077ED6h
+    add     r3, r4, #1
+    mov     r4, r3
+    cmp     r3, #4
+    bls     @MapScreenLockLoop0
+.endarea
+
+.org 08077F02h
+.area 0Ch, 0
+    mov     r3, #0
+    ; Check locks on map menu
+@MapScreenLockLoop1:
+    lsr     r0, r3
+    mov     r6, #1
+    and     r6, r0
+.endarea
+.org 08077F0Ch
+.incbin "metroid4.gba", 077F0Eh, 18h
+.area 8h
+    add     r3, r4, #1
+    mov     r4, r3
+    cmp     r3, #4
+    bls     @MapScreenLockLoop1
+.endarea
+
+; this func loops through the lock OAM slots and sets clears the OAM Graphic
+; this ensures all lock graphics are cleared
+.org 08077F56h
+.area 2
+    cmp     r4, #4
+.endarea
+.else
 .org 08077E9Ch
 .area 0Ah, 0
     lsr     r0, r3
     mov     r6, #1
     and     r6, r0
 .endarea
+.endif
 
 .org 0807D66Ah
 .area 12h, 0
@@ -163,3 +219,24 @@
     mov     r4, #9
 .endarea
 @@cont:
+
+.if RANDOMIZER
+.autoregion
+    .aligna 2
+@MapScreenLockLevels:
+; Lock levels indicated by:
+;   .db OamSlot, OamId
+    .db 01Ah, MenuSpriteGfx_Lv0Locked
+    .db 01Bh, MenuSpriteGfx_Lv1Locked
+    .db 01Ch, MenuSpriteGfx_Lv2Locked
+    .db 01Dh, MenuSpriteGfx_Lv3Locked
+    .db 01Eh, MenuSpriteGfx_Lv4Locked
+.endautoregion
+
+.org 08077EE8h
+    .dw @MapScreenLockLevels
+    .dw @MapScreenLockLevels + 1
+
+.org 08077F38h
+    .dw @MapScreenLockLevels
+.endif

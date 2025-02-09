@@ -113,3 +113,31 @@
     .pool
 .endfunc
 .endautoregion
+
+; Hijack the end of the SamusUpdate function, if pose isn't Screw Attack, always clear the flag
+.org 0800657Ch
+    bl      @ClearScrewWJFlagIfNecessary
+
+.autoregion
+.func @ClearScrewWJFlagIfNecessary
+    push    { r0, r2 }
+    ; If pose isn't screw attack, turn flag off
+    ldr     r2, =SamusState
+    ldrb    r0, [r2, SamusState_Pose]
+    cmp     r0, #1Eh
+    bne     @@unsetScrewWJFlag
+    b       @@return
+@@unsetScrewWJFlag:
+    ; Turn ScrewWJ flag off
+    mov     r0, #0
+    ldr     r2, =ScrewAttackWJFlag
+    strb    r0, [r2]
+@@return:
+    ; default behavior
+    pop     { r0, r2}
+    pop     { r4, r5}
+    pop     { r1 }
+    bx      r1
+    .pool
+.endfunc
+.endautoregion

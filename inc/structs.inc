@@ -296,6 +296,11 @@ ButtonAssignments_Pause equ 06h
 ; navigation hatch left     26h
 ; navigation hatch right    27h
 
+NonGameplayRam equ 03001484h
+.sym off
+NonGamePlayRam_OamData equ 02Ch
+.sym on
+
 MenuSprites equ 030014B0h
 .sym off
 MenuSprites_Len equ 28h
@@ -587,6 +592,9 @@ DMA_SAD equ 00h
 DMA_DAD equ 04h
 DMA_CNT equ 08h
 .sym on
+
+PauseScreenGfxOamPointer equ 08076B10h
+VanillaPauseScreenOamData equ 0879BEC0h
 
 SamusPhysics equ 03001330h
 .sym off
