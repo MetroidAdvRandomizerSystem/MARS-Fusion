@@ -4,22 +4,24 @@
     bl      RevealHiddenBreakableTiles
 .endarea
 
+.org RevealUnhiddenTilesFlag
+.area 1
+.if UNHIDDEN_BREAKABLE_TILES
+    .db     01h
+.else
+    .db     00h
+.endif
+.endarea
+
 .autoregion
     .align 2
 .func RevealHiddenBreakableTiles
     push    { r4-r7 }
-    ldr     r0, =@@RevealHiddenTilesFlag
+    ldr     r0, =RevealUnhiddenTilesFlag
     ldrb    r0, [r0]
     cmp     r0, #0
     beq     @@return
     b       @@load_room_info
-; TODO: determine if this needs to be static location ROM flag
-@@RevealHiddenTilesFlag:
-.if UNHIDDEN_BREAKABLE_TILES
-    .dh     01h
-.else
-    .dh     00h
-.endif
 
 @@load_room_info:
     ldr     r7, =LevelLayers + LevelLayers_Clipdata

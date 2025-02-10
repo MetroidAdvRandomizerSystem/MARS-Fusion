@@ -70,6 +70,7 @@ EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
 RoomNamesAddr equ 087FF070h
+RevealUnhiddenTilesFlag equ 087FF08Ch
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879ECC8h
@@ -106,12 +107,10 @@ RoomNamesAddr equ 087FF070h
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
 .include "src/qol/skip-intro.s"
+.include "src/qol/unhidden-breakable-tiles.s"
 
 .if UNHIDDEN_MAP
 .include "src/qol/unhidden-map.s"
-.endif
-.if UNHIDDEN_BREAKABLE_TILES
-.include "src/qol/unhidden-breakable-tiles.s"
 .endif
 .endif
 
