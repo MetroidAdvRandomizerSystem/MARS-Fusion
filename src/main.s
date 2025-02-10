@@ -70,7 +70,7 @@ EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
 RoomNamesAddr equ 087FF070h
-RevealUnhiddenTilesFlag equ 087FF08Ch
+RevealHiddenTilesFlag equ 087FF08Ch
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879ECC8h

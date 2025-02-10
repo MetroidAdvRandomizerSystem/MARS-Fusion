@@ -17,7 +17,7 @@
     .align 2
 .func RevealHiddenBreakableTiles
     push    { r4-r7 }
-    ldr     r0, =RevealUnhiddenTilesFlag
+    ldr     r0, =RevealHiddenTilesFlag
     ldrb    r0, [r0]
     cmp     r0, #0
     beq     @@return
