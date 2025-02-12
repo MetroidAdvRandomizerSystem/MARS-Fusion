@@ -169,10 +169,10 @@ RevealHiddenTilesFlag equ 087FF08Ch
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/menu-edits.s"
 .include "src/randomizer/open-escape.s"
-.include "src/randomizer/room-name-display.s"
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
+.include "src/randomizer/room-name-display.s"
 .endif
 
 .close

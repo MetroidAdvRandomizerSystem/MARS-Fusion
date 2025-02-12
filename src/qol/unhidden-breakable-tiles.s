@@ -4,7 +4,7 @@
     bl      RevealHiddenBreakableTiles
 .endarea
 
-.org RevealUnhiddenTilesFlag
+.org RevealHiddenTilesFlag
 .area 1
 .if UNHIDDEN_BREAKABLE_TILES
     .db     01h
