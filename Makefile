@@ -25,7 +25,7 @@ PATCHES := $(OPTIONALS:%=$(BIN_DIR)/%.ips)
 BUILD_TYPE := debug
 ifeq ($(BUILD_TYPE), debug)
     BUILD_SYMBOL := -definelabel DEBUG 1
-	SYMBOL_DATA_ARMIPS_OPTION := -sym $(BIN_DIR)/$(OUT).sym
+	SYMBOL_DATA_ARMIPS_OPTION := -sym $(OBJ_DIR)/$(OUT).sym
 else
     BUILD_SYMBOL = -definelabel DEBUG 0
     SYMBOL_DATA_ARMIPS_OPTION :=
