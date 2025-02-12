@@ -32,7 +32,7 @@
 
 ; change event hatch to normal hatch after event triggered
 .org 08063CA0h
-    bl      @ResetEventHatchess
+    bl      @ResetEventHatches
 
 ; hijack hatch lock code to store original hatch types
 .org 08063086h
@@ -61,7 +61,7 @@
 
 .autoregion
 .align 4
-.func @ResetEventHatchess
+.func @ResetEventHatches
     push    { r0 - r3 }
     ; Some event rooms use #1 in the timer to set events. #2 will only be in the timer during an actual event unlock
     ; This will technically change the hatches one frame early
@@ -73,9 +73,9 @@
     ; Ignore if not an event hatch
     ldrb    r0, [r2, HatchData_Status]
     mov     r1, r0
-    lsr     r1, #29
+    lsr     r1, #5
     cmp     r1, #7
-    beq     @@loopIncrement
+    bne     @@loopIncrement
     
     ; Mask out hatch type
     lsl     r0, r0, #27
