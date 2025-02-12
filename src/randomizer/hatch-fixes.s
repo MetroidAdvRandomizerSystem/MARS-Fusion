@@ -74,7 +74,7 @@
     ldrb    r0, [r2, HatchData_Status]
     mov     r1, r0
     lsr     r1, #5
-    cmp     r1, #7
+    cmp     r1, #5 ; Event Door type
     bne     @@loopIncrement
     
     ; Mask out hatch type
