@@ -55,3 +55,6 @@ IceMissileDamage equ 10
 DiffusionMissileDamage equ 5
 
 CustomMessages_Maximum equ 199 ; 57 Messages are reserved by existing behavior, leaving 199 ids left
+
+ScrewAttackWJFlag equ 3000001h ; Flag that is set when WallJumping with Screw Attack
+OriginalHatchTypes equ 30000E0h ; Stores original hatch types when event doors are locked

@@ -339,6 +339,13 @@ MusicInfo_NextTrack equ 22h
 
 SpecialTileset equ 03004DE4h
 HatchData equ 0x3004DEC
+.sym off
+HatchData_Status equ 00h
+HatchData_Animation equ 01h
+HatchData_XPosition equ 02h
+HatchData_YPosition equ 03h
+.sym on
+
 DestinationRoom equ 03004E3Ch
 
 RoomTanks equ 030053DCh
