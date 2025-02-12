@@ -46,8 +46,8 @@
     ldrb    r0, [r3]
     push    { r0, r3 }
     ; Mask all but the type
-    lsr     r0, #29
-    lsl     r0, #29
+    lsr     r0, #5
+    lsl     r0, #5
     ; r4 contains the hatch number
     ldr     r3, =OriginalHatchTypes
     strb    r0, [r3, r4]
