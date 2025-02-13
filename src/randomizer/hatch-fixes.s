@@ -76,22 +76,19 @@
     lsr     r1, #5
     cmp     r1, #5 ; Event Door type
     bne     @@loopIncrement
-    
     ; Mask out hatch type
     lsl     r0, r0, #27
     lsr     r0, r0, #27
-
     ; Load original hatch type
     ldr     r1, =OriginalHatchTypes
     ldrb    r1, [r1, r3]
     orr     r0, r1
     strb    r0, [r2, HatchData_Status]
     ; Determine hatch animation, everything closes except for open hatches
-    lsr     r0, #29
+    lsr     r0, #5
     cmp     r0, #6
     beq     @@opening
     b       @@closing
-
 @@opening:
     ; By setting the animation flag to 1, the opening animation triggers and the hatch works correct
     mov     r1, #1
