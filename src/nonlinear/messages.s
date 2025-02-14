@@ -118,13 +118,13 @@
 .org 080797EEh
 .area 08h, 0
     bl      @NonMajorBoundsCheck
-    
 .endarea
 
 .autoregion
 .align 2
 .func @NonMajorBoundsCheck
-    ; if ID > 0x17h (custom message), add 0x20h and return. Else follow existing logic
+    ; if ID > 0x17h (custom message offset by 0x20h), add 0x20h
+    ; to get the true message ID and return. Else follow existing logic for bounds checking
     cmp     r2, #17h
     bls     @@default
     add     r2, (Message_AtmosphericStabilizer1 - 1)
