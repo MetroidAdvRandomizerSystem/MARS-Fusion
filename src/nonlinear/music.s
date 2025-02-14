@@ -680,4 +680,4 @@
     .dh     MusicTrack_Sector2     ; sector 2 crumble city
 
 .org Sector4Levels + 2Dh * LevelMeta_Size + LevelMeta_Music
-    .dh     MusicTrack_Sector4     ; sector 4 diffusion connectiona ccess
+    .dh     MusicTrack_Sector4     ; sector 4 diffusion connection access
