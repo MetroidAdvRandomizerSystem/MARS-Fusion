@@ -1402,3 +1402,4 @@
 .endarea
 
 .include "src/nonlinear/room-edits/main-deck/room-47.s"
+.include "src/nonlinear/room-edits/main-deck/room-56.s"
