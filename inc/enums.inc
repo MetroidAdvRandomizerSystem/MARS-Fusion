@@ -39,8 +39,8 @@ MusicTrack_Sector1 equ 04h
 MusicTrack_Tourian equ 35h
 MusicTrack_Sector2 equ 06h
 MusicTrack_Sector3 equ 07h
-MusicTrack_Sector4 equ 08h
-MusicTrack_Sector5 equ 09h
+MusicTrack_Sector4 equ 09h
+MusicTrack_Sector5 equ 08h
 MusicTrack_Sector6 equ 0Ah
 MusicTrack_FinalMission equ 5Bh
 ; Boss specific music
