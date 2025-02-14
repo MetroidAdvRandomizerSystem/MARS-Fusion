@@ -117,12 +117,29 @@
 
 .org 080797EEh
 .area 08h, 0
+    bl      @NonMajorBoundsCheck
+    
+.endarea
+
+.autoregion
+.align 2
+.func @NonMajorBoundsCheck
+    ; if ID > 0x17h (custom message), add 0x20h and return. Else follow existing logic
+    cmp     r2, #17h
+    bls     @@default
+    add     r2, (Message_AtmosphericStabilizer1 - 1)
+    b       @@return
+@@default:
     ; bounds check non-major upgrade messages
     sub     r2, #Message_NothingUpgrade - (Message_AtmosphericStabilizer1 - 1) + 1
     asr     r0, r2, #1Fh
     and     r2, r0
     add     r2, #Message_NothingUpgrade + 1
-.endarea
+    b       @@return
+@@return:
+    bx      lr
+.endfunc
+.endautoregion
 
 .org 0802AA2Ch
 .area 04h
