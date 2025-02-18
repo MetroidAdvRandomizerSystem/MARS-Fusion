@@ -47,8 +47,14 @@
     push    { r0, r3 }
     ; Mask all but the type
     lsr     r0, #5
-    lsl     r0, #5
+    ; If the original hatch type was an event, we'll set it to an open hatch after the event clears
+    ; This is special handling for Operations Room
+    cmp     r0, #5 
+    bne     @@storeType
+    mov     r0, #6
+@@storeType:
     ; r4 contains the hatch number
+    lsl     r0, #5
     ldr     r3, =OriginalHatchTypes
     strb    r0, [r3, r4]
     ; Code that we hijacked
