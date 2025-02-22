@@ -13,6 +13,32 @@
 .endif
 .endarea
 
+.org 0806B962h ; Editing UpdateBlockAnimation, case 07h
+.area 0806B968h-0806B962h, 0
+    bl      @BreakStateIfRevealed
+.endarea
+
+.autoregion
+    .align 2
+.func @BreakStateIfRevealed
+    push    { r4, lr }
+    ldr     r4, =RevealHiddenTilesFlag
+    ldrb    r4, [r4]
+    cmp     r4, 0
+    bne     @@if_revealed
+@@if_vanilla:
+    add     r0, #01h
+    b       @@return
+@@if_revealed:
+    sub     r0, #05h
+@@return:
+    lsl     r0, r0, #10h
+    lsr     r5, r0, #10h
+    pop     { r4, lr }
+    .pool
+.endfunc
+.endautoregion
+
 .autoregion
     .align 2
 .func RevealHiddenBreakableTiles
@@ -134,7 +160,7 @@
 ; r0 = Block to Search For
 ; output
 ; r0 = Replacement Tile, or None (0FFFFh)
-.align 2
+    .align 2
 .func @SearchForHiddenBlocks
     push    { r1-r4, lr }
     sub     sp, #4
