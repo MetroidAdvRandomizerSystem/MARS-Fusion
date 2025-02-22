@@ -36,7 +36,7 @@
 .definelabel UNHIDDEN_MAP, 0
 .endif
 .ifndef UNHIDDEN_BREAKABLE_TILES
-.definelabel UNHIDDEN_BREAKABLE_TILES, 1 ; CHANGE ME BEFORE PR
+.definelabel UNHIDDEN_BREAKABLE_TILES, 0
 .endif
 
 .include "inc/constants.inc"
