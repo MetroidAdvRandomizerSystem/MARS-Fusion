@@ -86,6 +86,7 @@ BgPositions_Bg3X equ 0Ch
 BgPositions_Bg3Y equ 0Eh
 .sym on
 
+; TODO: Move to hatch ram if hatch struct is rewritten
 OriginalHatchTypes equ 30000E0h ; Stores original hatch types when event doors are locked, non-vanilla
 
 ArmCannonPos equ 03000B80h
