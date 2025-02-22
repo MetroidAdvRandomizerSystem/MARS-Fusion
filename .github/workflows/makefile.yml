@@ -41,9 +41,7 @@ jobs:
       with:
         name: ${{ matrix.config.zip-name }}.zip
         if-no-files-found: error
-        path: |
-          ./bin/*.ips
-          ./bin/*.bps
+        path: ${{ matrix.config.zip-name }}.zip
 
   release:
     runs-on: 'ubuntu-latest'
