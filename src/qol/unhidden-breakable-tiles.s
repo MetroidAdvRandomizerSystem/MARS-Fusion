@@ -1,16 +1,26 @@
 .org RemoveNeverReformBlocksAndCollectedTanks
-.area 10h, 0
-    .skip 0Ah
-    bl      RevealHiddenBreakableTiles
+.area 08064AEBh-08064ADCh, 0
+    push    { lr }
+    bl       @RemoveMiscTilesFromRoom
+    pop     { r0 }
+    bx      r0
 .endarea
+
+.autoregion
+    .align 2
+.func @RemoveMiscTilesFromRoom
+    push    { lr }
+    bl      RemoveNeverReformBlocks
+    bl      RemoveCollectedTanks
+    bl      RevealHiddenBreakableTiles
+    pop     { r0 }
+    bx      r0
+.endfunc
+.endautoregion
 
 .org RevealHiddenTilesFlag
 .area 1
-.if UNHIDDEN_BREAKABLE_TILES
-    .db     01h
-.else
     .db     00h
-.endif
 .endarea
 
 .org 0806B962h ; Editing UpdateBlockAnimation, case 07h
@@ -42,7 +52,7 @@
 .autoregion
     .align 2
 .func RevealHiddenBreakableTiles
-    push    { r4-r7 }
+    push    { r4-r7, lr }
     ldr     r0, =RevealHiddenTilesFlag
     ldrb    r0, [r0]
     cmp     r0, #0

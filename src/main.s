@@ -35,9 +35,6 @@
 .ifndef UNHIDDEN_MAP
 .definelabel UNHIDDEN_MAP, 0
 .endif
-.ifndef UNHIDDEN_BREAKABLE_TILES
-.definelabel UNHIDDEN_BREAKABLE_TILES, 0
-.endif
 
 .include "inc/constants.inc"
 .include "inc/enums.inc"

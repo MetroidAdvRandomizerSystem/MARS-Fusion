@@ -14,6 +14,7 @@ LockHatches equ 08063070h
 ChangeSuit equ 08063190h
 SetEventEffect equ 0806342Ch
 RemoveNeverReformBlocksAndCollectedTanks equ 08064ADCh
+RemoveNeverReformBlocks equ 0806B130h
 SetBg1Tile equ 0806C614h
 SetSpecialBg1Tile equ 0806C6E4h
 SetClipdata equ 0806C82Ch
