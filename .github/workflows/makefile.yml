@@ -47,7 +47,7 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs:
       - build
-    permissions: write
+    permissions: write-all
 
     steps:
       - name: Download all the artifacts
