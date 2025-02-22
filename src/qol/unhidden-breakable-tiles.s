@@ -139,10 +139,6 @@
     .dh ClipdataTile_2x2BottomRightNeverReform, ClipdataRevealed_Weak
     .dh ClipdataTile_2x2BottomLeftNoReform,     ClipdataRevealed_Weak
     .dh ClipdataTile_2x2BottomRightNoReform,    ClipdataRevealed_Weak
-    ; TODO: Need to change Bomb Chains as the gfx will always point to
-    ; tile_index + 1. We either need to write code to have bomb chains
-    ; behave differently or update the table and gfx to have an
-    ; invisible tile after bomb tiles
     .dh ClipdataTile_VerticalBombChain1,        ClipdataRevealed_Bomb
     .dh ClipdataTile_VerticalBombChain2,        ClipdataRevealed_Bomb
     .dh ClipdataTile_VerticalBombChain3,        ClipdataRevealed_Bomb
