@@ -32,6 +32,9 @@ jobs:
     - name: Remove ROM
       run: rm ./bin/m4rs.gba
 
+    - name: Zip the patches up
+      run: zip -9 ${{ matrix.config.zip-name }}.zip ./bin/*.ips ./bin/*.bps
+
     - name: Upload patches as artifacts
       if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
       uses: actions/upload-artifact@v4.0.0
