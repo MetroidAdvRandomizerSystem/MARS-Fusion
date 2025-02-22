@@ -226,6 +226,7 @@ SamusState_Unk01 equ 0Bh
 SamusState_ChargeCounter equ 0Ch
 SamusState_DiagonalAim equ 0Dh
 SamusState_ArmSwing equ 0Eh
+SamusState_WallJumpDirection equ 10h
 SamusState_Direction equ 12h
 SamusState_PositionX equ 16h
 SamusState_PositionY equ 18h
@@ -602,6 +603,18 @@ DMA_CNT equ 08h
 
 PauseScreenGfxOamPointer equ 08076B10h
 VanillaPauseScreenOamData equ 0879BEC0h
+
+SamusPhysics equ 03001330h
+.sym off
+SamusPhysics_SlowSpeedFlag equ 00h
+SamusPhysics_YAcceleration equ 02h
+SamusPhysics_YVelocityCap equ 04h
+SamusPhysics_MidairXAcceleration equ 06h
+SamusPhysics_MidairXVelocityCap equ 08h
+SamusPhysics_MidairMorphedXVelocityCap equ 0Ah
+SamusPhysics_XAcceleration equ 0Ch
+SamusPhysics_XVelocityCap equ 0Eh
+.sym on
 
 ; non-vanilla structs:
 

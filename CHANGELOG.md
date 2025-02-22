@@ -1,5 +1,5 @@
 # Changelog
-## [Unreleased]
+## 0.1.0 - 2025-02-22
 
 ### Randomizer
 * Changed: Allow all item locations (collectible tanks, security levels, data rooms, bosses) to be configured to contain any item.
@@ -12,6 +12,7 @@
 * Added: Infant metroid item, a configurable number of which are required to spawn SA-X on Operations Deck and complete the game.
 * Added: Nothing item, which has no effect upon collection.
 * Added: Ice trap item, which freezes the player upon collection if varia suit is not active.
+* Changed: On the Map screen, pressing A now shows you the name of your current room.
 * Changed: Room states, background music, and other story flags are now dependent on combinations of progression flags (bosses defeated, terminals accessed, etc.) instead of a linear event counter.
 * Changed: The first Adam dialogue is now configurable for the purpose of introducing the player to the randomizer and telling them other useful information.
 * Changed: Navigation room terminals can be locked behind security levels.
@@ -19,6 +20,9 @@
 * Changed: Credits roll is now configurable, intended for adding text after the vanilla credits, ex. randomizer credits, major item locations, etc.
 * Changed: Initial energy, missile, and power bomb amounts and upgrade increments are now configurable.
 * Changed: Escape sequence countdown only starts on entering Docking Bay Hangar.
+* Changed: Having Screw Attack without Space Jump wil not let you Wall-Jump on a single wall anymore and instead behave the same as without Screw Attack.
+* The Map screen will now display on whether you have Lv-0 keycards collected.
+* Added: Pressing select on the map menu rotates through the maps of each sector in numerical order.
 * Added: Configurable start location and starting items.
 * Added: Ability to warp to the starting location at any time, replacing the sleep mode menu. All progress since the last save is lost when warping.
 * Removed: SA-X no longer patrols and chases the player through certain rooms.
@@ -53,6 +57,7 @@
 
 ### Room modifications
 #### Main Deck
+* Added: Quarantine Bay: There is now a special Hornoad having a guaranteed Red-X drop
 * Removed: Restricted sector is always detached.
 * Changed: Crew Quarters West: Remove power bomb geron to Elevator to Operations Deck.
 * Changed: Operations Deck: Replace lv4 security door to Operations Room with a lv0 security door.
@@ -65,6 +70,7 @@
 * Changed: Silo Access: Move zoro cocoon out of the way of the path to reactor.
 * Changed: Central Reactor Core: Add a platform between the doors to Silo Access and Silo Scaffolding A.
 * Changed: Operations Room: Lv4 security door replaced with a Lv0 security door.
+* Changed: Yakuza Arena: The Exit is now visible even if you haven't defeated Yakuza yet.
 #### Sector 1
 * Changed: Reactivating all atmospheric stabilizers changes the arrangements of some enemies.
 * Changed: Metroid husks appear after collecting the required number of infant metroids.
@@ -119,7 +125,6 @@
 ### Miscellaneous modifications
 * Changed: Rewrite demo functionality for more equipment customizability.
 * Changed: Always show in-game time on the map menu.
-* Added: Pressing select on the map menu rotates through the maps of each sector in numerical order.
 * Added: Optional setting to reveal full map information after downloading the sector's map, including hidden tiles, collectibles, and security doors. It will also center the map when paused.
 * Changed: Credits roll now has full ASCII support.
 * Removed: Item collection counters no longer appear on pause menu.

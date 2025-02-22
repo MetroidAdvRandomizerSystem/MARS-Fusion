@@ -54,7 +54,7 @@ MessageTableLookupAddr equ 0879CDF4h ; This is not the location of the table its
 ; Reserved space addresses. Used by the patcher to know where it should write
 ; data to. The first address here should be used below when defining the free
 ; space region for the asm to use
-PatcherFreeSpace equ 087E0000h
+PatcherFreeSpace equ 087D0000h
 FutureReservedSpace equ 087F0000h
 FutureReservedSpace_Len equ 0F000h
 MinorLocationTable equ 087FF000h
@@ -146,8 +146,10 @@ RevealUnhiddenTilesFlag equ 087FF08Ch
 .include "src/nonlinear/null-event.s"
 .include "src/nonlinear/operations-room.s"
 .include "src/nonlinear/security-unlock.s"
+.include "src/physics/single-walljump.s"
 .include "src/nonlinear/split-suits.s"
 .include "src/nonlinear/story-flags.s"
+
 
 .if !DEBUG
 .include "src/nonlinear/item-select.s"

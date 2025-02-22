@@ -17,8 +17,14 @@
 
 ; Change QuarantineBayHornoad Palette - Palette pointers are offset by 10h, as the first 10h
 ; Sprite_Ids do not use palettes
+.autoregion
+    .align 2
+@UnusedHornoadPalette:
+.incbin "data/unused-hornoad-palette.bin"
+.endautoregion
+
 .org SpritePalettePtrs + (QuarantineBayHornoad_Id - 10h) * 4
-    .dw     085A1E58h ; Unused Palette from Opening, green/yellow
+    .dw     @UnusedHornoadPalette
 
 ; Adjust Red X Probability
 .org SpriteStats + QuarantineBayHornoad_Id * SpriteStats_Size + SpriteStats_YellowXWeight

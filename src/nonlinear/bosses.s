@@ -216,45 +216,6 @@
     .pool
 .endarea
 
-.org 08063614h
-.area 2Ch
-    ; hide bg0 in yakuza fight room if yakuza is dead
-    ldr     r0, =MiscProgress
-    ldr     r0, [r0, MiscProgress_MajorLocations]
-    lsr     r0, MajorLocation_Yakuza + 1
-    bcc     0806367Eh
-    ldr     r2, =03000070h
-    ldrh    r0, [r2]
-    mov     r1, #1
-    lsl     r1, #8
-    bic     r0, r1
-    strh    r0, [r2]
-    ldr     r1, =0300004Ah
-    mov     r0, #0
-    strb    r0, [r1]
-    b       0806367Eh
-    .pool
-.endarea
-
-.org 08063B74h
-.area 28h
-    ; hide bg0 in yakuza fight room if yakuza has just been killed
-    ldr     r0, =MiscProgress
-    ldr     r0, [r0, MiscProgress_MajorLocations]
-    lsr     r0, MajorLocation_Yakuza + 1
-    bcc     08063C2Ah
-    ldr     r2, =03000070h
-    ldrh    r0, [r2]
-    mov     r1, #1
-    lsl     r1, #8
-    bic     r0, r1
-    strh    r0, [r2]
-    ldr     r1, =03000008h
-    strh    r0, [r1]
-    b       08063AD4h
-    .pool
-.endarea
-
 .org 0805DDD4h
 .area 20h, 0
     ; check nightmare kill status before spawning
