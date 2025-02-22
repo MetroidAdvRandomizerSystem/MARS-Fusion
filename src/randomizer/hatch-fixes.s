@@ -47,7 +47,7 @@
     push    { r0, r3 }
     ; Mask all but the type
     lsr     r0, #5
-    ; If the original hatch type was an event, we'll set it to an open hatch after the event clears
+    ; If the original hatch type was an event ("can lock"), we'll set it to an open hatch after the event clears
     ; This is special handling for Operations Room
     cmp     r0, #5 
     bne     @@storeType
@@ -80,7 +80,7 @@
     ldrb    r0, [r2, HatchData_Status]
     mov     r1, r0
     lsr     r1, #5
-    cmp     r1, #5 ; Event Door type
+    cmp     r1, #5 ; Event Door type ("can lock")
     bne     @@loopIncrement
     ; Mask out hatch type
     lsl     r0, r0, #27
