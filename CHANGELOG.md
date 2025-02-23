@@ -24,7 +24,7 @@
 * Changed: Initial energy, missile, and power bomb amounts and upgrade increments are now configurable.
 * Changed: Escape sequence countdown only starts on entering Docking Bay Hangar.
 * Changed: Having Screw Attack without Space Jump wil not let you Wall-Jump on a single wall anymore and instead behave the same as without Screw Attack.
-* The Map screen will now display on whether you have Lv-0 keycards collected.
+* Added: The Map screen will now display on whether you have Lv-0 keycards collected.
 * Added: Pressing select on the map menu rotates through the maps of each sector in numerical order.
 * Added: Configurable start location and starting items.
 * Added: Ability to warp to the starting location at any time, replacing the sleep mode menu. All progress since the last save is lost when warping.
@@ -107,9 +107,9 @@
 * Changed: BOX Arena: Repair the door to the Data Room in the destroyed room state.
 * Changed: BOX Arena: Jumping up on the pillar after the fight now has slightly better visibility on the exit without Hi-Jump.
 #### Sector 4
-* Changed: Security Bypass: (Optional) Pr several softlocks without morph bombs.
+* Changed: Security Bypass: (Optional) Prevent several softlocks without morph bombs.
 * Changed: Drain Pipe: Spawn puffer in all room states.
-* Changed: Reservoir East: (Optional) Pr several softlocks without morph bombs.
+* Changed: Reservoir East: (Optional) Prevent several softlocks without morph bombs.
 #### Sector 5
 * Removed: Sector 5 is no longer wrecked by Nightmare; several specific rooms are changed to compromise the intact and wrecked states.
 * Changed: Nightmare Training Grounds: Added speedbooster runway at the top of the room in the intact room state.
