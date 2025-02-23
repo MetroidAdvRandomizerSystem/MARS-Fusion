@@ -2,6 +2,16 @@
 
 ## Unreleased - 2025-XX-XX
 
+### Randomizer
+- Fixed: Custom messages not working with more than 1 message.
+- Fixed: Beams showing wrong graphics if they were collected from an item with a custom message
+
+### Gameplay modifications
+- Changed: When a door locks itself to become an event hatch, when it gets unlocked it will go back to the previous type rather than being fully open.
+
+### Quality of Life
+- Added: Optional setting to allow revealing destructible blocks by default.
+
 ## 0.1.0 - 2025-02-22
 
 ### Randomizer
