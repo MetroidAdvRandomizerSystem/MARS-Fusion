@@ -8,7 +8,7 @@
 ; ldr     r2, [r7]
 ; mov     r1, #0FFh
 ; r7 is a pointer to the text to show for the Objective/Room Name message box.
-; Loading the desired pointer to r7, then running the original lines will get 
+; Loading the desired pointer to r7, then running the original lines will get
 ; the room name text to be loaded
 
 .func @LoadRoomName
@@ -47,7 +47,8 @@
     .dw     @@Names_Sector6
 .endarea
 
-.region 56h * 4
+.autoregion
+    .align 4
 @@Names_MainDeck:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -71,9 +72,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion
 
-.region 35h * 4
+.autoregion
+    .align 4
 @@Names_Sector1:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -89,9 +91,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom
-.endregion
+.endautoregion
 
-.region 3Ch * 4
+.autoregion
+    .align 4
 @@Names_Sector2:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -108,9 +111,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion
 
-.region 26h * 4
+.autoregion
+    .align 4
 @@Names_Sector3:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -122,9 +126,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion
 
-.region 2Fh * 4
+.autoregion
+    .align 4
 @@Names_Sector4:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -138,9 +143,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion
 
-.region 33h * 4
+.autoregion
+    .align 4
 @@Names_Sector5:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -155,9 +161,10 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion
 
-.region 28h * 4
+.autoregion
+    .align 4
 @@Names_Sector6:
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
@@ -169,4 +176,4 @@
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
     .dw     @UnknownRoom, @UnknownRoom, @UnknownRoom, @UnknownRoom
-.endregion
+.endautoregion

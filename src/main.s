@@ -67,6 +67,7 @@ EnvironmentalHazardDps equ 087FF065h
 MissileLimit equ 087FF06Ah
 MinorLocationsAddr equ 087FF06Ch
 RoomNamesAddr equ 087FF070h
+RevealHiddenTilesFlag equ 087FF08Ch
 
 ; Mark end-of-file padding as free space
 @@EOF equ 0879ECC8h
@@ -103,6 +104,7 @@ RoomNamesAddr equ 087FF070h
 .include "src/qol/screw-unbonk.s"
 .include "src/qol/skip-ending.s"
 .include "src/qol/skip-intro.s"
+.include "src/qol/unhidden-breakable-tiles.s"
 
 .if UNHIDDEN_MAP
 .include "src/qol/unhidden-map.s"
@@ -164,10 +166,10 @@ RoomNamesAddr equ 087FF070h
 .include "src/randomizer/less-map-info.s"
 .include "src/randomizer/menu-edits.s"
 .include "src/randomizer/open-escape.s"
-.include "src/randomizer/room-name-display.s"
 .include "src/randomizer/start-warp.s"
 .include "src/randomizer/start-location.s"
 .include "src/randomizer/tank-majors.s"
+.include "src/randomizer/room-name-display.s"
 .endif
 
 .close
