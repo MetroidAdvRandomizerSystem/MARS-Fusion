@@ -47,11 +47,12 @@
     push    { r0, r3 }
     ; Mask all but the type
     lsr     r0, #5
-    ; If the original hatch type was an event ("can lock"), we'll set it to an open hatch after the event clears
-    ; This is special handling for Operations Room
+    ; If the original hatch type was an event ("can lock"), we'll set it to an L0 hatch after the event clears
+    ; This is special handling for Operations Room. 
+    ; See https://github.com/MetroidAdvRandomizerSystem/mars-fusion-asm/issues/175
     cmp     r0, #5 
     bne     @@storeType
-    mov     r0, #6
+    mov     r0, #0
 @@storeType:
     ; r4 contains the hatch number
     lsl     r0, #5
