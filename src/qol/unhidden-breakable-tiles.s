@@ -40,11 +40,56 @@
     add     r0, #01h
     b       @@return
 @@if_revealed:
+    ldr     r4, [sp]
+    bl      RevealBombChainTile
+    cmp     r4, #1
+    beq     @@if_vanilla
     sub     r0, #05h
 @@return:
     lsl     r0, r0, #10h
     lsr     r5, r0, #10h
     pop     { r4, lr }
+    .pool
+.endfunc
+.endautoregion
+
+.autoregion
+; input
+; r4 = stack pointer, should have indexed block being checked for updating animation
+; output
+; r4 = bool
+;      true = block found and r0 updated
+;      false = no block found
+    .align 2
+.func RevealBombChainTile
+    push    { r5-r7, lr }
+    mov     r6, r4
+    mov     r5, #0
+    ldrb    r3, [r6, BrokenBlock_YPos]
+    ldrb    r2, [r6, BrokenBlock_XPos]
+    ldr     r7, =StoredRevealedTiles
+@@loop:
+    lsl     r4, r5, #2      ; index = counter * 4
+    add     r4, r4, r7      ; StoredRevealedTiles + index
+    ldrb    r1, [r4, StoredRevealedTiles_XPos]
+    cmp     r1, r2
+    bne     @@inc_counter
+    ldrb    r1, [r4, StoredRevealedTiles_YPos]
+    cmp     r1, r3
+    bne     @@inc_counter
+    ldrh    r0, [r4, StoredRevealedTiles_Type]
+    b       @@return_true
+@@inc_counter:
+    add     r5, #1
+    cmp     r5, #StoredRevealedTiles_Len
+    blt     @@loop
+    b       @@return_false
+@@return_true:
+    mov     r4, 1
+    pop     { r5-r7, pc }
+@@return_false:
+    mov     r4, 0
+    pop     { r5-r7, pc }
     .pool
 .endfunc
 .endautoregion

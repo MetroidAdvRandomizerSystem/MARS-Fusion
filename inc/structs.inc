@@ -628,6 +628,14 @@ SamusPhysics_XAcceleration equ 0Ch
 SamusPhysics_XVelocityCap equ 0Eh
 .sym on
 
+;BrokenBlock
+.sym off
+BrokenBlock_Stage equ 00h
+BrokenBlock_Timer equ 01h
+BrokenBlock_XPos equ 02h
+BrokenBlock_YPos equ 03h
+.sym on
+
 ; non-vanilla structs:
 
 UpgradeLookup equ 03001800h
