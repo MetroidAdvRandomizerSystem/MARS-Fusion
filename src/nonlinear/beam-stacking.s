@@ -872,27 +872,35 @@
 .autoregion
     .align 2
 .func Beam_CalculateDamage
-    ; 2 + 2 * wave + ice + wide
+    ; 2 + wave + ice + wide
     ; multiplies damage by 1.5 if firing a single projectile with charge
+    ; r2 used to store damage value
     mov     r2, #2
     ldr     r0, =SamusUpgrades
     ldrb    r3, [r0, SamusUpgrades_BeamUpgrades]
+    ; check for wave and add 1 to beam damage
     lsl     r0, r3, #1Fh - BeamUpgrade_WaveBeam
     lsr     r0, #1Fh
-    lsl     r0, #1
     add     r2, r0
+    ; check for ice and add 1 to beam damage
     lsl     r0, r3, #1Fh - BeamUpgrade_IceBeam
     lsr     r0, #1Fh
     add     r2, r0
+    ; check for wide and add 1 to beam damage
     lsl     r0, r3, #1Fh - BeamUpgrade_WideBeam
     lsr     r0, #1Fh
     add     r2, r0
+    ; check if ONLY charge beam set, if yes skip
     cmp     r3, #1 << BeamUpgrade_ChargeBeam
     beq     @@return
+    ; check if charge beam is set, if not skip
     lsr     r0, r3, #BeamUpgrade_ChargeBeam + 1
     bcc     @@return
-    lsr     r0, r3, #BeamUpgrade_WideBeam + 1
-    bcs     @@return
+    ; check if wide beam set or wave beam set, if yes skip
+    mov     r0, (1 << BeamUpgrade_WideBeam) | (1 << BeamUpgrade_WaveBeam)
+    and     r0, r3
+    bne     @@return
+    ; multiply damage by 1.5
     lsr     r0, r2, #1
     add     r2, r0
 @@return:
@@ -1074,27 +1082,32 @@
 .autoregion
     .align 2
 .func ChargedBeam_CalculateDamage
-    ; floor(5 * (2 + wave + (ice + wide) / 2) * (3 * plasma / 5))
+    ; floor(5 * (2 + (wave + ice + wide) / 2) * (3 * plasma / 5))
     ; multiplies damage by 1.5 if firing a single projectile with charge
     mov     r2, #4
     ldr     r0, =SamusUpgrades
     ldrb    r3, [r0, SamusUpgrades_BeamUpgrades]
+    ; check for wave and add 1 to term
     lsl     r0, r3, #1Fh - BeamUpgrade_WaveBeam
     lsr     r0, #1Fh
-    lsl     r0, #1
     add     r2, r0
+    ; check for ice and add 1 to term
     lsl     r0, r3, #1Fh - BeamUpgrade_IceBeam
     lsr     r0, #1Fh
     add     r2, r0
+    ; check for wide and add 1 to term
     lsl     r0, r3, #1Fh - BeamUpgrade_WideBeam
     lsr     r0, #1Fh
     add     r2, r0
+    ; multiply term by 5
     lsl     r0, r2, #2
     add     r2, r0
+    ; check if ONLY charge beam set, if yes skip
     cmp     r3, #1 << BeamUpgrade_ChargeBeam
     beq     @@return
     lsr     r0, r3, #BeamUpgrade_ChargeBeam + 1
     bcc     @@check_plasma
+    ; check if wide beam set or wave beam set, if yes skip
     mov     r0, #(1 << BeamUpgrade_WideBeam) | (1 << BeamUpgrade_WaveBeam)
     and     r0, r3
     bne     @@check_plasma
