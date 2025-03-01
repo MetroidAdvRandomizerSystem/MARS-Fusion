@@ -628,6 +628,14 @@ SamusPhysics_XAcceleration equ 0Ch
 SamusPhysics_XVelocityCap equ 0Eh
 .sym on
 
+;BrokenBlock
+.sym off
+BrokenBlock_Stage equ 00h
+BrokenBlock_Timer equ 01h
+BrokenBlock_XPos equ 02h
+BrokenBlock_YPos equ 03h
+.sym on
+
 ; non-vanilla structs:
 
 UpgradeLookup equ 03001800h
@@ -670,3 +678,12 @@ StartingLocation_Size equ 08h
 RedX_OAMData equ 083BE2C0h
 
 SpritePalettePtrs equ 0879A8D4h
+
+StoredRevealedTiles equ 03005630h
+.sym off
+StoredRevealedTiles_Len equ 40h
+StoredRevealedTiles_Type equ 0
+StoredRevealedTiles_YPos equ 2
+StoredRevealedTiles_XPos equ 3
+StoredRevealedTiles_Size equ 4
+.sym on
