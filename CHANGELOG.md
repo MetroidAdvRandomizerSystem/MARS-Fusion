@@ -2,6 +2,8 @@
 
 ## Unreleased - 2025-XX-XX
 
+## 0.2.0 - 2025-03-01
+
 ### Randomizer
 - Fixed: Custom messages not working with more than 1 message.
 - Fixed: Beams showing wrong graphics if they were collected from an item with a custom message
