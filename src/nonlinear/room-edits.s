@@ -236,6 +236,14 @@
 .defineregion readptr(MainDeckLevels + 3Bh * LevelMeta_Size + LevelMeta_Bg1), 457h
 .defineregion readptr(MainDeckLevels + 3Bh * LevelMeta_Size + LevelMeta_Clipdata), 16Ah
 
+; remove event-based transitions to wrecked Silo Access
+.if RANDOMIZER
+.org MainDeckDoors + 86h * DoorEntry_Size + DoorEntry_Type
+.area 1
+    .db     DoorType_OpenHatch | DoorType_ShowsLocationName
+.endarea
+.endif
+
 ; Main Deck - Operations Room
 ; change lv4 security door to lv0 security
 ; remove event-based transition leading to wrecked Operations Deck
