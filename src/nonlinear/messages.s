@@ -215,9 +215,10 @@
 .org 0802AB5Ah
 .area 0Eh, 0
     ; always reload beam and missile graphics, since they can use any message ID
+    push r2
     bl      LoadBeamGfx
     bl      LoadMissileGfx
-    mov     r4, r2
+    pop r2
     b       0802AB6Ch
 .endarea
 
