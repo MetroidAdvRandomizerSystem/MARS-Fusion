@@ -217,7 +217,7 @@
     ; always reload beam and missile graphics, since they can use any message ID
     bl      LoadBeamGfx
     bl      LoadMissileGfx
-    mov     r4, r2
+    mov     r2, r4
     b       0802AB6Ch
 .endarea
 

@@ -2,12 +2,16 @@
 
 ## Unreleased - 2025-XX-XX
 
+### Randomizer
+- Fixed: Removed event based door transition from Reactor Silo.
+- Fixed: Escape music now triggers properly.
+
 ## 0.2.0 - 2025-03-01
 
 ### Randomizer
 - Fixed: Custom messages not working with more than 1 message.
-- Fixed: Beams showing wrong graphics if they were collected from an item with a custom message
-- Changed: The door in Operations Deck to Operations Room has been changed to always be a Level-0 door
+- Fixed: Beams showing wrong graphics if they were collected from an item with a custom message.
+- Changed: The door in Operations Deck to Operations Room has been changed to always be a Level-0 door.
 - Changed: Halved Wave Beam's damage.
 
 ### Gameplay modifications
@@ -74,7 +78,7 @@
 
 ### Room modifications
 #### Main Deck
-* Added: Quarantine Bay: There is now a special Hornoad having a guaranteed Red-X drop
+* Added: Quarantine Bay: There is now a special Hornoad having a guaranteed Red-X drop.
 * Removed: Restricted sector is always detached.
 * Changed: Crew Quarters West: Remove power bomb geron to Elevator to Operations Deck.
 * Changed: Operations Deck: Replace lv4 security door to Operations Room with a lv0 security door.
