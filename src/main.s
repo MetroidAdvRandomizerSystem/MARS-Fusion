@@ -98,6 +98,7 @@ RevealHiddenTilesFlag equ 087FF08Ch
 .include "src/qol/cross-sector-maps.s"
 .include "src/qol/fast-doors.s"
 .include "src/qol/fast-elevators.s"
+.include "src/qol/ice-beam-volume.s"
 .include "src/qol/increase-red-x-drops.s"
 .include "src/qol/map-info.s"
 .include "src/qol/sax-softlock.s"
