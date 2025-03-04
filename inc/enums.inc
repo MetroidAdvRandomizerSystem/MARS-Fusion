@@ -80,6 +80,7 @@ Sfx_SuperMissile_Fired equ 0D1h
 Sfx_IceMissile_Fired equ 0D4h
 Sfx_DiffusionMissile_Fired equ 0D7h
 Sfx_ChargedDiffusionMissile_Fired equ 0DAh
+Sfx_SpriteFrozen equ 146h
 
 Event_GameStart equ 00h
 Event_OperationsElevatorOutage equ 08h
@@ -188,6 +189,8 @@ Message_Auto equ 0FFh
 Tank_Missiles equ 1
 Tank_Energy equ 2
 Tank_PowerBombs equ 3
+
+SamusPose_FrozenRequest equ 0FBh
 
 StandingFlag_Ground equ 00h
 StandingFlag_Sprite equ 01h
