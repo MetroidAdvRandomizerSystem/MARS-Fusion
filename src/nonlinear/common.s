@@ -39,7 +39,7 @@
     cmp     r0, #Upgrade_IceTrap
     bne     @@checkMetroid
     ; Freeze Samus regardless of suit type
-    mov     r0, #146h >> 1
+    mov     r0, #Sfx_SpriteFrozen >> 1
     lsl     r0, #1
     bl      Sfx_PlayIfNotPlaying
     ; Add ice missile effect
@@ -50,9 +50,9 @@
     ldrh    r0, [r2, SamusState_PositionY]
     add     r0, r1
     ldrh    r1, [r2, SamusState_PositionX]
-    mov     r2, #0Ah
+    mov     r2, #Particle_IceMissileExplosion
     bl      SpawnParticleEffect
-    mov     r0, #0FBh
+    mov     r0, #SamusPose_FrozenRequest
     bl      Samus_SetPose
 @@skipFreeze:
     mov     r0, #Message_IceTrapUpgrade
