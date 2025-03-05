@@ -1357,5 +1357,6 @@
 .include "src/nonlinear/room-edits/main-deck/room-56.s"
 .include "src/nonlinear/room-edits/sector-2/room-07-and-1F.s"
 .include "src/nonlinear/room-edits/sector-2/room-0A.s"
+.include "src/nonlinear/room-edits/sector-2/room-39.s"
 .include "src/nonlinear/room-edits/sector-4/room-06.s"
 
