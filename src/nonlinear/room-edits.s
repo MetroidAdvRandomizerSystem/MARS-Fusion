@@ -679,43 +679,6 @@
     .db     1Eh
 .endarea
 
-; Sector 2 - Data Hub
-; repair door to data hub access
-.defineregion readptr(Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Clipdata), 0CEh
-
-.org readptr(Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Bg1)
-.area 40Bh
-.incbin "data/rooms/S2-1F-BG1.rlebg"
-.endarea
-
-.autoregion
-@S2_DataHub_Clipdata:
-.incbin "data/rooms/S2-1F-Clip.rlebg"
-.endautoregion
-
-.org Sector2Levels + 1Fh * LevelMeta_Size + LevelMeta_Clipdata
-.area 04h
-    .dw     @S2_DataHub_Clipdata
-.endarea
-
-.org Sector2Doors + 10h * DoorEntry_Size + DoorEntry_SourceRoom
-.area 1
-    .db     1Fh
-.endarea
-
-.org Sector2Doors + 11h * DoorEntry_Size + DoorEntry_SourceRoom
-.area 1
-    .db     1Fh
-.endarea
-
-.org Sector2Doors + 13h * DoorEntry_Size + DoorEntry_Type
-.area 1
-    .db     DoorType_LockableHatch
-.endarea
-
-.org Sector2Doors + 45h * DoorEntry_Size
-.fill DoorEntry_Size, 0FFh
-
 ; Sector 2 - Eastern Shaft
 ; add ledge to allow climbing frozen enemies from middle doors to top doors
 ; removed 2 vine tiles to prevent dangerous nettori
@@ -1411,3 +1374,4 @@
 
 .include "src/nonlinear/room-edits/main-deck/room-47.s"
 .include "src/nonlinear/room-edits/main-deck/room-56.s"
+.include "src/nonlinear/room-edits/sector-2/room-07-and-1F.s"
