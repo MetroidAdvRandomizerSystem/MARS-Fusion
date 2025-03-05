@@ -4,5 +4,4 @@
     mov     r0, r9
     strb    r0, [r4, #2]
 
-.org 0856F71Ch
-.incbin "data/debug-map.gfx"
+; Graphics moved to src/randomizer/menu-edits.s

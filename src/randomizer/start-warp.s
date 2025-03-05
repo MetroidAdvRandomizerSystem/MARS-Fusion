@@ -1,7 +1,6 @@
 ; Allows warp to start location from the sleep mode menu.
 
-.org 0856F71Ch
-.incbin "data/warp-map.gfx"
+; Graphics moved to src/randomizer/menu-edits.s
 
 .autoregion
     .align 4
