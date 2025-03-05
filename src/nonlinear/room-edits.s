@@ -363,7 +363,7 @@
     .db 32h, 1Bh, 14h
 .endarea
 
-; Sector 2 - Central Shaft
+; Sector 2 - Cathedral
 ; make door to reo room functional
 ; remove hatch to ripper roost
 ; move zoro out of the way of ripper roost
@@ -397,24 +397,28 @@
     .dw     @S2_CentralShaft_KihunterSpriteset
 .endarea
 
-.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
-.area 09h
-    .db     1Bh, 05h, 24h
-    .skip 3
+.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + (1 * Spriteset_SpriteSize)
+.area 03h
+    .db     17h, 05h, 24h
+.endarea
+
+.org readptr(Sector2Levels + 0Dh * LevelMeta_Size + LevelMeta_Spriteset0) + (3 * Spriteset_SpriteSize)
+.area 03h
     .db     2Bh, 03h, 24h
 .endarea
 
-.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0) + 1 * 03h
+
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset0) + (1 * Spriteset_SpriteSize)
 .area 03h
-    .db     1Bh, 05h, 14h
+    .db     17h, 05h, 24h
 .endarea
 
-.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 2 * 03h
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + (2 * Spriteset_SpriteSize)
 .area 03h
-    .db     1Bh, 05h, 14h
+    .db     17h, 05h, 24h
 .endarea
 
-.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + 6 * 03h
+.org readptr(Sector2Levels + 2Eh * LevelMeta_Size + LevelMeta_Spriteset1) + (6 * Spriteset_SpriteSize)
 .area 03h
     .db     2Ch, 03h, 17h
 .endarea
