@@ -3,7 +3,7 @@
 ; Moves Scizer on Post-Water Pump to be back at the wall instead of at the floor
 .org readptr(Sector4Levels + 06h * LevelMeta_Size + LevelMeta_Spriteset1) + (3 * Spriteset_SpriteSize)
 .area 3
-    .db 0Dh, 26h, 24h
+    .db 0Dh, 26h, 23h
 .endarea
 
 
