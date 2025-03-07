@@ -171,6 +171,16 @@
     .db     19h
 .endarea
 
+; Main Deck - Arachnus Arena
+; remove sprite layer that removes Arachnus during the escape
+.org MainDeckLevels + 26h * LevelMeta_Size + LevelMeta_Spriteset1Event
+.area LevelMeta_Spriteset2Event - LevelMeta_Spriteset1Event
+    .db     0
+    .skip 2
+    .dw     NullSpriteset
+    .db     0
+.endarea
+
 ; Main Deck - Main Elevator Access
 ; remove event-based transition
 .org MainDeckDoors + 4Ah * DoorEntry_Size + DoorEntry_Type
