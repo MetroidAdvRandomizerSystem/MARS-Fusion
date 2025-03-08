@@ -139,7 +139,7 @@
 .endfunc
 .endautoregion
 
-.org 0801F40Ah ; Editing in SavePlatformInit
+.org 0801F40Ah ; Modifying code in SavePlatformInit
 .area 0Ch, 0
     ; check if save pad should start lowered
     bl      @CheckLoadSaveOrNewGame
@@ -148,7 +148,7 @@
     b       0801F466h
 .endarea
 
-.org 08060DF8h ; Editing in CheckOnEventWithNavigationDisabled
+.org 08060DF8h ; Modifying code in CheckOnEventWithNavigationDisabled
 .area 24h
     ; check if navigation pad should start inactive
     push    { lr }
@@ -166,7 +166,7 @@
     .pool
 .endarea
 
-.org 08064600h ; editing LoadRoom
+.org 08064600h ; Modifying code in LoadRoom
 .area 0Ch, 0
     ; force recalculate bg position when loading save
 .endarea
@@ -208,12 +208,17 @@
 .endfunc
 .endautoregion
 
-; Edit gameover subroutine. This branch is called when you select "yes" to reload
+
+; Ensure Warping to Start does not overwrite your most recent save location when
+; continuing from a Game Over.
+
+; Hijack GameOver subroutine. This branch is called when you select "yes" to reload
 .org 08000634h
 .area 4
     bl      @ReloadFromGameOver
 .endarea
 
+; Copies the Backup Save over the Current Save
 .org Sram_RestoreBackupSaveFileAfterReload
 .area 0807FB84h - Sram_RestoreBackupSaveFileAfterReload, 0
     push    { lr }

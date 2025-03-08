@@ -99,7 +99,8 @@
     strb    r0, [r3, #6]
     nop :: nop
 
-.org 0807EE12h ; Editing EasySleepMenuSubroutine
+; Hijack the sleep function in EasySleepMenuSubroutine for warp to start.
+.org 0807EE12h
 .area 6Eh
     ldr     r4, =03001488h
     ldrb    r3, [r4, #2]
