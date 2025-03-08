@@ -68,6 +68,7 @@
     strh    r0, [r1, SaveData_MusicUnk2 - SaveData_MusicSlot1]
     bl      08080968h
     ldr     r1, =GameMode
+    ldrh    r0, [r1]
     cmp     r0, #0
     beq     @@intro
     mov     r0, #GameMode_InGame
@@ -98,7 +99,7 @@
     strb    r0, [r3, #6]
     nop :: nop
 
-.org 0807EE12h
+.org 0807EE12h ; Editing EasySleepMenuSubroutine
 .area 6Eh
     ldr     r4, =03001488h
     ldrb    r3, [r4, #2]
