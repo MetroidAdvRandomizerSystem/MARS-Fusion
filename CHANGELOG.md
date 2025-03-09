@@ -5,6 +5,7 @@
 ### Randomizer
 - Fixed: Removed event based door transition from Reactor Silo.
 - Fixed: Escape music now triggers properly.
+- Changed: Hidden Tanks are now revealed when "Reveal Hidden Tiles" is enabled. They will show as a beam-weak block.
 
 ## 0.2.0 - 2025-03-01
 
