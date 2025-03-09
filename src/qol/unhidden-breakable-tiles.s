@@ -193,7 +193,7 @@
     .dh ClipdataTile_PBomb,                     ClipdataRevealed_PBomb
     .dh ClipdataTile_ScrewAttack,               ClipdataRevealed_ScrewAttack
     .dh ClipdataTile_MissileTankHidden,         ClipdataRevealed_Weak ; 801Ch ; Maybe we change these later if we find a better way to reveal
-    .dh ClipdataTile_EngergyTankHidden,         ClipdataRevealed_Weak ; 801Dh ; tanks without needing to shoot them.
+    .dh ClipdataTile_EnergyTankHidden,          ClipdataRevealed_Weak ; 801Dh ; tanks without needing to shoot them.
     .dh ClipdataTile_PBombTankHidden,           ClipdataRevealed_Weak ; 801Eh
     .dh ClipdataTile_2x2TopLeftNeverReform,     ClipdataRevealed_Weak
     .dh ClipdataTile_2x2TopRightNeverReform,    ClipdataRevealed_Weak
